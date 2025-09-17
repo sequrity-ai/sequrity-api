@@ -1,9 +1,13 @@
 [project]
     name="sequrity-api"
     version="0.0.1"
-    description="Add your description here"
+    description="A Python client for Sequrity API"
     readme="README.md"
-    authors=[{ name="Cheng Zhang", email="chengzhang98@outlook.com" }]
+    authors=[
+        { name="Ilya Shumailov", email="ilya@sequrity.ai" },
+        { name="Yiren Zhao", email="a.zhao@imperial.ac.uk" },
+        { name="Cheng Zhang", email="chengzhang98@outlook.com" },
+    ]
     requires-python=">=3.13"
     dependencies=["httpx>=0.28.1", "pydantic>=2.11.9"]
 
