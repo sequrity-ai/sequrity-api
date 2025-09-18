@@ -17,3 +17,6 @@
 
 [dependency-groups]
     dev=["openai>=1.107.3"]
+
+[tool.ruff]
+    line-length=120

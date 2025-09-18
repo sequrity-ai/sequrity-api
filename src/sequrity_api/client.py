@@ -82,23 +82,13 @@ class SequrityClient:
             top_p=top_p,
             verbosity=verbosity,
         )
-
-        """
-        x_model_name: str = Header(None),
-        x_api_key: str = Header(None),
-        x_rest_api_endpoint: str = Header(None),
-        x_sequrity_api_key: str = Header(None),
-        x_session_id: str = Header(None),
-        """
         if headers is None:
             headers = {}
         if self.sequrity_key is None and "X-Sequrity-Api-Key" not in headers:
+            raise ValueError("Sequrity API key is required. Please set in in the header using 'X-Sequrity-Api-Key'.")
+        if self.llm_api_key is None and "X-Api-Key" not in headers:
             raise ValueError(
-                "Sequrity API key is required. Please set in in the header using 'X-Sequrity-Api-Key'."
-            )
-        if self.llm_api_key is None and "Authorization" not in headers:
-            raise ValueError(
-                "API key of LLM service provider is required. Please set it in the header using 'Authorization'."
+                "API key of LLM service provider is required. Please set it in the header using 'X-Api-Key'."
             )
         if self.llm_url is None and "X-Rest-Api-Endpoint" not in headers:
             raise ValueError(
@@ -111,8 +101,6 @@ class SequrityClient:
             headers["X-Api-Key"] = self.llm_api_key
         if self.llm_url is not None and "X-Rest-Api-Endpoint" not in headers:
             headers["X-Rest-Api-Endpoint"] = self.llm_url
-        if "X-Model-Name" not in headers:
-            headers["X-Model-Name"] = model
         if session_id is not None and "X-Session-Id" not in headers:
             headers["X-Session-Id"] = session_id
 

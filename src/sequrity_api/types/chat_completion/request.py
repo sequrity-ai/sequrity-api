@@ -36,9 +36,7 @@ class ChatCompletionMessageParam(BaseModel):
 
     content: str | Iterable[ChatCompletionContentPartParam] | None = Field(default=None)
     role: Literal["user", "assistant", "system", "tool", "developer"]
-    name: str | None = Field(
-        default=None, description="An optional name for the participant."
-    )
+    name: str | None = Field(default=None, description="An optional name for the participant.")
     tool_call_id: str | None = None
     tool_calls: Iterable[ToolCallParam] | None = None
     model_config = ConfigDict(extra="ignore")
@@ -148,9 +146,7 @@ class ChatCompletionRequest(BaseModel):
         default=None,
         description="If set to true, the model response data will be streamed to the client as it is generated.",
     )
-    temperature: float | None = Field(
-        default=None, description="What sampling temperature to use, between 0 and 2."
-    )
+    temperature: float | None = Field(default=None, description="What sampling temperature to use, between 0 and 2.")
     tools: list[ChatCompletionToolParam] | None = Field(
         default=None,
         description="A list of tools the model may call. Currently, only functions are supported as a tool.",

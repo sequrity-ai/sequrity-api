@@ -58,9 +58,7 @@ class ChatCompletionMessage(BaseModel):
 class Choice(BaseModel):
     """A chat completion choice."""
 
-    finish_reason: Literal[
-        "stop", "length", "tool_calls", "content_filter", "function_call"
-    ]
+    finish_reason: Literal["stop", "length", "tool_calls", "content_filter", "function_call"]
     """The reason the model stopped generating tokens."""
 
     index: int

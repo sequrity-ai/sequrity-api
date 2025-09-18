@@ -27,7 +27,7 @@ A Python client for interacting with the Sequrity API
         api_key=os.getenv("OPENROUTER_API_KEY"),
         rest_api_endpoint="https://openrouter.ai/api/v1/chat/completions",
     )
-    # Override the default URL for local testing
+    # Override the default sequrity API URL for local testing
     client.sequrity_url = "http://127.0.0.1:8000"
 
     completion = client.create_chat_completion(
@@ -37,3 +37,18 @@ A Python client for interacting with the Sequrity API
 
     print(completion.model_dump_json(exclude_none=True, indent=2))
     ```
+
+    This is equivalent to the following `curl` command:
+
+    ```bash
+    curl -X POST "http://127.0.0.1:8000/v1/chat/completions" \
+            -H "Content-Type: application/json" \
+            -H "X-Sequrity-Api-Key: $SEQURITY_API_KEY" \
+            -H "X-Api-Key: $OPENROUTER_API_KEY" \
+            -H "X-Rest-Api-Endpoint: https://openrouter.ai/api/v1/chat/completions" \
+            -d '{
+                "model": "openai/gpt-5-mini,openai/gpt-5-nano",
+                "messages": [{"role": "user", "content": "What is the capital of France?"}]
+                }'
+    ```
+
