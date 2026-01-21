@@ -1,4 +1,3 @@
-import json
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -29,6 +28,6 @@ class ResponseContentJsonSchema(BaseModel):
     def parse_raw(cls, data: str) -> "ResponseContentJsonSchema":
         try:
             validated = cls.model_validate_json(data)
-        except Exception as e:
+        except Exception:
             validated = cls(status="unknown", raw=data)
         return validated
