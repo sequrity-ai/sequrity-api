@@ -1,54 +1,31 @@
-# Sequrity API
+# sequrity-api
 
-A Python client for interacting with the Sequrity API
+A Python client for the Sequrity API.
 
-## Build
+## Installation
 
-1. Install [uv](https://docs.astral.sh/uv/)
-2. Run the build command:
-    ```bash
-    uv build
-    ```
-3. The built files will be located in the `dist/` directory.
+```bash
+pip install sequrity-api
+```
 
-## Functionality
+## Quick Start
 
-- Chat Completions
+```python
+from sequrity_api import SequrityClient
 
-    Example usage:
+client = SequrityClient(api_key="your-sequrity-api-key")
 
-    ```python
-    import os
+response = client.control.chat_completion(
+    model="openai/gpt-5-mini",
+    messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
+    llm_api_key="your-openrouter-key",
+)
+```
 
-    from sequrity_api import SequrityClient
+## Requirements
 
-    client = SequrityClient(
-        sequrity_api_key=os.getenv("SEQURITY_API_KEY"),
-        api_key=os.getenv("OPENROUTER_API_KEY"),
-        rest_api_endpoint="https://openrouter.ai/api/v1/chat/completions",
-    )
-    # Override the default sequrity API URL for local testing
-    client.sequrity_url = "http://127.0.0.1:8000"
+- Python 3.11+
 
-    completion = client.create_chat_completion(
-        model="openai/gpt-5-mini,openai/gpt-5-nano",
-        messages=[{"role": "user", "content": "What is the capital of France?"}],
-    )
+## License
 
-    print(completion.model_dump_json(exclude_none=True, indent=2))
-    ```
-
-    This is equivalent to the following `curl` command:
-
-    ```bash
-    curl -X POST "http://127.0.0.1:8000/v1/chat/completions" \
-            -H "Content-Type: application/json" \
-            -H "X-Sequrity-Api-Key: $SEQURITY_API_KEY" \
-            -H "X-Api-Key: $OPENROUTER_API_KEY" \
-            -H "X-Rest-Api-Endpoint: https://openrouter.ai/api/v1/chat/completions" \
-            -d '{
-                "model": "openai/gpt-5-mini,openai/gpt-5-nano",
-                "messages": [{"role": "user", "content": "What is the capital of France?"}]
-                }'
-    ```
-
+Apache 2.0
