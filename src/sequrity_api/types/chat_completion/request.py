@@ -1,169 +1,377 @@
-from collections.abc import Iterable
-from typing import Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
-class ChatCompletionContentPartParam(BaseModel):
-    """Content part parameter for messages."""
-
-    text: str
-    type: Literal["text"]
+# =============================================================================
+# Content Parts
+# =============================================================================
 
 
-class FunctionCall(BaseModel):
-    """Function call parameters."""
+class ContentPartText(BaseModel):
+    """Text content part."""
+
+    type: Literal["text"] = Field(description="The type of the content part.")
+    text: str = Field(description="The text content.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ImageUrl(BaseModel):
+    """Image URL details."""
+
+    url: str = Field(description="Either a URL of the image or the base64 encoded image data.")
+    detail: Literal["auto", "low", "high"] | None = Field(
+        default=None,
+        description="Specifies the detail level of the image. 'low', 'high', or 'auto' for automatic selection.",
+    )
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ContentPartImage(BaseModel):
+    """Image content part."""
+
+    type: Literal["image_url"] = Field(description="The type of the content part.")
+    image_url: ImageUrl = Field(description="The image URL details.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class InputAudioData(BaseModel):
+    """Input audio data."""
+
+    data: str = Field(description="Base64 encoded audio data.")
+    format: Literal["wav", "mp3"] = Field(description="The format of the audio data.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ContentPartInputAudio(BaseModel):
+    """Input audio content part."""
+
+    type: Literal["input_audio"] = Field(description="The type of the content part.")
+    input_audio: InputAudioData = Field(description="The input audio data.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class FileData(BaseModel):
+    """File data."""
+
+    file_data: str | None = Field(
+        default=None,
+        description="The base64 encoded file data, used when passing the file to the model as a string.",
+    )
+    file_id: str | None = Field(default=None, description="The ID of an uploaded file to use as input.")
+    filename: str | None = Field(
+        default=None,
+        description="The name of the file, used when passing the file to the model as a string.",
+    )
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ContentPartFile(BaseModel):
+    """File content part."""
+
+    type: Literal["file"] = Field(description="The type of the content part. Always 'file'.")
+    file: FileData = Field(description="The file data.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+ContentPart = ContentPartText | ContentPartImage | ContentPartInputAudio | ContentPartFile
+
+
+# =============================================================================
+# Messages
+# =============================================================================
+
+
+class DeveloperMessage(BaseModel):
+    """Developer message."""
+
+    role: Literal["developer"] = Field(description="The role of the messages author, in this case 'developer'.")
+    content: str | list[ContentPartText] = Field(description="The contents of the developer message.")
+    name: str | None = Field(
+        default=None,
+        description="An optional name for the participant. Provides the model information to differentiate between participants of the same role.",
+    )
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class SystemMessage(BaseModel):
+    """System message."""
+
+    role: Literal["system"] = Field(description="The role of the messages author, in this case 'system'.")
+    content: str | list[ContentPartText] = Field(description="The contents of the system message.")
+    name: str | None = Field(
+        default=None,
+        description="An optional name for the participant. Provides the model information to differentiate between participants of the same role.",
+    )
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class UserMessage(BaseModel):
+    """User message."""
+
+    role: Literal["user"] = Field(description="The role of the messages author, in this case 'user'.")
+    content: str | list[ContentPart] = Field(description="The contents of the user message.")
+    name: str | None = Field(
+        default=None,
+        description="An optional name for the participant. Provides the model information to differentiate between participants of the same role.",
+    )
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class FunctionCallResult(BaseModel):
+    """Function call result in assistant message."""
 
     arguments: str = Field(
-        ...,
-        description="The arguments to call the function with, as generated by the model in JSON format.",
+        description="The arguments to call the function with, as generated by the model in JSON format."
     )
-    name: str = Field(..., description="The name of the function to call.")
+    name: str = Field(description="The name of the function to call.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ToolCallFunction(BaseModel):
+    """Function details in tool call."""
+
+    arguments: str = Field(
+        description="The arguments to call the function with, as generated by the model in JSON format."
+    )
+    name: str = Field(description="The name of the function to call.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ToolCall(BaseModel):
+    """Tool call in assistant message."""
+
+    id: str = Field(description="The ID of the tool call.")
+    type: Literal["function"] = Field(description="The type of the tool. Currently, only 'function' is supported.")
+    function: ToolCallFunction = Field(description="The function that the model called.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class AssistantMessageAudio(BaseModel):
+    """Audio reference in assistant message."""
+
+    id: str = Field(description="Unique identifier for a previous audio response from the model.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ContentPartRefusal(BaseModel):
+    """Refusal content part."""
+
+    type: Literal["refusal"] = Field(description="The type of the content part.")
+    refusal: str = Field(description="The refusal message.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class AssistantMessage(BaseModel):
+    """Assistant message."""
+
+    role: Literal["assistant"] = Field(description="The role of the messages author, in this case 'assistant'.")
+    content: str | list[ContentPartText | ContentPartRefusal] | None = Field(
+        default=None,
+        description="The contents of the assistant message. Required unless tool_calls or function_call is specified.",
+    )
+    name: str | None = Field(
+        default=None,
+        description="An optional name for the participant. Provides the model information to differentiate between participants of the same role.",
+    )
+    refusal: str | None = Field(default=None, description="The refusal message by the assistant.")
+    audio: AssistantMessageAudio | None = Field(
+        default=None,
+        description="Data about a previous audio response from the model.",
+    )
+    tool_calls: list[ToolCall] | None = Field(
+        default=None,
+        description="The tool calls generated by the model, such as function calls.",
+    )
+    function_call: FunctionCallResult | None = Field(
+        default=None,
+        description="Deprecated and replaced by tool_calls. The name and arguments of a function that should be called.",
+    )
+
     model_config = ConfigDict(extra="ignore")
 
 
-class ToolCallParam(BaseModel):
-    """Tool call parameter."""
+class ToolMessage(BaseModel):
+    """Tool message."""
 
-    id: str
-    function: FunctionCall
-    type: Literal["function"]
-    model_config = ConfigDict(extra="ignore")
+    role: Literal["tool"] = Field(description="The role of the messages author, in this case 'tool'.")
+    content: str | list[ContentPartText] = Field(description="The contents of the tool message.")
+    tool_call_id: str = Field(description="Tool call that this message is responding to.")
+
+    model_config = ConfigDict(extra="forbid")
 
 
-class ChatCompletionMessageParam(BaseModel):
-    """A chat completion message parameter."""
+class FunctionMessage(BaseModel):
+    """Function message (deprecated)."""
 
-    content: str | Iterable[ChatCompletionContentPartParam] | None = Field(default=None)
-    role: Literal["user", "assistant", "system", "tool", "developer"]
-    name: str | None = Field(default=None, description="An optional name for the participant.")
-    tool_call_id: str | None = None
-    tool_calls: Iterable[ToolCallParam] | None = None
-    model_config = ConfigDict(extra="ignore")
+    role: Literal["function"] = Field(description="The role of the messages author, in this case 'function'.")
+    content: str | None = Field(description="The contents of the function message.")
+    name: str = Field(description="The name of the function.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+Message = Annotated[
+    DeveloperMessage | SystemMessage | UserMessage | AssistantMessage | ToolMessage | FunctionMessage,
+    Field(discriminator="role"),
+]
+
+
+# =============================================================================
+# Tools
+# =============================================================================
 
 
 class FunctionDefinition(BaseModel):
     """Function definition for tools."""
 
     name: str = Field(
-        ...,
-        description="The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.",
+        description="The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64."
     )
-    description: str = Field(
-        ...,
+    description: str | None = Field(
+        default=None,
         description="A description of what the function does, used by the model to choose when and how to call the function.",
     )
-    parameters: dict[str, object] = Field(
-        ...,
+    parameters: dict[str, Any] | None = Field(
+        default=None,
         description="The parameters the functions accepts, described as a JSON Schema object.",
     )
     strict: bool | None = Field(
         default=None,
         description="Whether to enable strict schema adherence when generating the function call.",
     )
-    model_config = ConfigDict(extra="ignore")
+
+    model_config = ConfigDict(extra="forbid")
 
 
-class ChatCompletionToolParam(BaseModel):
-    """Tool parameter for chat completion."""
+class FunctionTool(BaseModel):
+    """Function tool."""
 
-    function: FunctionDefinition
-    type: Literal["function"]
-    model_config = ConfigDict(extra="ignore")
+    type: Literal["function"] = Field(description="The type of the tool. Currently, only 'function' is supported.")
+    function: FunctionDefinition = Field(description="The function definition.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+Tool = FunctionTool
+
+
+# =============================================================================
+# Response Format
+# =============================================================================
+
+
+class ResponseFormatText(BaseModel):
+    """Text response format."""
+
+    type: Literal["text"] = Field(description="The type of response format being defined. Always 'text'.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ResponseFormatJsonObject(BaseModel):
+    """JSON object response format."""
+
+    type: Literal["json_object"] = Field(description="The type of response format being defined. Always 'json_object'.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class JsonSchema(BaseModel):
+    """JSON schema definition."""
+
+    name: str = Field(
+        description="The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64."
+    )
+    description: str | None = Field(
+        default=None,
+        description="A description of what the response format is for, used by the model to determine how to respond in the format.",
+    )
+    schema_: dict[str, Any] | None = Field(
+        default=None,
+        alias="schema",
+        description="The schema for the response format, described as a JSON Schema object.",
+    )
+    strict: bool | None = Field(
+        default=None,
+        description="Whether to enable strict schema adherence when generating the output.",
+    )
+
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+
+class ResponseFormatJsonSchema(BaseModel):
+    """JSON schema response format."""
+
+    type: Literal["json_schema"] = Field(description="The type of response format being defined. Always 'json_schema'.")
+    json_schema: JsonSchema = Field(description="Structured Outputs configuration options, including a JSON Schema.")
+
+    model_config = ConfigDict(extra="forbid")
+
+
+ResponseFormat = ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema
+
+ReasoningEffort = Literal["minimal", "low", "medium", "high"]
+
+# =============================================================================
+# Main Request Class
+# =============================================================================
 
 
 class ChatCompletionRequest(BaseModel):
     """
-    Chat completion request that aligns with the latest OpenAI API.
-    Based on openai.resources.chat.completions.completions.Completions.create() method.
+    OpenAI Chat Completion request.
+
+    This is a Pydantic model representation of the OpenAI chat completion request,
+    containing only the specified subset of fields.
     """
 
-    # Required parameters
-    messages: Iterable[ChatCompletionMessageParam] = Field(
-        ..., description="A list of messages comprising the conversation so far."
-    )
-    model: str = Field(
-        ...,
-        description="Model ID used to generate the response, like 'gpt-4o,openai/gpt-5-mini' or 'openai/gpt-5-mini'.",
-    )
-    # Optional parameters
-    frequency_penalty: float | None = Field(
+    # Required fields
+    messages: list[Message] = Field(description="A list of messages comprising the conversation so far.")
+    model: str = Field(description="Model ID used to generate the response, like 'gpt-4o' or 'o3'.")
+
+    # Optional fields
+    reasoning_effort: ReasoningEffort | None = Field(
         default=None,
-        description="Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency.",
+        description="Constrains effort on reasoning for reasoning models. Supported values are 'minimal', 'low', 'medium', and 'high'.",
     )
-    function_call: str | dict | None = Field(
+    response_format: ResponseFormat | None = Field(
         default=None,
-        description="Deprecated in favor of tool_choice. Controls which (if any) function is called by the model.",
-    )
-    functions: Iterable[dict] | None = Field(
-        default=None,
-        description="Deprecated in favor of tools. A list of functions the model may generate JSON inputs for.",
-    )
-    logit_bias: dict[str, int] | None = Field(
-        default=None,
-        description="Modify the likelihood of specified tokens appearing in the completion.",
-    )
-    logprobs: bool | None = Field(
-        default=None,
-        description="Whether to return log probabilities of the output tokens or not.",
-    )
-    max_completion_tokens: int | None = Field(
-        default=None,
-        description="An upper bound for the number of tokens that can be generated for a completion.",
-    )
-    max_tokens: int | None = Field(
-        default=None,
-        description="Deprecated in favor of max_completion_tokens. The maximum number of tokens that can be generated.",
-    )
-    modalities: list[Literal["text", "audio"]] | None = Field(
-        default=None,
-        description="Output types that you would like the model to generate.",
-    )
-    parallel_tool_calls: bool | None = Field(
-        default=None,
-        description="Whether to enable parallel function calling during tool use.",
-    )
-    presence_penalty: float | None = Field(
-        default=None,
-        description="Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far.",
-    )
-    reasoning_effort: Literal["minimal", "low", "medium", "high"] | None = Field(
-        default=None, description="Constrains effort on reasoning for reasoning models."
+        description="An object specifying the format that the model must output. Setting to json_schema enables Structured Outputs.",
     )
     seed: int | None = Field(
         default=None,
-        description="If specified, our system will make a best effort to sample deterministically.",
-    )
-    stop: str | list[str] | None = Field(
-        default=None,
-        description="Up to 4 sequences where the API will stop generating further tokens.",
-    )
-    store: bool | None = Field(
-        default=None,
-        description="Whether or not to store the output of this chat completion request for use in model distillation or evals.",
+        description="If specified, the system will make a best effort to sample deterministically for reproducible results.",
     )
     stream: bool | None = Field(
         default=None,
-        description="If set to true, the model response data will be streamed to the client as it is generated.",
+        description="If set to true, partial message deltas will be sent as server-sent events.",
     )
-    temperature: float | None = Field(default=None, description="What sampling temperature to use, between 0 and 2.")
-    tools: list[ChatCompletionToolParam] | None = Field(
+    temperature: float | None = Field(
+        default=None,
+        description="What sampling temperature to use, between 0 and 2. Higher values make output more random.",
+    )
+    tools: list[Tool] | None = Field(
         default=None,
         description="A list of tools the model may call. Currently, only functions are supported as a tool.",
     )
-    top_logprobs: int | None = Field(
-        default=None,
-        description="An integer between 0 and 20 specifying the number of most likely tokens to return at each token position.",
-    )
     top_p: float | None = Field(
         default=None,
-        description="An alternative to sampling with temperature, called nucleus sampling.",
-    )
-    verbosity: Literal["low", "medium", "high"] | None = Field(
-        default=None, description="Constrains the verbosity of the model's response."
+        description="An alternative to sampling with temperature, called nucleus sampling. Use 0.1 for top 10% probability mass.",
     )
 
-    session_id: str | None = Field(
-        default=None,
-        description="An optional session ID to associate with the request for tracking tool calls.",
-    )
+    model_config = ConfigDict(extra="forbid")

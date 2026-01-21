@@ -16,7 +16,12 @@
     build-backend="uv_build"
 
 [dependency-groups]
-    dev=["openai>=1.107.3"]
+    dev=["openai>=1.107.3", "pytest>=9.0.2"]
 
 [tool.ruff]
     line-length=120
+
+
+[tool.pytest.ini_options]
+    minversion="9.0"
+    testpaths=["test"]

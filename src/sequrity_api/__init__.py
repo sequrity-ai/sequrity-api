@@ -1,1 +1,1 @@
-from .client import SequrityClient
+# from .client import SequrityClient
