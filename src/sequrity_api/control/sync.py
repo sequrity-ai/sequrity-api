@@ -31,6 +31,35 @@ def create_chat_completion(
     top_p: float | None = None,
     return_type: Literal["python", "json"] = "python",
 ) -> ChatCompletionResponse | dict:
+    """Send a chat completion request to the Sequrity secure orchestrator.
+
+    Args:
+        client: HTTP client for making requests.
+        base_url: Base URL of the Sequrity API.
+        api_key: Sequrity API key for authentication.
+        messages: List of chat messages.
+        model: Model name to use for completion.
+        llm_api_key: Optional LLM provider API key (uses server default if None).
+        features: Security features to enable.
+        security_policy: Security policy configuration.
+        fine_grained_config: Fine-grained security settings.
+        service_provider: LLM service provider (openai, openrouter, etc.).
+        session_id: Session ID for continuing an existing conversation.
+        reasoning_effort: Reasoning effort level for supported models.
+        response_format: Response format specification.
+        seed: Random seed for reproducibility.
+        stream: Whether to stream the response.
+        temperature: Sampling temperature.
+        tools: List of tools available to the model.
+        top_p: Nucleus sampling parameter.
+        return_type: Return as "python" (ChatCompletionResponse) or "json" (dict).
+
+    Returns:
+        ChatCompletionResponse if return_type="python", dict if return_type="json".
+
+    Raises:
+        httpx.HTTPStatusError: If the request fails.
+    """
     # Construct the URL based on service provider
     if service_provider == "default":
         path = CONTROL_API_PATHS["chat_completions"]["default"]

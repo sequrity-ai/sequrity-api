@@ -34,6 +34,7 @@ class ControlAPIWrapper:
         top_p: float | None = None,
         return_type: Literal["python", "json"] = "python",
     ) -> ChatCompletionResponse | dict:
+        """Send a chat completion request. See :func:`.sync.create_chat_completion` for details."""
         return create_chat_completion_sync(
             client=self.client,
             base_url=self.base_url,
