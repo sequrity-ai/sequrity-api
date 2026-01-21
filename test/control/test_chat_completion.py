@@ -286,11 +286,27 @@ class TestChatCompletion:
         features_header = FeaturesHeader(
             llm=LlmModeFeature(feature_name="Dual LLM", mode="standard"),
             taggers=[
-                TaggerFeature(feature_name="Toxicity Filter", threshold=0.7, enabled=True, mode="normal", tag_name="toxicity"),
+                TaggerFeature(
+                    feature_name="Toxicity Filter", threshold=0.7, enabled=True, mode="normal", tag_name="toxicity"
+                ),
                 TaggerFeature(feature_name="PII Redaction", threshold=0.6, enabled=True, mode="strict", tag_name="pii"),
-                TaggerFeature(feature_name="Healthcare Topic Guardrail", threshold=0.5, enabled=True, mode="normal", tag_name="healthcare"),
-                TaggerFeature(feature_name="Finance Topic Guardrail", threshold=0.5, enabled=True, mode="normal", tag_name="finance"),
-                TaggerFeature(feature_name="Legal Topic Guardrail", threshold=0.5, enabled=True, mode="normal", tag_name="legal"),
+                TaggerFeature(
+                    feature_name="Healthcare Topic Guardrail",
+                    threshold=0.5,
+                    enabled=True,
+                    mode="normal",
+                    tag_name="healthcare",
+                ),
+                TaggerFeature(
+                    feature_name="Finance Topic Guardrail",
+                    threshold=0.5,
+                    enabled=True,
+                    mode="normal",
+                    tag_name="finance",
+                ),
+                TaggerFeature(
+                    feature_name="Legal Topic Guardrail", threshold=0.5, enabled=True, mode="normal", tag_name="legal"
+                ),
             ],
             constraints=[
                 ConstraintFeature(feature_name="URL Blocker", name="url_blocker", enabled=True),
@@ -375,7 +391,9 @@ class TestChatCompletion:
         assert "4" in response.choices[0].message.content
 
     @pytest.mark.parametrize("service_provider", ["default"])
-    def test_factory_methods_single_llm_all_features(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
+    def test_factory_methods_single_llm_all_features(
+        self, service_provider: LlmServiceProviderEnum | Literal["default"]
+    ):
         """
         Test FeaturesHeader.create_single_llm_headers with all features enabled.
         """
@@ -409,7 +427,9 @@ class TestChatCompletion:
     @pytest.mark.parametrize("llm_mode", ["standard", "strict", "custom"])
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_factory_methods_dual_llm_modes(
-        self, llm_mode: Literal["standard", "strict", "custom"], service_provider: LlmServiceProviderEnum | Literal["default"]
+        self,
+        llm_mode: Literal["standard", "strict", "custom"],
+        service_provider: LlmServiceProviderEnum | Literal["default"],
     ):
         """
         Test FeaturesHeader.create_dual_llm_headers with different LLM modes.
@@ -441,7 +461,9 @@ class TestChatCompletion:
     @pytest.mark.parametrize("language", ["sqrt", "sqrt-lite", "cedar"])
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_factory_methods_security_policy_languages(
-        self, language: Literal["sqrt", "sqrt-lite", "cedar"], service_provider: LlmServiceProviderEnum | Literal["default"]
+        self,
+        language: Literal["sqrt", "sqrt-lite", "cedar"],
+        service_provider: LlmServiceProviderEnum | Literal["default"],
     ):
         """
         Test SecurityPolicyHeader.create_default with different policy languages.

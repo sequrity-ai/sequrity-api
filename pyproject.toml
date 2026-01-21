@@ -37,7 +37,11 @@
     version-file="src/sequrity_api/_version.py"
 
 [dependency-groups]
-    dev=["openai>=1.107.3", "pytest>=9.0.2"]
+    dev=[
+    "openai>=1.107.3",
+    "pytest>=9.0.2",
+    "ruff>=0.14.13",
+]
     langgraph=["langgraph>=1.0.6"]
 
 [tool.ruff]
