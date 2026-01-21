@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-from typing import TypeAlias
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
-
-JsonValue: TypeAlias = None | bool | int | float | str | list["JsonValue"] | dict[str, "JsonValue"]
 
 
 class MetaData(BaseModel):
@@ -16,7 +14,7 @@ class MetaData(BaseModel):
 
 
 class ValueWithMeta(BaseModel):
-    value: JsonValue
+    value: Any
     meta: MetaData = Field(default_factory=MetaData)
 
     model_config = ConfigDict(extra="forbid")

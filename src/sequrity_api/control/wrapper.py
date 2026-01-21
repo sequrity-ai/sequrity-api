@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import TYPE_CHECKING, Callable, Literal
 
 import httpx
 
@@ -6,7 +6,15 @@ from ..service_provider import LlmServiceProviderEnum
 from ..types.chat_completion.request import Message, ReasoningEffort, ResponseFormat, Tool
 from ..types.chat_completion.response import ChatCompletionResponse
 from ..types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from .sync import create_chat_completion as create_chat_completion_sync
+from ..types.control.value_with_meta import MetaData
+from .chat_completion import create_chat_completion_sync
+from .langgraph import run_graph_sync
+
+if TYPE_CHECKING:
+    try:
+        from langgraph.graph import StateGraph
+    except ImportError:
+        pass
 
 
 class ControlAPIWrapper:
@@ -55,4 +63,38 @@ class ControlAPIWrapper:
             tools=tools,
             top_p=top_p,
             return_type=return_type,
+        )
+
+    def compile_and_run_langgraph(
+        self,
+        model: str,
+        llm_api_key: str | None,
+        graph: "StateGraph",
+        initial_state: dict,
+        initial_state_meta: MetaData | None = None,
+        max_exec_steps: int = 20,
+        features: FeaturesHeader | None = None,
+        security_policy: SecurityPolicyHeader | None = None,
+        fine_grained_config: FineGrainedConfigHeader | None = None,
+        service_provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
+        node_functions: dict[str, Callable] | None = None,
+        internal_node_mapping: dict[str, str] | None = None,
+    ) -> dict:
+        """Compile and run a LangGraph StateGraph. See :func:`.sync.run_graph_sync` for details."""
+        return run_graph_sync(
+            client=self.client,
+            base_url=self.base_url,
+            api_key=self.sqrt_api_key,
+            model=model,
+            llm_api_key=llm_api_key,
+            graph=graph,
+            initial_state=initial_state,
+            initial_state_meta=initial_state_meta,
+            max_exec_steps=max_exec_steps,
+            features=features,
+            security_policy=security_policy,
+            fine_grained_config=fine_grained_config,
+            service_provider=service_provider,
+            node_functions=node_functions,
+            internal_node_mapping=internal_node_mapping,
         )

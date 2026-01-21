@@ -10,7 +10,7 @@ from ..types.chat_completion.response import ChatCompletionResponse
 from ..types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 
-def create_chat_completion(
+def create_chat_completion_sync(
     client: httpx.Client,
     base_url: str,
     api_key: str,
@@ -60,6 +60,7 @@ def create_chat_completion(
     Raises:
         httpx.HTTPStatusError: If the request fails.
     """
+
     # Construct the URL based on service provider
     if service_provider == "default":
         path = CONTROL_API_PATHS["chat_completions"]["default"]

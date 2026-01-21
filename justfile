@@ -1,2 +1,3 @@
-test-local:
+local-test:
     uv run --env-file .env.local pytest
+

@@ -21,7 +21,7 @@ CONTROL_API_PATHS = {
     "vscode_chat_completions": {
         "default": "/control/vscode/{service_provider}/v1/chat/completions",
     },
-    "lang_graph_chat_completions": {
+    "langgraph_chat_completions": {
         "default": "/control/lang-graph/{service_provider}/v1/chat/completions",
     },
 }
