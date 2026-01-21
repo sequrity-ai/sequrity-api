@@ -1,5 +1,4 @@
-"""
-LangGraph integration for SequrityClient
+"""LangGraph integration for SequrityClient.
 
 This module provides functionality to execute LangGraph StateGraphs securely
 through the Sequrity orchestrator.
@@ -17,14 +16,13 @@ except ImportError:
 
 
 class LangGraphExecutor:
-    """
-    Executor for running LangGraph StateGraphs through Sequrity.
+    """Executor for running LangGraph StateGraphs through Sequrity.
 
     This class handles:
-    1. Converting LangGraph to executable Python code
-    2. Mapping nodes to tools (external) or internal functions
-    3. Executing code via secure orchestrator
-    4. Handling tool calls for external nodes
+        1. Converting LangGraph to executable Python code
+        2. Mapping nodes to tools (external) or internal functions
+        3. Executing code via secure orchestrator
+        4. Handling tool calls for external nodes
     """
 
     def __init__(
@@ -33,14 +31,16 @@ class LangGraphExecutor:
         node_functions: dict[str, Callable] | None = None,
         internal_node_mapping: dict[str, str] | None = None,
     ):
-        """
-        Initialize the executor.
+        """Initialize the executor.
 
         Args:
-            graph: LangGraph StateGraph to execute
-            node_functions: Dict mapping node names to their functions (optional)
+            graph: LangGraph StateGraph to execute.
+            node_functions: Dict mapping node names to their functions.
             internal_node_mapping: Map of node names to internal tool names
-                                  (e.g., {"agent": "parse_with_ai"})
+                (e.g., {"agent": "parse_with_ai"}).
+
+        Raises:
+            RuntimeError: If LangGraph is not installed.
         """
         if not LANGGRAPH_AVAILABLE:
             raise RuntimeError("LangGraph is not installed. Install it with: pip install langgraph")
@@ -64,7 +64,14 @@ class LangGraphExecutor:
         self.generated_code = self._graph_to_code(graph, self.node_functions)
 
     def _extract_function_map(self, graph: "StateGraph") -> dict[str, Callable]:
-        """Extract node functions from LangGraph StateGraph."""
+        """Extract node functions from LangGraph StateGraph.
+
+        Args:
+            graph: The StateGraph to extract functions from.
+
+        Returns:
+            Dict mapping node names to their callable functions.
+        """
         function_map = {}
 
         # Access internal graph structure to get nodes
@@ -78,10 +85,12 @@ class LangGraphExecutor:
         return function_map
 
     def build_tool_definitions(self) -> list[dict]:
-        """
-        Build OpenAI-style tool definitions for external nodes.
+        """Build OpenAI-style tool definitions for external nodes.
 
         Each external node becomes a tool that the orchestrator can call.
+
+        Returns:
+            List of tool definition dicts in OpenAI function calling format.
         """
         tools = []
 
@@ -112,14 +121,16 @@ class LangGraphExecutor:
         return tools
 
     def execute_tool_call(self, tool_call: dict) -> dict:
-        """
-        Execute a tool call (external node).
+        """Execute a tool call (external node).
 
         Args:
-            tool_call: Tool call dict with id, name, arguments
+            tool_call: Tool call dict with id, name, and arguments.
 
         Returns:
-            Tool result dict
+            The result dict from executing the node function.
+
+        Raises:
+            RuntimeError: If no function is found for the specified tool name.
         """
         tool_name = tool_call.get("function", {}).get("name")
         arguments_str = tool_call.get("function", {}).get("arguments", "{}")
@@ -142,13 +153,19 @@ class LangGraphExecutor:
         return result
 
     def _graph_to_code(self, graph: "StateGraph", function_map: dict[str, Callable]) -> str:
-        """
-        Convert a LangGraph StateGraph into executable Python code.
+        """Convert a LangGraph StateGraph into executable Python code.
 
         Generates:
-        - Module-level code with state = initial_state
-        - Linear flow with if-else for conditional routing
-        - Uses keyword arguments for function calls
+            - Module-level code with state = initial_state
+            - Linear flow with if-else for conditional routing
+            - Uses keyword arguments for function calls
+
+        Args:
+            graph: The StateGraph to convert.
+            function_map: Dict mapping node names to their callable functions.
+
+        Returns:
+            Generated Python code as a string.
         """
         nodes = graph.nodes
         edges = list(graph.edges)
@@ -177,7 +194,18 @@ class LangGraphExecutor:
         return "\n".join(code_lines)
 
     def _generate_node_code(self, node_name, nodes, edges, branches, function_map, code_lines, visited, indent=0):
-        """Recursively generate code for a node and its successors."""
+        """Recursively generate code for a node and its successors.
+
+        Args:
+            node_name: Name of the current node to generate code for.
+            nodes: Dict of all nodes in the graph.
+            edges: List of edge tuples (source, target).
+            branches: Dict of conditional branch specifications.
+            function_map: Dict mapping node names to their callable functions.
+            code_lines: List to append generated code lines to.
+            visited: Set of already visited node names.
+            indent: Current indentation level.
+        """
         if node_name in visited or node_name == END or node_name == "__end__":
             return
 
