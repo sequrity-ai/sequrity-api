@@ -1,10 +1,10 @@
 import json
-from typing import Literal
+from typing import Literal, TypeAlias
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-type OptionalInternalSoToolIdType = Literal["parse_with_ai", "verify_hypothesis"]
-type DebugInfoLevel = Literal["minimal", "normal", "extra"]
+OptionalInternalSoToolIdType: TypeAlias = Literal["parse_with_ai", "verify_hypothesis"]
+DebugInfoLevel: TypeAlias = Literal["minimal", "normal", "extra"]
 
 
 class ResponseFormat(BaseModel):

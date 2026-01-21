@@ -1,26 +1,46 @@
 [project]
     name="sequrity-api"
-    version="0.0.1"
     description="A Python client for Sequrity API"
     readme="README.md"
+    license="Apache-2.0"
     authors=[
         { name="Ilya Shumailov", email="ilya@sequrity.ai" },
-        { name="Yiren Zhao", email="a.zhao@imperial.ac.uk" },
-        { name="Cheng Zhang", email="chengzhang98@outlook.com" },
+        { name="Yiren Zhao", email="yiren@sequrity.ai" },
+        { name="Cheng Zhang", email="cheng@sequrity.ai" },
     ]
-    requires-python=">=3.13"
+    requires-python=">=3.11"
     dependencies=["httpx>=0.28.1", "pydantic>=2.11.9"]
+    dynamic=["version"]
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ]
+
+    [project.urls]
+        Homepage="https://sequrity.ai"
+        Repository="https://github.com/AI-Sequrity-Company/sequrity-api"
 
 [build-system]
-    requires=["uv_build>=0.8.11,<0.9.0"]
-    build-backend="uv_build"
+    requires=["hatchling", "hatch-vcs"]
+    build-backend="hatchling.build"
+
+[tool.hatch.version]
+    source="vcs"
+
+[tool.hatch.build.hooks.vcs]
+    version-file="src/sequrity_api/_version.py"
 
 [dependency-groups]
     dev=["openai>=1.107.3", "pytest>=9.0.2"]
 
 [tool.ruff]
     line-length=120
-
 
 [tool.pytest.ini_options]
     minversion="9.0"
