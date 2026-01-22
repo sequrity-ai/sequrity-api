@@ -1,3 +1,15 @@
+/* ========================================
+   Layout & Grid
+   ======================================== */
+
+/* .md-grid {
+    max-width: 1440px;
+} */
+
+/* ========================================
+   Jupyter Notebook Styling
+   ======================================== */
+
 /* Fix font size for code blocks ONLY in Jupyter notebook markdown cells */
 
 /* Target code blocks within markdown cells rendered by mkdocs-jupyter */

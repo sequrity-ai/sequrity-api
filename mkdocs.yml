@@ -18,8 +18,16 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - navigation.instant
+    - navigation.instant.progress
     - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
     - search.highlight
+    - content.code.copy
 
 plugins:
   - search
@@ -35,8 +43,7 @@ plugins:
             members_order: source
             show_signature_annotations: true
             separate_signature: true
-  - mkdocs-jupyter:
-      include_source: true
+  - mkdocs-jupyter
 
 markdown_extensions:
   - admonition
@@ -50,6 +57,9 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
 
 extra_css:
   - stylesheets/custom.css
@@ -57,22 +67,30 @@ extra_css:
 nav:
   - Home: index.md
   - Getting Started:
-      - Control: control/getting_started.md
+      - Installation: installation.md
+      - Control:
+          - Sending your first message: control/getting_started/first_message.md
+          - Secure Tool Use with Dual-LLM: control/getting_started/tool_use_dual_llm.md
   - Learn:
       - Control:
-          - Secure Features: control/learn/features.md
-          - Security Policies: control/learn/secure_policies.md
-          - Advanced Configurations: control/learn/fine_grained_configs.md
+          - control/learn/index.md
+          - "Policy Language: sqrt-lite": control/learn/sqrt-lite.md
+          - Compile and Execute LangGraph: control/learn/langgraph.md
   - Reference:
       - Control:
-          - REST API Reference: control/reference/rest_api.md
-          - Sequrity Client:
+          - control/reference/index.md
+          - Security Features: control/reference/security_features.md
+          - Security Policies:
+              - control/reference/security_policies/index.md
+              - Grammar: control/reference/security_policies/grammar.md
+              - API: control/reference/security_policies/api.md
+          - Fine-grained Configurations: control/reference/fine_grained_configs.md
+          - SequrityClient.control:
               - Overview: control/reference/sequrity_client/index.md
               - SequrityClient: control/reference/sequrity_client/client.md
               - Control API: control/reference/sequrity_client/control.md
               - Headers: control/reference/sequrity_client/headers.md
   - Examples:
       - Control:
-          - Example-2026-01-22:
-              - Overview: control/examples/control-release-examples-overview.md
-              - Notebook: control/examples/control-release-examples.ipynb
+          - control/examples/index.md
+          - Example-2026-01-22: control/examples/control-release-examples.ipynb

@@ -6,8 +6,8 @@ from .value_with_meta import ValueWithMeta
 
 
 class ErrorInfo(BaseModel):
-    error_code: str
-    error_message: str
+    code: str
+    message: str
 
 
 class ResponseContentJsonSchema(BaseModel):
