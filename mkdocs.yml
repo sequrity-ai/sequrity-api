@@ -38,6 +38,9 @@ nav:
   - Getting Started:
       - Control: control/getting_started.md
   - Reference:
-      - Control: control/reference.md
+      - Control:
+          - Secure Features: control/reference/features.md
+          - Security Policies: control/reference/secure_policies.md
+          - Advanced Configurations: control/reference/fine_grained_configs.md
   - Examples:
       - Control: control/examples/example-1.md
