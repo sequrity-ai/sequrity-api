@@ -43,5 +43,8 @@ nav:
           - Secure Features: control/learn/features.md
           - Security Policies: control/learn/secure_policies.md
           - Advanced Configurations: control/learn/fine_grained_configs.md
+  - Reference:
+      - Control:
+          - REST API Reference: control/reference/rest_api.md
   - Examples:
       - Control: control/examples/example-1.md
