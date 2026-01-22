@@ -23,6 +23,7 @@ theme:
 
 markdown_extensions:
   - admonition
+  - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
@@ -37,10 +38,10 @@ nav:
   - Home: index.md
   - Getting Started:
       - Control: control/getting_started.md
-  - Reference:
+  - Learn:
       - Control:
-          - Secure Features: control/reference/features.md
-          - Security Policies: control/reference/secure_policies.md
-          - Advanced Configurations: control/reference/fine_grained_configs.md
+          - Secure Features: control/learn/features.md
+          - Security Policies: control/learn/secure_policies.md
+          - Advanced Configurations: control/learn/fine_grained_configs.md
   - Examples:
       - Control: control/examples/example-1.md

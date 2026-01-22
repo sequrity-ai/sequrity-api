@@ -23,7 +23,15 @@ This guide shows you how to send your first chat completion request through the 
 
 ## Sending Your First Message
 
-The simplest way to use the Sequrity Control API is with default settings using Single LLM or Dual LLM mode.
+You can interact with the Sequrity Control API using either the Sequrity Python client or directly via REST API calls.
+Both are similar to OpenAI's Chat Completions API, with additional headers for security features and policies.
+
+??? example "Example Scripts"
+    The example scripts for this guide can be found here:
+
+    - [Sequrity Client Example](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/sequrity_client.py)
+
+    - [REST API Example](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/rest_api.sh)
 
 ### Single LLM Mode
 
@@ -234,7 +242,7 @@ The response of dual-llm mode also includes a session ID in the `X-Session-ID` h
 
 ## Next Steps
 
-- See more [security features](./reference/features.md) like toxicity filtering and PII redaction
-- Explore [security policies](./reference/secure_policies.md) for fine-grained control
-- Learn about [advanced configurations](./reference/fine_grained_configs.md)
+- See more [security features](./learn/features.md) like toxicity filtering and PII redaction
+- Explore [security policies](./learn/secure_policies.md) for fine-grained control
+- Learn about [advanced configurations](./learn/fine_grained_configs.md)
 - See [examples](./examples/example-1.md) for more advanced use cases
