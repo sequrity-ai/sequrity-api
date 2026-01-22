@@ -1,3 +1,9 @@
+"""Feature header types for Sequrity Control API.
+
+This module defines the configuration classes for security features
+including LLM modes, taggers, and constraints.
+"""
+
 import json
 from typing import Literal, TypeAlias
 
@@ -8,6 +14,13 @@ DebugInfoLevel: TypeAlias = Literal["minimal", "normal", "extra"]
 
 
 class LlmModeFeature(BaseModel):
+    """LLM mode configuration for Single LLM or Dual LLM operation.
+
+    Attributes:
+        feature_name: Either "Single LLM" or "Dual LLM" mode.
+        mode: The security mode - "standard", "strict", or "custom".
+    """
+
     feature_name: Literal["Single LLM", "Dual LLM"]
     mode: Literal["standard", "strict", "custom"]
 
@@ -19,6 +32,19 @@ class LlmModeFeature(BaseModel):
 
 
 class TaggerFeature(BaseModel):
+    """Configuration for content tagging features.
+
+    Taggers analyze content for specific patterns and can filter or
+    redact sensitive information.
+
+    Attributes:
+        feature_name: The type of tagger to apply.
+        threshold: Detection sensitivity threshold (0.0-1.0).
+        enabled: Whether this tagger is active.
+        mode: Optional mode that overrides threshold ("normal" or "strict").
+        tag_name: Optional custom tag name for identified content.
+    """
+
     feature_name: Literal[
         "Toxicity Filter",
         "PII Redaction",
@@ -41,6 +67,16 @@ class TaggerFeature(BaseModel):
 
 
 class ConstraintFeature(BaseModel):
+    """Configuration for constraint-based security features.
+
+    Constraints enforce specific rules on LLM outputs.
+
+    Attributes:
+        feature_name: The constraint type (currently "URL Blocker").
+        name: Internal constraint identifier.
+        enabled: Whether this constraint is active.
+    """
+
     feature_name: Literal["URL Blocker"]
     name: Literal["url_blocker"]
     enabled: bool = Field(default=True, description="Whether the constraint is enabled.")
@@ -68,6 +104,34 @@ class LongProgramSupportFeature(BaseModel):
 
 
 class FeaturesHeader(BaseModel):
+    """Main configuration header for Sequrity security features.
+
+    This class combines all security feature configurations including LLM mode,
+    content taggers, and constraints. Use the class methods for convenient
+    creation of common configurations.
+
+    Attributes:
+        llm: LLM mode configuration (Single or Dual LLM).
+        taggers: Optional list of content taggers for filtering/redaction.
+        constraints: Optional list of output constraints.
+        long_program_support: Configuration for long program execution support.
+
+    Example:
+        ```python
+        # Create a Single LLM configuration with toxicity filtering
+        features = FeaturesHeader.create_single_llm_headers(
+            toxicity_filter=True,
+            pii_redaction=True,
+        )
+
+        # Create a Dual LLM configuration with strict mode
+        features = FeaturesHeader.create_dual_llm_headers(
+            mode="strict",
+            toxicity_filter=True,
+        )
+        ```
+    """
+
     llm: LlmModeFeature = Field(..., description="LLM mode feature configuration.")
     taggers: list[TaggerFeature] | None = Field(None, description="List of tagger feature configurations.")
     constraints: list[ConstraintFeature] | None = Field(None, description="List of constraint feature configurations.")

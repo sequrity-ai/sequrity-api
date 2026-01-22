@@ -21,6 +21,21 @@ theme:
     - navigation.tabs
     - search.highlight
 
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            members_order: source
+            show_signature_annotations: true
+            separate_signature: true
+
 markdown_extensions:
   - admonition
   - pymdownx.details
@@ -46,5 +61,10 @@ nav:
   - Reference:
       - Control:
           - REST API Reference: control/reference/rest_api.md
+          - Sequrity Client:
+              - Overview: control/reference/sequrity_client/index.md
+              - SequrityClient: control/reference/sequrity_client/client.md
+              - Control API: control/reference/sequrity_client/control.md
+              - Headers: control/reference/sequrity_client/headers.md
   - Examples:
       - Control: control/examples/example-1.md

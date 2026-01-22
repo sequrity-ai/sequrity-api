@@ -1,3 +1,9 @@
+"""Sequrity API Python client.
+
+This package provides a Python client for interacting with the Sequrity API,
+enabling secure LLM interactions with policy enforcement.
+"""
+
 from sequrity_api.client import SequrityClient
 
 try:

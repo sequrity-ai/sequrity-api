@@ -1,3 +1,9 @@
+"""Security policy header types for Sequrity Control API.
+
+This module defines the configuration classes for security policies
+including policy language, codes, and internal policy presets.
+"""
+
 import json
 from typing import Literal, TypeAlias
 
@@ -33,7 +39,7 @@ class InternalPolicyPreset(BaseModel):
         default=True, description="Inject non-executable to tool result tags by default."
     )
     branching_meta_policy: ControlFlowMetaPolicy = Field(
-        default_factory=lambda: ControlFlowMetaPolicy(mode="deny", tags=(NON_EXECUTABLE_MEM_TAG, PARSE_WITH_AI_TAG)),
+        default_factory=lambda: ControlFlowMetaPolicy(mode="deny"),
         description="Metadata that are allowed or forbidden in branching.",
     )
     qllm_input_meta_policy: ControlFlowMetaPolicy = Field(
@@ -43,6 +49,28 @@ class InternalPolicyPreset(BaseModel):
 
 
 class SecurityPolicyHeader(BaseModel):
+    """Configuration header for Sequrity security policies.
+
+    Security policies define the rules and constraints that govern LLM behavior.
+    Sequrity supports multiple policy languages: sqrt, sqrt-lite, and cedar.
+
+    Attributes:
+        language: The policy language to use ("sqrt", "sqrt-lite", or "cedar").
+        codes: The security policy code(s) defining the rules.
+        auto_gen: Enable auto-generation mode for relaxed constraints.
+        fail_fast: Whether to fail immediately on policy violations.
+        internal_policy_preset: Advanced internal policy configuration.
+
+    Example:
+        ```python
+        # Create a default security policy
+        policy = SecurityPolicyHeader.create_default(
+            language="sqrt-lite",
+            default_allow=True,
+        )
+        ```
+    """
+
     language: Literal["sqrt", "sqrt-lite", "cedar"] = Field(
         default="sqrt-lite", description="The security policy language to use."
     )
@@ -100,7 +128,7 @@ class SecurityPolicyHeader(BaseModel):
                     "branching_meta_policy": {
                         "mode": branching_meta_policy_mode,
                         "producers": branching_meta_policy_producers or (),
-                        "tags": branching_meta_policy_tags or (NON_EXECUTABLE_MEM_TAG, PARSE_WITH_AI_TAG),
+                        "tags": branching_meta_policy_tags or (),
                         "consumers": branching_meta_policy_consumers or (),
                     },
                     "qllm_input_meta_policy": {

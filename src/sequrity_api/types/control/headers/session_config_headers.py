@@ -1,3 +1,9 @@
+"""Fine-grained configuration header types for Sequrity Control API.
+
+This module defines advanced configuration options for session behavior,
+response formatting, and internal tool settings.
+"""
+
 import json
 from typing import Literal, TypeAlias
 

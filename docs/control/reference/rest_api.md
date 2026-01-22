@@ -57,7 +57,7 @@ JSON string defining security policies and policy execution behavior.
       "branching_meta_policy": {
           "mode": "deny",
           "producers": [],
-          "tags": ["non_executable_mem", "parse_with_ai"],
+          "tags": [],
           "consumers": []
       },
       "qllm_input_meta_policy": {
@@ -89,7 +89,7 @@ JSON string defining security policies and policy execution behavior.
   - `branching_meta_policy` (object, optional): Control flow policy for branching operations
     - `mode` (string, default: `"deny"`): `"allow"` for whitelist, `"deny"` for blacklist
     - `producers` (array of strings, default: `[]`): Producer names to allow/deny
-    - `tags` (array of strings, default: `["non_executable_mem", "parse_with_ai"]`): Tags to allow/deny
+    - `tags` (array of strings, default: `[]`): Tags to allow/deny
     - `consumers` (array of strings, default: `[]`): Consumer names to allow/deny
   - `qllm_input_meta_policy` (object, optional): Control flow policy for QLLM inputs
     - `mode` (string, default: `"deny"`): `"allow"` for whitelist, `"deny"` for blacklist
