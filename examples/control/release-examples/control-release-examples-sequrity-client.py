@@ -1159,18 +1159,13 @@ assert result == "success"
 # When using AI-powered parsing tools like `parse_with_ai` to extract structured information from unstructured text,
 # you may want to ensure that certain sensitive or protected attributes are not processed by the AI model.
 #
-# Sequrity Control provides the `qllm_input_meta_policy` feature that can block data with specific tags from being
-# passed to QLLM (the AI parsing component). By tagging applicant profile text with "RACE" and configuring the
-# policy to deny QLLM inputs with this tag, you prevent the AI from ever "seeing" the sensitive data.
+# Sequrity Control provides the `enable_llm_blocked_tag` flag that can block data with the reserved tag `"__llm_blocked"` from being
+# passed to QLLM (the AI parsing component). By tagging applicant profile text with `"__llm_blocked"` and configuring the
+# policy to enable this flag, you prevent the AI from ever "seeing" the sensitive data.
 #
 # ```json
-# "enabled_features": [{"feature_name": "Dual LLM", "config_json": "{\"mode\": \"custom\"}"}]
-# "internal_policy_preset": {
-#     "qllm_input_meta_policy": {
-#         "mode": "deny",
-#         "tags": ["RACE"]
-#     }
-# }
+# "enabled_features": [{"feature_name": "Dual LLM"}]
+# "internal_policy_preset": {"enable_llm_blocked_tag": true}
 # ```
 #
 # This ensures that even if the raw data contains protected attributes, the AI parsing model will not process it,
@@ -1238,12 +1233,12 @@ qllm_policy_tool_map = {
     "send_email": mock_send_email_fairness,
 }
 
-# Create features header for QLLM policy example (custom mode)
-qllm_policy_features = FeaturesHeader.create_dual_llm_headers(mode="custom")
+# Create features header for QLLM policy example
+qllm_policy_features = FeaturesHeader.create_dual_llm_headers(mode="standard")
 
 # Base security policy for QLLM policy example
 qllm_policy_security_policy_base_codes = r"""
-    Tag retrive_applicant_profile_text(...) -> |= {"RACE"};
+    Tag retrive_applicant_profile_text(...) -> |= {"__llm_blocked"};
     """
 
 # Create fine-grained config for QLLM policy example
@@ -1260,14 +1255,14 @@ qllm_policy_fine_grained_config = FineGrainedConfigHeader(
 # #### Case 1: AI parsing of race-tagged data (should be denied)
 #
 # Here we attempt to use `parse_with_ai` to extract information from applicant profile text
-# that contains race information. With `qllm_input_meta_policy` configured to deny inputs
-# tagged with "RACE", Sequrity Control blocks the AI parsing call.
+# that contains sensitive race information. With `enable_llm_blocked_tag` enabled to auto deny inputs
+# of qllm tagged with `"__llm_blocked"`, Sequrity Control blocks the AI parsing call.
 # The executed program and policy check history make it easy to interpret exactly why the operation was denied.
 
 # %%
 print("=== Preventing AI Parsing of Sensitive Data (denied) ===")
 
-# Add qllm_input_meta_policy to deny QLLM inputs with RACE tag
+# Add enable_llm_blocked_tag to deny QLLM inputs with __llm_blocked tag
 qllm_policy_security_policy_deny = SecurityPolicyHeader(
     language="sqrt-lite",
     codes=qllm_policy_security_policy_base_codes,
@@ -1275,10 +1270,7 @@ qllm_policy_security_policy_deny = SecurityPolicyHeader(
     auto_gen=False,
     internal_policy_preset=InternalPolicyPreset(
         default_allow=True,
-        qllm_input_meta_policy=ControlFlowMetaPolicy(
-            mode="deny",
-            tags=("RACE",),
-        ),
+        enable_llm_blocked_tag=True,
     ),
 )
 
@@ -1298,14 +1290,14 @@ assert result == "denied by policies"
 # %% [markdown]
 # #### Case 2: Direct processing without AI parsing (should succeed)
 #
-# When we don't use AI parsing or when the `qllm_input_meta_policy` is not configured,
+# When we don't use AI parsing or when the `enable_llm_blocked_tag` is false,
 # the data can be processed through the normal workflow. The full execution trace remains
 # available for audit, providing transparency into every action the AI performed.
 
 # %%
 print("=== Direct Data Processing (allowed) ===")
 
-# Without qllm_input_meta_policy restriction
+# Without enable_llm_blocked_tag restriction
 qllm_policy_security_policy_allow = SecurityPolicyHeader(
     language="sqrt-lite",
     codes=qllm_policy_security_policy_base_codes,
@@ -1313,6 +1305,7 @@ qllm_policy_security_policy_allow = SecurityPolicyHeader(
     auto_gen=False,
     internal_policy_preset=InternalPolicyPreset(
         default_allow=True,
+        enable_llm_blocked_tag=False,
     ),
 )
 

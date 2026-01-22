@@ -4,10 +4,9 @@ This module defines the configuration classes for security policies
 including policy language, codes, and internal policy presets.
 """
 
-import json
 from typing import Literal, TypeAlias
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field
 
 OptionalInternalSoToolIdType: TypeAlias = Literal["parse_with_ai", "verify_hypothesis"]
 DebugInfoLevel: TypeAlias = Literal["minimal", "normal", "extra"]
@@ -18,6 +17,9 @@ NON_EXECUTABLE_MEM_TAG = "__non_executable"
 
 # Tag for parse_with_ai tool results
 PARSE_WITH_AI_TAG = "__tool/parse_with_ai"
+
+# Tag for data that should be blocked from LLM processing
+LLM_BLOCKED_TAG = "__llm_blocked"
 
 
 class ControlFlowMetaPolicy(BaseModel):
@@ -38,13 +40,12 @@ class InternalPolicyPreset(BaseModel):
     enable_non_executable_memory: bool = Field(
         default=True, description="Inject non-executable to tool result tags by default."
     )
+    enable_llm_blocked_tag: bool = Field(
+        default=True, description="Whether to enable hard deny when LLM_BLOCKED_TAG is in args of parse_with_ai."
+    )
     branching_meta_policy: ControlFlowMetaPolicy = Field(
         default_factory=lambda: ControlFlowMetaPolicy(mode="deny"),
         description="Metadata that are allowed or forbidden in branching.",
-    )
-    qllm_input_meta_policy: ControlFlowMetaPolicy = Field(
-        default_factory=lambda: ControlFlowMetaPolicy(mode="deny"),
-        description="Metadata that are allowed or forbidden in QLLM inputs.",
     )
 
 
@@ -107,14 +108,11 @@ class SecurityPolicyHeader(BaseModel):
         fail_fast: bool | None = None,
         default_allow: bool = True,
         enable_non_executable_memory: bool = True,
+        enable_llm_blocked_tag: bool = True,
         branching_meta_policy_mode: Literal["allow", "deny"] = "deny",
         branching_meta_policy_producers: tuple[str, ...] | None = None,
         branching_meta_policy_tags: tuple[str, ...] | None = None,
         branching_meta_policy_consumers: tuple[str, ...] | None = None,
-        qllm_input_meta_policy_mode: Literal["allow", "deny"] = "deny",
-        qllm_input_meta_policy_producers: tuple[str, ...] | None = None,
-        qllm_input_meta_policy_tags: tuple[str, ...] | None = None,
-        qllm_input_meta_policy_consumers: tuple[str, ...] | None = None,
     ) -> "SecurityPolicyHeader":
         obj = cls.model_validate(
             {
@@ -125,17 +123,12 @@ class SecurityPolicyHeader(BaseModel):
                 "internal_policy_preset": {
                     "default_allow": default_allow,
                     "enable_non_executable_memory": enable_non_executable_memory,
+                    "enable_llm_blocked_tag": enable_llm_blocked_tag,
                     "branching_meta_policy": {
                         "mode": branching_meta_policy_mode,
                         "producers": branching_meta_policy_producers or (),
                         "tags": branching_meta_policy_tags or (),
                         "consumers": branching_meta_policy_consumers or (),
-                    },
-                    "qllm_input_meta_policy": {
-                        "mode": qllm_input_meta_policy_mode,
-                        "producers": qllm_input_meta_policy_producers or (),
-                        "tags": qllm_input_meta_policy_tags or (),
-                        "consumers": qllm_input_meta_policy_consumers or (),
                     },
                 },
             }

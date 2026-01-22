@@ -60,12 +60,6 @@ JSON string defining security policies and policy execution behavior.
           "tags": [],
           "consumers": []
       },
-      "qllm_input_meta_policy": {
-          "mode": "deny",
-          "producers": [],
-          "tags": [],
-          "consumers": []
-      }
   }
 }
 ```
@@ -87,11 +81,6 @@ JSON string defining security policies and policy execution behavior.
   - `default_allow` (boolean, optional, default: `true`): Default policy when no rules match
   - `enable_non_executable_memory` (boolean, **automatically set based on language** - `true` for sqrt languages, `false` for cedar): Enable non-executable memory protection. **Note:** This value is automatically determined by the policy language and any user-provided value will be ignored.
   - `branching_meta_policy` (object, optional): Control flow policy for branching operations
-    - `mode` (string, default: `"deny"`): `"allow"` for whitelist, `"deny"` for blacklist
-    - `producers` (array of strings, default: `[]`): Producer names to allow/deny
-    - `tags` (array of strings, default: `[]`): Tags to allow/deny
-    - `consumers` (array of strings, default: `[]`): Consumer names to allow/deny
-  - `qllm_input_meta_policy` (object, optional): Control flow policy for QLLM inputs
     - `mode` (string, default: `"deny"`): `"allow"` for whitelist, `"deny"` for blacklist
     - `producers` (array of strings, default: `[]`): Producer names to allow/deny
     - `tags` (array of strings, default: `[]`): Tags to allow/deny

@@ -329,12 +329,7 @@ class TestChatCompletion:
                     tags=("__non_executable", "__tool/parse_with_ai"),
                     consumers=("test_consumer",),
                 ),
-                qllm_input_meta_policy=ControlFlowMetaPolicy(
-                    mode="allow",
-                    producers=(),
-                    tags=(),
-                    consumers=(),
-                ),
+                enable_llm_blocked_tag=False,
             ),
         )
 
