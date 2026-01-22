@@ -1,6 +1,6 @@
-# sequrity-api
+# Sequrity API
 
-A Python client for the Sequrity API.
+A Python client for Sequrity API.
 
 ## Installation
 
@@ -26,11 +26,3 @@ response = client.control.chat_completion(
     llm_api_key="your-openrouter-key",
 )
 ```
-
-## Requirements
-
-- Python 3.11+
-
-## License
-
-Apache 2.0

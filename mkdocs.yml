@@ -1,0 +1,75 @@
+site_name: Sequrity API
+site_url: https://sequrity-ai.github.io/sequrity-api/
+site_description: A Python client for Sequrity API
+repo_url: https://github.com/sequrity-ai/sequrity-api
+repo_name: sequrity-ai/sequrity-api
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - search.highlight
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            members_order: source
+            show_signature_annotations: true
+            separate_signature: true
+  - mkdocs-jupyter:
+      include_source: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Control: control/getting_started.md
+  - Learn:
+      - Control:
+          - Secure Features: control/learn/features.md
+          - Security Policies: control/learn/secure_policies.md
+          - Advanced Configurations: control/learn/fine_grained_configs.md
+  - Reference:
+      - Control:
+          - REST API Reference: control/reference/rest_api.md
+          - Sequrity Client:
+              - Overview: control/reference/sequrity_client/index.md
+              - SequrityClient: control/reference/sequrity_client/client.md
+              - Control API: control/reference/sequrity_client/control.md
+              - Headers: control/reference/sequrity_client/headers.md
+  - Examples:
+      - Control:
+          - Example-2026-01-22:
+              - Overview: control/examples/control-release-examples-overview.md
+              - Notebook: control/examples/control-release-examples.ipynb

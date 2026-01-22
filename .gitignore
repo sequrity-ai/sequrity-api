@@ -13,3 +13,6 @@ gitignore_*.py
 .env.*
 dist/
 src/sequrity_api/_version.py
+
+# MkDocs
+site/
