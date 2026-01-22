@@ -24,7 +24,7 @@
 
     [project.urls]
         Homepage="https://sequrity.ai"
-        Repository="https://github.com/AI-Sequrity-Company/sequrity-api"
+        Repository="https://github.com/sequrity-ai/sequrity-api"
 
 [build-system]
     requires=["hatchling", "hatch-vcs"]
@@ -37,12 +37,9 @@
     version-file="src/sequrity_api/_version.py"
 
 [dependency-groups]
-    dev=[
-    "openai>=1.107.3",
-    "pytest>=9.0.2",
-    "ruff>=0.14.13",
-]
+    dev=["openai>=1.107.3", "pytest>=9.0.2", "ruff>=0.14.13"]
     langgraph=["langgraph>=1.0.6"]
+    docs=["mkdocs>=1.6", "mkdocs-material>=9.5"]
 
 [tool.ruff]
     line-length=120

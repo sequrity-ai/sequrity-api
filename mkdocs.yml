@@ -1,0 +1,43 @@
+site_name: Sequrity API
+site_url: https://sequrity-ai.github.io/sequrity-api/
+site_description: A Python client for Sequrity API
+repo_url: https://github.com/sequrity-ai/sequrity-api
+repo_name: sequrity-ai/sequrity-api
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Control: control/getting_started.md
+  - Reference:
+      - Control: control/reference.md
+  - Examples:
+      - Control: control/examples/example-1.md
