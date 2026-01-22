@@ -1,30 +1,30 @@
 # %% [markdown]
-# Friends, we are very excited to announce **AI Sequrity Control** –- our first beta product to deploy DualLLM architecture for your AI instantiation with no headaches. **Sequrity Control** is not just yet another guardrail system –- it gives you much stronger guarantees and enables you to reason formally about requirements of your agent covering tool-use security policies and also even business logic.
+#  Friends, we are very excited to announce **AI Sequrity Control** –- our first beta product to deploy DualLLM architecture for your AI instantiation with no headaches. **Sequrity Control** is not just yet another guardrail system –- it gives you much stronger guarantees and enables you to reason formally about requirements of your agent covering tool-use security policies and also even business logic.
 #
-# Most standard AI setups use a single, powerful LLM to both understand your instructions and interact with your data. This is the simplest approach, but it's also the most vulnerable. This mixing of control-flow (the instructions to execute) and untrusted data is the root cause of prompt injection vulnerabilities. For instance, a malicious instruction hidden in a calendar invite could trick the AI into leaking sensitive commercial information.
+#  Most standard AI setups use a single, powerful LLM to both understand your instructions and interact with your data. This is the simplest approach, but it's also the most vulnerable. This mixing of control-flow (the instructions to execute) and untrusted data is the root cause of prompt injection vulnerabilities. For instance, a malicious instruction hidden in a calendar invite could trick the AI into leaking sensitive commercial information.
 #
-# At [**sequrity.ai**](https://sequrity.ai/), we believe in a fundamentally different and more secure design. Instead of patching a broken model, we have re-architected the entire process with our Dual-LLM, "Plan-Then-Execute" architecture. This approach creates a formal separation between understanding instructions and acting on data, providing architectural guarantees that other solutions simply can't match.
+#  At [**sequrity.ai**](https://sequrity.ai/), we believe in a fundamentally different and more secure design. Instead of patching a broken model, we have re-architected the entire process with our Dual-LLM, "Plan-Then-Execute" architecture. This approach creates a formal separation between understanding instructions and acting on data, providing architectural guarantees that other solutions simply can't match.
 #
-# Here's how it works:
+#  Here's how it works:
 #
-# - The Planner LLM: This first model reads your prompt and creates a safe, step-by-step plan.
-# - The Security Checkpoint: This is our crucial innovation. This engine intercepts and analyzes the plan before any action is taken. It validates the plan against your defined policies, ensuring that malicious instructions found in your data can never become actions.
-# - Secure Execution: Only the vetted, secure steps of the plan are executed. Malicious instructions are correctly identified as data and ignored, preventing the instruction from ever crossing the boundary from data flow to control flow.
+#  - The Planner LLM: This first model reads your prompt and creates a safe, step-by-step plan.
+#  - The Security Checkpoint: This is our crucial innovation. This engine intercepts and analyzes the plan before any action is taken. It validates the plan against your defined policies, ensuring that malicious instructions found in your data can never become actions.
+#  - Secure Execution: Only the vetted, secure steps of the plan are executed. Malicious instructions are correctly identified as data and ignored, preventing the instruction from ever crossing the boundary from data flow to control flow.
 #
-# Below, we give a number of examples of where Sequrity Control shines.
+#  Below, we give a number of examples of where Sequrity Control shines.
 #
-# **Stop Patching, Start Building on a Foundation of Certainty**
+#  **Stop Patching, Start Building on a Foundation of Certainty**
 #
-# Sequrity Control offers a deterministic approach that makes the system's behavior predictable and auditable. It becomes architecturally impossible for the AI to violate your security policy. This fundamentally shifts liability from the unpredictable nature of an AI to the accountable decisions of a system user.
+#  Sequrity Control offers a deterministic approach that makes the system's behavior predictable and auditable. It becomes architecturally impossible for the AI to violate your security policy. This fundamentally shifts liability from the unpredictable nature of an AI to the accountable decisions of a system user.
 #
-# Our system enables you to enforce powerful, fine-grained policies. A policy isn't just about what role can use a certain tool; it's about defining specific conditions, such as allowing an action only if the user is a manager, the data is not personally identifiable information, and it's within work hours. This is the difference between a bouncer checking an ID at the door and a security guard monitoring actions inside.
+#  Our system enables you to enforce powerful, fine-grained policies. A policy isn't just about what role can use a certain tool; it's about defining specific conditions, such as allowing an action only if the user is a manager, the data is not personally identifiable information, and it's within work hours. This is the difference between a bouncer checking an ID at the door and a security guard monitoring actions inside.
 #
-#  **Below we provide special use-cases where you can already use Control**:
+#   **Below we provide special use-cases where you can already use Control**:
 #
 #
 
 # %% [markdown]
-# ## Setup & Helper Functions
+#  ## Setup & Helper Functions
 
 # %%
 # @title Settling the keys and the endpoint
@@ -49,50 +49,41 @@ CONFIG = {
 }
 
 assert CONFIG["open_router_api_key"] != "your OpenRouter/OAI key"
-assert CONFIG["sequrity_api_key"] != "your SequrityAi key"
-
+assert CONFIG["sequrity_api_key"] != "your SequrityAI key"
 
 # %% [markdown]
-# ### Mock client
-# Mock client sends user query, executes tools & sends results to endpoint if any, and prints these interactions.
+#  ### Mock client
+#  Mock client sends user query, executes tools & sends results to endpoint if any, and prints these interactions.
 
 # %% [markdown]
 # Under the hood all that we do is we wrap around an LLM endpoint and pass extra headers.
 #
 # Namely,
-# ```
-# headers = {
-#         "Content-Type": "application/json",
-#         "Authorization": f"Bearer {CONFIG['sequrity_api_key']}",
-#         "X-Api-Key": CONFIG["open_router_api_key"],
-#         "X-Security-Features": json.dumps(enabled_features),
-#     }
-#     if session_id:
-#         headers["X-Session-ID"] = session_id
-#     if security_policies:
-#         headers["X-Security-Policy"] = json.dumps(security_policies)
-#     if security_config:
-#         headers["X-Security-Config"] = json.dumps(security_config)
+# ```python
+#    headers = {
+#        "Content-Type": "application/json",
+#        "Authorization": f"Bearer {CONFIG['sequrity_api_key']}",
+#        "X-Api-Key": CONFIG["open_router_api_key"],
+#        "X-Security-Features": json.dumps(enabled_features),
+#    }
+#    if session_id:
+#        headers["X-Session-ID"] = session_id
+#    if security_policies:
+#        headers["X-Security-Policy"] = json.dumps(security_policies)
+#    if security_config:
+#        headers["X-Security-Config"] = json.dumps(security_config)
 #
-#     payload = {
-#         "model": model,
-#         "messages": messages,
-#         "tools": tool_defs,
-#         "reasoning_effort": reasoning_effort,
-#     }
-#
-#     try:
-#         response = requests.post(
-#             url=CONFIG["endpoint_url"], headers=headers, json=payload
-#         )
-#         response.raise_for_status()
-#         session_id = response.headers.get("X-Session-ID")
+#    payload = {
+#        "model": model,
+#        "messages": messages,
+#        "tools": tool_defs,
+#        "reasoning_effort": reasoning_effort,
+#    }
 # ```
 #
 # To use it in your codebase just wrap around the current endpoint with out endpoint and pass a few more headers into it.
 
 # %%
-
 console = Console()
 
 
@@ -226,36 +217,36 @@ def send_request_to_endpoint(
 
 
 # %% [markdown]
-# ## Example 1: Preventing Sensitive Data Leaks
+#  ## Example 1: Preventing Sensitive Data Leaks
 #
-# Imagine an AI agent with access to both internal, sensitive documents and tools that can send emails. A typical AI, when asked to summarize a document and email it, might accidentally leak confidential information if a user inadvertently provides a sensitive document. With Sequrity Control, you can implement a policy that prevents this:
+#  Imagine an AI agent with access to both internal, sensitive documents and tools that can send emails. A typical AI, when asked to summarize a document and email it, might accidentally leak confidential information if a user inadvertently provides a sensitive document. With Sequrity Control, you can implement a policy that prevents this:
 #
 #
 #
-# ```cpp
+#  ```cpp
 #
-# /*
-# * Language: sqrt-lite
-# * Description: Sensitive Data Leak Prevention Policy
-# */
+#  /*
+#  * Language: sqrt-lite
+#  * Description: Sensitive Data Leak Prevention Policy
+#  */
 #
-# // Define sensitive document tags
-# sensitive_docs = {"internal_use", "confidential"};
-# // Tag data from internal sources
-# Tag get_internal_document(...) -> |= sensitive_docs;
-# // Prevent sending emails with sensitive content to untrusted domains
-# // Here we only allow sending to .*@trustedcorp.com
-# Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs & (~ to.value in {r".*@trustedcorp\.com"});
-# ```
+#  // Define sensitive document tags
+#  sensitive_docs = {"internal_use", "confidential"};
+#  // Tag data from internal sources
+#  Tag get_internal_document(...) -> |= sensitive_docs;
+#  // Prevent sending emails with sensitive content to untrusted domains
+#  // Here we only allow sending to .*@trustedcorp.com
+#  Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs & (~ to.value in {r".*@trustedcorp\.com"});
+#  ```
 #
-# The way to read the above is:
-# 1. Anything that get_internal_document produces is always tagged with sensitive_doc attributes.
+#  The way to read the above is:
+#  1. Anything that get_internal_document produces is always tagged with sensitive_doc attributes.
 #
-# 2. Send_email is forbidden if any data in the body is tagged with senstive_docs.
+#  2. Send_email is forbidden if any data in the body is tagged with senstive_docs.
 #
-# This policy ensures that any data tagged as `internal_use` or `confidential` cannot be used in the body of an email,
-# unless the recipient is from a trusted domain,
-# preventing accidental data leakage.
+#  This policy ensures that any data tagged as `internal_use` or `confidential` cannot be used in the body of an email,
+#  unless the recipient is from a trusted domain,
+#  preventing accidental data leakage.
 #
 #
 #
@@ -347,11 +338,10 @@ security_config = {
     },
 }
 
-
 # %% [markdown]
-# ### Case 1: Send confidential document to untrusted email (should be denied)
+#  ### Case 1: Send confidential document to untrusted email (should be denied)
 #
-# Here we attempt to send a confidential document to an untrusted email address. Sequrity Control correctly identifies the risk and denies the action.
+#  Here we attempt to send a confidential document to an untrusted email address. Sequrity Control correctly identifies the risk and denies the action.
 
 # %%
 print("=== Preventing Sensitive Data Leaks (untrusted email) ===")
@@ -367,11 +357,10 @@ result = run_workflow(
 )
 assert result == "denied by policies"
 
-
 # %% [markdown]
-# ### Case 2: Send confidential document to trusted email (should succeed)
+#  ### Case 2: Send confidential document to trusted email (should succeed)
 #
-# Here we send the same confidential document, but this time to a trusted email address. Sequrity Control allows this action.
+#  Here we send the same confidential document, but this time to a trusted email address. Sequrity Control allows this action.
 
 # %%
 print("=== Preventing Sensitive Data Leaks (trusted email) ===")
@@ -387,40 +376,39 @@ result = run_workflow(
 )
 assert result == "success"
 
-
 # %% [markdown]
-# ## Example 2: Enforcing Complex Business Logic
+#  ## Example 2: Enforcing Complex Business Logic
 #
 #
 #
-# Sequrity Control can enforce nuanced business rules that go beyond simple security checks. For example, you can implement a customer refund policy that **requires multiple requests before a refund is issued**, preventing automated systems from being easily exploited:
+#  Sequrity Control can enforce nuanced business rules that go beyond simple security checks. For example, you can implement a customer refund policy that **requires multiple requests before a refund is issued**, preventing automated systems from being easily exploited:
 #
 #
 #
-# ```cpp
-# /*
-# * Language: sqrt
-# * Description: Customer Refund Policy
-# */
+#  ```cpp
+#  /*
+#  * Language: sqrt
+#  * Description: Customer Refund Policy
+#  */
 #
-# // only allow refund after 3 failed attempts, i.e., 4th attempt will be approved
-# // meta updater mu1, mu2, mu3, mu4 track the number of refund attempts by adding tags to the session meta
-# mu1 = always @session.tags := @session.tags add "attempt1";
-# mu2 = if "attempt1" in @session.tags @session.tags := @session.tags add "attempt2";
-# mu3 = if "attempt2" in @session.tags @session.tags := @session.tags add "attempt3";
-# mu4 = if "attempt3" in @session.tags @session.tags := @session.tags add "final_attempt";
-# // only allow refund if "final_attempt" tag is present in session meta
-# ac = hard allow if "final_attempt" in @session.tags;
+#  // only allow refund after 3 failed attempts, i.e., 4th attempt will be approved
+#  // meta updater mu1, mu2, mu3, mu4 track the number of refund attempts by adding tags to the session meta
+#  mu1 = always @session.tags := @session.tags add "attempt1";
+#  mu2 = if "attempt1" in @session.tags @session.tags := @session.tags add "attempt2";
+#  mu3 = if "attempt2" in @session.tags @session.tags := @session.tags add "attempt3";
+#  mu4 = if "attempt3" in @session.tags @session.tags := @session.tags add "final_attempt";
+#  // only allow refund if "final_attempt" tag is present in session meta
+#  ac = hard allow if "final_attempt" in @session.tags;
 #
-# p = ToolPolicy(
-#     "issue_refund",
-#     tool_id_is_regex=false,
-#     meta_checkers=[ac],
-#     pre_session_meta_updaters=[mu4, mu3, mu2, mu1]
-# );
-# ```
+#  p = ToolPolicy(
+#      "issue_refund",
+#      tool_id_is_regex=false,
+#      meta_checkers=[ac],
+#      pre_session_meta_updaters=[mu4, mu3, mu2, mu1]
+#  );
+#  ```
 #
-# This policy demonstrates how you can enforce stateful, multi-step business logic directly within the AI's operational flow.
+#  This policy demonstrates how you can enforce stateful, multi-step business logic directly within the AI's operational flow.
 
 
 # %%
@@ -492,13 +480,12 @@ refund_security_config = {
     },
 }
 
-
 # %% [markdown]
-# ### MultiTurn Interaction
+#  ### MultiTurn Interaction
 #
-# For simplicity, we keep asking the pllm to refund four times every time the refund is denied until the refund is approved.
+#  For simplicity, we keep asking the pllm to refund four times every time the refund is denied until the refund is approved.
 #
-# This needs a multi-turn setup, where the first three turns consist of `[asking for refund] - [receiving denial]` and the fourth turn is `[asking for refund] - [executing issue_refund] - [receiving approval]`.
+#  This needs a multi-turn setup, where the first three turns consist of `[asking for refund] - [receiving denial]` and the fourth turn is `[asking for refund] - [executing issue_refund] - [receiving approval]`.
 
 
 # %%
@@ -628,24 +615,24 @@ syntax = Syntax(json.loads(messages[-1]["content"])["program"], "python", theme=
 console.print(syntax)
 
 # %% [markdown]
-# ## Example 3: Ensuring Factual Accuracy with Data Provenance
+#  ## Example 3: Ensuring Factual Accuracy with Data Provenance
 #
-# AI models can sometimes "hallucinate" or generate plausible but incorrect information. Sequrity Control's provenance system can be used to enforce policies that require information to come from verified sources, ensuring the AI's outputs are grounded in fact:
+#  AI models can sometimes "hallucinate" or generate plausible but incorrect information. Sequrity Control's provenance system can be used to enforce policies that require information to come from verified sources, ensuring the AI's outputs are grounded in fact:
 #
-# ```cpp
-# /*
-# * Language: sqrt-lite
-# * Description: Data Provenance Verification Policy
-# */
+#  ```cpp
+#  /*
+#  * Language: sqrt-lite
+#  * Description: Data Provenance Verification Policy
+#  */
 #
-# // Tag data from verified, internal sources
-# Producer get_quarterly_earning_report(...) -> |= {"verified_financial_data"};
-# Producer get_marketing_analysis(...) -> |= {"verified_marketing_data"};
-# // Allow generating business summary only if data comes from verified financial and marketing sources
-# Hard Allow generate_business_summary(...) if @args.producers is_superset {"verified_financial_data", "verified_marketing_data"};
-# ```
+#  // Tag data from verified, internal sources
+#  Producer get_quarterly_earning_report(...) -> |= {"verified_financial_data"};
+#  Producer get_marketing_analysis(...) -> |= {"verified_marketing_data"};
+#  // Allow generating business summary only if data comes from verified financial and marketing sources
+#  Hard Allow generate_business_summary(...) if @args.producers is_superset {"verified_financial_data", "verified_marketing_data"};
+#  ```
 #
-# This policy guarantees that the `generate_business_summary` tool can only be used when all of its inputs have been tagged as `verified`, preventing the agent from using unverified or hallucinated data in its response.
+#  This policy guarantees that the `generate_business_summary` tool can only be used when all of its inputs have been tagged as `verified`, preventing the agent from using unverified or hallucinated data in its response.
 
 
 # %%
@@ -755,11 +742,10 @@ provenance_security_config = {
     },
 }
 
-
 # %% [markdown]
-# ### Case 1: With both verified sources (should succeed)
+#  ### Case 1: With both verified sources (should succeed)
 #
-# Here we provide both tools that return verified data, allowing the agent to successfully generate a business summary.
+#  Here we provide both tools that return verified data, allowing the agent to successfully generate a business summary.
 
 # %%
 print("=== Data Provenance (both verified sources) ===")
@@ -775,12 +761,11 @@ result = run_workflow(
 )
 assert result == "success"
 
-
 # %% [markdown]
-# ### Case 2: Unverified / hallucinated data (should be denied)
+#  ### Case 2: Unverified / hallucinated data (should be denied)
 #
-# Here we simulate a scenario where the tool `get_marketing_analysis` is not provided,
-# and the marketing analysis is **unverified or hallucinated**, leading to the denial of the business summary generation.
+#  Here we simulate a scenario where the tool `get_marketing_analysis` is not provided,
+#  and the marketing analysis is **unverified or hallucinated**, leading to the denial of the business summary generation.
 
 # %%
 print("=== Data Provenance (only financial data) ===")
@@ -797,27 +782,26 @@ result = run_workflow(
 )
 assert result == "denied by policies"
 
-
 # %% [markdown]
-# ## Example 4: Enforcing Legal and Compliance Mandates
+#  ## Example 4: Enforcing Legal and Compliance Mandates
 #
-# For businesses in regulated industries, ensuring that AI agents comply with legal and data privacy requirements is critical. Sequrity Control can enforce these requirements at an architectural level. For instance, you can ensure that personally identifiable information (`PII`) is not sent to external partners:
+#  For businesses in regulated industries, ensuring that AI agents comply with legal and data privacy requirements is critical. Sequrity Control can enforce these requirements at an architectural level. For instance, you can ensure that personally identifiable information (`PII`) is not sent to external partners:
 #
-# ```cpp
-# /*
-# * Language: sqrt-lite
-# * Description: Data Privacy Compliance Policy
-# */
+#  ```cpp
+#  /*
+#  * Language: sqrt-lite
+#  * Description: Data Privacy Compliance Policy
+#  */
 #
-# // Tag PII data when loading patient records
-# Tag load_patient_record(...) -> |= {"pii"};
-# // Tag de-identified data when processing
-# Tag de_identify_data(...) -> |= {"~pii"};
-# // Prevent sending PII to external recipients via any tool named send_to_* (regex match)
-# Hard Deny r"send_to_.*"(...) if "pii" in data.tags;
-# ```
+#  // Tag PII data when loading patient records
+#  Tag load_patient_record(...) -> |= {"pii"};
+#  // Tag de-identified data when processing
+#  Tag de_identify_data(...) -> |= {"~pii"};
+#  // Prevent sending PII to external recipients via any tool named send_to_* (regex match)
+#  Hard Deny r"send_to_.*"(...) if "pii" in data.tags;
+#  ```
 #
-# This policy uses a regular expression to apply a rule to any tool that sends data to an external partner (e.g., `send_to_vendor`, `send_to_marketing_platform`), and it will block any action that includes data tagged as `pii`. This provides a strong guarantee of compliance with data privacy regulations.
+#  This policy uses a regular expression to apply a rule to any tool that sends data to an external partner (e.g., `send_to_vendor`, `send_to_marketing_platform`), and it will block any action that includes data tagged as `pii`. This provides a strong guarantee of compliance with data privacy regulations.
 #
 #
 
@@ -921,11 +905,10 @@ compliance_security_config = {
     },
 }
 
-
 # %% [markdown]
-# ### Case 1: With de-identification (should succeed)
+#  ### Case 1: With de-identification (should succeed)
 #
-# Here we offer de-identification tool to the agent, allowing it to de-identify PII data before sending it out, thus complying with the policy.
+#  Here we offer de-identification tool to the agent, allowing it to de-identify PII data before sending it out, thus complying with the policy.
 
 # %%
 print("=== Legal Compliance (de-identified data) ===")
@@ -941,11 +924,10 @@ result = run_workflow(
 )
 assert result == "success"
 
-
 # %% [markdown]
-# ### Case 2: Without de-identification (should be denied)
+#  ### Case 2: Without de-identification (should be denied)
 #
-# Here we hide de-identification tool from the agent, so it has no way to safely process PII before sharing, leading to the denial of the send action.
+#  Here we hide de-identification tool from the agent, so it has no way to safely process PII before sharing, leading to the denial of the send action.
 
 # %%
 print("=== Legal Compliance (identified data) ===")
@@ -963,42 +945,41 @@ result = run_workflow(
 assert result == "denied by policies"
 
 # %% [markdown]
-# ## Example 5: Audit, Fairness, Transparency, and Interpretability
+#  ## Example 5: Audit, Fairness, Transparency, and Interpretability
 #
-# Beyond security, Sequrity Control provides powerful capabilities for **audit**, **fairness**, **transparency**, and **interpretability** in AI systems.
+#  Beyond security, Sequrity Control provides powerful capabilities for **audit**, **fairness**, **transparency**, and **interpretability** in AI systems.
 #
-# **Auditability**: Every decision made by the AI is captured in an executable program that can be inspected, logged, and reviewed. The executed program is easy to audit and interpret — you can see exactly what tools were called, with what arguments, and in what order.
+#  **Auditability**: Every decision made by the AI is captured in an executable program that can be inspected, logged, and reviewed. The executed program is easy to audit and interpret — you can see exactly what tools were called, with what arguments, and in what order.
 #
-# **Fairness**: Sequrity Control can enforce fairness constraints at the architectural level, preventing AI systems from making decisions based on protected attributes like race, gender, or ethnicity.
+#  **Fairness**: Sequrity Control can enforce fairness constraints at the architectural level, preventing AI systems from making decisions based on protected attributes like race, gender, or ethnicity.
 #
-# **Transparency**: The policy enforcement mechanism makes it clear why certain actions were allowed or denied, providing full visibility into the AI's decision-making process.
+#  **Transparency**: The policy enforcement mechanism makes it clear why certain actions were allowed or denied, providing full visibility into the AI's decision-making process.
 #
-# **Interpretability**: Unlike black-box AI systems, the plan-then-execute architecture produces human-readable programs that explain exactly how the AI solved the task.
+#  **Interpretability**: Unlike black-box AI systems, the plan-then-execute architecture produces human-readable programs that explain exactly how the AI solved the task.
 #
-# Below we demonstrate two fairness-focused features that showcase these principles.
+#  Below we demonstrate two fairness-focused features that showcase these principles.
 #
-# ### 5.1 Preventing Unfair Discrimination in Control Flow
+#  ### 5.1 Preventing Unfair Discrimination in Control Flow
 #
-# When building AI agents that process applicant data (e.g., for hiring or loan applications), it's critical to ensure that
-# the AI does not make decisions based on protected attributes such as race, gender, or ethnicity.
+#  When building AI agents that process applicant data (e.g., for hiring or loan applications), it's critical to ensure that
+#  the AI does not make decisions based on protected attributes such as race, gender, or ethnicity.
 #
-# Sequrity Control provides the `branching_meta_policy` feature that can detect when the AI attempts to use tagged data
-# in control flow decisions (if-else branches). By tagging data retrieved from applicant profiles with "RACE" and
-# configuring the policy to deny branching on this tag, you can prevent discriminatory decision-making at the architectural level.
+#  Sequrity Control provides the `branching_meta_policy` feature that can detect when the AI attempts to use tagged data
+#  in control flow decisions (if-else branches). By tagging data retrieved from applicant profiles with "RACE" and
+#  configuring the policy to deny branching on this tag, you can prevent discriminatory decision-making at the architectural level.
 #
-# ```json
-# "enabled_features": [{"feature_name": "Dual LLM", "config_json": "{\"mode\": \"custom\"}"}]
-# "internal_policy_preset": {
-#     "branching_meta_policy": {
-#         "mode": "deny",
-#         "tags": ["RACE"]
-#     }
-# }
-# ```
+#  ```json
+#  "enabled_features": [{"feature_name": "Dual LLM", "config_json": "{\"mode\": \"custom\"}"}]
+#  "internal_policy_preset": {
+#      "branching_meta_policy": {
+#          "mode": "deny",
+#          "tags": ["RACE"]
+#      }
+#  }
+#  ```
 #
-# This policy ensures that any data tagged with "RACE" cannot be used in conditional branching logic,
-# forcing the AI to make fair decisions that don't depend on protected attributes.
-
+#  This policy ensures that any data tagged with "RACE" cannot be used in conditional branching logic,
+#  forcing the AI to make fair decisions that don't depend on protected attributes.
 
 # %%
 # Mock functions for fairness example
@@ -1097,14 +1078,13 @@ fairness_security_config = {
     },
 }
 
-
 # %% [markdown]
-# #### Case 1: Discriminatory routing based on race (should be denied)
+#  #### Case 1: Discriminatory routing based on race (should be denied)
 #
-# Here we attempt to route applicants to different HR representatives based on their race.
-# With `branching_meta_policy` configured to deny decisions based on "RACE" tagged data,
-# Sequrity Control correctly identifies this as discriminatory control flow and denies the action.
-# The executed program clearly shows the attempted branching logic, making it easy to audit why the request was denied.
+#  Here we attempt to route applicants to different HR representatives based on their race.
+#  With `branching_meta_policy` configured to deny decisions based on "RACE" tagged data,
+#  Sequrity Control correctly identifies this as discriminatory control flow and denies the action.
+#  The executed program clearly shows the attempted branching logic, making it easy to audit why the request was denied.
 
 # %%
 print("=== Preventing Discriminatory Control Flow (denied) ===")
@@ -1133,13 +1113,12 @@ result = run_workflow(
 )
 assert result == "denied by policies"
 
-
 # %% [markdown]
-# #### Case 2: Non-discriminatory routing (should succeed)
+#  #### Case 2: Non-discriminatory routing (should succeed)
 #
-# When we don't configure the `branching_meta_policy`, the system allows the AI to process
-# data normally. The transparent execution log shows exactly what operations were performed,
-# enabling full auditability of the AI's actions.
+#  When we don't configure the `branching_meta_policy`, the system allows the AI to process
+#  data normally. The transparent execution log shows exactly what operations were performed,
+#  enabling full auditability of the AI's actions.
 
 # %%
 print("=== Non-Discriminatory Flow (allowed) ===")
@@ -1164,30 +1143,24 @@ result = run_workflow(
 )
 assert result == "success"
 
-
 # %% [markdown]
-# ### 5.2 Preventing Sensitive Data Exposure to AI Parsing
+#  ### 5.2 Preventing Sensitive Data Exposure to AI Parsing
 #
-# When using AI-powered parsing tools like `parse_with_ai` to extract structured information from unstructured text,
-# you may want to ensure that certain sensitive or protected attributes are not processed by the AI model.
+#  When using AI-powered parsing tools like `parse_with_ai` to extract structured information from unstructured text,
+#  you may want to ensure that certain sensitive or protected attributes are not processed by the AI model.
 #
-# Sequrity Control provides the `qllm_input_meta_policy` feature that can block data with specific tags from being
-# passed to QLLM (the AI parsing component). By tagging applicant profile text with "RACE" and configuring the
-# policy to deny QLLM inputs with this tag, you prevent the AI from ever "seeing" the sensitive data.
+#  Sequrity Control provides the `enable_llm_blocked_tag` flag that can block data with the reserved tag `"__llm_blocked"` from being
+#  passed to QLLM (the AI parsing component). By tagging applicant profile text with `"__llm_blocked"` and configuring the
+#  policy to enable this flag, you prevent the AI from ever "seeing" the sensitive data.
 #
-# ```json
-# "enabled_features": [{"feature_name": "Dual LLM", "config_json": "{\"mode\": \"custom\"}"}]
-# "internal_policy_preset": {
-#     "qllm_input_meta_policy": {
-#         "mode": "deny",
-#         "tags": ["RACE"]
-#     }
-# }
-# ```
+#  ```json
+#  "enabled_features": [{"feature_name": "Dual LLM"}]
+#  "internal_policy_preset": {"enable_llm_blocked_tag": true}
+#  ```
 #
-# This ensures that even if the raw data contains protected attributes, the AI parsing model will not process it,
-# maintaining data privacy and preventing potential bias from influencing AI-extracted information.
-# The policy check history provides a transparent audit trail of why certain operations were blocked.
+#  This ensures that even if the raw data contains protected attributes, the AI parsing model will not process it,
+#  maintaining data privacy and preventing potential bias from influencing AI-extracted information.
+#  The policy check history provides a transparent audit trail of why certain operations were blocked.
 
 
 # %%
@@ -1250,13 +1223,13 @@ qllm_policy_tool_map = {
     "send_email": mock_send_email,
 }
 
-qllm_policy_enabled_features = [{"feature_name": "Dual LLM", "config_json": '{"mode": "custom"}'}]
+qllm_policy_enabled_features = [{"feature_name": "Dual LLM"}]
 
-# Policy that tags applicant profile text output with "RACE"
+# Policy that tags applicant profile text output with "__llm_blocked"
 qllm_policy_security_policies_base = {
     "language": "sqrt-lite",
     "codes": r"""
-    Tag retrive_applicant_profile_text(...) -> |= {"RACE"};
+    Tag retrive_applicant_profile_text(...) -> |= {"__llm_blocked"};
     """,
     "fail_fast": True,
     "auto_gen": False,
@@ -1270,27 +1243,23 @@ qllm_policy_security_config = {
     },
 }
 
-
 # %% [markdown]
-# #### Case 1: AI parsing of race-tagged data (should be denied)
+#  #### Case 1: AI parsing of race-tagged data (should be denied)
 #
-# Here we attempt to use `parse_with_ai` to extract information from applicant profile text
-# that contains race information. With `qllm_input_meta_policy` configured to deny inputs
-# tagged with "RACE", Sequrity Control blocks the AI parsing call.
-# The executed program and policy check history make it easy to interpret exactly why the operation was denied.
+#  Here we attempt to use `parse_with_ai` to extract information from applicant profile text
+#  that contains sensitive race information. With `enable_llm_blocked_tag` enabled to auto deny inputs
+#  of qllm tagged with `"__llm_blocked"`, Sequrity Control blocks the AI parsing call.
+#  The executed program and policy check history make it easy to interpret exactly why the operation was denied.
 
 # %%
 print("=== Preventing AI Parsing of Sensitive Data (denied) ===")
 
-# Add qllm_input_meta_policy to deny QLLM inputs with RACE tag
+# Add enable_llm_blocked_tag = True to deny QLLM inputs with __llm_blocked tag
 qllm_policy_security_policies_deny = {
     **qllm_policy_security_policies_base,
     "internal_policy_preset": {
         "default_allow": True,
-        "qllm_input_meta_policy": {
-            "mode": "deny",
-            "tags": ["RACE"],
-        },
+        "enable_llm_blocked_tag": True,
     },
 }
 
@@ -1306,22 +1275,22 @@ result = run_workflow(
 )
 assert result == "denied by policies"
 
-
 # %% [markdown]
-# #### Case 2: Direct processing without AI parsing (should succeed)
+#  #### Case 2: Direct processing without AI parsing (should succeed)
 #
-# When we don't use AI parsing or when the `qllm_input_meta_policy` is not configured,
-# the data can be processed through the normal workflow. The full execution trace remains
-# available for audit, providing transparency into every action the AI performed.
+#  When we don't use AI parsing or when the `enable_llm_blocked_tag` is false,
+#  the data can be processed through the normal workflow. The full execution trace remains
+#  available for audit, providing transparency into every action the AI performed.
 
 # %%
 print("=== Direct Data Processing (allowed) ===")
 
-# Without qllm_input_meta_policy restriction
+# Without enable_llm_blocked_tag restriction
 qllm_policy_security_policies_allow = {
     **qllm_policy_security_policies_base,
     "internal_policy_preset": {
         "default_allow": True,
+        "enable_llm_blocked_tag": False,
     },
 }
 
@@ -1339,8 +1308,6 @@ assert result == "success"
 
 # %% [markdown]
 #
-#  We are building a future where you can harness the power of AI without compromising on security. Stop patching your AI security with bandaids and start building on a foundation of certainty.
+#   We are building a future where you can harness the power of AI without compromising on security. Stop patching your AI security with bandaids and start building on a foundation of certainty.
 #
-#  Visit [Sequrity AI](https://sequrity.ai) to learn more about how we can help you build secure, compliant, and trustworthy AI systems.
-
-# %%
+#   Visit [Sequrity AI](https://sequrity.ai) to learn more about how we can help you build secure, compliant, and trustworthy AI systems.
