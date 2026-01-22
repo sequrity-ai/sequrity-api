@@ -64,7 +64,7 @@ assert CONFIG["open_router_api_key"] != "your OpenRouter/OAI key"
 assert CONFIG["sequrity_api_key"] != "your SequrityAI key"
 
 # Initialize the Sequrity client
-client = SequrityClient(base_url="http://127.0.0.1:8000", api_key=CONFIG["sequrity_api_key"], timeout=120)
+client = SequrityClient(api_key=CONFIG["sequrity_api_key"], timeout=120)
 
 # %% [markdown]
 # ### Mock client using SequrityClient

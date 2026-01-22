@@ -245,4 +245,4 @@ The response of dual-llm mode also includes a session ID in the `X-Session-ID` h
 - See more [security features](./learn/features.md) like toxicity filtering and PII redaction
 - Explore [security policies](./learn/secure_policies.md) for fine-grained control
 - Learn about [advanced configurations](./learn/fine_grained_configs.md)
-- See [examples](./examples/example-1.md) for more advanced use cases
+- See [examples](./examples/control-release-examples-overview.md) for more advanced use cases

@@ -35,6 +35,8 @@ plugins:
             members_order: source
             show_signature_annotations: true
             separate_signature: true
+  - mkdocs-jupyter:
+      include_source: true
 
 markdown_extensions:
   - admonition
@@ -67,4 +69,7 @@ nav:
               - Control API: control/reference/sequrity_client/control.md
               - Headers: control/reference/sequrity_client/headers.md
   - Examples:
-      - Control: control/examples/example-1.md
+      - Control:
+          - Example-2026-01-22:
+              - Overview: control/examples/control-release-examples-overview.md
+              - Notebook: control/examples/control-release-examples.ipynb
