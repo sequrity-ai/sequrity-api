@@ -51,6 +51,9 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
 
+extra_css:
+  - stylesheets/custom.css
+
 nav:
   - Home: index.md
   - Getting Started:

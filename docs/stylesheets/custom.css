@@ -1,0 +1,15 @@
+/* Fix font size for code blocks ONLY in Jupyter notebook markdown cells */
+
+/* Target code blocks within markdown cells rendered by mkdocs-jupyter */
+.jp-RenderedMarkdown pre,
+.jp-RenderedHTMLCommon pre,
+.jp-RenderedMarkdown .highlight pre,
+.jp-RenderedHTMLCommon .highlight pre {
+    font-size: 13px !important;
+}
+
+/* Also target inline code in markdown cells */
+.jp-RenderedMarkdown code,
+.jp-RenderedHTMLCommon code {
+    font-size: 13px !important;
+}
