@@ -204,7 +204,7 @@ The response of Single-LLM follows the OpenAI Chat Completions format:
 
     **Fine-grained Configurations**:
     You can further customize the chat session with fine-grained configurations, such as `max_pllm_attempts`, `cache_tool_results`, etc.
-    See [Fine-grained Configurations](../reference/fine_grained_configs.md) for details.
+    See [Fine-grained Configurations](../reference/rest_api/security_config.md) for details.
 
     *For now, only headers-mode supports fine-grained configurations.*
 
@@ -329,7 +329,7 @@ Learn more in [Secure Tool Use with Dual-LLM](./tool_use_dual_llm.md).
 
 More resources explaining Security Features, Security Policies, and Fine-grained Configurations:
 
-- See more [security features](../reference/security_features.md) like toxicity filtering and PII redaction
-- Explore [security policies](../reference/security_policies/index.md) for fine-grained control
-- Learn about [advanced configurations](../reference/fine_grained_configs.md)
+- See more [security features](../reference/rest_api/security_features.md) like toxicity filtering and PII redaction
+- Explore [security policies](../reference/rest_api/security_policy.md) for fine-grained control
+- Learn about [advanced configurations](../reference/rest_api/security_config.md)
 - See [examples](../examples/index.md) for more advanced use cases

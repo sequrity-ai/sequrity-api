@@ -1,48 +1,29 @@
-# Sequrity Client Reference
+# SequrityClient.control API Reference
 
-This section provides the API reference documentation for the Sequrity Python client.
+This section provides the API reference for `SequrityClient.control`, the Python interface for Sequrity's Control API.
 
 ## Overview
 
-The Sequrity Python client provides a high-level interface for interacting with Sequrity's Control API. It enables secure LLM interactions with policy enforcement, including:
+The Control API enables secure LLM interactions with policy enforcement. Key capabilities:
 
-- **Chat Completions**: Send messages to LLMs with security features like toxicity filtering, PII redaction, and topic guardrails
-- **LangGraph Integration**: Execute LangGraph workflows with Sequrity's security policies
-
-## Quick Start
-
-```python
-from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+- **Chat Completions**: OpenAI-compatible chat API with security features (toxicity filtering, PII redaction, topic guardrails)
+- **LangGraph Integration**: Execute LangGraph workflows with security policies via Sequrity's Dual-LLM runtime
 
 
-
-# Initialize the client
-client = SequrityClient(api_key="your-sequrity-api-key")
-
-# Configure security features
-features = FeaturesHeader.create_single_llm_headers(
-    toxicity_filter=True,
-    pii_redaction=True,
-)
-# Configure security policy
-policy = SecurityPolicyHeader.create_default()
-
-# Make a secure chat completion request
-response = client.control.create_chat_completion(
-    messages=[{"role": "user", "content": "Hello!"}],
-    model="gpt-4o",
-    llm_api_key="your-openai-api-key",
-    features=features,
-    security_policy=policy,
-    service_provider="openai",
-)
-```
-
-## Modules
+## API Modules
 
 | Module | Description |
 |--------|-------------|
-| [Client](client.md) | Main `SequrityClient` class |
-| [Control API](control.md) | `ControlAPIWrapper` for chat completions and LangGraph |
-| [Headers](headers.md) | Configuration headers for features, policies, and settings |
+| [Chat Completion](chat_completion.md) | Chat completion API, request/response types, and result schemas |
+| [LangGraph](langgraph.md) | LangGraph execution API and related types |
+| [Headers](headers.md) | Configuration headers for features, policies, and fine-grained settings |
+| [ValueWithMeta](value_with_meta.md) | Value wrapper with metadata for policy enforcement |
+
+## Main Entry Points
+
+
+::: sequrity_api.control.wrapper.ControlApiWrapper
+    options:
+      show_root_heading: true
+      show_source: false
+      members: ["create_chat_completion", "compile_and_run_langgraph"]

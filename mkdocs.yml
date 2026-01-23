@@ -82,17 +82,22 @@ nav:
   - Reference:
       - Control:
           - control/reference/index.md
-          - Security Features: control/reference/security_features.md
-          - Security Policies:
-              - control/reference/security_policies/index.md
-              - Grammar: control/reference/security_policies/grammar.md
-              - API: control/reference/security_policies/api.md
-          - Fine-grained Configurations: control/reference/fine_grained_configs.md
-          - SequrityClient.control:
-              - Overview: control/reference/sequrity_client/index.md
-              - SequrityClient: control/reference/sequrity_client/client.md
-              - Control API: control/reference/sequrity_client/control.md
-              - Headers: control/reference/sequrity_client/headers.md
+          - SQRT-Lite DSL:
+              - control/reference/dsl-lite/index.md
+              - Grammar: control/reference/dsl-lite/grammar.md
+          - REST API:
+              - control/reference/rest_api/index.md
+              - X-Security-Features: control/reference/rest_api/security_features.md
+              - X-Security-Policy: control/reference/rest_api/security_policy.md
+              - X-Security-Config: control/reference/rest_api/security_config.md
+          - SequrityClient:
+              - control/sequrity_client.md
+              - SequrityClient.control:
+                  - control/reference/sequrity_client/index.md
+                  - Chat Completion: control/reference/sequrity_client/chat_completion.md
+                  - LangGraph: control/reference/sequrity_client/langgraph.md
+                  - Headers: control/reference/sequrity_client/headers.md
+                  - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
   - Examples:
       - Control:
           - control/examples/index.md

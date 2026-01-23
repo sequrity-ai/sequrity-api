@@ -135,7 +135,7 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
     ```
 
 - **`X-Security-Features`**: Enables the Dual-LLM feature in this example
-- **`X-Security-Policy`**: Defines security policies in [SQRT-Lite language](../reference/security_policies/index.md):
+- **`X-Security-Policy`**: Defines security policies in [SQRT-Lite language](../reference/dsl-lite/index.md):
     ```c++
     // Define sensitive document tags
     sensitive_docs = {"internal_use", "confidential"};

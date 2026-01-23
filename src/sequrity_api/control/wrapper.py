@@ -1,6 +1,6 @@
 """Control API wrapper module.
 
-This module provides the ControlAPIWrapper class for interacting with
+This module provides the ControlApiWrapper class for interacting with
 Sequrity's Control API endpoints.
 """
 
@@ -23,10 +23,10 @@ if TYPE_CHECKING:
         pass
 
 
-class ControlAPIWrapper:
+class ControlApiWrapper:
     """Wrapper for Sequrity's Control API operations.
 
-    The ControlAPIWrapper provides methods for secure chat completions and
+    The ControlApiWrapper provides methods for secure chat completions and
     LangGraph integration with Sequrity's security policies.
 
     Attributes:
@@ -101,20 +101,21 @@ class ControlAPIWrapper:
         Example:
             ```python
             from sequrity_api import SequrityClient
-            from sequrity_api.types.control.headers import FeaturesHeader
+            from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
 
-            features = FeaturesHeader.create_single_llm_headers(
-                toxicity_filter=True,
-                pii_redaction=True,
-            )
+            features = FeaturesHeader.create_single_llm_headers()
+            security_policy = SecurityPolicyHeader.create_default()
+
 
             response = client.control.create_chat_completion(
                 messages=[{"role": "user", "content": "Hello!"}],
-                model="gpt-4o",
-                llm_api_key="your-openai-api-key",
+                model="openai/gpt-5-mini",
+                llm_api_key="your-openrouter-key",
                 features=features,
+                security_policy=security_policy,
+                service_provider="openrouter",
             )
             ```
         """
@@ -181,17 +182,29 @@ class ControlAPIWrapper:
             ```python
             from langgraph.graph import StateGraph
             from sequrity_api import SequrityClient
+            from sequrity_api.types.control.headers import FeaturesHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
+            features = FeaturesHeader.create_dual_llm_headers()
+            security_policy = SecurityPolicyHeader.create_default()
+
 
             # Define your graph
             graph = StateGraph(...)
+            ...
+
+            def read_fine_func(doc_id: str) -> str: ...
 
             result = client.control.compile_and_run_langgraph(
-                model="gpt-4o",
-                llm_api_key="your-openai-api-key",
+                model="openai/gpt-5-mini",
+                llm_api_key="your-openrouter-key",
                 graph=graph,
-                initial_state={"messages": []},
+                initial_state={"query": "Read the document", "result": ""},
+                service_provider="openrouter",
+                max_exec_steps=20,
+                features=features,
+                security_policy=security_policy,
+                node_functions={"read_file": read_fine_func},
             )
             ```
         """

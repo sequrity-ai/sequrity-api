@@ -1,10 +1,11 @@
-# Configuration Headers
+# FeaturesHeader, SecurityPolicyHeader, FineGrainedConfigHeader
 
-This module contains the configuration header classes used to customize Sequrity's security features, policies, and session behavior.
+HTTP headers for configuring Sequrity Control's features, security policies, and fine-grained session settings.
 
-## Features Header
 
-Configure security features including LLM mode, taggers, and constraints.
+## FeaturesHeader
+
+Configure security features including LLM mode, content taggers, and output constraints.
 
 ::: sequrity_api.types.control.headers.FeaturesHeader
     options:
@@ -12,30 +13,37 @@ Configure security features including LLM mode, taggers, and constraints.
       show_source: true
       members_order: source
 
-### LLM Mode Feature
+### LlmModeFeature
 
 ::: sequrity_api.types.control.headers.feature_headers.LlmModeFeature
     options:
       show_root_heading: true
       show_source: false
 
-### Tagger Feature
+### TaggerFeature
 
 ::: sequrity_api.types.control.headers.feature_headers.TaggerFeature
     options:
       show_root_heading: true
       show_source: false
 
-### Constraint Feature
+### ConstraintFeature
 
 ::: sequrity_api.types.control.headers.feature_headers.ConstraintFeature
     options:
       show_root_heading: true
       show_source: false
 
+### LongProgramSupportFeature
+
+::: sequrity_api.types.control.headers.feature_headers.LongProgramSupportFeature
+    options:
+      show_root_heading: true
+      show_source: false
+
 ---
 
-## Security Policy Header
+## SecurityPolicyHeader
 
 Configure security policies using sqrt, sqrt-lite, or cedar policy languages.
 
@@ -45,19 +53,35 @@ Configure security policies using sqrt, sqrt-lite, or cedar policy languages.
       show_source: true
       members_order: source
 
+### InternalPolicyPreset
+
 ::: sequrity_api.types.control.headers.policy_headers.InternalPolicyPreset
     options:
       show_root_heading: true
-      show_source: true
+      show_source: false
+
+### ControlFlowMetaPolicy
+
+::: sequrity_api.types.control.headers.policy_headers.ControlFlowMetaPolicy
+    options:
+      show_root_heading: true
+      show_source: false
 
 ---
 
-## Fine-Grained Config Header
+## FineGrainedConfigHeader
 
-Advanced configuration options for session behavior and response formatting. 💡 Please expand the source to see all available options and descriptions.
+Advanced configuration for session behavior, response formatting, and internal tools.
 
 ::: sequrity_api.types.control.headers.FineGrainedConfigHeader
     options:
       show_root_heading: true
       show_source: true
       members_order: source
+
+### ResponseFormat
+
+::: sequrity_api.types.control.headers.session_config_headers.ResponseFormat
+    options:
+      show_root_heading: true
+      show_source: false
