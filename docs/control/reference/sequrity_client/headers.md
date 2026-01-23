@@ -45,6 +45,11 @@ Configure security policies using sqrt, sqrt-lite, or cedar policy languages.
       show_source: true
       members_order: source
 
+::: sequrity_api.types.control.headers.policy_headers.InternalPolicyPreset
+    options:
+      show_root_heading: true
+      show_source: true
+
 ---
 
 ## Fine-Grained Config Header

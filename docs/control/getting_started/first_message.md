@@ -4,8 +4,14 @@ This guide shows you how to send your first chat completion request through the 
 
 ## Prerequisites
 
-- A Sequrity API key (from your dashboard at [sequrity.ai](https://sequrity.ai/))
-- An LLM provider API key (e.g., OpenAI, OpenRouter)
+- **Sequrity API Key**: Sign up at [Sequrity](https://sequrity.ai) to get your API key from the dashboard
+- **LLM Provider API Key**: This example uses OpenRouter, but you can use any supported provider
+
+??? example "Download Tutorial Scripts"
+
+    - [Sequrity Client version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/first_message/sequrity_client.py)
+
+    - [REST API version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/first_message/rest_api.sh)
 
 ## Installation
 
@@ -27,12 +33,7 @@ You can interact with the Sequrity Control API using either the Sequrity Python 
 
 Both Sequrity client and REST API are similar to OpenAI's Chat Completions API, with additional headers for security features and policies.
 
-??? example "Example Scripts"
-    The example scripts for this guide can be found here:
 
-    - [Sequrity Client Example](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/first_message/sequrity_client.py)
-
-    - [REST API Example](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/first_message/rest_api.sh)
 
 Sequrity Control API supports two architectures for interacting with LLMs:
 

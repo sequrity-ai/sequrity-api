@@ -28,6 +28,7 @@ theme:
     - navigation.indexes
     - search.highlight
     - content.code.copy
+    - content.footnote.tooltips
 
 plugins:
   - search
@@ -60,6 +61,7 @@ markdown_extensions:
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
+  - footnotes
 
 extra_css:
   - stylesheets/custom.css
@@ -74,6 +76,7 @@ nav:
   - Learn:
       - Control:
           - control/learn/index.md
+          - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
           - "Policy Language: sqrt-lite": control/learn/sqrt-lite.md
           - Compile and Execute LangGraph: control/learn/langgraph.md
   - Reference:

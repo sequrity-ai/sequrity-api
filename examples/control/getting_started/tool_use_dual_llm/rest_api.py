@@ -183,4 +183,3 @@ rprint(f"[green]Return Value:[/green] {content['final_return_value']}\n")
 
 rprint("[bold yellow]Generated Program:[/bold yellow]")
 syntax = Syntax(content["program"], "python", theme="monokai", line_numbers=True, word_wrap=False)
-rprint(syntax)
