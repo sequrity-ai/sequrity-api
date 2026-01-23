@@ -299,25 +299,25 @@ which can be sent back in subsequent request headers for multi-turn conversation
 
     ```json
     {
-    "id": "df728048-f72c-11f0-b1e5-0f87f79310f1",
-    "choices": [
-        {
-        "finish_reason": "stop",
-        "index": 0,
-        "message": {
-            "content": "{\"status\": \"success\", \"final_return_value\": {\"value\": 97, \"meta\": {\"tags\": [], \"consumers\": [\"*\"], \"producers\": []}}}",
-            "role": "assistant"
+        "id": "df728048-f72c-11f0-b1e5-0f87f79310f1",
+        "choices": [
+            {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+                "content": "{\"status\": \"success\", \"final_return_value\": {\"value\": 97, \"meta\": {\"tags\": [], \"consumers\": [\"*\"], \"producers\": []}}}",
+                "role": "assistant"
+            }
+            }
+        ],
+        "created": 1769043264,
+        "model": "openai/gpt-5-mini,openai/gpt-5-mini",
+        "object": "chat.completion",
+        "usage": {
+            "completion_tokens": 312,
+            "prompt_tokens": 2889,
+            "total_tokens": 3201
         }
-        }
-    ],
-    "created": 1769043264,
-    "model": "openai/gpt-5-mini,openai/gpt-5-mini",
-    "object": "chat.completion",
-    "usage": {
-        "completion_tokens": 312,
-        "prompt_tokens": 2889,
-        "total_tokens": 3201
-    }
     }
     ```
 
