@@ -1,28 +1,5 @@
 # Sequrity API
 
-A Python client for Sequrity API.
+Python client and REST API for interacting with [Sequrity.AI](https://sequrity.ai/)'s services.
 
-## Installation
-
-```bash
-pip install sequrity-api
-```
-
-## Quick Start
-
-```python
-from sequrity_api import SequrityClient
-
-client = SequrityClient(api_key="your-sequrity-api-key")
-
-response = client.control.chat_completion(
-    model="openai/gpt-5-mini",
-    messages=[
-        {
-            "role": "user",
-            "content": "What is the largest prime number below 100?",
-        }
-    ],
-    llm_api_key="your-openrouter-key",
-)
-```
+[Sequrity.AI](https://sequrity.ai/) provides advanced security solutions for AI systems, enabling developers to build and deploy AI applications with robust security features and policies.

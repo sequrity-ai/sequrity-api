@@ -17,9 +17,9 @@ sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-key")
 
 # =============================================================================
-# Single LLM Mode
+# Single-LLM
 # =============================================================================
-# Single LLM mode passes your request directly to the LLM with optional
+# Single-LLM passes your request directly to the LLM with optional
 # security taggers and constraints.
 
 
@@ -46,9 +46,9 @@ def single_llm_example():
 
 
 # =============================================================================
-# Dual LLM Mode
+# Dual-LLM
 # =============================================================================
-# Dual LLM mode uses a planning LLM to generate secure execution plans on which
+# Dual-LLM uses a planning LLM to generate secure execution plans on which
 # security policies and features are enforced. This provides stronger security
 # guarantees for agentic use cases.
 

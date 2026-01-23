@@ -8,21 +8,31 @@ theme:
   name: material
   palette:
     - scheme: default
-      primary: indigo
+      primary: white
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
-      primary: indigo
+      primary: black
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - navigation.instant
+    - navigation.instant.progress
     - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
     - search.highlight
+    - content.code.copy
+    - content.footnote.tooltips
 
 plugins:
   - search
+  - autorefs
   - mkdocstrings:
       handlers:
         python:
@@ -35,8 +45,10 @@ plugins:
             members_order: source
             show_signature_annotations: true
             separate_signature: true
-  - mkdocs-jupyter:
-      include_source: true
+            extensions:
+              - griffe_pydantic:
+                  schema: true
+  - mkdocs-jupyter
 
 markdown_extensions:
   - admonition
@@ -50,26 +62,54 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - footnotes
+
+extra_css:
+  - stylesheets/custom.css
 
 nav:
   - Home: index.md
   - Getting Started:
-      - Control: control/getting_started.md
+      - Installation: installation.md
+      - Control:
+          - Sending your first message: control/getting_started/first_message.md
+          - Secure Tool Use with Dual-LLM: control/getting_started/tool_use_dual_llm.md
   - Learn:
       - Control:
-          - Secure Features: control/learn/features.md
-          - Security Policies: control/learn/secure_policies.md
-          - Advanced Configurations: control/learn/fine_grained_configs.md
+          - control/learn/index.md
+          - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
+          - "Policy Language: sqrt-lite": control/learn/sqrt-lite.md
+          - Compile and Execute LangGraph: control/learn/langgraph.md
   - Reference:
       - Control:
-          - REST API Reference: control/reference/rest_api.md
-          - Sequrity Client:
-              - Overview: control/reference/sequrity_client/index.md
-              - SequrityClient: control/reference/sequrity_client/client.md
-              - Control API: control/reference/sequrity_client/control.md
-              - Headers: control/reference/sequrity_client/headers.md
+          - control/reference/index.md
+          - SQRT-Lite DSL:
+              - control/reference/dsl-lite/index.md
+              - Grammar: control/reference/dsl-lite/grammar.md
+          - REST API:
+              - control/reference/rest_api/index.md
+              - Chat Completion: control/reference/rest_api/chat_completion.md
+              - Custom Headers:
+                  - Bearer Token, X-Api-Key and X-Session-Id: control/reference/rest_api/api_key_session_id.md
+                  - X-Security-Features: control/reference/rest_api/security_features.md
+                  - X-Security-Policy: control/reference/rest_api/security_policy.md
+                  - X-Security-Config: control/reference/rest_api/security_config.md
+          - SequrityClient:
+              - general/sequrity_client.md
+              - SequrityClient.control:
+                  - control/reference/sequrity_client/index.md
+                  - Chat Completion: control/reference/sequrity_client/chat_completion.md
+                  - LangGraph: control/reference/sequrity_client/langgraph.md
+                  - Headers:
+                      - FeaturesHeader: control/reference/sequrity_client/headers/features_header.md
+                      - PolicyHeader: control/reference/sequrity_client/headers/policy_header.md
+                      - ConfigHeader: control/reference/sequrity_client/headers/config_header.md
+                  - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
+              - service_provider: general/service_provider.md
   - Examples:
       - Control:
-          - Example-2026-01-22:
-              - Overview: control/examples/control-release-examples-overview.md
-              - Notebook: control/examples/control-release-examples.ipynb
+          - control/examples/index.md
+          - Example-2026-01-22: control/examples/control-release-examples.ipynb
