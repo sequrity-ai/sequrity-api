@@ -16,7 +16,7 @@ The Control API enables secure LLM interactions with policy enforcement. Key cap
 |--------|-------------|
 | [Chat Completion](chat_completion.md) | Chat completion API, request/response types, and result schemas |
 | [LangGraph](langgraph.md) | LangGraph execution API and related types |
-| [Headers](headers.md) | Configuration headers for features, policies, and fine-grained settings |
+| [Headers](headers/features_header.md) | Configuration headers for features, policies, and fine-grained settings |
 | [ValueWithMeta](value_with_meta.md) | Value wrapper with metadata for policy enforcement |
 
 ## Main Entry Points

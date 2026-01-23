@@ -3,25 +3,20 @@
 The chat completion API provides an OpenAI-compatible interface for secure LLM interactions.
 
 
-## Core Function
 
 ::: sequrity_api.control.chat_completion.create_chat_completion_sync
     options:
       show_root_heading: true
-      show_source: true
+      show_source: false
 
 ---
 
-## Request Types
-
-### ChatCompletionRequest
 
 ::: sequrity_api.types.chat_completion.request.ChatCompletionRequest
     options:
       show_root_heading: true
-      show_source: false
+      show_source: true
 
-### Message Types
 
 ::: sequrity_api.types.chat_completion.request.Message
     options:
@@ -48,7 +43,6 @@ The chat completion API provides an OpenAI-compatible interface for secure LLM i
       show_root_heading: true
       show_source: false
 
-### Tool Definition
 
 ::: sequrity_api.types.chat_completion.request.Tool
     options:
@@ -60,7 +54,6 @@ The chat completion API provides an OpenAI-compatible interface for secure LLM i
       show_root_heading: true
       show_source: false
 
-### Response Format
 
 ::: sequrity_api.types.chat_completion.request.ResponseFormat
     options:
@@ -69,37 +62,26 @@ The chat completion API provides an OpenAI-compatible interface for secure LLM i
 
 ---
 
-## Response Types
-
-### ChatCompletionResponse
 
 ::: sequrity_api.types.chat_completion.response.ChatCompletionResponse
     options:
       show_root_heading: true
       show_source: false
 
-### Choice
-
 ::: sequrity_api.types.chat_completion.response.Choice
     options:
       show_root_heading: true
       show_source: false
-
-### ResponseMessage
 
 ::: sequrity_api.types.chat_completion.response.ResponseMessage
     options:
       show_root_heading: true
       show_source: false
 
-### Tool Calls
-
 ::: sequrity_api.types.chat_completion.response.ResponseToolCall
     options:
       show_root_heading: true
       show_source: false
-
-### Usage
 
 ::: sequrity_api.types.chat_completion.response.CompletionUsage
     options:

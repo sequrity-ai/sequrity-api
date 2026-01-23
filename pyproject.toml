@@ -39,7 +39,13 @@
 [dependency-groups]
     dev=["openai>=1.107.3", "pytest>=9.0.2", "ruff>=0.14.13"]
     langgraph=["langgraph>=1.0.6"]
-    docs=["mkdocs>=1.6", "mkdocs-jupyter>=0.25.0", "mkdocs-material>=9.5", "mkdocstrings[python]>=0.28"]
+    docs=[
+    "griffe-pydantic>=1.2.0",
+    "mkdocs>=1.6",
+    "mkdocs-jupyter>=0.25.0",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.28",
+]
     examples=["ipykernel<7.0.0", "rich>=14.2.0"]
 
 [tool.ruff]

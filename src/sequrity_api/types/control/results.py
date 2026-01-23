@@ -6,13 +6,17 @@ from .value_with_meta import ValueWithMeta
 
 
 class ErrorInfo(BaseModel):
+    """
+    Represents error information in the response.
+    """
+
     code: str
     message: str
 
 
 class ResponseContentJsonSchema(BaseModel):
     """
-    Return value of a Single-LLM/Dual-LLM system
+    ResponseContent (sequrity_api.types.chat_completion.response.ResponseMessage.content) of a Dual-LLM system.
     """
 
     status: Literal["success", "failure", "unknown"]

@@ -9,9 +9,6 @@ Execute LangGraph StateGraphs securely through Sequrity's Dual-LLM runtime with 
 
 ---
 
-## Core Functions
-
-### run_graph_sync
 
 ::: sequrity_api.control.langgraph.run_graph_sync
     options:
@@ -20,18 +17,11 @@ Execute LangGraph StateGraphs securely through Sequrity's Dual-LLM runtime with 
 
 ---
 
-## Request/Response Types
-
-### LangGraphChatCompletionRequest
-
-Extended chat completion request for LangGraph execution.
 
 ::: sequrity_api.types.control.langgraph.LangGraphChatCompletionRequest
     options:
       show_root_heading: true
       show_source: true
-
-### LangGraphChatCompletionResponse
 
 ::: sequrity_api.types.control.langgraph.LangGraphChatCompletionResponse
     options:
@@ -39,10 +29,6 @@ Extended chat completion request for LangGraph execution.
       show_source: true
 
 ---
-
-## Graph Executor
-
-Internal executor that compiles LangGraph to executable code and handles tool calls.
 
 ::: sequrity_api.control.langgraph.graph_executor.LangGraphExecutor
     options:

@@ -8,12 +8,12 @@ theme:
   name: material
   palette:
     - scheme: default
-      primary: blue
+      primary: white
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
-      primary: blue grey
+      primary: black
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
@@ -32,6 +32,7 @@ theme:
 
 plugins:
   - search
+  - autorefs
   - mkdocstrings:
       handlers:
         python:
@@ -44,6 +45,9 @@ plugins:
             members_order: source
             show_signature_annotations: true
             separate_signature: true
+            extensions:
+              - griffe_pydantic:
+                  schema: true
   - mkdocs-jupyter
 
 markdown_extensions:
@@ -87,17 +91,24 @@ nav:
               - Grammar: control/reference/dsl-lite/grammar.md
           - REST API:
               - control/reference/rest_api/index.md
-              - X-Security-Features: control/reference/rest_api/security_features.md
-              - X-Security-Policy: control/reference/rest_api/security_policy.md
-              - X-Security-Config: control/reference/rest_api/security_config.md
+              - Chat Completion: control/reference/rest_api/chat_completion.md
+              - Custom Headers:
+                  - Bearer Token, X-Api-Key and X-Session-Id: control/reference/rest_api/api_key_session_id.md
+                  - X-Security-Features: control/reference/rest_api/security_features.md
+                  - X-Security-Policy: control/reference/rest_api/security_policy.md
+                  - X-Security-Config: control/reference/rest_api/security_config.md
           - SequrityClient:
-              - control/sequrity_client.md
+              - general/sequrity_client.md
               - SequrityClient.control:
                   - control/reference/sequrity_client/index.md
                   - Chat Completion: control/reference/sequrity_client/chat_completion.md
                   - LangGraph: control/reference/sequrity_client/langgraph.md
-                  - Headers: control/reference/sequrity_client/headers.md
+                  - Headers:
+                      - FeaturesHeader: control/reference/sequrity_client/headers/features_header.md
+                      - PolicyHeader: control/reference/sequrity_client/headers/policy_header.md
+                      - ConfigHeader: control/reference/sequrity_client/headers/config_header.md
                   - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
+              - service_provider: general/service_provider.md
   - Examples:
       - Control:
           - control/examples/index.md

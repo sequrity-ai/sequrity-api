@@ -2,9 +2,9 @@
    Layout & Grid
    ======================================== */
 
-/* .md-grid {
-    max-width: 1440px;
-} */
+:root {
+    --md-grid-max-width: 1440px;
+}
 
 /* ========================================
    Jupyter Notebook Styling

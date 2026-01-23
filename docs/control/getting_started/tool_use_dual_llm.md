@@ -306,7 +306,7 @@ Note that we need to keep track of the `session_id` to maintain context across m
 
 The LLM first calls `get_internal_document` to retrieve the document. This tool call is allowed because there are no denying policies for it[^1].
 
-[^1]: `get_internal_documet` has no user-defined policy but got allowed. This is because [`InternalPolicyPreset`](../reference/sequrity_client/headers.md#sequrity_api.types.control.headers.policy_headers.InternalPolicyPreset) has `default_allow=true` by default.
+[^1]: `get_internal_documet` has no user-defined policy but got allowed. This is because [`InternalPolicyPreset`](../reference/sequrity_client/headers/policy_header.md#sequrity_api.types.control.headers.policy_headers.InternalPolicyPreset) has `default_allow=true` by default.
 
 === "Sequrity Client"
 
