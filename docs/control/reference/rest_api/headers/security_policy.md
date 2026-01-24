@@ -36,8 +36,7 @@ This header is **required** when using Headers-Only Mode (must be provided toget
 
 The policy language to use. Supported values:
 
-- `sqrt-json`: Pre-compiled JSON policy objects
-- `sqrt`: SQRT policy code (will be translated)
+- `sqrt`: SQRT policy code
 - `sqrt-lite`: Simplified SQRT policy code
 - `cedar`: Cedar policy language
 
@@ -63,7 +62,7 @@ When enabled, security policies are auto-generated based on the user query. The 
 |------|----------|---------|
 | `boolean` | No | `true` |
 
-Stop execution on the first policy violation. **Only available for sqrt languages** (`sqrt-json`, `sqrt`, `sqrt-lite`). Not available for `cedar`.
+Stop execution on the first policy violation. **Only available for sqrt languages** (`sqrt`, `sqrt-lite`). Not available for `cedar`.
 
 ### `internal_policy_preset`
 
@@ -91,7 +90,7 @@ Enable non-executable memory protection for tool result tags.
 
 **Note:** This value is **automatically determined by the policy language** and any user-provided value will be ignored:
 
-- `true` for sqrt languages (`sqrt-json`, `sqrt`, `sqrt-lite`)
+- `true` for sqrt languages (`sqrt`, `sqrt-lite`)
 - `false` for `cedar`
 
 #### `internal_policy_preset.enable_llm_blocked_tag`
