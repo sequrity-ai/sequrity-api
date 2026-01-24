@@ -111,6 +111,7 @@ nav:
                       - PolicyHeader: control/reference/sequrity_client/headers/policy_header.md
                       - ConfigHeader: control/reference/sequrity_client/headers/config_header.md
                   - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
+                  - SQRT: control/reference/sequrity_client/sqrt.md
               - service_provider: general/sequrity_client/service_provider.md
   - Examples:
       - Control:

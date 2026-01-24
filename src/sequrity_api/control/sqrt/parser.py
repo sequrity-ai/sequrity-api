@@ -10,10 +10,10 @@ allowing users to validate their SQRT policies without access to the translation
 """
 
 from pathlib import Path
-from typing import NamedTuple
 
 from lark import Lark, Tree
 from lark.exceptions import LarkError, UnexpectedCharacters, UnexpectedToken
+from pydantic import BaseModel, Field
 
 
 class SqrtParseError(Exception):
@@ -53,17 +53,12 @@ class SqrtParseError(Exception):
         return full_msg
 
 
-class ParseResult(NamedTuple):
+class ParseResult(BaseModel):
     """Result of parsing SQRT code."""
 
-    valid: bool
-    """Whether the code is syntactically valid."""
-
-    tree: Tree | None
-    """The parse tree if valid, None otherwise."""
-
-    error: SqrtParseError | None
-    """The parse error if invalid, None otherwise."""
+    valid: bool = Field(..., description="Whether the code is syntactically valid.")
+    tree: Tree | None = Field(None, description="The parse tree if valid, None otherwise.")
+    error: SqrtParseError | None = Field(None, description="The parse error if invalid, None otherwise.")
 
 
 # Lazy parser initialization
@@ -96,36 +91,29 @@ def _get_source_line(source_code: str, line: int) -> str | None:
 
 
 def parse(sqrt_code: str) -> ParseResult:
-    """
-    Parse SQRT code and return the result.
+    """Parse SQRT code and return the result.
 
-    This function only validates syntax - it does not transform the code
-    into policy objects. Use this to check if SQRT code is well-formed.
+    This function only validates syntax. Use this to check if SQRT code is well-formed.
 
-    Parameters
-    ----------
-    sqrt_code : str
-        The SQRT policy code to parse.
+    Args:
+        sqrt_code: The SQRT policy code to parse.
 
-    Returns
-    -------
-    ParseResult
-        A named tuple with:
-        - valid: bool - True if syntax is correct
-        - tree: Tree | None - The parse tree if valid
-        - error: SqrtParseError | None - Error details if invalid
+    Returns:
+        ParseResult: The result of parsing, including validity, parse tree, and any syntax error.
 
-    Examples
-    --------
-    >>> result = parse('tool "foo" { must allow always; }')
-    >>> result.valid
-    True
+    Example:
+        ```python
+        result = parse('tool "foo" { must allow always; }')
+        print(result.valid)
+        # True
 
-    >>> result = parse('tool "foo" { invalid syntax }')
-    >>> result.valid
-    False
-    >>> print(result.error)
-    Unexpected token...
+        result = parse('tool "foo" { invalid syntax }')
+        print(result.valid)
+        # False
+
+        print(result.error)
+        # Unexpected token...
+        ```
     """
     try:
         parser = _get_parser()
