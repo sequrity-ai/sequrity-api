@@ -325,7 +325,6 @@ security_policies = {
     "internal_policy_preset": {
         "default_allow": True,
         "enable_non_executable_memory": True,
-        "non_executable_memory_enforcement_level": "hard",
     },
     "fail_fast": True,
     "auto_gen": False,
@@ -465,7 +464,6 @@ refund_security_policies = {
     "internal_policy_preset": {
         "default_allow": True,
         "enable_non_executable_memory": True,
-        "non_executable_memory_enforcement_level": "hard",
     },
     "fail_fast": True,
     "auto_gen": False,
@@ -735,7 +733,6 @@ provenance_security_policies = {
     "internal_policy_preset": {
         "default_allow": True,
         "enable_non_executable_memory": True,
-        "non_executable_memory_enforcement_level": "hard",
     },
     "fail_fast": True,
     "auto_gen": False,
@@ -900,7 +897,6 @@ compliance_security_policies = {
     "internal_policy_preset": {
         "default_allow": True,
         "enable_non_executable_memory": True,
-        "non_executable_memory_enforcement_level": "hard",
     },
     "fail_fast": True,
     "auto_gen": False,

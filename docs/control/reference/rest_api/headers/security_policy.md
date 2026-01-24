@@ -14,6 +14,7 @@ This header is **required** when using Headers-Only Mode (must be provided toget
   "fail_fast": true,
   "internal_policy_preset": {
     "default_allow": true,
+    "default_allow_enforcement_level": "soft",
     "enable_non_executable_memory": true,
     "enable_llm_blocked_tag": true,
     "branching_meta_policy": {
@@ -79,6 +80,14 @@ Configuration for internal policies.
 | `boolean` | No | `true` |
 
 The default action when no policy rules match a tool call. When `true`, tool calls are allowed by default; when `false`, tool calls are denied by default.
+
+#### `internal_policy_preset.default_allow_enforcement_level`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `string` | No | `soft` |
+
+The enforcement level for the default allow/deny policy.
 
 #### `internal_policy_preset.enable_non_executable_memory`
 
