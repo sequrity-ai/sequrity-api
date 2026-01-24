@@ -82,7 +82,7 @@ nav:
       - Control:
           - control/learn/index.md
           - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
-          - "Policy Language: sqrt": control/learn/sqrt.md
+          - "Policy Language: SQRT": control/learn/sqrt.md
           - Compile and Execute LangGraph: control/learn/langgraph.md
   - Reference:
       - SequrityClient: general/sequrity_client/sequrity_client.md

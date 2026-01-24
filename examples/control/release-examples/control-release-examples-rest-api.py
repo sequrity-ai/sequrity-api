@@ -42,10 +42,6 @@ open_router_key = "your OpenRouter/OAI key"  # @param {type: "string"}
 sequrity_api_key = "your SequrityAI key"  # @param {type: "string"}
 endpoint_url = "https://api.sequrity.ai/control/openrouter/v1/chat/completions"  # @param {type: "string"}
 
-open_router_key = "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"
-sequrity_api_key = "74a55696a41ed02014f608c727264e317793b51bfb2f0643c68ed832693b8df3"
-endpoint_url = "http://localhost:8000/control/openrouter/v1/chat/completions"
-
 CONFIG = {
     "open_router_api_key": os.getenv("OPENROUTER_API_KEY", open_router_key),
     "sequrity_api_key": os.getenv("SEQURITY_API_KEY", sequrity_api_key),
@@ -926,7 +922,7 @@ compliance_security_config = {
 print("=== Legal Compliance (de-identified data) ===")
 result = run_workflow(
     model="openai/gpt-5-mini,openai/gpt-5-nano",
-    query="Load the patient record for patient ID 'PATIENT001' and send it to the research institute.",
+    query="Load the patient record for patient ID 'PATIENT001', de-identify it, and send it to the research institute.",
     tool_defs=compliance_tool_defs,
     tool_map=compliance_tool_map,
     enabled_features=compliance_enabled_features,
