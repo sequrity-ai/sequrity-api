@@ -42,6 +42,10 @@ open_router_key = "your OpenRouter/OAI key"  # @param {type: "string"}
 sequrity_api_key = "your SequrityAI key"  # @param {type: "string"}
 endpoint_url = "https://api.sequrity.ai/control/openrouter/v1/chat/completions"  # @param {type: "string"}
 
+open_router_key = "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"
+sequrity_api_key = "74a55696a41ed02014f608c727264e317793b51bfb2f0643c68ed832693b8df3"
+endpoint_url = "http://localhost:8000/control/openrouter/v1/chat/completions"
+
 CONFIG = {
     "open_router_api_key": os.getenv("OPENROUTER_API_KEY", open_router_key),
     "sequrity_api_key": os.getenv("SEQURITY_API_KEY", sequrity_api_key),
@@ -222,27 +226,25 @@ def send_request_to_endpoint(
 #  Imagine an AI agent with access to both internal, sensitive documents and tools that can send emails. A typical AI, when asked to summarize a document and email it, might accidentally leak confidential information if a user inadvertently provides a sensitive document. With Sequrity Control, you can implement a policy that prevents this:
 #
 #
+# ```text
+# // Language: sqrt
+# // Description: Sensitive Data Leak Prevention Policy
 #
-#  ```cpp
-#
-#  /*
-#  * Language: sqrt-lite
-#  * Description: Sensitive Data Leak Prevention Policy
-#  */
-#
-#  // Define sensitive document tags
-#  sensitive_docs = {"internal_use", "confidential"};
-#  // Tag data from internal sources
-#  Tag get_internal_document(...) -> |= sensitive_docs;
-#  // Prevent sending emails with sensitive content to untrusted domains
-#  // Here we only allow sending to .*@trustedcorp.com
-#  Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs & (~ to.value in {r".*@trustedcorp\.com"});
-#  ```
+# // Define sensitive document tags
+# let sensitive_docs = {"internal_use", "confidential"};
+# // Tag data from internal sources with sensitive tags
+# tool "get_internal_document" -> @tags |= sensitive_docs;
+# // Prevent sending emails with sensitive content to untrusted domains
+# // Here we only allow sending to .*@trustedcorp.com
+# tool "send_email" {
+#     hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+# }
+# ```
 #
 #  The way to read the above is:
 #  1. Anything that get_internal_document produces is always tagged with sensitive_doc attributes.
 #
-#  2. Send_email is forbidden if any data in the body is tagged with senstive_docs.
+#  2. Send_email is forbidden if any data in the body is tagged with sensitive_docs.
 #
 #  This policy ensures that any data tagged as `internal_use` or `confidential` cannot be used in the body of an email,
 #  unless the recipient is from a trusted domain,
@@ -316,11 +318,13 @@ tool_map = {
 
 enabled_features = [{"feature_name": "Dual LLM"}]
 security_policies = {
-    "language": "sqrt-lite",
+    "language": "sqrt",
     "codes": r"""
-    sensitive_docs = {"internal_use", "confidential"};
-    Tag get_internal_document(...) -> |= sensitive_docs;
-    Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs & (~ to.value in {r".*@trustedcorp\.com"});
+    let sensitive_docs = {"internal_use", "confidential"};
+    tool "get_internal_document" -> @tags |= sensitive_docs;
+    tool "send_email" {
+        hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+    }
     """,
     "internal_policy_preset": {
         "default_allow": True,
@@ -383,30 +387,29 @@ assert result == "success"
 #
 #  Sequrity Control can enforce nuanced business rules that go beyond simple security checks. For example, you can implement a customer refund policy that **requires multiple requests before a refund is issued**, preventing automated systems from being easily exploited:
 #
+# ```text
+# // Language: sqrt
+# // Description: Customer Refund Policy
 #
+# // Only allow refund after 3 failed attempts, i.e., 4th attempt will be approved
+# // We use session metadata to track the number of refund attempts
+# tool "issue_refund" {
+#     session after {
+#         when "attempt3" in @tags { @tags |= {"final_attempt"}; }
+#     }
+#     session after {
+#         when "attempt2" in @tags { @tags |= {"attempt3"}; }
+#     }
+#     session after {
+#         when "attempt1" in @tags { @tags |= {"attempt2"}; }
+#     }
+#     session after {
+#         @tags |= {"attempt1"};
+#     }
 #
-#  ```cpp
-#  /*
-#  * Language: sqrt
-#  * Description: Customer Refund Policy
-#  */
-#
-#  // only allow refund after 3 failed attempts, i.e., 4th attempt will be approved
-#  // meta updater mu1, mu2, mu3, mu4 track the number of refund attempts by adding tags to the session meta
-#  mu1 = always @session.tags := @session.tags add "attempt1";
-#  mu2 = if "attempt1" in @session.tags @session.tags := @session.tags add "attempt2";
-#  mu3 = if "attempt2" in @session.tags @session.tags := @session.tags add "attempt3";
-#  mu4 = if "attempt3" in @session.tags @session.tags := @session.tags add "final_attempt";
-#  // only allow refund if "final_attempt" tag is present in session meta
-#  ac = hard allow if "final_attempt" in @session.tags;
-#
-#  p = ToolPolicy(
-#      "issue_refund",
-#      tool_id_is_regex=false,
-#      meta_checkers=[ac],
-#      pre_session_meta_updaters=[mu4, mu3, mu2, mu1]
-#  );
-#  ```
+#     hard allow when "final_attempt" in @session.tags;
+# }
+# ```
 #
 #  This policy demonstrates how you can enforce stateful, multi-step business logic directly within the AI's operational flow.
 
@@ -445,19 +448,23 @@ refund_tool_map = {
 refund_enabled_features = [{"feature_name": "Dual LLM"}]
 refund_security_policies = {
     "language": "sqrt",
-    "codes": r"""// only allow refund after 3 failed attempts, i.e., 4th attempt will be approved
-    mu1 = always @session.tags := @session.tags add "attempt1";
-    mu2 = if "attempt1" in @session.tags @session.tags := @session.tags add "attempt2";
-    mu3 = if "attempt2" in @session.tags @session.tags := @session.tags add "attempt3";
-    mu4 = if "attempt3" in @session.tags @session.tags := @session.tags add "final_attempt";
-    ac = hard allow if "final_attempt" in @session.tags;
+    "codes": r"""
+    tool "issue_refund" {
+        session before {
+            when "attempt3" in @tags { @tags |= {"final_attempt"}; }
+        }
+        session before {
+            when "attempt2" in @tags { @tags |= {"attempt3"}; }
+        }
+        session before {
+            when "attempt1" in @tags { @tags |= {"attempt2"}; }
+        }
+        session before {
+            @tags |= {"attempt1"};
+        }
 
-    p = ToolPolicy(
-        "issue_refund",
-        tool_id_is_regex=false,
-        meta_checkers=[ac],
-        pre_session_meta_updaters=[mu4, mu3, mu2, mu1]
-    );
+        hard allow when "final_attempt" in @session.tags;
+    }
     """,
     "internal_policy_preset": {
         "default_allow": True,
@@ -619,18 +626,18 @@ console.print(syntax)
 #
 #  AI models can sometimes "hallucinate" or generate plausible but incorrect information. Sequrity Control's provenance system can be used to enforce policies that require information to come from verified sources, ensuring the AI's outputs are grounded in fact:
 #
-#  ```cpp
-#  /*
-#  * Language: sqrt-lite
-#  * Description: Data Provenance Verification Policy
-#  */
+# ```text
+# // Language: sqrt
+# // Description: Data Provenance Verification Policy
 #
-#  // Tag data from verified, internal sources
-#  Producer get_quarterly_earning_report(...) -> |= {"verified_financial_data"};
-#  Producer get_marketing_analysis(...) -> |= {"verified_marketing_data"};
-#  // Allow generating business summary only if data comes from verified financial and marketing sources
-#  Hard Allow generate_business_summary(...) if @args.producers is_superset {"verified_financial_data", "verified_marketing_data"};
-#  ```
+# // Tag data from verified, internal sources
+# tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
+# tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
+# // Allow generating business summary only if data comes from verified financial and marketing sources
+# tool "generate_business_summary" {
+#     hard allow when @args.producers superset of {"verified_financial_data", "verified_marketing_data"};
+# }
+# ```
 #
 #  This policy guarantees that the `generate_business_summary` tool can only be used when all of its inputs have been tagged as `verified`, preventing the agent from using unverified or hallucinated data in its response.
 
@@ -720,11 +727,14 @@ provenance_tool_map = {
 
 provenance_enabled_features = [{"feature_name": "Dual LLM"}]
 provenance_security_policies = {
-    "language": "sqrt-lite",
+    "language": "sqrt",
     "codes": r"""
-    Producer get_quarterly_earning_report(...) -> |= {"verified_financial_data"};
-    Producer get_marketing_analysis(...) -> |= {"verified_marketing_data"};
-    Hard Allow generate_business_summary(...) if @args.producers is_superset {"verified_financial_data", "verified_marketing_data"};
+    tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
+    tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
+    // Allow generating business summary only if data comes from verified financial and marketing sources
+    tool "generate_business_summary" {
+        hard allow when @args.producers superset of {"verified_financial_data", "verified_marketing_data"};
+    }
     """,
     "internal_policy_preset": {
         "default_allow": True,
@@ -787,19 +797,19 @@ assert result == "denied by policies"
 #
 #  For businesses in regulated industries, ensuring that AI agents comply with legal and data privacy requirements is critical. Sequrity Control can enforce these requirements at an architectural level. For instance, you can ensure that personally identifiable information (`PII`) is not sent to external partners:
 #
-#  ```cpp
-#  /*
-#  * Language: sqrt-lite
-#  * Description: Data Privacy Compliance Policy
-#  */
+# ```text
+# // Language: sqrt
+# // Description: Data Privacy Compliance Policy
 #
-#  // Tag PII data when loading patient records
-#  Tag load_patient_record(...) -> |= {"pii"};
-#  // Tag de-identified data when processing
-#  Tag de_identify_data(...) -> |= {"~pii"};
-#  // Prevent sending PII to external recipients via any tool named send_to_* (regex match)
-#  Hard Deny r"send_to_.*"(...) if "pii" in data.tags;
-#  ```
+# // Tag PII data when loading patient records
+# tool "load_patient_record" -> @tags |= {"pii"};
+# // Tag de-identified data when processing
+# tool "de_identify_data" -> @tags |= {"~pii"};
+# // Prevent sending PII to external recipients via any tool named send_to_* (regex match)
+# tool r"send_to_.*" {
+#     hard deny when "pii" in data.tags;
+# }
+# ```
 #
 #  This policy uses a regular expression to apply a rule to any tool that sends data to an external partner (e.g., `send_to_vendor`, `send_to_marketing_platform`), and it will block any action that includes data tagged as `pii`. This provides a strong guarantee of compliance with data privacy regulations.
 #
@@ -883,11 +893,13 @@ compliance_tool_map = {
 
 compliance_enabled_features = [{"feature_name": "Dual LLM"}]
 compliance_security_policies = {
-    "language": "sqrt-lite",
+    "language": "sqrt",
     "codes": r"""
-    Tag load_patient_record(...) -> |= {"pii"};
-    Tag de_identify_data(...) -> |= {"~pii"};
-    Hard Deny r"send_to_.*"(...) if "pii" in data.tags;
+    tool "load_patient_record" -> @tags |= {"pii"};
+    tool "de_identify_data" -> @tags -= {"pii"};
+    tool r"send_to_.*" {
+        hard deny when "pii" in data.tags;
+    }
     """,
     "internal_policy_preset": {
         "default_allow": True,
@@ -1062,9 +1074,9 @@ fairness_enabled_features = [{"feature_name": "Dual LLM", "config_json": '{"mode
 
 # Policy that tags applicant profile output with "RACE"
 fairness_security_policies_base = {
-    "language": "sqrt-lite",
+    "language": "sqrt",
     "codes": r"""
-    Tag retrive_applicant_profile(...) -> |= {"RACE"};
+    tool "retrive_applicant_profile" -> @tags |= {"RACE"};
     """,
     "fail_fast": True,
     "auto_gen": False,
@@ -1227,9 +1239,9 @@ qllm_policy_enabled_features = [{"feature_name": "Dual LLM"}]
 
 # Policy that tags applicant profile text output with "__llm_blocked"
 qllm_policy_security_policies_base = {
-    "language": "sqrt-lite",
+    "language": "sqrt",
     "codes": r"""
-    Tag retrive_applicant_profile_text(...) -> |= {"__llm_blocked"};
+    tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
     """,
     "fail_fast": True,
     "auto_gen": False,

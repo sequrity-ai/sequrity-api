@@ -24,11 +24,11 @@ except ImportError:
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
 sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
+base_url = os.getenv("BASE_URL", "https://api.sequrity.ai")
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
 assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
 
-base_url = "https://api.sequrity.ai"
 service_provider = "openrouter"
 model = "openai/gpt-5-mini,openai/gpt-5-nano"  # Dual-LLM: PLLM, QLLM
 
@@ -78,11 +78,13 @@ features = json.dumps(
 
 security_policy = json.dumps(
     {
-        "language": "sqrt-lite",
+        "language": "sqrt",
         "codes": r"""
-    sensitive_docs = {"internal_use", "confidential"};
-    Tag get_internal_document(...) -> |= sensitive_docs;
-    Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs & (~ to.value in {r".*@trustedcorp\.com"});
+    let sensitive_docs = {"internal_use", "confidential"};
+    tool "get_internal_document" -> @tags |= sensitive_docs;
+    tool "send_email" {
+        hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+    }
     """,
     }
 )

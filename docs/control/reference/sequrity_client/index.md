@@ -19,7 +19,6 @@ The Control API enables secure LLM interactions with policy enforcement. Key cap
 | [Headers](headers/features_header.md) | Configuration headers for features, policies, and fine-grained settings |
 | [ValueWithMeta](value_with_meta.md) | Value wrapper with metadata for policy enforcement |
 
-## Main Entry Points
 
 
 ::: sequrity_api.control.wrapper.ControlApiWrapper

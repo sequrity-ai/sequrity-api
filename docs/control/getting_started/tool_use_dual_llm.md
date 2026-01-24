@@ -19,7 +19,7 @@ export SEQURITY_API_KEY="your-sequrity-api-key"
 export OPENROUTER_API_KEY="your-openrouter-api-key"
 ```
 
-??? example "Download Tutorial Scripts"
+??? question "Download Tutorial Scripts"
 
     - [Sequrity Client version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/tool_use_dual_llm/sequrity_client.py)
     - [REST API version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/tool_use_dual_llm/rest_api.py)
@@ -91,14 +91,15 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
     # Enable Dual-LLM mode for enhanced security
     features = FeaturesHeader.create_dual_llm_headers(mode="standard")
 
-    # Define security policy in SQRT-Lite language
+    # Define security policy in SQRT language
     security_policy = SecurityPolicyHeader(
-        language="sqrt-lite",
+        language="sqrt",
         codes=r"""
-        sensitive_docs = {"internal_use", "confidential"};
-        Tag get_internal_document(...) -> |= sensitive_docs;
-        Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs
-            & (~ to.value in {r".*@trustedcorp\.com"});
+        let sensitive_docs = {"internal_use", "confidential"};
+        tool "get_internal_document" -> @tags |= sensitive_docs;
+        tool "send_email" {
+            hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+        }
         """,
     )
 
@@ -119,14 +120,15 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
         {"feature_name": "Long Program Support", "config_json": json.dumps({"mode": "base"})},
     ])
 
-    # Define security policy in SQRT-Lite language
+    # Define security policy in SQRT language
     security_policy = json.dumps({
-        "language": "sqrt-lite",
+        "language": "sqrt",
         "codes": r"""
-        sensitive_docs = {"internal_use", "confidential"};
-        Tag get_internal_document(...) -> |= sensitive_docs;
-        Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs
-            & (~ to.value in {r".*@trustedcorp\.com"});
+        let sensitive_docs = {"internal_use", "confidential"};
+        tool "get_internal_document" -> @tags |= sensitive_docs;
+        tool "send_email" {
+            hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+        }
         """,
     })
 
@@ -135,15 +137,16 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
     ```
 
 - **`X-Security-Features`**: Enables the Dual-LLM feature in this example
-- **`X-Security-Policy`**: Defines security policies in [SQRT-Lite language](../reference/dsl-lite/index.md):
+- **`X-Security-Policy`**: Defines security policies in [SQRT language](../reference/sqrt/index.md):
     ```c++
     // Define sensitive document tags
-    sensitive_docs = {"internal_use", "confidential"};
+    let sensitive_docs = {"internal_use", "confidential"};
     // Add tags to tool results of get_internal_document
-    Tag get_internal_document(...) -> |= sensitive_docs;
+    tool "get_internal_document" -> @tags |= sensitive_docs;
     // Hard deny sending emails if body contains sensitive tags and recipient does not match trusted pattern
-    Hard Deny send_email(...) if body.tags is_overlapping sensitive_docs
-    & (~ to.value in {r".*@trustedcorp\.com"});
+    tool "send_email" {
+        hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+    }
     ```
     - Tags documents retrieved by `get_internal_document` as `internal_use` and `confidential`
     - Blocks `send_email` calls if the email body contains sensitive tags AND the recipient is not from `trustedcorp.com`
@@ -155,7 +158,7 @@ Both examples use two tools: one for retrieving internal documents and another f
 
 The tool definitions follow [the OpenAI chat completion's tool definition format](https://platform.openai.com/docs/api-reference/chat/create#chat_create-tools).
 
-??? example "Tool Definitions of `get_internal_document` and `send_email`"
+??? question "Tool Definitions of `get_internal_document` and `send_email`"
 
     === "Sequrity Client"
 
@@ -516,7 +519,7 @@ Following the same flow as before:
 
 ### Expected Output
 
-```text hl_lines="3 4 5 21 22 23 24 25 26"
+```text hl_lines="3-5 21-26"
 ✅ Email allowed to trusted domain
 Status: success
 Return Value: {'value': {'status': 'success', 'doc_id': 'DOC12345',

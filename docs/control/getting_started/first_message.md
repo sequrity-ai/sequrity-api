@@ -7,7 +7,7 @@ This guide shows you how to send your first chat completion request through the 
 - **Sequrity API Key**: Sign up at [Sequrity](https://sequrity.ai) to get your API key from the dashboard
 - **LLM Provider API Key**: This example uses OpenRouter, but you can use any supported provider
 
-??? example "Download Tutorial Scripts"
+??? question "Download Tutorial Scripts"
 
     - [Sequrity Client version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/first_message/sequrity_client.py)
 
@@ -157,56 +157,11 @@ The response of Single-LLM follows the OpenAI Chat Completions format:
 
 
 ??? info "Bearer-Token-only, Headers-mode, and Fine-grained Configurations"
-    **Bearer-Token-only mode**:
-    When you create a Sequrity API key in your dashboard, you already pick Single-LLM or Dual-LLM for that key, as well as other features and security policies.
-    Thus, you can also just use your Sequrity API key to retrieve those settings, without specifying additional headers. This is called Bearer-Token-only mode.
-
-    === "Bearer-Token-only Sequrity Client"
-
-        ```python
-        from sequrity_api import SequrityClient
-        from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
-
-        # Initialize the client
-        client = SequrityClient(api_key="your-sequrity-api-key")
-
-        # 💡 `features` and `security_policy` are not needed in Bearer-Token-only mode
-
-        # Send a chat completion request
-        response = client.control.create_chat_completion(
-            messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-            model="openai/gpt-5-mini", # model name from your LLM provider
-            llm_api_key="your-openrouter-key",
-            service_provider="openrouter",
-        )
-
-        # Print the response
-        print(response.choices[0].message.content)
-        ```
-
-    === "Bearer-Token-only REST API"
-
-        ```bash
-        curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
-        -H "Authorization: Bearer your-sequrity-api-key" \
-        -H "Content-Type: application/json" \
-        -H "X-Api-Key: your-openrouter-key" \
-        -d '{
-            "model": "openai/gpt-5-mini",
-            "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
-        }'
-        ```
-
-    **Headers-mode**:
-    You can also specify security features and policies in the request headers, as shown in the previous examples.
-    Note that both security features and policies must be specified together in headers-mode.
-    In this case, the settings in the request headers will override those attached to your Sequrity API key.
+    **Bearer-Token-only vs Headers-mode**: When making requests to the Sequrity Control API, you have two options for specifying security features, policies, and fine-grained configurations: Bearer-Token-only mode and Headers-mode. Refer to [Bearer-Token-only vs Headers-Mode](../reference/rest_api/bearer-token-only-vs-headers-mode.md) for details.
 
     **Fine-grained Configurations**:
     You can further customize the chat session with fine-grained configurations, such as `max_pllm_attempts`, `cache_tool_results`, etc.
-    See [Fine-grained Configurations](../reference/rest_api/security_config.md) for details.
-
-    *For now, only headers-mode supports fine-grained configurations.*
+    See [Fine-grained Configurations](../reference/rest_api/headers/security_config.md) for details.
 
 
 ### Dual-LLM
@@ -329,7 +284,7 @@ Learn more in [Secure Tool Use with Dual-LLM](./tool_use_dual_llm.md).
 
 More resources explaining Security Features, Security Policies, and Fine-grained Configurations:
 
-- See more [security features](../reference/rest_api/security_features.md) like toxicity filtering and PII redaction
-- Explore [security policies](../reference/rest_api/security_policy.md) for fine-grained control
-- Learn about [advanced configurations](../reference/rest_api/security_config.md)
+- See more [security features](../reference/rest_api/headers/security_features.md) like toxicity filtering and PII redaction
+- Explore [security policies](../reference/rest_api/headers/security_policy.md) for fine-grained control
+- Learn about [advanced configurations](../reference/rest_api/headers/security_config.md)
 - See [examples](../examples/index.md) for more advanced use cases

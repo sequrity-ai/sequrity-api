@@ -2,7 +2,7 @@ local-test:
     uv run --env-file .env.local pytest
 
 local-docs: sync-all
-    uv run mkdocs serve
+    uv run mkdocs serve --livereload
 
 format:
     uv run ruff format src/ test/
