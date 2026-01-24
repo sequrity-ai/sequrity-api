@@ -37,17 +37,50 @@ plugins:
       handlers:
         python:
           paths: [src]
+          inventories:
+            - https://docs.python.org/3/objects.inv
+            - url: https://docs.python-requests.org/en/master/objects.inv
+              domains: [std, py]
           options:
+            # Existing settings
             docstring_style: google
             show_source: true
-            show_root_heading: true
-            show_root_full_path: false
             members_order: source
-            show_signature_annotations: true
-            separate_signature: true
             extensions:
               - griffe_pydantic:
                   schema: true
+
+            # DOCSTRINGS
+            docstring_options:
+              ignore_init_summary: true
+            docstring_section_style: list
+
+            # CROSS-REFERENCES
+            signature_crossrefs: true
+            unwrap_annotated: true
+
+            # MEMBERS
+            inherited_members: true
+            summary: true
+
+            # HEADINGS
+            heading_level: 1
+            parameter_headings: true
+            type_parameter_headings: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+
+            # SIGNATURES
+            line_length: 88
+            merge_init_into_class: true
+            separate_signature: true
+            show_signature_annotations: true
+            show_signature_type_parameters: true
+
+            # OTHER
+            show_bases: false
   - mkdocs-jupyter
 
 markdown_extensions:

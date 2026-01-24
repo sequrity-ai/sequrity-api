@@ -1,10 +1,10 @@
-# FineGrainedConfigHeader
+# Fine-Grained Configuration / X-Security-Config
 
 Advanced configuration for session behavior, response formatting, and internal tools.
 
 ::: sequrity_api.types.control.headers.FineGrainedConfigHeader
     options:
-      show_root_heading: false
+      show_root_heading: true
       show_source: true
 
 
