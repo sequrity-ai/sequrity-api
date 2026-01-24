@@ -57,43 +57,13 @@ together with your `SecurityPolicyHeader` / security policy headers.
 === "Sequrity Client"
 
     ```python
-    from sequrity_api import SequrityClient
-    from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
-
-    # Initialize the client
-    client = SequrityClient(api_key="your-sequrity-api-key")
-
-    # Create feature and policy headers
-    features = FeaturesHeader.create_single_llm_headers() # 💡 single-llm
-    policy = SecurityPolicyHeader.create_default()
-
-    # Send a chat completion request
-    response = client.control.create_chat_completion(
-        messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-        model="openai/gpt-5-mini", # model name from your LLM provider
-        llm_api_key="your-openrouter-key",
-        features=features,
-        security_policy=policy,
-        service_provider="openrouter",
-    )
-
-    # Print the response
-    print(response.choices[0].message.content)
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:13:14,26:45"
     ```
 
 === "REST API"
 
     ```bash
-    curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
-      -H "Authorization: Bearer your-sequrity-api-key" \
-      -H "Content-Type: application/json" \
-      -H "X-Api-Key: your-openrouter-key" \
-      -H 'X-Security-Policy: {"language":"sqrt-lite","codes":""}' \
-      -H 'X-Security-Features: [{"feature_name":"Single LLM","config_json":"{\"mode\":\"standard\"}"},{"feature_name":"Long Program Support","config_json":"{\"mode\":\"base\"}"}]' \
-      -d '{
-        "model": "openai/gpt-5-mini",
-        "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
-      }'
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:19:28"
     ```
 
 #### Response
@@ -178,41 +148,13 @@ together with your `SecurityPolicyHeader` / security policy headers.
 === "Sequrity Client"
 
     ```python
-    from sequrity_api import SequrityClient
-    from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
-
-    # Initialize the client
-    client = SequrityClient(api_key="your-sequrity-api-key")
-
-    # Create dual LLM feature headers
-    features = FeaturesHeader.create_dual_llm_headers() # 💡 dual-llm
-    policy = SecurityPolicyHeader.create_default()
-
-    # Send a chat completion request
-    response = client.control.create_chat_completion(
-        messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-        model="openai/gpt-5-mini",
-        llm_api_key="sk-your-openrouter-key",
-        features=features,
-        security_policy=policy,
-    )
-
-    print(response.choices[0].message.content)
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:56:73"
     ```
 
 === "REST API"
 
     ```bash
-    curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
-      -H "Authorization: Bearer your-sequrity-api-key" \
-      -H "Content-Type: application/json" \
-      -H "X-Api-Key: sk-your-openrouter-key" \
-      -H 'X-Security-Policy: {"language":"sqrt-lite","codes":""}' \
-      -H 'X-Security-Features: [{"feature_name":"Dual LLM","config_json":"{\"mode\":\"standard\"}"},{"feature_name":"Long Program Support","config_json":"{\"mode\":\"base\"}"}]' \
-      -d '{
-        "model": "openai/gpt-5-mini",
-        "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
-      }'
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:39:48"
     ```
 
 #### Response

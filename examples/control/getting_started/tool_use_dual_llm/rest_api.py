@@ -125,7 +125,9 @@ assert response_data["choices"][0]["message"]["role"] == "assistant"
 assert response_data["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "get_internal_document"
 tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
 
+# append assistant message (tool call to get_internal_document)
 messages.append(response_data["choices"][0]["message"])
+# simulate tool execution and get tool response
 messages.append(
     {
         "role": "tool",
