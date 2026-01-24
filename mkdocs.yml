@@ -93,6 +93,7 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - def_list
@@ -115,7 +116,12 @@ nav:
       - Control:
           - control/learn/index.md
           - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
-          - "Policy Language: SQRT": control/learn/sqrt/index.md
+          - "Policy Language: SQRT":
+              - control/learn/sqrt/index.md
+              - 01-Basic Types: control/learn/sqrt/01_basic_types.md
+              - 02-Set Operations: control/learn/sqrt/02_set_operations.md
+              - 03-Predicates: control/learn/sqrt/03_predicates.md
+              - 04-Tool Policies: control/learn/sqrt/04_tool_policies.md
           - Compile and Execute LangGraph: control/learn/langgraph.md
   - Reference:
       - SequrityClient: general/sequrity_client/sequrity_client.md

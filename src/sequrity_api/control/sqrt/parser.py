@@ -10,10 +10,10 @@ allowing users to validate their SQRT policies without access to the translation
 """
 
 from pathlib import Path
+from typing import NamedTuple
 
 from lark import Lark, Tree
 from lark.exceptions import LarkError, UnexpectedCharacters, UnexpectedToken
-from pydantic import BaseModel, Field
 
 
 class SqrtParseError(Exception):
@@ -53,12 +53,17 @@ class SqrtParseError(Exception):
         return full_msg
 
 
-class ParseResult(BaseModel):
+class ParseResult(NamedTuple):
     """Result of parsing SQRT code."""
 
-    valid: bool = Field(..., description="Whether the code is syntactically valid.")
-    tree: Tree | None = Field(None, description="The parse tree if valid, None otherwise.")
-    error: SqrtParseError | None = Field(None, description="The parse error if invalid, None otherwise.")
+    valid: bool
+    """Whether the code is syntactically valid."""
+
+    tree: Tree | None
+    """The parse tree if valid, None otherwise."""
+
+    error: SqrtParseError | None
+    """The parse error if invalid, None otherwise."""
 
 
 # Lazy parser initialization
