@@ -7,16 +7,25 @@ The Sequrity Control API provides a chat completion endpoint that is mostly comp
 
 ### Endpoint
 
-```
-POST /v1/chat/completions
-```
+Sequrity Control Chat Completion API can be accessed via the following endpoints:
+
+- Openrouter as service provider:
+    ```
+    POST https://api.sequrity.ai/control/v1/chat/completions
+    ```
+- Specific service provider
+    ```
+    POST https://api.sequrity.ai/control/{service_provider}/v1/chat/completions
+    ```
+
+    See [Service Providers](../../../general/rest_api/service_provider.md) for available service providers.
 
 ### Request Body Schema
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `messages` | `array[Message]` | Yes | A list of messages comprising the conversation so far. See [Message Types](#message-types) below. |
-| `model` | `string` | Yes | Model ID used to generate the response, like `gpt-4o` or `o3`. |
+| `model` | `string` | Yes | Model ID used to generate the response, like `openai/gpt-5-mini`. For Dual-LLM, two models can be specified separated by a comma, like `openai/gpt-5-mini,openai/gpt-5-nano`, for PLLM and QLLM |
 | `reasoning_effort` | `string` | No | Constrains effort on reasoning for reasoning models. Supported values: `minimal`, `low`, `medium`, `high`. |
 | `response_format` | `object` | No | An object specifying the format that the model must output. Setting to `json_schema` enables Structured Outputs. See [Response Format](#response-format). |
 | `seed` | `integer` | No | If specified, the system will make a best effort to sample deterministically for reproducible results. |
@@ -162,9 +171,9 @@ The following headers can be included in your requests to the Sequrity Control A
 
 | Header | Description |
 |--------|-------------|
-| `X-Security-Features` | Enable or disable specific security features for this request. Allows fine-grained control over which security checks are applied. See [Security Features](security_features.md) for detailed configuration options. |
-| `X-Security-Policy` | Specify security policies using SQRT, SQRT-Lite, or Cedar policy languages. Policies define rules for content filtering, access control, and compliance. See [Security Policy](security_policy.md) for policy syntax and examples. |
-| `X-Security-Config` | Provide a complete security configuration object for this request. Combines features, policies, and additional settings in a single header. See [Security Config](security_config.md) for the full configuration schema. |
+| `X-Security-Features` | Enable or disable specific security features for this request. Allows fine-grained control over which security checks are applied. See [Security Features](./headers/security_features.md) for detailed configuration options. |
+| `X-Security-Policy` | Specify security policies using SQRT, SQRT-Lite, or Cedar policy languages. Policies define rules for content filtering, access control, and compliance. See [Security Policy](./headers/security_policy.md) for policy syntax and examples. |
+| `X-Security-Config` | Provide a complete security configuration object for this request. Combines features, policies, and additional settings in a single header. See [Security Config](./headers/security_config.md) for the full configuration schema. |
 
 #### Session Management
 

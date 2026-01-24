@@ -66,6 +66,7 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - footnotes
+  - pymdownx.critic
 
 extra_css:
   - stylesheets/custom.css
@@ -81,24 +82,26 @@ nav:
       - Control:
           - control/learn/index.md
           - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
-          - "Policy Language: sqrt-lite": control/learn/sqrt-lite.md
+          - "Policy Language: sqrt": control/learn/sqrt.md
           - Compile and Execute LangGraph: control/learn/langgraph.md
   - Reference:
+      - SequrityClient: general/sequrity_client/sequrity_client.md
       - Control:
           - control/reference/index.md
-          - SQRT-Lite DSL:
-              - control/reference/dsl-lite/index.md
-              - Grammar: control/reference/dsl-lite/grammar.md
+          - SQRT Policy Language:
+              - control/reference/sqrt/index.md
+              - Grammar: control/reference/sqrt/grammar.md
           - REST API:
               - control/reference/rest_api/index.md
+              - Service Providers: general/rest_api/service_provider.md
+              - Bearer-Token-only vs Headers-Mode: control/reference/rest_api/bearer-token-only-vs-headers-mode.md
               - Chat Completion: control/reference/rest_api/chat_completion.md
               - Custom Headers:
-                  - Bearer Token, X-Api-Key and X-Session-Id: control/reference/rest_api/api_key_session_id.md
-                  - X-Security-Features: control/reference/rest_api/security_features.md
-                  - X-Security-Policy: control/reference/rest_api/security_policy.md
-                  - X-Security-Config: control/reference/rest_api/security_config.md
+                  - X-Api-Key and X-Session-Id: control/reference/rest_api/headers/api_key_session_id.md
+                  - X-Security-Features: control/reference/rest_api/headers/security_features.md
+                  - X-Security-Policy: control/reference/rest_api/headers/security_policy.md
+                  - X-Security-Config: control/reference/rest_api/headers/security_config.md
           - SequrityClient:
-              - general/sequrity_client.md
               - SequrityClient.control:
                   - control/reference/sequrity_client/index.md
                   - Chat Completion: control/reference/sequrity_client/chat_completion.md
@@ -108,7 +111,7 @@ nav:
                       - PolicyHeader: control/reference/sequrity_client/headers/policy_header.md
                       - ConfigHeader: control/reference/sequrity_client/headers/config_header.md
                   - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
-              - service_provider: general/service_provider.md
+              - service_provider: general/sequrity_client/service_provider.md
   - Examples:
       - Control:
           - control/examples/index.md
