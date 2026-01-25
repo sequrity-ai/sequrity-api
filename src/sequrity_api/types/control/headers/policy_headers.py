@@ -37,6 +37,9 @@ class ControlFlowMetaPolicy(BaseModel):
 
 class InternalPolicyPreset(BaseModel):
     default_allow: bool = Field(default=True, description="Whether to allow tool calls by default.")
+    default_allow_enforcement_level: Literal["soft", "hard"] = Field(
+        default="soft", description="Enforcement level for default allow/deny policies."
+    )
     enable_non_executable_memory: bool = Field(
         default=True, description="Inject non-executable to tool result tags by default."
     )

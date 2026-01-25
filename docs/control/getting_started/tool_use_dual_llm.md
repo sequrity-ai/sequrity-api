@@ -19,7 +19,7 @@ export SEQURITY_API_KEY="your-sequrity-api-key"
 export OPENROUTER_API_KEY="your-openrouter-api-key"
 ```
 
-??? question "Download Tutorial Scripts"
+??? tip "Download Tutorial Scripts"
 
     - [Sequrity Client version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/tool_use_dual_llm/sequrity_client.py)
     - [REST API version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/tool_use_dual_llm/rest_api.py)
@@ -82,58 +82,13 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
 === "Sequrity Client"
 
     ```python
-    from sequrity_api.types.control.headers import (
-        FeaturesHeader,
-        FineGrainedConfigHeader,
-        SecurityPolicyHeader,
-    )
-
-    # Enable Dual-LLM mode for enhanced security
-    features = FeaturesHeader.create_dual_llm_headers(mode="standard")
-
-    # Define security policy in SQRT language
-    security_policy = SecurityPolicyHeader(
-        language="sqrt",
-        codes=r"""
-        let sensitive_docs = {"internal_use", "confidential"};
-        tool "get_internal_document" -> @tags |= sensitive_docs;
-        tool "send_email" {
-            hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
-        }
-        """,
-    )
-
-    # Request to include generated program in response
-    fine_grained_config = FineGrainedConfigHeader(
-        response_format=ResponseFormat(include_program=True)
-    )
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:24:29,89:100"
     ```
 
 === "REST API"
 
     ```python
-    import json
-
-    # Enable Dual-LLM mode for enhanced security
-    features = json.dumps([
-        {"feature_name": "Dual LLM", "config_json": json.dumps({"mode": "standard"})},
-        {"feature_name": "Long Program Support", "config_json": json.dumps({"mode": "base"})},
-    ])
-
-    # Define security policy in SQRT language
-    security_policy = json.dumps({
-        "language": "sqrt",
-        "codes": r"""
-        let sensitive_docs = {"internal_use", "confidential"};
-        tool "get_internal_document" -> @tags |= sensitive_docs;
-        tool "send_email" {
-            hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
-        }
-        """,
-    })
-
-    # Request to include generated program in response
-    fine_grained_config = json.dumps({"response_format": {"include_program": True}})
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:1:1,72:92"
     ```
 
 - **`X-Security-Features`**: Enables the Dual-LLM feature in this example
@@ -154,85 +109,32 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
 
 ## Tool Definitions
 
-Both examples use two tools: one for retrieving internal documents and another for sending emails. Here we simply define their interfaces for the LLM to call.
+Both examples use two tools: one for retrieving internal documents and another for sending emails.
 
-The tool definitions follow [the OpenAI chat completion's tool definition format](https://platform.openai.com/docs/api-reference/chat/create#chat_create-tools).
+```python
+def get_internal_document(doc_id: str) -> str:
+    ...
 
-??? question "Tool Definitions of `get_internal_document` and `send_email`"
+def send_email(to: str, subject: str, body: str) -> str:
+    ...
+```
+
+Here we follow [the OpenAI chat completion's tool definition format](https://platform.openai.com/docs/api-reference/chat/create#chat_create-tools) to define their signatures.
+
+??? info "Tool Definitions of `get_internal_document` and `send_email`"
 
     === "Sequrity Client"
 
         ```python
-        tool_defs = [
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_internal_document",
-                    "description": "Retrieve an internal document by its ID.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "doc_id": {"type": "string", "description": "The ID of the internal document."}
-                        },
-                        "required": ["doc_id"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "send_email",
-                    "description": "Send an email to a specified recipient.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "to": {"type": "string", "description": "The recipient's email address."},
-                            "subject": {"type": "string", "description": "The subject of the email."},
-                            "body": {"type": "string", "description": "The body content of the email."},
-                        },
-                        "required": ["to", "subject", "body"],
-                    },
-                },
-            },
-        ]
+        --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:44:87"
         ```
 
     === "REST API"
 
         ```python
-        tool_defs = [
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_internal_document",
-                    "description": "Retrieve an internal document by its ID.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "doc_id": {"type": "string", "description": "The ID of the internal document."}
-                        },
-                        "required": ["doc_id"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "name": "send_email",
-                    "description": "Send an email to a specified recipient.",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "to": {"type": "string", "description": "The recipient's email address."},
-                            "subject": {"type": "string", "description": "The subject of the email."},
-                            "body": {"type": "string", "description": "The body content of the email."},
-                        },
-                        "required": ["to", "subject", "body"],
-                    },
-                },
-            },
-        ]
+        --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:35:69"
         ```
+
 
 ## Example 1: Blocking Emails to Untrusted Domains
 
@@ -246,19 +148,13 @@ PLLM (Planning LLM) for generating the execution plan, and QLLM (Query/Quarantin
 === "Sequrity Client"
 
     ```python
-    from sequrity_api import SequrityClient
-
-    client = SequrityClient(api_key=sequrity_api_key)
-    model = "openai/gpt-5-mini,openai/gpt-5-nano"  # PLLM, QLLM
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:24:24,40:42"
     ```
 
 === "REST API"
 
     ```python
-    import requests
-
-    base_url = "https://api.sequrity.ai"
-    model = "openai/gpt-5-mini,openai/gpt-5-nano"  # PLLM, QLLM
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:5:5,27:27,33:33"
     ```
 
 ### Step 2: Send User Query
@@ -269,40 +165,13 @@ Note that we need to keep track of the `session_id` to maintain context across m
 === "Sequrity Client"
 
     ```python
-    user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
-    messages = [{"role": "user", "content": user_query}]
-
-    response = client.control.create_chat_completion(
-        messages=messages,
-        model=model,
-        tools=tool_defs,
-        features=features,
-        security_policy=security_policy,
-        fine_grained_config=fine_grained_config,
-        service_provider="openrouter",
-    )
-    session_id = response.session_id
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:107:119"
     ```
 
 === "REST API"
 
     ```python
-    user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
-    messages = [{"role": "user", "content": user_query}]
-
-    url = f"{base_url}/control/openrouter/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {sequrity_api_key}",
-        "X-Api-Key": openrouter_api_key,
-        "X-Security-Features": features,
-        "X-Security-Policy": security_policy,
-        "X-Security-Config": fine_grained_config,
-    }
-
-    payload = {"messages": messages, "model": model, "tools": tool_defs}
-    response = requests.post(url, headers=headers, json=payload)
-    response_data = response.json()
-    session_id = response.headers.get("X-Session-Id")
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:95:111,120:123"
     ```
 
 ### Step 3: LLM Calls get_internal_document
@@ -314,34 +183,29 @@ The LLM first calls `get_internal_document` to retrieve the document. This tool 
 === "Sequrity Client"
 
     ```python
-    tool_call = response.choices[0].message.tool_calls[0]
-    assert tool_call.function.name == "get_internal_document"
-
-    # Append assistant message with tool call
-    messages.append(response.choices[0].message.model_dump(mode="json"))
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:124:128"
     ```
 
 === "REST API"
 
     ```python
-    tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
-    assert tool_call["function"]["name"] == "get_internal_document"
-
-    # Append assistant message with tool call
-    messages.append(response_data["choices"][0]["message"])
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:125:129"
     ```
 
 ### Step 4: Return Tool Result
 
 Simulate the tool execution and return the sensitive document content.
 
-```python
-messages.append({
-    "role": "tool",
-    "content": "The document content is: 'Sequrity is a secure AI orchestration platform...'",
-    "tool_call_id": tool_call.id,  # or tool_call["id"] for REST API
-})
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:130:137"
+    ```
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:130:137"
+    ```
 
 ### Step 5: Security Policy Blocks send_email
 
@@ -350,30 +214,13 @@ When the LLM attempts to call `send_email`, Sequrity detects that the email body
 === "Sequrity Client"
 
     ```python
-    response = client.control.create_chat_completion(
-        messages=messages,
-        model=model,
-        tools=tool_defs,
-        service_provider="openrouter",
-        session_id=session_id,
-    )
-
-    # Parse the error response
-    content = ResponseContentJsonSchema.parse_raw(response.choices[0].message.content)
-    print(f"Error: {content.error.message}")
-    print(f"Generated Program:\n{content.program}")
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:140:148"
     ```
 
 === "REST API"
 
     ```python
-    response = requests.post(url, headers=headers, json=payload)
-    response_data = response.json()
-
-    # Parse the error response
-    content = json.loads(response_data["choices"][0]["message"]["content"])
-    print(f"Error: {content['error']['message']}")
-    print(f"Generated Program:\n{content['program']}")
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:140:142"
     ```
 
 ### Expected Output
@@ -418,30 +265,13 @@ Change the recipient to `user@trustedcorp.com` and start a new session:
 === "Sequrity Client"
 
     ```python
-    user_query = "Retrieve the internal document with ID 'DOC12345' and email it to user@trustedcorp.com"
-    messages = [{"role": "user", "content": user_query}]
-
-    response = client.control.create_chat_completion(
-        messages=messages,
-        model=model,
-        tools=tool_defs,
-        features=features,
-        security_policy=security_policy,
-        fine_grained_config=fine_grained_config,
-        service_provider="openrouter",
-    )
-    session_id = response.session_id
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:162:174"
     ```
 
 === "REST API"
 
     ```python
-    user_query = "Retrieve the internal document with ID 'DOC12345' and email it to user@trustedcorp.com"
-    messages = [{"role": "user", "content": user_query}]
-
-    response = requests.post(url, headers=headers, json=payload)
-    response_data = response.json()
-    session_id = response.headers.get("X-Session-Id")
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:156:159"
     ```
 
 ### Execute Tool Calls
@@ -450,72 +280,21 @@ Following the same flow as before:
 
 1. LLM calls `get_internal_document` - return the document content
 2. LLM calls `send_email` - **this time it's allowed!**
-3. Return success message from the email tool
+3. Return `send_email` result
+4. Get final response from LLM
 
-=== "Sequrity Client"
+??? info "Tool Call Executions with Trusted Recipient"
+    === "Sequrity Client"
 
-    ```python
-    # After get_internal_document call
-    messages.append(response.choices[0].message.model_dump(mode="json"))
-    messages.append({
-        "role": "tool",
-        "content": "The document content is: 'Sequrity is a secure AI orchestration platform...'",
-        "tool_call_id": tool_call.id,
-    })
+        ```python
+        --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:180:224"
+        ```
 
-    # Get send_email tool call
-    response = client.control.create_chat_completion(
-        messages=messages, model=model, tools=tool_defs,
-        service_provider="openrouter", session_id=session_id,
-    )
+    === "REST API"
 
-    # Execute send_email
-    tool_call = response.choices[0].message.tool_calls[0]
-    messages.append(response.choices[0].message.model_dump(mode="json"))
-    messages.append({
-        "role": "tool",
-        "content": "Email sent successfully",
-        "tool_call_id": tool_call.id,
-    })
-
-    # Get final response
-    response = client.control.create_chat_completion(
-        messages=messages, model=model, tools=tool_defs,
-        service_provider="openrouter", session_id=session_id,
-    )
-
-    content = ResponseContentJsonSchema.parse_raw(response.choices[0].message.content)
-    ```
-
-=== "REST API"
-
-    ```python
-    # After get_internal_document call
-    messages.append(response_data["choices"][0]["message"])
-    messages.append({
-        "role": "tool",
-        "content": "The document content is: 'Sequrity is a secure AI orchestration platform...'",
-        "tool_call_id": tool_call["id"],
-    })
-
-    # Get send_email tool call
-    response = requests.post(url, headers=headers, json=payload)
-    response_data = response.json()
-
-    # Execute send_email
-    tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
-    messages.append(response_data["choices"][0]["message"])
-    messages.append({
-        "role": "tool",
-        "content": "Email sent successfully",
-        "tool_call_id": tool_call["id"],
-    })
-
-    # Get final response
-    response = requests.post(url, headers=headers, json=payload)
-    response_data = response.json()
-    content = json.loads(response_data["choices"][0]["message"]["content"])
-    ```
+        ```python
+        --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:156:183"
+        ```
 
 ### Expected Output
 

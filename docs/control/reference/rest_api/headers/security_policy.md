@@ -14,6 +14,7 @@ This header is **required** when using Headers-Only Mode (must be provided toget
   "fail_fast": true,
   "internal_policy_preset": {
     "default_allow": true,
+    "default_allow_enforcement_level": "soft",
     "enable_non_executable_memory": true,
     "enable_llm_blocked_tag": true,
     "branching_meta_policy": {
@@ -36,8 +37,7 @@ This header is **required** when using Headers-Only Mode (must be provided toget
 
 The policy language to use. Supported values:
 
-- `sqrt-json`: Pre-compiled JSON policy objects
-- `sqrt`: SQRT policy code (will be translated)
+- `sqrt`: SQRT policy code
 - `sqrt-lite`: Simplified SQRT policy code
 - `cedar`: Cedar policy language
 
@@ -63,7 +63,7 @@ When enabled, security policies are auto-generated based on the user query. The 
 |------|----------|---------|
 | `boolean` | No | `true` |
 
-Stop execution on the first policy violation. **Only available for sqrt languages** (`sqrt-json`, `sqrt`, `sqrt-lite`). Not available for `cedar`.
+Stop execution on the first policy violation. **Only available for sqrt languages** (`sqrt`, `sqrt-lite`). Not available for `cedar`.
 
 ### `internal_policy_preset`
 
@@ -81,6 +81,14 @@ Configuration for internal policies.
 
 The default action when no policy rules match a tool call. When `true`, tool calls are allowed by default; when `false`, tool calls are denied by default.
 
+#### `internal_policy_preset.default_allow_enforcement_level`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `string` | No | `soft` |
+
+The enforcement level for the default allow/deny policy.
+
 #### `internal_policy_preset.enable_non_executable_memory`
 
 | Type | Required | Default |
@@ -91,7 +99,7 @@ Enable non-executable memory protection for tool result tags.
 
 **Note:** This value is **automatically determined by the policy language** and any user-provided value will be ignored:
 
-- `true` for sqrt languages (`sqrt-json`, `sqrt`, `sqrt-lite`)
+- `true` for sqrt languages (`sqrt`, `sqrt-lite`)
 - `false` for `cedar`
 
 #### `internal_policy_preset.enable_llm_blocked_tag`

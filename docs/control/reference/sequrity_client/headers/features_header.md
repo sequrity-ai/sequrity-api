@@ -1,8 +1,8 @@
-# FeaturesHeader
+# Security Features / X-Security-Features
 
 ::: sequrity_api.types.control.headers.FeaturesHeader
     options:
-      show_root_heading: false
+      show_root_heading: true
       show_source: true
 
 
