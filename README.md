@@ -1,6 +1,9 @@
-# sequrity-api
+# Sequrity-API
+
+Please see the full [Documentation](https://sequrity-ai.github.io/sequrity-api/)
 
 Python client and REST API for the Sequrity API.
+
 
 ## Installation
 
