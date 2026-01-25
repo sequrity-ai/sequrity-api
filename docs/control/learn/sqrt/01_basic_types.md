@@ -20,7 +20,7 @@ Boolean domains constrain values to `true` or `false`:
 
 Integer domains support exact values and ranges:
 
-```python
+```python hl_lines="3-18"
 --8<-- "examples/control/learn_sqrt/basic_types.py:int_domains"
 ```
 
@@ -38,7 +38,7 @@ Integer domains support exact values and ranges:
 
 Float domains work like integers but with decimal values:
 
-```python
+```python hl_lines="3-5"
 --8<-- "examples/control/learn_sqrt/basic_types.py:float_domains"
 ```
 
@@ -46,7 +46,7 @@ Float domains work like integers but with decimal values:
 
 String domains support three matching modes:
 
-```python
+```python hl_lines="3-13"
 --8<-- "examples/control/learn_sqrt/basic_types.py:str_domains"
 ```
 
@@ -62,7 +62,7 @@ String domains can also include length constraints: `str matching r".*" length 1
 
 Datetime literals use the `d"..."` prefix:
 
-```python
+```python hl_lines="3-10"
 --8<-- "examples/control/learn_sqrt/basic_types.py:datetime_domains"
 ```
 

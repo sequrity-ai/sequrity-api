@@ -68,28 +68,62 @@ This policy:
 
 We define mock tool implementations for `get_internal_document` and `send_email`:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_mock_funcs"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex1_mock_funcs"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_mock_funcs"
+    ```
 
 ??? info "Tool Signatures"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_tool_defs"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex1_tool_defs"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_tool_defs"
+        ```
 
 ??? info "Session Configurations"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_session_config"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex1_session_config"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_session_config"
+        ```
 
 
 ### Case 1: Untrusted Email (Denied)
 
 Sending a confidential document to an untrusted email address `research@gmail.com` should be blocked:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_case1"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex1_case1"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_case1"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -109,9 +143,17 @@ Sending a confidential document to an untrusted email address `research@gmail.co
 
 Sending the same document to an email of trusted domain `admin@trustedcorp.com` succeeds:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_case2"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex1_case2"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_case2"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -168,19 +210,45 @@ This policy tracks refund attempts using session metadata. Only the 4th attempt 
 
 Tool implementation for `issue_refund`:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_mock_func"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex2_mock_func"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_mock_func"
+    ```
 
 ??? info "Tool Signature"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_tool_defs"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex2_tool_defs"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_tool_defs"
+        ```
 
 ??? info "Security Policies and Configuration"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_security_config"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex2_security_config"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_security_config"
+        ```
 
 ### Helper Functions for Multi-Turn Refund Requests
 
@@ -189,15 +257,32 @@ We simulate a customer requesting a refund 4 times with helper functions `send_r
 Note that the first three attempts should be denied, and only the fourth attempt should succeed.
 
 ??? info "`send_request_refund_example` and `run_refund_tool` Functions"
-	```python
-	--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_helper_funcs"
-	```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex2_helper_funcs"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_helper_funcs"
+        ```
 
 ### Running the Refund Flow
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_main"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex2_main"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_main"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -240,27 +325,61 @@ This policy requires `generate_business_summary` to only use inputs from verifie
 
 We define mock tool implementations and configure the security policies:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_mock_funcs"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex3_mock_funcs"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_mock_funcs"
+    ```
 
 ??? info "Tool Signatures"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_tool_defs"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex3_tool_defs"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_tool_defs"
+        ```
 
 ??? info "Security Policies and Configuration"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_security_config"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex3_security_config"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_security_config"
+        ```
 
 ### Case 1: Both Verified Sources (Allowed)
 
 When both financial and marketing data are retrieved from verified tools, the business summary generation succeeds:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_case1"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex3_case1"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_case1"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -284,9 +403,17 @@ When both financial and marketing data are retrieved from verified tools, the bu
 
 When the marketing analysis tool is unavailable and the user provides unverified data, the policy denies the operation:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_case2"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex3_case2"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_case2"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -326,27 +453,61 @@ This policy:
 
 We define mock tool implementations and configure the security policies:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_mock_funcs"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex4_mock_funcs"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_mock_funcs"
+    ```
 
 ??? info "Tool Signatures"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_tool_defs"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex4_tool_defs"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_tool_defs"
+        ```
 
 ??? info "Security Policies and Configuration"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_security_config"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex4_security_config"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_security_config"
+        ```
 
 ### Case 1: With De-identification (Allowed)
 
 When patient data is de-identified before sending, the operation succeeds:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_case1"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex4_case1"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_case1"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -370,9 +531,17 @@ When patient data is de-identified before sending, the operation succeeds:
 
 When attempting to send PII data without de-identification, the policy denies the operation:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_case2"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex4_case2"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_case2"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -406,37 +575,83 @@ tool "retrive_applicant_profile" -> @tags |= {"RACE"};
 
 Then we set `branching_meta_policy` to `{"mode": "deny", "tags": ["RACE"]}` in internal policy preset to block discriminatory branching.
 
-```python
-        ...
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_branching_meta_policy"
-        ...
-```
+=== "Sequrity Client"
+
+    ```python
+            ...
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_branching_meta_policy"
+            ...
+    ```
+
+=== "REST API"
+
+    ```python
+            ...
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_branching_meta_policy"
+            ...
+    ```
 
 Note that `branching_meta_policy` needs Dual-LLM in **`custom` mode** to take effect:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_enabled_features"
-```
+=== "Sequrity Client"
 
-??? info "Security Policies Configuration"
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_fairness_enabled_features"
+    ```
+
+=== "REST API"
+
     ```python
     --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_enabled_features"
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_base_config"
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_policies_deny"
     ```
 
+??? info "Security Policies Configuration"
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_fairness_enabled_features"
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_fairness_base_config"
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_fairness_policies_deny"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_enabled_features"
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_base_config"
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_policies_deny"
+        ```
+
 ??? info "Tool Signatures"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_tool_defs"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_tool_defs"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_tool_defs"
+        ```
 
 ### Case 1: Discriminatory Routing (Denied)
 
 Attempting to route applicants based on race is blocked:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_discriminatory"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_case1_discriminatory"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_discriminatory"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -454,9 +669,17 @@ Attempting to route applicants based on race is blocked:
 
 Without the discriminatory branching, the workflow succeeds:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case2_nondiscriminatory"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_case2_nondiscriminatory"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case2_nondiscriminatory"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -486,28 +709,63 @@ We configure the policy to tag applicant profile text with "__llm_blocked" and e
 tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
 ```
 
-```python hl_lines="5"
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_policies_allow"
-```
+=== "Sequrity Client"
+
+    ```python hl_lines="5"
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_qllm_policies_allow"
+    ```
+
+=== "REST API"
+
+    ```python hl_lines="5"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_policies_allow"
+    ```
 
 ??? info "Security Policies Configuration"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_base_config"
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_policies_deny"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_qllm_base_config"
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_qllm_policies_deny"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_base_config"
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_policies_deny"
+        ```
 
 ??? info "Tool Signatures"
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_tool_defs"
-    ```
+
+    === "Sequrity Client"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_tool_defs"
+        ```
+
+    === "REST API"
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_tool_defs"
+        ```
 
 ##### Case 1: AI Parsing of Blocked Data (Denied)
 
 Attempting to use `parse_with_ai` on data tagged with `__llm_blocked` is denied:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_ai_parsing"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_case1_ai_parsing"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_ai_parsing"
+    ```
 
 ??? info "Expected Output"
     ```
@@ -525,9 +783,17 @@ Attempting to use `parse_with_ai` on data tagged with `__llm_blocked` is denied:
 
 When we don't use AI parsing, the data can be processed through the normal workflow:
 
-```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case2_direct"
-```
+=== "Sequrity Client"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:ex5_case2_direct"
+    ```
+
+=== "REST API"
+
+    ```python
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case2_direct"
+    ```
 
 ??? info "Expected Output"
     ```
