@@ -5,7 +5,7 @@
 
 Predicates are boolean expressions used in check rules and conditional updates.
 
-??? question "Download Tutorial Script"
+??? tip "Download Tutorial Script"
     - [predicates.py](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/learn_sqrt/predicates.py)
 
 ## Value Comparisons

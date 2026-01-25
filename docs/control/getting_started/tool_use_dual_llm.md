@@ -19,7 +19,7 @@ export SEQURITY_API_KEY="your-sequrity-api-key"
 export OPENROUTER_API_KEY="your-openrouter-api-key"
 ```
 
-??? question "Download Tutorial Scripts"
+??? tip "Download Tutorial Scripts"
 
     - [Sequrity Client version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/tool_use_dual_llm/sequrity_client.py)
     - [REST API version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/tool_use_dual_llm/rest_api.py)

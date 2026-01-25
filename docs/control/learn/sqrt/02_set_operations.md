@@ -5,7 +5,7 @@
 
 Sets are fundamental to SQRT. They represent collections of strings used for tags, producers, and consumers metadata.
 
-??? question "Download Tutorial Script"
+??? tip "Download Tutorial Script"
     - [set_operations.py](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/learn_sqrt/set_operations.py)
 
 ## Set Literals

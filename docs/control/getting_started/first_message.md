@@ -7,7 +7,7 @@ This guide shows you how to send your first chat completion request through the 
 - **Sequrity API Key**: Sign up at [Sequrity](https://sequrity.ai) to get your API key from the dashboard
 - **LLM Provider API Key**: This example uses OpenRouter, but you can use any supported provider
 
-??? question "Download Tutorial Scripts"
+??? tip "Download Tutorial Scripts"
 
     - [Sequrity Client version](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/getting_started/first_message/sequrity_client.py)
 

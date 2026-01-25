@@ -5,7 +5,7 @@
 
 SQRT supports type domains that constrain what values are valid. These are used in predicates to check if values match expected patterns. Below we cover the basic types supported in SQRT.
 
-??? question "Download Tutorial Script"
+??? tip "Download Tutorial Script"
     - [basic_types.py](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/learn_sqrt/basic_types.py)
 
 ## Boolean Domains

@@ -112,6 +112,7 @@ nav:
       - Control:
           - Sending your first message: control/getting_started/first_message.md
           - Secure Tool Use with Dual-LLM: control/getting_started/tool_use_dual_llm.md
+          - Compile and Execute LangGraph: control/getting_started/langgraph.md
   - Learn:
       - Control:
           - control/learn/index.md
@@ -122,7 +123,6 @@ nav:
               - 02-Set Operations: control/learn/sqrt/02_set_operations.md
               - 03-Predicates: control/learn/sqrt/03_predicates.md
               - 04-Tool Policies: control/learn/sqrt/04_tool_policies.md
-          - Compile and Execute LangGraph: control/learn/langgraph.md
   - Reference:
       - SequrityClient: general/sequrity_client/sequrity_client.md
       - Control:
@@ -155,4 +155,4 @@ nav:
   - Examples:
       - Control:
           - control/examples/index.md
-          - Example-2026-01-22: control/examples/control-release-examples.ipynb
+          - Advanced SQRT Examples - 2025-01-25: control/examples/advanced_sqrt_examples.md

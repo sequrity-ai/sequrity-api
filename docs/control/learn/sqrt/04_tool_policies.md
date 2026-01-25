@@ -5,7 +5,7 @@
 
 Tool policies define access control rules and metadata transformations for tools.
 
-??? question "Download Tutorial Script"
+??? tip "Download Tutorial Script"
     - [tool_policies.py](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/learn_sqrt/tool_policies.py)
 
 ## Basic Structure
