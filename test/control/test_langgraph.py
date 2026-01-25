@@ -134,7 +134,7 @@ class TestLangGraphCompilationAndExecution:
         initial_state = {"query": "Read the document", "result": ""}
         features = FeaturesHeader.create_dual_llm_headers()
         policy = SecurityPolicyHeader.create_default()
-        config = FineGrainedConfigHeader(max_n_turns=10)
+        config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 
         result = self.sequrity_client.control.compile_and_run_langgraph(
             model=self.test_config.get_model_name(service_provider),
@@ -210,7 +210,7 @@ class TestLangGraphCompilationAndExecution:
         }
         features = FeaturesHeader.create_dual_llm_headers()
         policy = SecurityPolicyHeader.create_default()
-        config = FineGrainedConfigHeader(max_n_turns=10)
+        config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 
         result = self.sequrity_client.control.compile_and_run_langgraph(
             model=self.test_config.get_model_name(service_provider),
