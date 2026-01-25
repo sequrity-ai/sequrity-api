@@ -4,6 +4,7 @@
     options:
       show_root_heading: true
       show_source: true
+      members: ["create_single_llm_headers", "create_dual_llm_headers"]
 
 
 ::: sequrity_api.types.control.headers.feature_headers.LlmModeFeature

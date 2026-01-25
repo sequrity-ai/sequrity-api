@@ -12,7 +12,7 @@ SQRT supports type domains that constrain what values are valid. These are used 
 
 Boolean domains constrain values to `true` or `false`:
 
-```python
+```python hl_lines="3-4"
 --8<-- "examples/control/learn_sqrt/basic_types.py:bool_domains"
 ```
 

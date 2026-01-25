@@ -1,6 +1,6 @@
 # Learning SQRT
 
-SQRT (Sequrity Root) is a declarative policy language for defining tool access control rules. This tutorial series teaches you SQRT from the ground up.
+SQRT is a declarative policy language for defining tool access control rules. This tutorial series teaches you SQRT from the ground up.
 
 ## Tutorials
 

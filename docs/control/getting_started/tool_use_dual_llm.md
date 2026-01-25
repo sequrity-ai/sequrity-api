@@ -9,8 +9,10 @@ how to enforce security policies that prevent sensitive data from being sent to 
 
 Before starting, ensure you have the following API keys:
 
-- **Sequrity API Key**: Sign up at [Sequrity](https://sequrity.ai) to get your API key from the dashboard
-- **LLM Provider API Key**: This example uses OpenRouter, but you can use any supported provider
+- **Sequrity API Key**: Sign up at [Sequrity.ai](https://sequrity.ai) to get your API key from the dashboard
+- **LLM Provider API Key**: You can consider Sequrity as a relay service that forwards your requests to LLM service providers, thus you need to offer LLM API keys which Sequrity Control will use for the planning LLM (PLLM) and quarantined LLM (QLLM). This example uses OpenRouter, but you can use any *supported provider*[^1].
+
+[^1]: See [Supported Providers](../../general/rest_api/service_provider.md) for a list of supported LLM providers in REST API, and [LLM Service Provider Enum](../../general/sequrity_client/service_provider.md) for Sequrity Client.
 
 Set these keys as environment variables:
 
@@ -35,7 +37,7 @@ Install the required packages based on your preferred approach:
     ```
 
 === "REST API"
-
+    For ease of reading, we use `requests` library to demonstrate the REST API calls.
     ```bash
     pip install requests rich
     ```
@@ -46,32 +48,40 @@ The `rich` package is optional but provides nice formatted output for demonstrat
 
 Tool use (also known as function calling) allows LLMs to interact with external APIs and services. In a typical tool use flow:
 
-1. The LLM returns an **assistant message** with `tool_calls` containing the function name and arguments. Here's an example:
-    ```python
-    {
-        "content": "",
-        "role": "assistant",
-        "tool_calls": [
-            {
-                "id": "tc-6e0ec4e8-f7ef-11f0-8bfb-9166...",
-                "function": {
-                    "arguments": '{"doc_id": "DOC12345"}',
-                    "name": "get_internal_document",
-                },
-                "type": "function",
-            }
-        ],
-    }
-    ```
-2. Your application executes the tool and returns a **tool message** with the result. Here's an example:
-    ```python
-    {
-        "role": "tool",
-        "content": "The document content is: 'Sequrity is a secure AI...'",
-        "tool_call_id": "tc-6e0ec4e8-f7ef-11f0-8bfb-9166...",
-    }
-    ```
-3. Append the tool call and tool result messages to the conversation history, then send it back to the LLM for further processing.
+1. A user sends a message requesting some action that requires tool use, and offers tool definitions like input schema and descriptions to the LLM.
+
+2. The LLM returns an **assistant message** with `tool_calls` containing the function name and arguments.
+
+    ??? info "Example Assistant Message with Tool Call"
+        ```python
+        {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+                {
+                    "id": "tc-6e0ec4e8-f7ef-11f0-8bfb-9166...",
+                    "function": {
+                        "arguments": '{"doc_id": "DOC12345"}',
+                        "name": "get_internal_document",
+                    },
+                    "type": "function",
+                }
+            ],
+        }
+        ```
+
+3. Your application executes the tool and returns a **tool message** with the result.
+
+    ??? info "Example Tool Message with Tool Result"
+        ```python
+        {
+            "role": "tool",
+            "content": "The document content is: 'Sequrity is a secure AI...'",
+            "tool_call_id": "tc-6e0ec4e8-f7ef-11f0-8bfb-9166...",
+        }
+        ```
+
+4. Append the tool call and tool result messages to the conversation history, then send it back to the LLM for further processing.
 
 For a comprehensive guide on tool use, see [OpenAI's function calling tutorial](https://developers.openai.com/cookbook/examples/how_to_call_functions_with_chat_models).
 
@@ -93,14 +103,16 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
 
 - **`X-Security-Features`**: Enables the Dual-LLM feature in this example
 - **`X-Security-Policy`**: Defines security policies in [SQRT language](../reference/sqrt/index.md):
-    ```c++
+    ```rust
     // Define sensitive document tags
     let sensitive_docs = {"internal_use", "confidential"};
     // Add tags to tool results of get_internal_document
     tool "get_internal_document" -> @tags |= sensitive_docs;
-    // Hard deny sending emails if body contains sensitive tags and recipient does not match trusted pattern
+    // Hard deny sending emails if body contains sensitive tags
+    // and recipient does not match trusted pattern
     tool "send_email" {
-        hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+        hard deny when (body.tags overlaps sensitive_docs) and
+        (not to.value in {str matching r".*@trustedcorp\.com"});
     }
     ```
     - Tags documents retrieved by `get_internal_document` as `internal_use` and `confidential`
@@ -119,21 +131,13 @@ def send_email(to: str, subject: str, body: str) -> str:
     ...
 ```
 
-Here we follow [the OpenAI chat completion's tool definition format](https://platform.openai.com/docs/api-reference/chat/create#chat_create-tools) to define their signatures.
+Here we follow [the OpenAI chat completion's tool definition format](https://platform.openai.com/docs/api-reference/chat/create#chat_create-tools) to define these tools:
 
 ??? info "Tool Definitions of `get_internal_document` and `send_email`"
 
-    === "Sequrity Client"
-
-        ```python
-        --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:44:87"
-        ```
-
-    === "REST API"
-
-        ```python
-        --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:35:69"
-        ```
+    ```python
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:35:69"
+    ```
 
 
 ## Example 1: Blocking Emails to Untrusted Domains
@@ -176,9 +180,9 @@ Note that we need to keep track of the `session_id` to maintain context across m
 
 ### Step 3: LLM Calls get_internal_document
 
-The LLM first calls `get_internal_document` to retrieve the document. This tool call is allowed because there are no denying policies for it[^1].
+The LLM first calls `get_internal_document` to retrieve the document. This tool call is allowed because there are no denying policies for it[^2].
 
-[^1]: `get_internal_documet` has no user-defined policy but got allowed. This is because [`InternalPolicyPreset`](../reference/sequrity_client/headers/policy_header.md#sequrity_api.types.control.headers.policy_headers.InternalPolicyPreset) has `default_allow=true` by default.
+[^2]: `get_internal_documet` has no user-defined policy but got allowed. This is because [`InternalPolicyPreset`](../reference/sequrity_client/headers/policy_header.md#sequrity_api.types.control.headers.policy_headers.InternalPolicyPreset) has `default_allow=true` by default.
 
 === "Sequrity Client"
 
@@ -214,13 +218,13 @@ When the LLM attempts to call `send_email`, Sequrity detects that the email body
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:140:148"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:140:156"
     ```
 
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:140:142"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:140:150"
     ```
 
 ### Expected Output
@@ -336,7 +340,7 @@ This time the email is allowed because the recipient matches the trusted domain 
 1. In Dual-LLM, control flow and data processing are separated, enhancing security
 2. Sequrity Control API enforces security policies on tool calls, preventing unauthorized actions
 3. MetaData like tags propagate through program execution
-4. A session ID is needed for Sequrity to track context across multiple tool calls
+4. A [session ID](../learn/session_id.md) is needed for Sequrity to track context across multiple tool calls
 
 
 ## More Complex Examples

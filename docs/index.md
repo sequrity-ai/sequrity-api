@@ -1,3 +1,9 @@
+---
+hide:
+  - navigation
+  - toc
+---
+
 # :material-lock: Sequrity API
 
 Python client and REST API for interacting with [Sequrity.AI](https://sequrity.ai/)'s services.
