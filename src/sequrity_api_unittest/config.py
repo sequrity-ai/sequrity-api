@@ -51,7 +51,7 @@ def get_test_config():
     assert llm_api_key_azurecredits is not None, "AZURE_CREDITS_API_KEY must be set in environment variables for tests."
 
     if test_mode == "local":
-        base_url = os.getenv("SEQURITY_API_BASE_URL", "http://localhost:8000")
+        base_url = os.getenv("SEQURITY_BASE_URL", "http://localhost:8000")
     else:
         base_url = SEQURITY_API_URL
 
