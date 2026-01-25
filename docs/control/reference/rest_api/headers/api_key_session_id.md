@@ -46,3 +46,5 @@ Session identifier for continuing an existing conversation. The session ID is re
 
 - If not provided, a new session is created.
 - If provided, the conversation history associated with that session ID like previous PLLM plans is used to maintain context.
+
+To use the session ID, include the `X-Session-ID` header in your request with the session ID value obtained from a previous response. Refer to the [Session ID in Sequrity Control API](../../../learn/session_id.md) for more details.

@@ -10,7 +10,7 @@ Tool policies define access control rules and metadata transformations for tools
 
 ## Basic Structure
 
-```python
+```python hl_lines="3-10"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:basic_tool"
 ```
 
@@ -18,7 +18,7 @@ Tool policies define access control rules and metadata transformations for tools
 
 Check rules control whether a tool call is allowed:
 
-```python
+```python hl_lines="3-18"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:check_rules"
 ```
 
@@ -41,7 +41,7 @@ Check rules control whether a tool call is allowed:
 
 Update the result's metadata after tool execution:
 
-```python
+```python hl_lines="3-16"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:result_block"
 ```
 
@@ -49,7 +49,7 @@ Update the result's metadata after tool execution:
 
 Update session-level metadata before or after tool execution:
 
-```python
+```python hl_lines="3-16"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:session_blocks"
 ```
 
@@ -60,7 +60,7 @@ Update session-level metadata before or after tool execution:
 
 Shorthand for common update patterns:
 
-```python
+```python hl_lines="3-17"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:augmented_ops"
 ```
 
@@ -75,7 +75,7 @@ Shorthand for common update patterns:
 
 Inside blocks, `@tags` automatically resolves to the appropriate context:
 
-```python
+```python hl_lines="3-14"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:context_sugar"
 ```
 
@@ -86,7 +86,7 @@ Inside blocks, `@tags` automatically resolves to the appropriate context:
 
 For simple single-update policies, use the shorthand form:
 
-```python
+```python hl_lines="3-25"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:shorthand_syntax"
 ```
 
@@ -96,13 +96,13 @@ Shorthand format: `tool "id" [priority] -> [target] @field op value [when condit
 |-----------|---------|
 | Priority | `[N]` (optional, default 0) |
 | Target | `result` (default), `session`, `session before`, `session after` |
-| Operators | `=`, `\|=`, `&=`, `-=`, `^=` |
+| Operators | `=`, `|=`, `&=`, `-=`, `^=` |
 
 ## Regex Tool IDs
 
 Match multiple tools with regex patterns:
 
-```python
+```python hl_lines="3-14"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:regex_tool_id"
 ```
 
@@ -112,7 +112,7 @@ Use `r"pattern"` for regex tool IDs.
 
 Document your policies with `///` comments:
 
-```python
+```python hl_lines="3-17"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:doc_comments"
 ```
 
@@ -122,6 +122,6 @@ Doc comments become the description field of policies and rules.
 
 A comprehensive policy combining all features:
 
-```python
+```python hl_lines="3-49"
 --8<-- "examples/control/learn_sqrt/tool_policies.py:complete_example"
 ```

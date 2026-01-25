@@ -1,11 +1,13 @@
 # Sending Your First Message with Sequrity Control API
 
-This guide shows you how to send your first chat completion request through the Sequrity Control API.
+This guide shows you how to send your first chat completion request through the [Sequrity Control API][sequrity_api.control.wrapper.ControlApiWrapper].
 
 ## Prerequisites
 
-- **Sequrity API Key**: Sign up at [Sequrity](https://sequrity.ai) to get your API key from the dashboard
-- **LLM Provider API Key**: This example uses OpenRouter, but you can use any supported provider
+- **Sequrity API Key**: Sign up at [Sequrity.ai](https://sequrity.ai) to get your API key from the dashboard
+- **LLM Provider API Key**: You can consider Sequrity as a relay service that forwards your requests to LLM service providers, thus you need to offer LLM API keys. This example uses OpenRouter, but you can use any supported provider[^1]
+
+[^1]: See [Supported Providers](../../general/rest_api/service_provider.md) for a list of supported LLM providers in REST API, and [LLM Service Provider Enum](../../general/sequrity_client/service_provider.md) for Sequrity Client.
 
 ??? tip "Download Tutorial Scripts"
 
@@ -27,7 +29,9 @@ You can interact with the Sequrity Control API using either the Sequrity Python 
 
 === "REST API"
 
-    No installation required. Use any HTTP client (curl, httpx, requests, etc.).
+    ```bash
+    # No installation required. Use any HTTP client (curl, httpx, requests, etc.).
+    ```
 
 ## Sending Your First Message
 
@@ -47,28 +51,33 @@ Sequrity Control API supports two architectures for interacting with LLMs:
 
 #### Request
 
-You can specify Single-LLM by
+You can specify Single-LLM via
 
-- using `FeaturesHeader.create_single_llm_headers` (Sequrity client), or
-- setting the `X-Security-Features` headers in your request (REST API)
-
-together with your `SecurityPolicyHeader` / security policy headers.
+- [`FeaturesHeader.create_single_llm_headers`][sequrity_api.types.control.headers.FeaturesHeader.create_single_llm_headers] and [`SecurityPolicyHeader`][sequrity_api.types.control.headers.SecurityPolicyHeader] for Sequrity client, or
+- custom headers [`X-Security-Features`](../reference/rest_api/headers/security_features.md) and [`X-Security-Policy`](../reference/rest_api/headers/security_policy.md) for REST API
 
 === "Sequrity Client"
 
-    ```python
-    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:13:14,26:45"
+    ```python hl_lines="8-9"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:imports"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:single_llm"
     ```
 
 === "REST API"
 
-    ```bash
-    --8<-- "examples/control/getting_started/first_message/rest_api.sh:19:28"
+    ```bash hl_lines="5-6"
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:single_llm"
     ```
 
 #### Response
 
-The response of Single-LLM follows the OpenAI Chat Completions format:
+The response of Single-LLM follows the OpenAI Chat Completions format with session ID in
+
+- [`ChatCompletionResponse`][sequrity_api.types.chat_completion.request.ChatCompletionRequest] for Sequrity client, or
+- response header [`X-Session-ID`](../reference/rest_api/headers/api_key_session_id.md) for REST API.
+
+!!! info "Session ID in Sequrity Control API"
+    In Sequrity Control API, the **session ID** allows maintaining context across multiple interactions in a chat session, for example, to enforce a security policy that only allows a tool call to `issue_bank_transfer` after a tool call to `verify_identity` has succeeded in the same session. Read more in [Session ID and Multi-turn Sessions](../learn/session_id.md).
 
 === "Sequrity Client"
 
@@ -138,30 +147,28 @@ The response of Single-LLM follows the OpenAI Chat Completions format:
 
 #### Request
 
-You can specify Dual-LLM by
+You can specify Dual-LLM via
 
-- using `FeaturesHeader.create_dual_llm_headers` (Sequrity client), or
-- setting the `X-Security-Features` headers in your request (REST API)
+- [`FeaturesHeader.create_dual_llm_headers`][sequrity_api.types.control.headers.FeaturesHeader.create_dual_llm_headers] and [`SecurityPolicyHeader`][sequrity_api.types.control.headers.SecurityPolicyHeader] for Sequrity client, or
+- custom headers [`X-Security-Features`](../reference/rest_api/headers/security_features.md) and [`X-Security-Policy`](../reference/rest_api/headers/security_policy.md) for REST API
 
-together with your `SecurityPolicyHeader` / security policy headers.
 
 === "Sequrity Client"
 
-    ```python
-    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:56:73"
+    ```python hl_lines="6-7"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:dual_llm"
     ```
 
 === "REST API"
 
-    ```bash
-    --8<-- "examples/control/getting_started/first_message/rest_api.sh:39:48"
+    ```bash hl_lines="5-6"
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:dual_llm"
     ```
 
 #### Response
 
 The response of Dual-LLM follows the OpenAI Chat Completions format,
-except that the response headers include a **session ID** (`X-Session-ID`),
-which can be sent back in subsequent request headers for multi-turn conversations.
+except the **session ID**.
 
 === "Dual-LLM Sequrity Client"
 

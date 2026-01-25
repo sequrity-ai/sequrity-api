@@ -12,7 +12,7 @@ Predicates are boolean expressions used in check rules and conditional updates.
 
 Check argument values against sets or specific values:
 
-```python
+```python hl_lines="3-13"
 --8<-- "examples/control/learn_sqrt/predicates.py:value_comparisons"
 ```
 
@@ -25,7 +25,7 @@ Check argument values against sets or specific values:
 
 Compare sets against other sets:
 
-```python
+```python hl_lines="3-19"
 --8<-- "examples/control/learn_sqrt/predicates.py:set_comparisons"
 ```
 
@@ -42,7 +42,7 @@ Compare sets against other sets:
 
 Combine predicates with logical operators:
 
-```python
+```python hl_lines="3-18"
 --8<-- "examples/control/learn_sqrt/predicates.py:logical_ops"
 ```
 
@@ -54,7 +54,7 @@ Use parentheses for explicit grouping: `(A or B) and not C`
 
 Predicates can reference session state:
 
-```python
+```python hl_lines="3-10"
 --8<-- "examples/control/learn_sqrt/predicates.py:session_predicates"
 ```
 
@@ -62,6 +62,6 @@ Predicates can reference session state:
 
 Define reusable predicates with `let` and use them in tool policies:
 
-```python
+```python hl_lines="3-12"
 --8<-- "examples/control/learn_sqrt/predicates.py:predicate_in_tools"
 ```

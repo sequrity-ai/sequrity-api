@@ -10,7 +10,7 @@ Sets are fundamental to SQRT. They represent collections of strings used for tag
 
 ## Set Literals
 
-```python
+```python hl_lines="3-10"
 --8<-- "examples/control/learn_sqrt/set_operations.py:set_literals"
 ```
 
@@ -20,7 +20,7 @@ The universal set `{"*"}` matches everything.
 
 SQRT provides both symbol and keyword forms for set operations:
 
-```python
+```python hl_lines="3-17"
 --8<-- "examples/control/learn_sqrt/set_operations.py:set_binary_ops"
 ```
 
@@ -35,7 +35,7 @@ SQRT provides both symbol and keyword forms for set operations:
 
 For adding or removing single elements:
 
-```python
+```python hl_lines="3-10"
 --8<-- "examples/control/learn_sqrt/set_operations.py:set_element_ops"
 ```
 
@@ -43,7 +43,7 @@ For adding or removing single elements:
 
 Aggregate metadata across all arguments:
 
-```python
+```python hl_lines="3-11"
 --8<-- "examples/control/learn_sqrt/set_operations.py:set_aggregations"
 ```
 
@@ -51,7 +51,7 @@ Aggregate metadata across all arguments:
 
 `@args.field` provides convenient syntax for aggregations:
 
-```python
+```python hl_lines="3-14"
 --8<-- "examples/control/learn_sqrt/set_operations.py:args_meta_sugar"
 ```
 
@@ -65,7 +65,7 @@ Aggregate metadata across all arguments:
 
 Access metadata from arguments, result, or session:
 
-```python
+```python hl_lines="3-20"
 --8<-- "examples/control/learn_sqrt/set_operations.py:meta_field_access"
 ```
 

@@ -32,6 +32,7 @@ theme:
     - search.highlight
     - content.code.copy
     - content.footnote.tooltips
+    - toc.follow
 
 plugins:
   - search
@@ -84,7 +85,7 @@ plugins:
 
             # OTHER
             show_bases: false
-  - mkdocs-jupyter
+  - tags
 
 markdown_extensions:
   - admonition
@@ -128,8 +129,10 @@ nav:
       - Control:
           - control/learn/index.md
           - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
+          - "Session ID and Multi-turn Sessions": control/learn/session_id.md
           - "Policy Language: SQRT":
               - control/learn/sqrt/index.md
+              - 00-Metadata: control/learn/sqrt/00_metadata.md
               - 01-Basic Types: control/learn/sqrt/01_basic_types.md
               - 02-Set Operations: control/learn/sqrt/02_set_operations.md
               - 03-Predicates: control/learn/sqrt/03_predicates.md
