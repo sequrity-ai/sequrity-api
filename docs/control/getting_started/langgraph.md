@@ -59,7 +59,7 @@ The workflow includes conditional routing: simple queries execute directly, whil
 LangGraph workflows are built around a typed state that flows through nodes. Let's define our SQL agent's state:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:46:61"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:state_schema"
 ```
 
 Each node in the workflow can read from and update this state.
@@ -71,7 +71,7 @@ Each node in the workflow can read from and update this state.
 These nodes represent external operations (e.g., database queries). In a real application, they would interact with actual databases:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:64:85"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:external_nodes"
 ```
 
 ### Query Generation Node
@@ -79,7 +79,7 @@ These nodes represent external operations (e.g., database queries). In a real ap
 This node generates SQL based on the user's natural language query:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:87:110"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:generate_query"
 ```
 
 ### Validation and Execution Nodes
@@ -87,7 +87,7 @@ This node generates SQL based on the user's natural language query:
 These nodes handle query validation and execution:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:112:139"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:validate_execute_nodes"
 ```
 
 ### Conditional Routing Function
@@ -95,7 +95,7 @@ These nodes handle query validation and execution:
 This function determines the next node based on the current state:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:140:154"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:route_validation"
 ```
 
 !!! note "Routing Functions Must Be Included"
@@ -106,7 +106,7 @@ This function determines the next node based on the current state:
 Now we construct the graph by connecting nodes and edges:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:155:183"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:build_graph"
 ```
 
 ### Understanding the Workflow
@@ -125,7 +125,7 @@ This demonstrates LangGraph's powerful conditional routing capabilities.
 ### Initialize the Sequrity Client
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:35:43"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:client_init"
 ```
 
 ### Configure Security Settings
@@ -133,7 +133,7 @@ This demonstrates LangGraph's powerful conditional routing capabilities.
 Set up security features, policies, and configurations:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:216:218"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:security_settings"
 ```
 
 - **Features**: Use Dual-LLM mode for enhanced security
@@ -143,7 +143,7 @@ Set up security features, policies, and configurations:
 ### Prepare Initial State and Node Functions
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:194:213"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:initial_state_and_functions"
 ```
 
 !!! important "Include Routing Functions"
@@ -154,7 +154,7 @@ Set up security features, policies, and configurations:
 Finally, call `compile_and_run_langgraph` to execute your workflow securely:
 
 ```python
---8<-- "examples/control/getting_started/langgraph/sequrity_client.py:223:251"
+--8<-- "examples/control/getting_started/langgraph/sequrity_client.py:execute_graph"
 ```
 
 ### Understanding the Parameters

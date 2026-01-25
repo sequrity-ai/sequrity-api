@@ -16,6 +16,7 @@ OPENROUTER_API_KEY="${OPENROUTER_API_KEY:-your-openrouter-key}"
 
 echo "=== Single LLM Mode ==="
 
+# --8<-- [start:single_llm]
 curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
@@ -26,6 +27,7 @@ curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
     "model": "openai/gpt-5-mini",
     "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
   }'
+# --8<-- [end:single_llm]
 
 # =============================================================================
 # Dual-LLM
@@ -36,6 +38,7 @@ curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
 
 echo "=== Dual LLM ==="
 
+# --8<-- [start:dual_llm]
 curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
@@ -46,3 +49,4 @@ curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
     "model": "openai/gpt-5-mini",
     "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
   }'
+# --8<-- [end:dual_llm]

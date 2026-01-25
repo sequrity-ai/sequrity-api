@@ -22,7 +22,7 @@ Here is an overview of the examples covered:
 Before running the examples, configure your API keys and endpoint:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:41:43"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:config"
 ```
 
 ### Helper Functions
@@ -34,13 +34,13 @@ For convenience, we define helper functions, `run_workflow` and `send_request_to
     `run_workflow` orchestrates the multi-turn interaction with the Sequrity Control API:
 
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:90:174"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:run_workflow"
     ```
 
     `send_request_to_endpoint` handles the HTTP communication:
 
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:177:216"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:send_request_to_endpoint"
     ```
 
 ---
@@ -69,17 +69,17 @@ This policy:
 We define mock tool implementations for `get_internal_document` and `send_email`:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:259:261"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_mock_funcs"
 ```
 
 ??? info "Tool Signatures"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:265:308"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_tool_defs"
     ```
 
 ??? info "Session Configurations"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:315:338"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_session_config"
     ```
 
 
@@ -88,7 +88,7 @@ We define mock tool implementations for `get_internal_document` and `send_email`
 Sending a confidential document to an untrusted email address `research@gmail.com` should be blocked:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:346:357"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_case1"
 ```
 
 ??? info "Expected Output"
@@ -110,7 +110,7 @@ Sending a confidential document to an untrusted email address `research@gmail.co
 Sending the same document to an email of trusted domain `admin@trustedcorp.com` succeeds:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:365:376"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex1_case2"
 ```
 
 ??? info "Expected Output"
@@ -169,17 +169,17 @@ This policy tracks refund attempts using session metadata. Only the 4th attempt 
 Tool implementation for `issue_refund`:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:414:415"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_mock_func"
 ```
 
 ??? info "Tool Signature"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:419:437"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_tool_defs"
     ```
 
 ??? info "Security Policies and Configuration"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:443:482"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_security_config"
     ```
 
 ### Helper Functions for Multi-Turn Refund Requests
@@ -190,13 +190,13 @@ Note that the first three attempts should be denied, and only the fourth attempt
 
 ??? info "`send_request_refund_example` and `run_refund_tool` Functions"
 	```python
-	--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:493:529"
+	--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_helper_funcs"
 	```
 
 ### Running the Refund Flow
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:533:579"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex2_main"
 ```
 
 ??? info "Expected Output"
@@ -241,17 +241,17 @@ This policy requires `generate_business_summary` to only use inputs from verifie
 We define mock tool implementations and configure the security policies:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:604:613"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_mock_funcs"
 ```
 
 ??? info "Tool Signatures"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:617:677"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_tool_defs"
     ```
 
 ??? info "Security Policies and Configuration"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:685:709"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_security_config"
     ```
 
 ### Case 1: Both Verified Sources (Allowed)
@@ -259,7 +259,7 @@ We define mock tool implementations and configure the security policies:
 When both financial and marketing data are retrieved from verified tools, the business summary generation succeeds:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:717:728"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_case1"
 ```
 
 ??? info "Expected Output"
@@ -285,7 +285,7 @@ When both financial and marketing data are retrieved from verified tools, the bu
 When the marketing analysis tool is unavailable and the user provides unverified data, the policy denies the operation:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:737:749"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex3_case2"
 ```
 
 ??? info "Expected Output"
@@ -327,17 +327,17 @@ This policy:
 We define mock tool implementations and configure the security policies:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:777:786"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_mock_funcs"
 ```
 
 ??? info "Tool Signatures"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:790:842"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_tool_defs"
     ```
 
 ??? info "Security Policies and Configuration"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:850:873"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_security_config"
     ```
 
 ### Case 1: With De-identification (Allowed)
@@ -345,7 +345,7 @@ We define mock tool implementations and configure the security policies:
 When patient data is de-identified before sending, the operation succeeds:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:881:892"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_case1"
 ```
 
 ??? info "Expected Output"
@@ -371,7 +371,7 @@ When patient data is de-identified before sending, the operation succeeds:
 When attempting to send PII data without de-identification, the policy denies the operation:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:900:912"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex4_case2"
 ```
 
 ??? info "Expected Output"
@@ -408,24 +408,26 @@ Then we set `branching_meta_policy` to `{"mode": "deny", "tags": ["RACE"]}` in i
 
 ```python
         ...
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1064:1067"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_branching_meta_policy"
         ...
 ```
 
 Note that `branching_meta_policy` needs Dual-LLM in **`custom` mode** to take effect:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1028:1028"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_enabled_features"
 ```
 
 ??? info "Security Policies Configuration"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1028:1046,1060:1069"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_enabled_features"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_base_config"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_fairness_policies_deny"
     ```
 
 ??? info "Tool Signatures"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1149:1186"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_tool_defs"
     ```
 
 ### Case 1: Discriminatory Routing (Denied)
@@ -433,7 +435,7 @@ Note that `branching_meta_policy` needs Dual-LLM in **`custom` mode** to take ef
 Attempting to route applicants based on race is blocked:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1057:1081"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_discriminatory"
 ```
 
 ??? info "Expected Output"
@@ -453,7 +455,7 @@ Attempting to route applicants based on race is blocked:
 Without the discriminatory branching, the workflow succeeds:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1094:1111"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case2_nondiscriminatory"
 ```
 
 ??? info "Expected Output"
@@ -485,17 +487,18 @@ tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
 ```
 
 ```python hl_lines="5"
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1256:1262"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_policies_allow"
 ```
 
 ??? info "Security Policies Configuration"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1193:1211,1225:1231"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_base_config"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_qllm_policies_deny"
     ```
 
 ??? info "Tool Signatures"
     ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1149:1186"
+    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_tool_defs"
     ```
 
 ##### Case 1: AI Parsing of Blocked Data (Denied)
@@ -503,7 +506,7 @@ tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
 Attempting to use `parse_with_ai` on data tagged with `__llm_blocked` is denied:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1225:1243"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_ai_parsing"
 ```
 
 ??? info "Expected Output"
@@ -523,7 +526,7 @@ Attempting to use `parse_with_ai` on data tagged with `__llm_blocked` is denied:
 When we don't use AI parsing, the data can be processed through the normal workflow:
 
 ```python
---8<-- "examples/control/advanced_sqrt_examples/rest_api.py:1256:1274"
+--8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case2_direct"
 ```
 
 ??? info "Expected Output"

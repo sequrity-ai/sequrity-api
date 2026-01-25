@@ -96,7 +96,7 @@ Shorthand format: `tool "id" [priority] -> [target] @field op value [when condit
 |-----------|---------|
 | Priority | `[N]` (optional, default 0) |
 | Target | `result` (default), `session`, `session before`, `session after` |
-| Operators | `=`, `\|=`, `&=`, `-=`, `^=` |
+| Operators | `=`, `|=`, `&=`, `-=`, `^=` |
 
 ## Regex Tool IDs
 

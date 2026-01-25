@@ -92,13 +92,15 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:24:29,89:100"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:imports"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:security_headers"
     ```
 
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:1:1,72:92"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:imports"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:security_headers"
     ```
 
 - **`X-Security-Features`**: Enables the Dual-LLM feature in this example
@@ -136,7 +138,7 @@ Here we follow [the OpenAI chat completion's tool definition format](https://pla
 ??? info "Tool Definitions of `get_internal_document` and `send_email`"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:35:69"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:tool_defs"
     ```
 
 
@@ -152,13 +154,15 @@ PLLM (Planning LLM) for generating the execution plan, and QLLM (Query/Quarantin
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:24:24,40:42"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:imports"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:client_setup"
     ```
 
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:5:5,27:27,33:33"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:imports"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:client_setup"
     ```
 
 ### Step 2: Send User Query
@@ -169,13 +173,14 @@ Note that we need to keep track of the `session_id` to maintain context across m
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:107:119"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:untrusted_query"
     ```
 
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:95:111,120:123"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:chat_completion_func"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:untrusted_query"
     ```
 
 ### Step 3: LLM Calls get_internal_document
@@ -187,13 +192,13 @@ The LLM first calls `get_internal_document` to retrieve the document. This tool 
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:124:128"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:tool_call_check"
     ```
 
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:125:129"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:tool_call_check"
     ```
 
 ### Step 4: Return Tool Result
@@ -203,12 +208,12 @@ Simulate the tool execution and return the sensitive document content.
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:130:137"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:tool_result"
     ```
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:130:137"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:tool_result"
     ```
 
 ### Step 5: Security Policy Blocks send_email
@@ -218,13 +223,13 @@ When the LLM attempts to call `send_email`, Sequrity detects that the email body
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:140:156"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:denied_response"
     ```
 
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:140:150"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:denied_response"
     ```
 
 ### Expected Output
@@ -269,13 +274,13 @@ Change the recipient to `user@trustedcorp.com` and start a new session:
 === "Sequrity Client"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:162:174"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:trusted_query"
     ```
 
 === "REST API"
 
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:156:159"
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:trusted_query"
     ```
 
 ### Execute Tool Calls
@@ -291,13 +296,13 @@ Following the same flow as before:
     === "Sequrity Client"
 
         ```python
-        --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:180:224"
+        --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:trusted_flow"
         ```
 
     === "REST API"
 
         ```python
-        --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:156:183"
+        --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:trusted_flow"
         ```
 
 ### Expected Output

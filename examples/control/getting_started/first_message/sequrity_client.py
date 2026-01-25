@@ -10,8 +10,10 @@ Installation:
 
 import os
 
+# --8<-- [start:imports]
 from sequrity_api import SequrityClient
 from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+# --8<-- [end:imports]
 
 sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-key")
@@ -23,6 +25,7 @@ openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-key")
 # security taggers and constraints.
 
 
+# --8<-- [start:single_llm]
 def single_llm_example():
     # Initialize the client
     client = SequrityClient(api_key=sequrity_api_key)
@@ -43,6 +46,7 @@ def single_llm_example():
 
     # Print the response
     print(response)
+# --8<-- [end:single_llm]
 
 
 # =============================================================================
@@ -53,6 +57,7 @@ def single_llm_example():
 # guarantees for agentic use cases.
 
 
+# --8<-- [start:dual_llm]
 def dual_llm_example():
     # Initialize the client
     client = SequrityClient(api_key=sequrity_api_key)
@@ -71,6 +76,7 @@ def dual_llm_example():
     )
 
     print(response)
+# --8<-- [end:dual_llm]
 
 
 if __name__ == "__main__":

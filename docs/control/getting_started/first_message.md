@@ -59,13 +59,14 @@ You can specify Single-LLM via
 === "Sequrity Client"
 
     ```python hl_lines="8-9"
-    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:13:14,26:45"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:imports"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:single_llm"
     ```
 
 === "REST API"
 
     ```bash hl_lines="5-6"
-    --8<-- "examples/control/getting_started/first_message/rest_api.sh:19:28"
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:single_llm"
     ```
 
 #### Response
@@ -155,13 +156,13 @@ You can specify Dual-LLM via
 === "Sequrity Client"
 
     ```python hl_lines="6-7"
-    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:56:73"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:dual_llm"
     ```
 
 === "REST API"
 
     ```bash hl_lines="5-6"
-    --8<-- "examples/control/getting_started/first_message/rest_api.sh:39:48"
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:dual_llm"
     ```
 
 #### Response
