@@ -42,6 +42,7 @@
     docs=[
     "griffe-pydantic>=1.2.0",
     "mkdocs>=1.6",
+    "mkdocs-autorefs>=1.0",
     "mkdocs-jupyter>=0.25.0",
     "mkdocs-material>=9.5",
     "mkdocstrings[python]>=0.28",
