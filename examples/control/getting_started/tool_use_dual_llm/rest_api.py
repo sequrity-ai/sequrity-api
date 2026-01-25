@@ -24,7 +24,7 @@ except ImportError:
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
 sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
-base_url = os.getenv("BASE_URL", "https://api.sequrity.ai")
+base_url = os.getenv("SEQURITY_BASE_URL", "https://api.sequrity.ai")
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
 assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
@@ -125,7 +125,9 @@ assert response_data["choices"][0]["message"]["role"] == "assistant"
 assert response_data["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "get_internal_document"
 tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
 
+# append assistant message (tool call to get_internal_document)
 messages.append(response_data["choices"][0]["message"])
+# simulate tool execution and get tool response
 messages.append(
     {
         "role": "tool",

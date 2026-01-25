@@ -32,7 +32,7 @@ from sequrity_api.types.control.results import ResponseContentJsonSchema
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
 sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
-base_url = os.getenv("BASE_URL", "https://api.sequrity.ai")
+base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
 assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."

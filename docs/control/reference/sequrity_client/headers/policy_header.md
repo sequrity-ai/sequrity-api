@@ -1,10 +1,10 @@
-## SecurityPolicyHeader
+## Security Policy / X-Security-Policy
 
 Configure security policies using sqrt, sqrt-lite, or cedar policy languages.
 
 ::: sequrity_api.types.control.headers.SecurityPolicyHeader
     options:
-      show_root_heading: false
+      show_root_heading: true
       show_source: true
 
 

@@ -1,0 +1,351 @@
+// sqrt Policy Language Grammar
+// A declarative policy language for tool access control
+
+?start: program
+
+program: declaration*
+
+declaration: doc_comments let_decl      -> let_declaration
+           | doc_comments tool_decl     -> tool_declaration
+           | doc_comments tool_shorthand -> tool_shorthand_declaration
+
+// --- Doc Comments ---
+
+doc_comments: DOC_COMMENT*
+
+// --- Let Declarations ---
+
+let_decl: "let" IDENTIFIER "=" expression ";"
+
+// --- Tool Declarations ---
+
+tool_decl: "tool" tool_id "{" tool_member* "}"
+
+tool_id: STRING                         -> tool_id_string
+       | REGEX_STRING                   -> tool_id_regex
+
+tool_member: doc_comments priority_decl     -> priority_member
+           | doc_comments check_rule        -> check_member
+           | doc_comments result_block      -> result_member
+           | doc_comments session_block     -> session_member
+
+priority_decl: "priority" INT ";"
+
+// --- Tool Shorthand Syntax ---
+//
+// Shorthand form: tool "id" [priority] -> [target] @field op expr [when predicate];
+// Operators: = (assign), |= (union), &= (intersect), -= (minus), ^= (xor)
+// Targets: result (default), session, session before
+
+tool_shorthand: "tool" tool_id shorthand_priority? "->" shorthand_body ";"
+
+shorthand_priority: "[" INT "]"
+
+shorthand_body: shorthand_target? shorthand_update shorthand_condition?
+
+shorthand_target: "result"                      -> shorthand_result
+                | "session" "before"            -> shorthand_session_before
+                | "session" "after"             -> shorthand_session_after
+                | "session"                     -> shorthand_session_after
+
+shorthand_update: "@" META_FIELD "=" set_expression                  -> shorthand_update_simple
+                | "@" META_FIELD augmented_assign_op set_expression  -> shorthand_update_augmented
+
+shorthand_condition: "when" predicate
+
+augmented_assign_op: "|="   -> aug_union
+                   | "&="   -> aug_intersect
+                   | "-="   -> aug_minus
+                   | "^="   -> aug_xor
+
+// --- Check Rules (Meta Checkers) ---
+
+check_rule: enforcement outcome condition_clause ";"
+
+enforcement: "must"     -> enforcement_must
+           | "hard"     -> enforcement_must
+           | "should"   -> enforcement_should
+           | "soft"     -> enforcement_should
+
+outcome: "allow"        -> outcome_allow
+       | "deny"         -> outcome_deny
+
+condition_clause: "when" predicate      -> condition_when
+                | "always"              -> condition_always
+
+// --- Result Block ---
+
+result_block: "result" "{" result_stmt* "}"
+
+result_stmt: doc_comments result_update ";"     -> result_update_stmt
+           | doc_comments result_conditional    -> result_conditional_stmt
+
+result_conditional: "when" predicate "{" result_update_inner* "}"
+
+result_update_inner: result_update ";"
+
+// @META_FIELD shorthand resolves to @result.META_FIELD in result blocks
+result_update: update_target "=" set_expression                      -> result_update_simple
+             | update_target augmented_assign_op set_expression      -> result_update_augmented
+
+// --- Session Block ---
+
+session_block: "session" session_timing "{" session_stmt* "}"
+
+session_timing: "before"    -> timing_before
+              | "after"     -> timing_after
+
+session_stmt: doc_comments session_update ";"       -> session_update_stmt
+            | doc_comments session_conditional      -> session_conditional_stmt
+
+session_conditional: "when" predicate "{" session_update_inner* "}"
+
+session_update_inner: session_update ";"
+
+// @META_FIELD shorthand resolves to @session.META_FIELD in session blocks
+session_update: update_target "=" set_expression                    -> session_update_simple
+              | update_target augmented_assign_op set_expression    -> session_update_augmented
+
+// --- Shared Update Target ---
+// Used by both result and session blocks
+
+update_target: "@" META_FIELD                   -> context_field
+             | "@result" "." META_FIELD         -> result_field
+             | "@session" "." META_FIELD        -> session_field
+             | IDENTIFIER "." META_FIELD        -> arg_field
+
+META_FIELD: "tags" | "producers" | "consumers"
+
+// --- Expressions ---
+
+?expression: predicate
+           | set_expression
+           | type_domain
+
+// --- Predicates (Boolean Expressions) ---
+
+?predicate: predicate_or
+
+?predicate_or: predicate_and
+             | predicate_or "or" predicate_and          -> pred_or
+
+?predicate_and: predicate_not
+              | predicate_and "and" predicate_not       -> pred_and
+
+?predicate_not: predicate_atom
+              | "not" predicate_not                     -> pred_not
+
+?predicate_atom: comparison
+               | IDENTIFIER                             -> pred_ref
+               | "(" predicate ")"
+
+// --- Comparisons ---
+
+?comparison: value_comparison
+           | set_comparison
+
+value_comparison: value_operand "in" set_expression             -> value_in_set
+                | value_operand "==" value_operand              -> value_equals
+
+set_comparison: set_operand "overlaps" set_expression           -> set_overlaps
+              | set_operand "subset" "of" set_expression        -> set_subset_of
+              | set_operand "superset" "of" set_expression      -> set_superset_of
+              | set_operand "==" set_expression                 -> set_equals
+              | set_operand "is" "empty"                        -> set_is_empty
+              | set_operand "is" "universal"                    -> set_is_universal
+
+// --- Set Expressions ---
+// Precedence (low to high): xor, minus, intersect, union, with/without
+
+?set_expression: set_xor
+
+?set_xor: set_minus
+        | set_xor set_xor_op set_minus                  -> set_binary_xor
+
+?set_minus: set_intersect
+          | set_minus set_minus_op set_intersect        -> set_binary_minus
+
+?set_intersect: set_union
+              | set_intersect set_intersect_op set_union    -> set_binary_intersect
+
+?set_union: set_element_op
+          | set_union set_union_op set_element_op       -> set_binary_union
+
+?set_element_op: set_atom
+               | set_element_op "with" element          -> set_with
+               | set_element_op "without" element       -> set_without
+
+?set_atom: set_literal
+         | set_operand
+         | IDENTIFIER                                   -> set_ref
+         | "(" set_expression ")"
+
+// Set operators (symbol and keyword forms)
+set_union_op: "|"           -> op_symbol
+            | "union"       -> op_keyword
+
+set_intersect_op: "&"       -> op_symbol
+                | "intersect" -> op_keyword
+
+set_minus_op: "-"           -> op_symbol
+            | "minus"       -> op_keyword
+
+set_xor_op: "^"             -> op_symbol
+          | "xor"           -> op_keyword
+
+// --- Set Operands (Accessors) ---
+
+?set_operand: arg_meta_access
+            | result_meta_access
+            | session_meta_access
+            | context_meta_access
+            | args_meta_access
+            | aggregation
+
+arg_meta_access: IDENTIFIER "." META_FIELD
+
+result_meta_access: "@result" "." META_FIELD
+
+session_meta_access: "@session" "." META_FIELD
+
+// @META_FIELD shorthand: context-aware, resolves to @result.X or @session.X
+context_meta_access: "@" META_FIELD
+
+// Aggregations over argument metadata
+aggregation: agg_op "of" META_FIELD "from" "args"
+
+// @args.tags sugar: defaults to union, optional .union/.intersect suffix
+args_meta_access: "@args" "." META_FIELD agg_suffix?
+
+agg_suffix: "." "union"         -> agg_union
+          | "." "intersect"     -> agg_intersect
+
+agg_op: "union"         -> agg_union
+      | "intersect"     -> agg_intersect
+
+// --- Value Operands ---
+
+?value_operand: arg_value_access
+              | result_value_access
+              | session_value_access
+              | literal
+
+arg_value_access: IDENTIFIER ".value"
+
+result_value_access: "@result" ".value"
+
+session_value_access: "@session" ".value"
+
+// --- Set Literals ---
+
+set_literal: "{" "}"                            -> empty_set
+           | "{" element_list "}"               -> non_empty_set
+
+element_list: element ("," element)*
+
+?element: string_element
+        | type_domain
+        | number
+
+string_element: STRING                          -> string_const
+              | REGEX_STRING                    -> string_regex
+              | WILDCARD_STRING                 -> string_wildcard
+
+// --- Type Domains (Value Constraints) ---
+
+?type_domain: bool_domain
+            | int_domain
+            | float_domain
+            | str_domain
+            | datetime_domain
+
+bool_domain: "bool" BOOL
+
+int_domain: "int" range_spec
+
+float_domain: "float" range_spec
+
+str_domain: "str" str_pattern
+          | "str" str_pattern length_spec
+
+datetime_domain: "datetime" datetime_spec
+
+// Range specifications
+range_spec: number RANGE_EXCLUSIVE_BOTH number      -> range_exclusive_both
+          | number RANGE_EXCLUSIVE_LEFT number      -> range_exclusive_left
+          | number RANGE_EXCLUSIVE_RIGHT number     -> range_exclusive_right
+          | number RANGE_INCLUSIVE number           -> range_inclusive
+          | RANGE_EXCLUSIVE_RIGHT number            -> range_to_exclusive
+          | RANGE_INCLUSIVE number                  -> range_to
+          | number RANGE_EXCLUSIVE_LEFT             -> range_from_exclusive
+          | number RANGE_INCLUSIVE                  -> range_from
+          | number                                  -> exact_value
+
+// Range operators (order matters for lexer)
+RANGE_EXCLUSIVE_BOTH: "<..<"
+RANGE_EXCLUSIVE_LEFT: "<.."
+RANGE_EXCLUSIVE_RIGHT: "..<"
+RANGE_INCLUSIVE: ".."
+
+// String patterns
+str_pattern: STRING                                 -> str_exact
+           | "matching" REGEX_STRING                -> str_matching
+           | "like" WILDCARD_STRING                 -> str_like
+
+length_spec: "length" range_spec
+
+// Datetime specifications
+datetime_spec: DATETIME_STRING RANGE_INCLUSIVE DATETIME_STRING          -> datetime_range_inclusive
+             | DATETIME_STRING RANGE_EXCLUSIVE_RIGHT DATETIME_STRING    -> datetime_range_exclusive
+             | DATETIME_STRING RANGE_EXCLUSIVE_LEFT DATETIME_STRING     -> datetime_range_exclusive_left
+             | DATETIME_STRING RANGE_EXCLUSIVE_BOTH DATETIME_STRING     -> datetime_range_exclusive_both
+             | RANGE_INCLUSIVE DATETIME_STRING                          -> datetime_to
+             | RANGE_EXCLUSIVE_RIGHT DATETIME_STRING                    -> datetime_to_exclusive
+             | DATETIME_STRING RANGE_INCLUSIVE                          -> datetime_from
+             | DATETIME_STRING RANGE_EXCLUSIVE_LEFT                     -> datetime_from_exclusive
+             | DATETIME_STRING                                          -> datetime_exact
+             | STRING                                                   -> datetime_string
+             | number                                                   -> datetime_epoch
+
+// --- Literals ---
+
+?literal: STRING                        -> literal_string
+        | DATETIME_STRING               -> literal_datetime
+        | number                        -> literal_number
+        | BOOL                          -> literal_bool
+
+?number: INT                            -> number_int
+       | FLOAT                          -> number_float
+       | INF                            -> number_inf
+
+// --- Terminals ---
+
+BOOL: "true" | "false"
+
+STRING: /"([^"\\]|\\.)*"/
+REGEX_STRING: /r"([^"\\]|\\.)*"/
+WILDCARD_STRING: /w"([^"\\]|\\.)*"/
+DATETIME_STRING: /d"([^"\\]|\\.)*"/
+
+INT: /-?\d+/
+FLOAT: /-?\d+\.\d+/
+
+INF: "inf" | "-inf" | "+inf"
+
+IDENTIFIER: /[a-zA-Z_][a-zA-Z0-9_]*/
+
+// --- Comments and Whitespace ---
+
+// Doc comments: /// followed by content
+DOC_COMMENT: /\/\/\/[^\n]*/
+
+// Regular comments: // (but not ///) followed by content
+COMMENT: /\/\/(?!\/)[^\n]*/
+
+// Multi-line comments
+MULTILINE_COMMENT: /\/\*(.|\n)*?\*\//
+
+%import common.WS
+%ignore WS
+%ignore COMMENT
+%ignore MULTILINE_COMMENT

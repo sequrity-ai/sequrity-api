@@ -31,6 +31,7 @@ def create_langgraph_chat_completion_sync(
     security_policy: SecurityPolicyHeader | None = None,
     fine_grained_config: FineGrainedConfigHeader | None = None,
     session_id: str | None = None,
+    timeout: float = 300.0,
     return_type: Literal["python", "json"] = "python",
 ) -> LangGraphChatCompletionResponse | dict:
     # Prepare the request payload
@@ -51,7 +52,7 @@ def create_langgraph_chat_completion_sync(
         headers["X-Session-Id"] = session_id
 
     # Make the HTTP request
-    response = client.post(url, json=payload, headers=headers)
+    response = client.post(url, json=payload, headers=headers, timeout=timeout)
     response.raise_for_status()
     response_data = response.json()
     session_id = response.headers.get("X-Session-Id")
@@ -83,11 +84,14 @@ def run_graph_sync(
     service_provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
     node_functions: dict[str, Callable] | None = None,
     internal_node_mapping: dict[str, str] | None = None,
+    timeout: float = 300.0,
 ) -> dict:
     if features.llm.feature_name != "Dual LLM":
         raise ValueError("LangGraph execution requires 'Dual LLM' feature to be enabled.")
     if fine_grained_config.response_format.strip_response_content:
         raise ValueError("LangGraph execution requires 'strip_response_content' to be False.")
+    if fine_grained_config.disable_rllm is not True:
+        raise ValueError("LangGraph execution requires 'disable_rllm' to be True.")
 
     executor = LangGraphExecutor(
         graph=graph,
@@ -133,6 +137,7 @@ def run_graph_sync(
             features=features,
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
+            timeout=timeout,
             session_id=session_id,
         )
         session_id = response.session_id

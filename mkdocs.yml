@@ -6,6 +6,9 @@ repo_name: sequrity-ai/sequrity-api
 
 theme:
   name: material
+  icon:
+    logo: material/lock-outline
+    repo: fontawesome/brands/github
   palette:
     - scheme: default
       primary: white
@@ -37,29 +40,67 @@ plugins:
       handlers:
         python:
           paths: [src]
+          inventories:
+            - https://docs.python.org/3/objects.inv
+            - url: https://docs.python-requests.org/en/master/objects.inv
+              domains: [std, py]
           options:
+            # Existing settings
             docstring_style: google
             show_source: true
-            show_root_heading: true
-            show_root_full_path: false
             members_order: source
-            show_signature_annotations: true
-            separate_signature: true
             extensions:
               - griffe_pydantic:
                   schema: true
+
+            # DOCSTRINGS
+            docstring_options:
+              ignore_init_summary: true
+            docstring_section_style: list
+
+            # CROSS-REFERENCES
+            signature_crossrefs: true
+            unwrap_annotated: true
+
+            # MEMBERS
+            inherited_members: true
+            summary: true
+
+            # HEADINGS
+            heading_level: 1
+            parameter_headings: true
+            type_parameter_headings: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+
+            # SIGNATURES
+            line_length: 88
+            merge_init_into_class: true
+            separate_signature: true
+            show_signature_annotations: true
+            show_signature_type_parameters: true
+
+            # OTHER
+            show_bases: false
   - mkdocs-jupyter
 
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - def_list
@@ -67,6 +108,10 @@ markdown_extensions:
       custom_checkbox: true
   - footnotes
   - pymdownx.critic
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
   - stylesheets/custom.css
@@ -78,12 +123,17 @@ nav:
       - Control:
           - Sending your first message: control/getting_started/first_message.md
           - Secure Tool Use with Dual-LLM: control/getting_started/tool_use_dual_llm.md
+          - Compile and Execute LangGraph: control/getting_started/langgraph.md
   - Learn:
       - Control:
           - control/learn/index.md
           - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
-          - "Policy Language: sqrt": control/learn/sqrt.md
-          - Compile and Execute LangGraph: control/learn/langgraph.md
+          - "Policy Language: SQRT":
+              - control/learn/sqrt/index.md
+              - 01-Basic Types: control/learn/sqrt/01_basic_types.md
+              - 02-Set Operations: control/learn/sqrt/02_set_operations.md
+              - 03-Predicates: control/learn/sqrt/03_predicates.md
+              - 04-Tool Policies: control/learn/sqrt/04_tool_policies.md
   - Reference:
       - SequrityClient: general/sequrity_client/sequrity_client.md
       - Control:
@@ -111,8 +161,9 @@ nav:
                       - PolicyHeader: control/reference/sequrity_client/headers/policy_header.md
                       - ConfigHeader: control/reference/sequrity_client/headers/config_header.md
                   - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
+                  - SQRT: control/reference/sequrity_client/sqrt.md
               - service_provider: general/sequrity_client/service_provider.md
   - Examples:
       - Control:
           - control/examples/index.md
-          - Example-2026-01-22: control/examples/control-release-examples.ipynb
+          - Advanced SQRT Examples - 2025-01-25: control/examples/advanced_sqrt_examples.md

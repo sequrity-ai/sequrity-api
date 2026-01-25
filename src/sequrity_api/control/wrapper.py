@@ -155,6 +155,7 @@ class ControlApiWrapper:
         service_provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
         node_functions: dict[str, Callable] | None = None,
         internal_node_mapping: dict[str, str] | None = None,
+        timeout: float = 300.0,
     ) -> dict:
         """Compile and execute a LangGraph StateGraph with Sequrity security.
 
@@ -174,6 +175,7 @@ class ControlApiWrapper:
             service_provider: The LLM service provider. Defaults to OPENROUTER.
             node_functions: Custom node function implementations.
             internal_node_mapping: Mapping for internal node names.
+            timeout: Timeout in seconds for each API request. Defaults to 300.0.
 
         Returns:
             Dictionary containing the final state and execution results.
@@ -224,4 +226,5 @@ class ControlApiWrapper:
             service_provider=service_provider,
             node_functions=node_functions,
             internal_node_mapping=internal_node_mapping,
+            timeout=timeout,
         )
