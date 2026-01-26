@@ -4,6 +4,7 @@ import os
 import re
 
 import requests
+
 # --8<-- [end:imports]
 
 # Try to import rich, fallback to plain print if not available
@@ -26,7 +27,7 @@ except ImportError:
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
 sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
-base_url = os.getenv("SEQURITY_BASE_URL", "https://api.sequrity.ai")
+base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
 assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
@@ -101,7 +102,7 @@ fine_grained_config = json.dumps({"response_format": {"include_program": True}})
 
 
 # --8<-- [start:chat_completion_func]
-def chat_completion(messages, session_id=None):
+def chat_completion(messages):
     url = f"{base_url}/control/{service_provider}/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {sequrity_api_key}",
@@ -111,13 +112,11 @@ def chat_completion(messages, session_id=None):
         "X-Security-Policy": security_policy,
         "X-Security-Config": fine_grained_config,
     }
-    if session_id:
-        headers["X-Session-Id"] = session_id
 
     payload = {"messages": messages, "model": model, "tools": tool_defs}
     response = requests.post(url, headers=headers, json=payload)
     response.raise_for_status()
-    return response.json(), response.headers.get("X-Session-Id")
+    return response.json()
 # --8<-- [end:chat_completion_func]
 
 
@@ -127,11 +126,10 @@ rprint("[bold red]Send Email to Untrusted Domain (Should be Denied)[/bold red]")
 rprint("[bold red]" + "=" * 60 + "[/bold red]\n")
 
 # --8<-- [start:untrusted_query]
-session_id = None
 user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
 messages = [{"role": "user", "content": user_query}]
 
-response_data, session_id = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
 # --8<-- [end:untrusted_query]
 assert response_data["choices"][0]["message"]["role"] == "assistant"
 # --8<-- [start:tool_call_check]
@@ -154,7 +152,7 @@ messages.append(
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
 
 # --8<-- [start:denied_response]
-response_data, _ = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
 assert "denied by argument checking policies" in response_data["choices"][0]["message"]["content"]
 
 content = json.loads(response_data["choices"][0]["message"]["content"])
@@ -173,9 +171,8 @@ rprint("[bold green]" + "=" * 60 + "[/bold green]\n")
 
 # --8<-- [start:trusted_query]
 messages = [{"role": "user", "content": user_query.replace("research@gmail.com", "user@trustedcorp.com")}]
-session_id = None
 
-response_data, session_id = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
 # --8<-- [end:trusted_query]
 assert response_data["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "get_internal_document"
 tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
@@ -191,7 +188,7 @@ messages.append(
 )
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
 
-response_data, _ = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
 assert response_data["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "send_email"
 tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
 
@@ -199,7 +196,7 @@ messages.append(response_data["choices"][0]["message"])
 messages.append({"role": "tool", "content": "Email sent successfully", "tool_call_id": tool_call["id"]})
 rprint("\n[dim]→ Executing tool call: [bold]send_email[/bold][/dim]")
 
-response_data, _ = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
 content = json.loads(response_data["choices"][0]["message"]["content"])
 assert content["status"] == "success"
 rprint("\n[bold green]✅ Email allowed to trusted domain[/bold green]")

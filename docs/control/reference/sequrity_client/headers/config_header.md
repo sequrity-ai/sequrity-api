@@ -7,6 +7,7 @@ Advanced configuration for session behavior, response formatting, and internal t
       show_root_heading: true
       show_source: true
 
+---
 
 ::: sequrity_api.types.control.headers.session_config_headers.ResponseFormat
     options:
