@@ -84,7 +84,8 @@ class ControlApiWrapper:
                 behavior and response formatting.
             service_provider: The LLM service provider to use. Defaults to
                 auto-detection based on the model.
-            session_id: Optional session identifier for conversation continuity.
+            session_id: Explicit session identifier for conversation continuity.
+                If None and no tool messages in the request, a new session is created.
             reasoning_effort: Reasoning effort level for supported models.
             response_format: Response format specification.
             seed: Random seed for reproducible outputs.

@@ -105,6 +105,7 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
 
 - **`X-Security-Features`**: Enables the Dual-LLM feature in this example
 - **`X-Security-Policy`**: Defines security policies in [SQRT language](../reference/sqrt/index.md):
+
     ```rust
     // Define sensitive document tags
     let sensitive_docs = {"internal_use", "confidential"};
@@ -117,8 +118,9 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
         (not to.value in {str matching r".*@trustedcorp\.com"});
     }
     ```
-    - Tags documents retrieved by `get_internal_document` as `internal_use` and `confidential`
-    - Blocks `send_email` calls if the email body contains sensitive tags AND the recipient is not from `trustedcorp.com`
+
+  - Tags documents retrieved by `get_internal_document` as `internal_use` and `confidential`
+  - Blocks `send_email` calls if the email body contains sensitive tags AND the recipient is not from `trustedcorp.com`
 - **`X-Security-Config`**: Controls response format - `include_program: true` returns the generated execution program for auditing and transparency
 
 ## Tool Definitions
@@ -140,7 +142,6 @@ Here we follow [the OpenAI chat completion's tool definition format](https://pla
     ```python
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:tool_defs"
     ```
-
 
 ## Example 1: Blocking Emails to Untrusted Domains
 
@@ -171,13 +172,11 @@ The user requests to retrieve an internal document and email it to an untrusted 
 Note that we need to keep track of the `session_id` to maintain context across multiple tool calls.
 
 === "Sequrity Client"
-
     ```python
     --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:untrusted_query"
     ```
 
 === "REST API"
-
     ```python
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:chat_completion_func"
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:untrusted_query"
@@ -346,7 +345,6 @@ This time the email is allowed because the recipient matches the trusted domain 
 2. Sequrity Control API enforces security policies on tool calls, preventing unauthorized actions
 3. MetaData like tags propagate through program execution
 4. A [session ID](../learn/session_id.md) is needed for Sequrity to track context across multiple tool calls
-
 
 ## More Complex Examples
 

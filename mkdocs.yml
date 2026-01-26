@@ -113,6 +113,8 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - md_in_html
+  - pymdownx.blocks.caption
 
 extra_css:
   - stylesheets/custom.css
@@ -141,6 +143,7 @@ nav:
       - SequrityClient: general/sequrity_client/sequrity_client.md
       - Control:
           - control/reference/index.md
+          - Supported Features in Single LLM: control/reference/single_llm_vs_dual_llm_features.md
           - SQRT Policy Language:
               - control/reference/sqrt/index.md
               - Grammar: control/reference/sqrt/grammar.md
