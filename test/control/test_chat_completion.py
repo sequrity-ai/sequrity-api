@@ -119,7 +119,6 @@ class TestChatCompletion:
             fine_grained_config=config_header,
             service_provider=service_provider,
             tools=tools,
-            session_id=response.session_id,
         )
         print("Second response:", response_2)
         # this should be another tool call for return flight
@@ -153,7 +152,6 @@ class TestChatCompletion:
             fine_grained_config=config_header,
             service_provider=service_provider,
             tools=tools,
-            session_id=response_2.session_id,
         )
         # this should be a final response from the model
         assert response_3 is not None
@@ -250,7 +248,6 @@ class TestChatCompletion:
             fine_grained_config=config_header,
             service_provider=service_provider,
             tools=tools,
-            session_id=response.session_id,
         )
         print("Second Response:", response_2)
         assert response_2 is not None
