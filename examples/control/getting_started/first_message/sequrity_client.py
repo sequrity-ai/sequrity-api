@@ -5,7 +5,7 @@ Prerequisites:
 - An LLM provider API key (e.g., OpenAI, OpenRouter)
 
 Installation:
-    pip install sequrity-api
+    pip install sequrity
 """
 
 # ---8<-- [start:imports_os]
@@ -13,16 +13,16 @@ import os
 
 # ---8<-- [end:imports_os]
 # --8<-- [start:imports_sequrity_client]
-from sequrity_api import SequrityClient
+from sequrity import SequrityClient
 
 # --8<-- [end:imports_sequrity_client]
 # --8<-- [start:imports_headers]
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
 
 # --8<-- [end:imports_headers]
 
 # --8<-- [start:api_keys]
-sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
+sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-key")
 # --8<-- [end:api_keys]
 
@@ -34,7 +34,7 @@ openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-key")
 # --8<-- [start:first_message]
 def first_message_example():
     # Initialize the Sequrity client
-    client = SequrityClient(api_key=sequrity_api_key)
+    client = SequrityClient(api_key=sequrity_key)
 
     # Send a chat completion request
     response = client.control.create_chat_completion(
@@ -57,7 +57,7 @@ def first_message_example():
 # --8<-- [start:single_llm]
 def single_llm_example():
     # Initialize the client
-    client = SequrityClient(api_key=sequrity_api_key)
+    client = SequrityClient(api_key=sequrity_key)
 
     # Create feature and policy headers
     features = FeaturesHeader.create_single_llm_header()
@@ -87,7 +87,7 @@ def single_llm_example():
 # --8<-- [start:dual_llm]
 def dual_llm_example():
     # Initialize the client
-    client = SequrityClient(api_key=sequrity_api_key)
+    client = SequrityClient(api_key=sequrity_key)
 
     # Create dual LLM feature headers
     features = FeaturesHeader.create_dual_llm_header()

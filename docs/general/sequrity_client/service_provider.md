@@ -1,3 +1,3 @@
 # LLM Service Provider
 
-::: sequrity_api.service_provider.LlmServiceProviderEnum
+::: sequrity.service_provider.LlmServiceProviderEnum

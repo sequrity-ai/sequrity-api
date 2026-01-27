@@ -1,6 +1,6 @@
-site_name: Sequrity API
+site_name: Sequrity
 site_url: https://sequrity-ai.github.io/sequrity-api/
-site_description: A Python client for Sequrity API
+site_description: A Python client for Sequrity
 repo_url: https://github.com/sequrity-ai/sequrity-api
 repo_name: sequrity-ai/sequrity-api
 

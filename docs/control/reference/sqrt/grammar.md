@@ -4,5 +4,5 @@ This is the formal grammar specification for the SQRT language for Sequrity Cont
 The grammar is defined using [Lark](https://lark-parser.readthedocs.io/).
 
 ```lark
---8<-- "src/sequrity_api/control/sqrt/grammar.lark"
+--8<-- "src/sequrity/control/sqrt/grammar.lark"
 ```

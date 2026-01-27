@@ -40,20 +40,20 @@ from rich.syntax import Syntax
 # Client configuration
 # --8<-- [start:config]
 open_router_key = "your OpenRouter/OAI key"
-sequrity_api_key = "your SequrityAI key"
+sequrity_key = "your SequrityAI key"
 endpoint_url = "https://api.sequrity.ai/control/openrouter/v1/chat/completions"
 # --8<-- [end:config]
 open_router_key = "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"
-sequrity_api_key = "74a55696a41ed02014f608c727264e317793b51bfb2f0643c68ed832693b8df3"
+sequrity_key = "74a55696a41ed02014f608c727264e317793b51bfb2f0643c68ed832693b8df3"
 endpoint_url = "http://127.0.0.1:8000/control/openrouter/v1/chat/completions"
 CONFIG = {
     "open_router_api_key": os.getenv("OPENROUTER_API_KEY", open_router_key),
-    "sequrity_api_key": os.getenv("SEQURITY_API_KEY", sequrity_api_key),
+    "sequrity_key": os.getenv("SEQURITY_API_KEY", sequrity_key),
     "endpoint_url": os.getenv("ENDPOINT_URL", endpoint_url),
 }
 
 assert CONFIG["open_router_api_key"] != "your OpenRouter/OAI key"
-assert CONFIG["sequrity_api_key"] != "your SequrityAI key"
+assert CONFIG["sequrity_key"] != "your SequrityAI key"
 
 # %% [markdown]
 #  ### Mock client
@@ -66,7 +66,7 @@ assert CONFIG["sequrity_api_key"] != "your SequrityAI key"
 # ```python
 #    headers = {
 #        "Content-Type": "application/json",
-#        "Authorization": f"Bearer {CONFIG['sequrity_api_key']}",
+#        "Authorization": f"Bearer {CONFIG['sequrity_key']}",
 #        "X-Api-Key": CONFIG["open_router_api_key"],
 #        "X-Security-Features": json.dumps(enabled_features),
 #    }
@@ -200,7 +200,7 @@ def send_request_to_endpoint(
 ) -> tuple[dict | None, str | None]:
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {CONFIG['sequrity_api_key']}",
+        "Authorization": f"Bearer {CONFIG['sequrity_key']}",
         "X-Api-Key": CONFIG["open_router_api_key"],
         "X-Security-Features": json.dumps(enabled_features),
     }
