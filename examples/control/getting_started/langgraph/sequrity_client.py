@@ -253,7 +253,7 @@ if __name__ == "__main__":
         llm_api_key=openrouter_api_key,
         graph=graph,
         initial_state=initial_state,
-        service_provider="openrouter",
+        provider="openrouter",
         node_functions=node_functions,
         max_exec_steps=30,
         features=features,

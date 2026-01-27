@@ -76,7 +76,7 @@ class SecurityPolicyHeader(BaseModel):
     """
 
     language: Literal["sqrt", "sqrt-lite", "cedar"] = Field(
-        default="sqrt-lite", description="The security policy language to use."
+        default="sqrt", description="The security policy language to use."
     )
     codes: list[str] | str = Field(default="", description="The security policy codes.")
     auto_gen: bool = Field(
@@ -105,7 +105,7 @@ class SecurityPolicyHeader(BaseModel):
     @classmethod
     def dual_llm(
         cls,
-        language: Literal["sqrt", "sqrt-lite", "cedar"] = "sqrt-lite",
+        language: Literal["sqrt", "sqrt-lite", "cedar"] = "sqrt",
         codes: list[str] | str = "",
         auto_gen: bool = False,
         fail_fast: bool | None = None,
@@ -141,7 +141,7 @@ class SecurityPolicyHeader(BaseModel):
     @classmethod
     def single_llm(
         cls,
-        language: Literal["sqrt", "sqrt-lite", "cedar"] = "sqrt-lite",
+        language: Literal["sqrt", "sqrt-lite", "cedar"] = "sqrt",
         codes: list[str] | str = "",
         fail_fast: bool | None = None,
         default_allow: bool = True,

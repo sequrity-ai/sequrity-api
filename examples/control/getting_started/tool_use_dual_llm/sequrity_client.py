@@ -120,7 +120,7 @@ response = client.control.create_chat_completion(
     features=features,
     security_policy=security_policy,
     fine_grained_config=fine_grained_config,
-    service_provider=service_provider,
+    provider=service_provider,
 )
 # --8<-- [end:untrusted_query]
 
@@ -152,7 +152,7 @@ response = client.control.create_chat_completion(
     messages=messages,
     model=model,
     tools=tool_defs,
-    service_provider=service_provider,
+    provider=service_provider,
 )
 assert response.choices[0].message is not None
 assert "denied by argument checking policies" in response.choices[0].message.content
@@ -179,7 +179,7 @@ response = client.control.create_chat_completion(
     tools=tool_defs,
     features=features,
     security_policy=security_policy,
-    service_provider=service_provider,
+    provider=service_provider,
     fine_grained_config=fine_grained_config,
 )
 # --8<-- [end:trusted_query]
@@ -204,7 +204,7 @@ response = client.control.create_chat_completion(
     messages=messages,
     model=model,
     tools=tool_defs,
-    service_provider=service_provider,
+    provider=service_provider,
 )
 # this should be tool call to send_email
 assert response.choices[0].message is not None
@@ -226,7 +226,7 @@ response = client.control.create_chat_completion(
     messages=messages,
     model=model,
     tools=tool_defs,
-    service_provider=service_provider,
+    provider=service_provider,
 )
 # final response
 assert response.choices[0].message is not None

@@ -7,7 +7,7 @@ This script demonstrates predicates (boolean expressions) in SQRT:
 - Let bindings for reusable predicates
 """
 
-from sequrity.control.sqrt.parser import check
+from sequrity.control.sqrt import check
 
 # --8<-- [start:value_comparisons]
 # Value comparisons check argument values

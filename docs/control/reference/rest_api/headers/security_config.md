@@ -8,7 +8,7 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
 
 ```json
 {
-  "max_pllm_attempts": 4,
+  "max_pllm_attempts": 1,
   "merge_system_messages": true,
   "convert_system_to_developer_messages": false,
   "include_other_roles_in_user_query": ["assistant"],
@@ -19,13 +19,13 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
   "force_to_cache": [],
   "min_num_tools_for_filtering": 10,
   "clear_session_meta": "never",
-  "disable_rllm": false,
+  "disable_rllm": true,
   "reduced_grammar_for_rllm_review": true,
   "rllm_confidence_score_threshold": null,
   "pllm_debug_info_level": "normal",
-  "max_n_turns": 1,
+  "max_n_turns": 5,
   "enable_multi_step_planning": false,
-  "prune_failed_steps": true,
+  "prune_failed_steps": false,
   "enabled_internal_tools": ["parse_with_ai", "verify_hypothesis"],
   "restate_user_query_before_planning": false,
   "pllm_can_ask_for_clarification": false,
@@ -52,7 +52,7 @@ All fields are optional and have sensible defaults.
 
 | Type | Required | Default | Constraints |
 |------|----------|---------|-------------|
-| `integer` | No | `4` | >= 1 |
+| `integer` | No | `1` | >= 1 |
 
 Maximum number of PLLM attempts before giving up and returning an error.
 
@@ -84,7 +84,7 @@ Retry PLLM attempts when a policy violation is detected.
 
 | Type | Required | Default | Constraints |
 |------|----------|---------|-------------|
-| `integer` or `null` | No | `1` | >= 1 |
+| `integer` or `null` | No | `5` | >= 1 |
 
 Maximum number of conversation turns allowed in the session. Set to `null` for unlimited turns.
 
@@ -100,7 +100,7 @@ Enable multi-step planning for complex user queries.
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `true` |
+| `boolean` | No | `false` |
 
 Prune failed PLLM steps from session history to save tokens.
 
@@ -223,7 +223,7 @@ Internal tools to enable. Valid values: `"parse_with_ai"`, `"verify_hypothesis"`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` | No | `true` |
 
 Disable the Response LLM (RLLM) for reviewing final responses.
 
@@ -310,4 +310,4 @@ Include the policy check history in the response.
 |------|----------|---------|
 | `boolean` | No | `false` |
 
-Include the namespace snapshot (variables after program execution) in the response.
+Include the namespace screenshot in the response.

@@ -70,7 +70,7 @@ def single_llm_example():
         llm_api_key=openrouter_api_key,
         features=features,  # security features
         security_policy=policy,  # security policy
-        service_provider="openrouter",
+        provider="openrouter",
     )
 
     print(response)

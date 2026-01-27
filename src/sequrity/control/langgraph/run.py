@@ -81,7 +81,7 @@ def run_graph_sync(
     max_exec_steps: int = 20,
     security_policy: SecurityPolicyHeader | None = None,
     fine_grained_config: FineGrainedConfigHeader | None = None,
-    service_provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
+    provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
     node_functions: dict[str, Callable] | None = None,
     internal_node_mapping: dict[str, str] | None = None,
     timeout: float = 300.0,
@@ -114,7 +114,7 @@ def run_graph_sync(
 
     current_state = initial_state.copy()
     final_state = None
-    url_path = CONTROL_API_PATHS["langgraph_chat_completions"]["default"].format(service_provider=service_provider)
+    url_path = CONTROL_API_PATHS["langgraph_chat_completions"]["default"].format(service_provider=provider)
     url = urljoin(base_url, url_path)
     session_id = None
 

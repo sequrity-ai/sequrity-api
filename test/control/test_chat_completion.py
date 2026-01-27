@@ -34,7 +34,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         assert response is not None
@@ -78,7 +78,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
         )
         print("First response:", response)
@@ -117,7 +117,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
         )
         print("Second response:", response_2)
@@ -150,7 +150,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
         )
         # this should be a final response from the model
@@ -217,7 +217,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
         )
         print("Response:", response)
@@ -248,7 +248,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
         )
         print("Second Response:", response_2)
@@ -373,7 +373,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print("Response:", response)
@@ -408,7 +408,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print("Response:", response)
@@ -442,7 +442,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print(f"Response for mode={llm_mode}:", response)
@@ -478,7 +478,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print(f"Response for language={language}:", response)

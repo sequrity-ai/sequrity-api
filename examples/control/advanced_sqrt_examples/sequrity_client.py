@@ -189,7 +189,7 @@ def send_request_to_endpoint(
             features=features,
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
-            service_provider="openrouter",
+            provider="openrouter",
             reasoning_effort=reasoning_effort,
             tools=tool_defs,
             session_id=session_id,

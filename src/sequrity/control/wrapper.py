@@ -55,7 +55,7 @@ class ControlApiWrapper:
         features: FeaturesHeader | None = None,
         security_policy: SecurityPolicyHeader | None = None,
         fine_grained_config: FineGrainedConfigHeader | None = None,
-        service_provider: LlmServiceProviderEnum | Literal["default"] = "default",
+        provider: LlmServiceProviderEnum | Literal["default"] = "default",
         session_id: str | None = None,
         reasoning_effort: ReasoningEffort | None = None,
         response_format: ResponseFormat | None = None,
@@ -82,7 +82,7 @@ class ControlApiWrapper:
                 policy language and rules.
             fine_grained_config: Advanced configuration options for session
                 behavior and response formatting.
-            service_provider: The LLM service provider to use. Defaults to
+            provider: The LLM service provider to use. Defaults to
                 auto-detection based on the model.
             session_id: Explicit session identifier for conversation continuity.
                 If None and no tool messages in the request, a new session is created.
@@ -116,7 +116,7 @@ class ControlApiWrapper:
                 llm_api_key="your-openrouter-key",
                 features=features,
                 security_policy=security_policy,
-                service_provider="openrouter",
+                provider="openrouter",
             )
             ```
         """
@@ -130,7 +130,7 @@ class ControlApiWrapper:
             features=features,
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
-            service_provider=service_provider,
+            provider=provider,
             session_id=session_id,
             reasoning_effort=reasoning_effort,
             response_format=response_format,
@@ -153,7 +153,7 @@ class ControlApiWrapper:
         features: FeaturesHeader | None = None,
         security_policy: SecurityPolicyHeader | None = None,
         fine_grained_config: FineGrainedConfigHeader | None = None,
-        service_provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
+        provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
         node_functions: dict[str, Callable] | None = None,
         internal_node_mapping: dict[str, str] | None = None,
         timeout: float = 300.0,
@@ -173,7 +173,7 @@ class ControlApiWrapper:
             features: Security features configuration.
             security_policy: Security policy configuration.
             fine_grained_config: Advanced configuration options.
-            service_provider: The LLM service provider. Defaults to OPENROUTER.
+            provider: The LLM service provider. Defaults to OPENROUTER.
             node_functions: Custom node function implementations.
             internal_node_mapping: Mapping for internal node names.
             timeout: Timeout in seconds for each API request. Defaults to 300.0.
@@ -203,7 +203,7 @@ class ControlApiWrapper:
                 llm_api_key="your-openrouter-key",
                 graph=graph,
                 initial_state={"query": "Read the document", "result": ""},
-                service_provider="openrouter",
+                provider="openrouter",
                 max_exec_steps=20,
                 features=features,
                 security_policy=security_policy,
@@ -224,7 +224,7 @@ class ControlApiWrapper:
             features=features,
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
-            service_provider=service_provider,
+            provider=provider,
             node_functions=node_functions,
             internal_node_mapping=internal_node_mapping,
             timeout=timeout,

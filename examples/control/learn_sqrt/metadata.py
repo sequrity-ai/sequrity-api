@@ -1,4 +1,4 @@
-from sequrity.control.sqrt.parser import check
+from sequrity.control.sqrt import check
 from sequrity.control.types.value_with_meta import MetaData, ValueWithMeta
 
 # --8<-- [start:policy_meta_update]

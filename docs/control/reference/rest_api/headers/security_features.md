@@ -14,27 +14,27 @@ This header is **required** when using Headers-Only Mode (must be provided toget
   },
   {
     "feature_name": "Toxicity Filter",
-    "config_json": "{\"enabled\": true, \"mode\": \"normal\"}"
+    "config_json": "{\"enabled\": false, \"mode\": \"normal\"}"
   },
   {
     "feature_name": "PII Redaction",
-    "config_json": "{\"enabled\": true, \"threshold\": 0.5}"
+    "config_json": "{\"enabled\": false, \"threshold\": 0.5}"
   },
   {
     "feature_name": "Healthcare Topic Guardrail",
-    "config_json": "{\"enabled\": true, \"mode\": \"strict\"}"
+    "config_json": "{\"enabled\": false, \"mode\": \"strict\"}"
   },
   {
     "feature_name": "Finance Topic Guardrail",
-    "config_json": "{\"enabled\": true, \"threshold\": 0.3}"
+    "config_json": "{\"enabled\": false, \"threshold\": 0.3}"
   },
   {
     "feature_name": "Legal Topic Guardrail",
-    "config_json": "{\"enabled\": true, \"tag_name\": \"legal_content\"}"
+    "config_json": "{\"enabled\": false, \"tag_name\": \"legal_content\"}"
   },
   {
     "feature_name": "URL Blocker",
-    "config_json": "{\"enabled\": true}"
+    "config_json": "{\"enabled\": false}"
   },
   {
     "feature_name": "Long Program Support",
@@ -85,7 +85,7 @@ Choose one of the following agent modes (mutually exclusive):
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `mode` | `string` | `"standard"` | Agent mode: `"standard"` or `"strict"` |
+| `mode` | `string` | `"standard"` | Agent mode: `"standard"`, `"strict"`, or `"custom"` |
 
 ---
 
