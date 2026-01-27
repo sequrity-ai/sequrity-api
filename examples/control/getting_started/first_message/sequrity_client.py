@@ -60,7 +60,7 @@ def single_llm_example():
     client = SequrityClient(api_key=sequrity_api_key)
 
     # Create feature and policy headers
-    features = FeaturesHeader.create_single_llm_headers()
+    features = FeaturesHeader.create_single_llm_header()
     policy = SecurityPolicyHeader.create_default()
 
     # Send a chat completion request
@@ -90,7 +90,7 @@ def dual_llm_example():
     client = SequrityClient(api_key=sequrity_api_key)
 
     # Create dual LLM feature headers
-    features = FeaturesHeader.create_dual_llm_headers()
+    features = FeaturesHeader.create_dual_llm_header()
     policy = SecurityPolicyHeader.create_default()
 
     # Send a chat completion request

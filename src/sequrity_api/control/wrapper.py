@@ -106,7 +106,7 @@ class ControlApiWrapper:
 
             client = SequrityClient(api_key="your-sequrity-api-key")
 
-            features = FeaturesHeader.create_single_llm_headers()
+            features = FeaturesHeader.create_single_llm_header()
             security_policy = SecurityPolicyHeader.create_default()
 
 
@@ -188,7 +188,7 @@ class ControlApiWrapper:
             from sequrity_api.types.control.headers import FeaturesHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
-            features = FeaturesHeader.create_dual_llm_headers()
+            features = FeaturesHeader.create_dual_llm_header()
             security_policy = SecurityPolicyHeader.create_default()
 
 

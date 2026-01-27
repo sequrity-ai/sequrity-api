@@ -4,10 +4,9 @@ This module defines advanced configuration options for session behavior,
 response formatting, and internal tool settings.
 """
 
-import json
 from typing import Literal, TypeAlias
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field
 
 OptionalInternalSoToolIdType: TypeAlias = Literal["parse_with_ai", "verify_hypothesis"]
 DebugInfoLevel: TypeAlias = Literal["minimal", "normal", "extra"]

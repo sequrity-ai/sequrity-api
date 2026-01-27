@@ -306,7 +306,7 @@ tool_map = {
 
 # --8<-- [start:ex1_session_config]
 # Create features header using FeaturesHeader class
-features = FeaturesHeader.create_dual_llm_headers(mode="standard")
+features = FeaturesHeader.create_dual_llm_header(mode="standard")
 
 # Create security policy using SecurityPolicyHeader class
 security_policy = SecurityPolicyHeader(
@@ -463,7 +463,7 @@ refund_tool_map = {
 
 # --8<-- [start:ex2_security_config]
 # Create features header for refund example
-refund_features = FeaturesHeader.create_dual_llm_headers(mode="standard")
+refund_features = FeaturesHeader.create_dual_llm_header(mode="standard")
 
 # Create security policy for refund example
 refund_security_policy = SecurityPolicyHeader(
@@ -730,7 +730,7 @@ provenance_tool_map = {
 
 # --8<-- [start:ex3_security_config]
 # Create features header for provenance example
-provenance_features = FeaturesHeader.create_dual_llm_headers(mode="standard")
+provenance_features = FeaturesHeader.create_dual_llm_header(mode="standard")
 
 # Create security policy for provenance example
 provenance_security_policy = SecurityPolicyHeader(
@@ -922,7 +922,7 @@ compliance_tool_map = {
 
 # --8<-- [start:ex4_security_config]
 # Create features header for compliance example
-compliance_features = FeaturesHeader.create_dual_llm_headers(mode="standard")
+compliance_features = FeaturesHeader.create_dual_llm_header(mode="standard")
 
 # Create security policy for compliance example
 compliance_security_policy = SecurityPolicyHeader(
@@ -1126,7 +1126,7 @@ fairness_tool_map = {
 
 # --8<-- [start:ex5_fairness_enabled_features]
 # Create features header for fairness example (custom mode)
-fairness_features = FeaturesHeader.create_dual_llm_headers(mode="custom")
+fairness_features = FeaturesHeader.create_dual_llm_header(mode="custom")
 # --8<-- [end:ex5_fairness_enabled_features]
 
 # --8<-- [start:ex5_fairness_base_config]
@@ -1324,7 +1324,7 @@ qllm_policy_tool_map = {
 
 # --8<-- [start:ex5_qllm_base_config]
 # Create features header for QLLM policy example
-qllm_policy_features = FeaturesHeader.create_dual_llm_headers(mode="standard")
+qllm_policy_features = FeaturesHeader.create_dual_llm_header(mode="standard")
 
 # Base security policy for QLLM policy example
 qllm_policy_security_policy_base_codes = r"""

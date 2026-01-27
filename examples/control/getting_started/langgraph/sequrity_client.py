@@ -64,6 +64,8 @@ class SQLAgentState(TypedDict):
     sql_query: str
     result: str
     needs_validation: bool
+
+
 # --8<-- [end:state_schema]
 
 
@@ -88,6 +90,8 @@ def get_schema(state: SQLAgentState) -> dict:
     rprint(f"🔍 Getting schema for tables: {state['tables']}")
     schema_info = f"Schema for {state['tables']}: users(id, name, email), orders(id, user_id, total, date), products(id, name, price)"
     return {"schema": schema_info}
+
+
 # --8<-- [end:external_nodes]
 
 
@@ -115,6 +119,8 @@ def generate_query(state: SQLAgentState) -> dict:
     needs_validation = len(sql) > 50 or "JOIN" in sql
 
     return {"sql_query": sql, "needs_validation": needs_validation}
+
+
 # --8<-- [end:generate_query]
 
 
@@ -146,6 +152,8 @@ def execute_query(state: SQLAgentState) -> dict:
     result = f"Query executed successfully!\n\nSQL: {state['sql_query']}\n\nResults: Found 3 matching records:\n  1. John Doe (john@example.com)\n  2. Jane Smith (jane@example.com)\n  3. Bob Johnson (bob@example.com)"
 
     return {"result": result}
+
+
 # --8<-- [end:validate_execute_nodes]
 
 
@@ -163,6 +171,8 @@ def route_validation(state: SQLAgentState) -> Literal["validate_query", "execute
     else:
         rprint("✓ Query looks safe, routing directly to execute_query")
         return "execute_query"
+
+
 # --8<-- [end:route_validation]
 
 
@@ -193,6 +203,8 @@ def build_sql_agent_graph():
     graph.add_edge("execute_query", END)
 
     return graph
+
+
 # --8<-- [end:build_graph]
 
 
@@ -230,7 +242,7 @@ if __name__ == "__main__":
 
     # --8<-- [start:security_settings]
     # Configure security features
-    features = FeaturesHeader.create_dual_llm_headers()
+    features = FeaturesHeader.create_dual_llm_header()
     security_policy = SecurityPolicyHeader.create_default()
     fine_grained_config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
     # --8<-- [end:security_settings]

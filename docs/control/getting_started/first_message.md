@@ -167,7 +167,7 @@ You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
     Whichever Sequrity API key you use (Single-LLM or Dual-LLM),
     you can always override the mode in the request headers:
 
-    - For Sequrity client, use [`FeaturesHeader.create_single_llm_headers`][sequrity_api.types.control.headers.FeaturesHeader.create_single_llm_headers] / [`FeaturesHeader.create_dual_llm_headers`][sequrity_api.types.control.headers.FeaturesHeader.create_dual_llm_headers] and [`SecurityPolicyHeader`][sequrity_api.types.control.headers.SecurityPolicyHeader]
+    - For Sequrity client, use [`FeaturesHeader.create_single_llm_header`][sequrity_api.types.control.headers.FeaturesHeader.create_single_llm_header] / [`FeaturesHeader.create_dual_llm_header`][sequrity_api.types.control.headers.FeaturesHeader.create_dual_llm_header] and [`SecurityPolicyHeader`][sequrity_api.types.control.headers.SecurityPolicyHeader]
     - For REST API, use custom headers [`X-Security-Features`](../reference/rest_api/headers/security_features.md) and [`X-Security-Policy`](../reference/rest_api/headers/security_policy.md)
 
     When the features header and security policy header are present in the request,

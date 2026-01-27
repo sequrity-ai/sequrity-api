@@ -69,7 +69,7 @@ In this case, the settings in the request headers will override those attached t
     client = SequrityClient(api_key="your-sequrity-api-key")
 
     # Create feature and policy headers
-    features = FeaturesHeader.create_single_llm_headers()
+    features = FeaturesHeader.create_single_llm_header()
     policy = SecurityPolicyHeader.create_default()
 
     # Send a chat completion request
