@@ -4,8 +4,8 @@ import pytest
 
 from sequrity import client
 from sequrity.control.langgraph.graph_executor import LangGraphExecutor
+from sequrity.control.types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from sequrity.service_provider import LlmServiceProviderEnum
-from sequrity.types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from sequrity_unittest.config import get_test_config
 
 try:

@@ -1,14 +1,13 @@
-from .types import (
+from .headers import (
     ControlFlowMetaPolicy,
     FeaturesHeader,
     FineGrainedConfigHeader,
     InternalPolicyPreset,
-    MetaData,
-    ResponseContentJsonSchema,
     ResponseFormat,
     SecurityPolicyHeader,
-    ValueWithMeta,
 )
+from .results import ResponseContentJsonSchema
+from .value_with_meta import MetaData, ValueWithMeta
 
 __all__ = [
     "FeaturesHeader",

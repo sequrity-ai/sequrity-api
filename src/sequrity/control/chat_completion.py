@@ -7,7 +7,7 @@ from ..constants import CONTROL_API_PATHS
 from ..service_provider import LlmServiceProviderEnum
 from ..types.chat_completion.request import ChatCompletionRequest, Message, ReasoningEffort, ResponseFormat, Tool
 from ..types.chat_completion.response import ChatCompletionResponse
-from ..types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from .types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 
 def create_chat_completion_sync(

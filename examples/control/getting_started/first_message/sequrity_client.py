@@ -17,7 +17,7 @@ from sequrity import SequrityClient
 
 # --8<-- [end:imports_sequrity_client]
 # --8<-- [start:imports_headers]
-from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
 # --8<-- [end:imports_headers]
 

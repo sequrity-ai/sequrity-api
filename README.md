@@ -15,7 +15,7 @@ pip install sequrity
 
 ```python
 from sequrity import SequrityClient
-from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
 # Initialize the client
 client = SequrityClient(api_key="your-sequrity-api-key")

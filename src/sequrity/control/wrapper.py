@@ -11,10 +11,10 @@ import httpx
 from ..service_provider import LlmServiceProviderEnum
 from ..types.chat_completion.request import Message, ReasoningEffort, ResponseFormat, Tool
 from ..types.chat_completion.response import ChatCompletionResponse
-from ..types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from ..types.control.value_with_meta import MetaData
 from .chat_completion import create_chat_completion_sync
 from .langgraph import run_graph_sync
+from .types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from .types.value_with_meta import MetaData
 
 if TYPE_CHECKING:
     try:
@@ -102,7 +102,7 @@ class ControlApiWrapper:
         Example:
             ```python
             from sequrity import SequrityClient
-            from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+            from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
 
@@ -185,7 +185,7 @@ class ControlApiWrapper:
             ```python
             from langgraph.graph import StateGraph
             from sequrity import SequrityClient
-            from sequrity.types.control.headers import FeaturesHeader
+            from sequrity.control import FeaturesHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
             features = FeaturesHeader.dual_llm()

@@ -37,10 +37,10 @@ the session context is not retained for subsequent requests after a cycle of `[u
 
 **Multi-turn**: To enable multi-turn sessions, you need to explicitly configure the maximum number of turns allowed in a session.
 
-- For Sequrity client, you can set [`max_n_turns` in `FineGrainedConfigHeader`][sequrity.types.control.headers.FineGrainedConfigHeader.max_n_turns] to a value greater than `1`.
+- For Sequrity client, you can set [`max_n_turns` in `FineGrainedConfigHeader`][sequrity.control.types.headers.FineGrainedConfigHeader.max_n_turns] to a value greater than `1`.
 
     ```python
-    from sequrity.types.control.headers import FineGrainedConfigHeader
+    from sequrity.control import FineGrainedConfigHeader
 
     fine_grained_config = FineGrainedConfigHeader(max_n_turns=5)
     ```

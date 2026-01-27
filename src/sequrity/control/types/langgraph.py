@@ -1,7 +1,7 @@
 from pydantic import Field
 
-from ..chat_completion.request import ChatCompletionRequest
-from ..chat_completion.response import ChatCompletionResponse
+from ...types.chat_completion.request import ChatCompletionRequest
+from ...types.chat_completion.response import ChatCompletionResponse
 from .value_with_meta import ValueWithMeta
 
 

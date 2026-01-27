@@ -138,9 +138,9 @@ class FineGrainedConfigHeader(BaseModel):
 
     def dump_for_headers(self, mode: Literal["json", "json_str"] = "json_str") -> dict | str:
         if mode == "json":
-            return self.model_dump(mode="json", exclude_unset=True)
+            return self.model_dump(mode="json")
         elif mode == "json_str":
-            return self.model_dump_json(exclude_unset=True)
+            return self.model_dump_json()
         else:
             raise ValueError(f"Unsupported mode for dump_for_headers: {mode}")
 

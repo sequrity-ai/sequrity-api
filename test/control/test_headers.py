@@ -4,11 +4,7 @@ import json
 
 import pytest
 
-from sequrity.types.control.headers import (
-    FeaturesHeader,
-    FineGrainedConfigHeader,
-    SecurityPolicyHeader,
-)
+from sequrity.control.types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 
 class TestFeaturesHeader:

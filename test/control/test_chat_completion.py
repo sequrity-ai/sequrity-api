@@ -3,8 +3,8 @@ from typing import Literal
 import pytest
 
 from sequrity import client
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from sequrity.service_provider import LlmServiceProviderEnum
-from sequrity.types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from sequrity_unittest.config import get_test_config
 
 
@@ -266,17 +266,17 @@ class TestChatCompletion:
         Test that all header entries can be set with non-None values.
         This validates that the header classes match the server-side parsing.
         """
-        from sequrity.types.control.headers.feature_headers import (
+        from sequrity.control.types.headers.feature_headers import (
             ConstraintFeature,
             LlmModeFeature,
             LongProgramSupportFeature,
             TaggerFeature,
         )
-        from sequrity.types.control.headers.policy_headers import (
+        from sequrity.control.types.headers.policy_headers import (
             ControlFlowMetaPolicy,
             InternalPolicyPreset,
         )
-        from sequrity.types.control.headers.session_config_headers import ResponseFormat
+        from sequrity.control.types.headers.session_config_headers import ResponseFormat
 
         # FeaturesHeader with ALL entries set (no None values)
         # Note: file_blocker is NOT a valid feature - it doesn't exist on the server.

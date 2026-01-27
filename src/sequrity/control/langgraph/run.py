@@ -6,10 +6,10 @@ import httpx
 
 from ...constants import CONTROL_API_PATHS
 from ...service_provider import LlmServiceProviderEnum
-from ...types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from ...types.control.langgraph import LangGraphChatCompletionRequest, LangGraphChatCompletionResponse
-from ...types.control.results import ResponseContentJsonSchema
-from ...types.control.value_with_meta import MetaData, ValueWithMeta
+from ..types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from ..types.langgraph import LangGraphChatCompletionRequest, LangGraphChatCompletionResponse
+from ..types.results import ResponseContentJsonSchema
+from ..types.value_with_meta import MetaData, ValueWithMeta
 
 try:
     from langgraph.graph import StateGraph
@@ -91,7 +91,7 @@ def run_graph_sync(
     if fine_grained_config.response_format.strip_response_content:
         raise ValueError("LangGraph execution requires 'strip_response_content' to be False.")
     if fine_grained_config.disable_rllm is not True:
-        raise ValueError("LangGraph execution requires 'disable_rllm' to be True.")
+        fine_grained_config.disable_rllm = True
 
     executor = LangGraphExecutor(
         graph=graph,

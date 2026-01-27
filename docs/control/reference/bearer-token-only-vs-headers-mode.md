@@ -26,7 +26,7 @@ In this case, you only need to provide Authorization token, model name, messages
 
     ```python hl_lines="5 13"
     from sequrity import SequrityClient
-    from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
     # Initialize the client
     client = SequrityClient(api_key="your-sequrity-api-key")
@@ -68,7 +68,7 @@ In this case, the settings in the request headers will override those attached t
 
     ```python hl_lines="5 15-17"
     from sequrity import SequrityClient
-    from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
     # Initialize the client
     client = SequrityClient(api_key="your-sequrity-api-key")

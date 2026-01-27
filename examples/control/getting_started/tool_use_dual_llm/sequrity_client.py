@@ -22,16 +22,15 @@ except ImportError:
 
 
 # --8<-- [start:imports]
+# --8<-- [end:imports]
 from sequrity import SequrityClient
-from sequrity.types.control.headers import (
+from sequrity.control import (
     FeaturesHeader,
     FineGrainedConfigHeader,
+    ResponseContentJsonSchema,
+    ResponseFormat,
     SecurityPolicyHeader,
 )
-
-# --8<-- [end:imports]
-from sequrity.types.control.headers.session_config_headers import ResponseFormat
-from sequrity.types.control.results import ResponseContentJsonSchema
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
 sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")

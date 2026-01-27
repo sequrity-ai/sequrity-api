@@ -40,16 +40,14 @@ from rich.console import Console
 from rich.syntax import Syntax
 
 from sequrity import SequrityClient
-from sequrity.types.control.headers import (
+from sequrity.control import (
+    ControlFlowMetaPolicy,
     FeaturesHeader,
     FineGrainedConfigHeader,
+    InternalPolicyPreset,
+    ResponseFormat,
     SecurityPolicyHeader,
 )
-from sequrity.types.control.headers.policy_headers import (
-    ControlFlowMetaPolicy,
-    InternalPolicyPreset,
-)
-from sequrity.types.control.headers.session_config_headers import ResponseFormat
 
 # Client configuration
 open_router_key = "your OpenRouter/OAI key"  # @param {type: "string"}

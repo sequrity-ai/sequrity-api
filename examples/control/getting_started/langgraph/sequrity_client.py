@@ -9,11 +9,7 @@ import os
 from typing import Literal, TypedDict
 
 from sequrity import SequrityClient
-from sequrity.types.control.headers import (
-    FeaturesHeader,
-    FineGrainedConfigHeader,
-    SecurityPolicyHeader,
-)
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 # Try to import rich for better output formatting
 try:
