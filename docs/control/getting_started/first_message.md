@@ -1,6 +1,6 @@
 # Sending Your First Message with Sequrity Control API
 
-This guide shows you how to send your first chat completion request through the [Sequrity Control API][sequrity_api.control.wrapper.ControlApiWrapper].
+This guide shows you how to send your first chat completion request through the [Sequrity Control API][sequrity.control.wrapper.ControlApiWrapper].
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ You can interact with the Sequrity Control API using either the Sequrity Python 
     Install the Sequrity Python client:
 
     ```bash
-    pip install sequrity-api
+    pip install sequrity
     ```
 
 === "REST API"
@@ -52,7 +52,7 @@ Let's send a simple message asking "What is the largest prime number below 100?"
     --8<-- "examples/control/getting_started/first_message/sequrity_client.py:run_first_message"
     ```
 
-    We create an instance of `SequrityClient` with your Sequrity API key, and send messages using [`control.create_chat_completion`][sequrity_api.control.wrapper.ControlApiWrapper.create_chat_completion], specifying the model name on OpenRouter and your OpenRouter API key.
+    We create an instance of `SequrityClient` with your Sequrity API key, and send messages using [`control.create_chat_completion`][sequrity.control.wrapper.ControlApiWrapper.create_chat_completion], specifying the model name on OpenRouter and your OpenRouter API key.
 
 === "REST API"
 
@@ -72,7 +72,7 @@ The response follows [the OpenAI Chat Completions format](https://platform.opena
 
     Compared to OpenAI's Chat Completions API, Sequrity Control API adds an extra piece of information to the response, **Session ID**.
 
-    - For Sequrity client, the session ID is available as [`ChatCompletionResponse.session_id`][sequrity_api.types.chat_completion.response.ChatCompletionResponse.session_id].
+    - For Sequrity client, the session ID is available as [`ChatCompletionResponse.session_id`][sequrity.types.chat_completion.response.ChatCompletionResponse.session_id].
     - For REST API, the response has a custom header [`X-Session-ID`](../reference/rest_api/headers/api_key_session_id.md#x-session-id-optional) for REST API.
 
     The session ID is for maintaining context across multiple interactions in a chat session.
@@ -167,7 +167,7 @@ You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
     Whichever Sequrity API key you use (Single-LLM or Dual-LLM),
     you can always override the mode in the request headers:
 
-    - For Sequrity client, use [`FeaturesHeader.create_single_llm_header`][sequrity_api.types.control.headers.FeaturesHeader.create_single_llm_header] / [`FeaturesHeader.create_dual_llm_header`][sequrity_api.types.control.headers.FeaturesHeader.create_dual_llm_header] and [`SecurityPolicyHeader`][sequrity_api.types.control.headers.SecurityPolicyHeader]
+    - For Sequrity client, use [`FeaturesHeader.create_single_llm_header`][sequrity.types.control.headers.FeaturesHeader.create_single_llm_header] / [`FeaturesHeader.create_dual_llm_header`][sequrity.types.control.headers.FeaturesHeader.create_dual_llm_header] and [`SecurityPolicyHeader`][sequrity.types.control.headers.SecurityPolicyHeader]
     - For REST API, use custom headers [`X-Security-Features`](../reference/rest_api/headers/security_features.md) and [`X-Security-Policy`](../reference/rest_api/headers/security_policy.md)
 
     When the features header and security policy header are present in the request,

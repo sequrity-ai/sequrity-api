@@ -37,10 +37,10 @@ the session context is not retained for subsequent requests after a cycle of `[u
 
 **Multi-turn**: To enable multi-turn sessions, you need to explicitly configure the maximum number of turns allowed in a session.
 
-- For Sequrity client, you can set [`max_n_turns` in `FineGrainedConfigHeader`][sequrity_api.types.control.headers.FineGrainedConfigHeader.max_n_turns] to a value greater than `1`.
+- For Sequrity client, you can set [`max_n_turns` in `FineGrainedConfigHeader`][sequrity.types.control.headers.FineGrainedConfigHeader.max_n_turns] to a value greater than `1`.
 
     ```python
-    from sequrity_api.types.control.headers import FineGrainedConfigHeader
+    from sequrity.types.control.headers import FineGrainedConfigHeader
 
     fine_grained_config = FineGrainedConfigHeader(max_n_turns=5)
     ```
@@ -61,7 +61,7 @@ and (2) also encodes the session ID into tool call IDs of assistant messages.
 
     === "Sequrity Client"
 
-        Session ID in the response headers can be accessed via the `session_id` attribute of the [`ChatCompletionResponse` object][sequrity_api.types.chat_completion.response.ChatCompletionResponse.session_id]:
+        Session ID in the response headers can be accessed via the `session_id` attribute of the [`ChatCompletionResponse` object][sequrity.types.chat_completion.response.ChatCompletionResponse.session_id]:
 
         ```python
         response = client.control.create_chat_completion(
@@ -113,7 +113,7 @@ as Sequrity Control automatically parses the session ID from tool call IDs in as
 Of course, you can also manually set the session ID
 
 - in the [`X-Session-ID`](../reference/rest_api/headers/api_key_session_id.md#x-session-id-optional) header for REST API
-- via parameter `session_id` of [`create_chat_completion` method][sequrity_api.control.wrapper.ControlApiWrapper.create_chat_completion] for Sequrity client
+- via parameter `session_id` of [`create_chat_completion` method][sequrity.control.wrapper.ControlApiWrapper.create_chat_completion] for Sequrity client
 
 to continue an existing multi-turn session.
 

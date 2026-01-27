@@ -22,26 +22,26 @@ except ImportError:
 
 
 # --8<-- [start:imports]
-from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import (
+from sequrity import SequrityClient
+from sequrity.types.control.headers import (
     FeaturesHeader,
     FineGrainedConfigHeader,
     SecurityPolicyHeader,
 )
 
 # --8<-- [end:imports]
-from sequrity_api.types.control.headers.session_config_headers import ResponseFormat
-from sequrity_api.types.control.results import ResponseContentJsonSchema
+from sequrity.types.control.headers.session_config_headers import ResponseFormat
+from sequrity.types.control.results import ResponseContentJsonSchema
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
-sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
+sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
-assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
+assert sequrity_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
 
 # --8<-- [start:client_setup]
-client = SequrityClient(api_key=sequrity_api_key, base_url=base_url)
+client = SequrityClient(api_key=sequrity_key, base_url=base_url)
 service_provider = "openrouter"
 model = "openai/gpt-5-mini,openai/gpt-5-nano"  # Dual-LLM: PLLM, QLLM
 # --8<-- [end:client_setup]

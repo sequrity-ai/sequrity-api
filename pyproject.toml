@@ -1,5 +1,5 @@
 [project]
-    name="sequrity-api"
+    name="sequrity"
     description="A Python client for Sequrity API"
     readme="README.md"
     license="Apache-2.0"
@@ -39,7 +39,7 @@
     source="vcs"
 
 [tool.hatch.build.hooks.vcs]
-    version-file="src/sequrity_api/_version.py"
+    version-file="src/sequrity/_version.py"
 
 [dependency-groups]
     dev=["openai>=1.107.3", "pytest>=9.0.2", "ruff>=0.14.13"]

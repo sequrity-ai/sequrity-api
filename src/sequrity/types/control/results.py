@@ -16,7 +16,7 @@ class ErrorInfo(BaseModel):
 
 class ResponseContentJsonSchema(BaseModel):
     """
-    ResponseContent (sequrity_api.types.chat_completion.response.ResponseMessage.content) of a Dual-LLM system.
+    ResponseContent (sequrity.types.chat_completion.response.ResponseMessage.content) of a Dual-LLM system.
     """
 
     status: Literal["success", "failure", "unknown"]

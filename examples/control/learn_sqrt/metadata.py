@@ -1,5 +1,5 @@
-from sequrity_api.control.sqrt.parser import check
-from sequrity_api.types.control.value_with_meta import MetaData, ValueWithMeta
+from sequrity.control.sqrt.parser import check
+from sequrity.types.control.value_with_meta import MetaData, ValueWithMeta
 
 # --8<-- [start:policy_meta_update]
 policy_1 = r"""

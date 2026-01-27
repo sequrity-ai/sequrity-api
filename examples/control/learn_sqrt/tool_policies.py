@@ -9,7 +9,7 @@ This script demonstrates tool policies in SQRT:
 - Doc comments
 """
 
-from sequrity_api.control.sqrt.parser import check
+from sequrity.control.sqrt.parser import check
 
 # --8<-- [start:basic_tool]
 # Basic tool policy structure

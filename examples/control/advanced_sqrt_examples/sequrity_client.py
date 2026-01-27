@@ -26,7 +26,7 @@
 # %% [markdown]
 # ## Setup & Helper Functions
 #
-# This example uses the **SequrityClient** from the `sequrity_api` package instead of raw REST API calls.
+# This example uses the **SequrityClient** from the `sequrity` package instead of raw REST API calls.
 # The client provides a cleaner, type-safe interface for interacting with Sequrity Control.
 
 # %%
@@ -39,33 +39,33 @@ from typing import Callable, Literal
 from rich.console import Console
 from rich.syntax import Syntax
 
-from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import (
+from sequrity import SequrityClient
+from sequrity.types.control.headers import (
     FeaturesHeader,
     FineGrainedConfigHeader,
     SecurityPolicyHeader,
 )
-from sequrity_api.types.control.headers.policy_headers import (
+from sequrity.types.control.headers.policy_headers import (
     ControlFlowMetaPolicy,
     InternalPolicyPreset,
 )
-from sequrity_api.types.control.headers.session_config_headers import ResponseFormat
+from sequrity.types.control.headers.session_config_headers import ResponseFormat
 
 # Client configuration
 open_router_key = "your OpenRouter/OAI key"  # @param {type: "string"}
-sequrity_api_key = "your SequrityAI key"  # @param {type: "string"}
+sequrity_key = "your SequrityAI key"  # @param {type: "string"}
 
 CONFIG = {
     "open_router_api_key": os.getenv("OPENROUTER_API_KEY", open_router_key),
-    "sequrity_api_key": os.getenv("SEQURITY_API_KEY", sequrity_api_key),
-    "sequrity_api_base_url": os.getenv("SEQURITY_BASE_URL", None),
+    "sequrity_key": os.getenv("SEQURITY_API_KEY", sequrity_key),
+    "sequrity_base_url": os.getenv("SEQURITY_BASE_URL", None),
 }
 
 assert CONFIG["open_router_api_key"] != "your OpenRouter/OAI key"
-assert CONFIG["sequrity_api_key"] != "your SequrityAI key"
+assert CONFIG["sequrity_key"] != "your SequrityAI key"
 
 # Initialize the Sequrity client
-client = SequrityClient(api_key=CONFIG["sequrity_api_key"], timeout=120, base_url=CONFIG["sequrity_api_base_url"])
+client = SequrityClient(api_key=CONFIG["sequrity_key"], timeout=120, base_url=CONFIG["sequrity_base_url"])
 
 # %% [markdown]
 # ### Mock client using SequrityClient

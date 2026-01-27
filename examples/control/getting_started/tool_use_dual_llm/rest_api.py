@@ -26,11 +26,11 @@ except ImportError:
 
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
-sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
+sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
-assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
+assert sequrity_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
 
 # --8<-- [start:client_setup]
 service_provider = "openrouter"
@@ -105,7 +105,7 @@ fine_grained_config = json.dumps({"response_format": {"include_program": True}})
 def chat_completion(messages):
     url = f"{base_url}/control/{service_provider}/v1/chat/completions"
     headers = {
-        "Authorization": f"Bearer {sequrity_api_key}",
+        "Authorization": f"Bearer {sequrity_key}",
         "Content-Type": "application/json",
         "X-Api-Key": openrouter_api_key,
         "X-Security-Features": features,

@@ -1,21 +1,21 @@
-# Sequrity-API
+# Sequrity
 
 Please see the full [Documentation](https://sequrity-ai.github.io/sequrity-api/)
 
-Python client and REST API for the Sequrity API.
+Python client and REST API for Sequrity.
 
 
 ## Installation
 
 ```bash
-pip install sequrity-api
+pip install sequrity
 ```
 
 ## Quick Start
 
 ```python
-from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity import SequrityClient
+from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
 
 # Initialize the client
 client = SequrityClient(api_key="your-sequrity-api-key")

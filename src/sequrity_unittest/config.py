@@ -2,8 +2,8 @@ import os
 from dataclasses import dataclass
 from typing import Literal
 
-from sequrity_api.constants import SEQURITY_API_URL
-from sequrity_api.service_provider import LlmServiceProviderEnum
+from sequrity.constants import SEQURITY_API_URL
+from sequrity.service_provider import LlmServiceProviderEnum
 
 DEFAULT_TEST_MODEL = {
     "default": "google/gemini-3-flash-preview",

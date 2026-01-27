@@ -101,8 +101,8 @@ class ControlApiWrapper:
 
         Example:
             ```python
-            from sequrity_api import SequrityClient
-            from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+            from sequrity import SequrityClient
+            from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
 
@@ -184,8 +184,8 @@ class ControlApiWrapper:
         Example:
             ```python
             from langgraph.graph import StateGraph
-            from sequrity_api import SequrityClient
-            from sequrity_api.types.control.headers import FeaturesHeader
+            from sequrity import SequrityClient
+            from sequrity.types.control.headers import FeaturesHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
             features = FeaturesHeader.create_dual_llm_header()

@@ -2,11 +2,11 @@ from typing import Literal, TypedDict
 
 import pytest
 
-from sequrity_api import client
-from sequrity_api.control.langgraph.graph_executor import LangGraphExecutor
-from sequrity_api.service_provider import LlmServiceProviderEnum
-from sequrity_api.types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from sequrity_api_unittest.config import get_test_config
+from sequrity import client
+from sequrity.control.langgraph.graph_executor import LangGraphExecutor
+from sequrity.service_provider import LlmServiceProviderEnum
+from sequrity.types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from sequrity_unittest.config import get_test_config
 
 try:
     from langgraph.graph import StateGraph

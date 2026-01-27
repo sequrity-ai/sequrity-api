@@ -1918,7 +1918,7 @@ wheels = [
 ]
 
 [[package]]
-name = "sequrity-api"
+name = "sequrity"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },

@@ -21,7 +21,7 @@ The Control API enables secure LLM interactions with policy enforcement. Key cap
 
 
 
-::: sequrity_api.control.wrapper.ControlApiWrapper
+::: sequrity.control.wrapper.ControlApiWrapper
     options:
       show_root_heading: true
       show_source: false

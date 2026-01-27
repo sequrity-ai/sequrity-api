@@ -1,6 +1,6 @@
 # LangGraph Integration with Sequrity Control API
 
-This tutorial demonstrates how to integrate [LangGraph](https://langchain-ai.github.io/langgraph/) with Sequrity's Control API using the [`compile_and_run_langgraph`][sequrity_api.control.wrapper.ControlApiWrapper.compile_and_run_langgraph] method. We'll build a SQL agent with conditional routing that showcases LangGraph's powerful workflow capabilities while maintaining security through Sequrity.
+This tutorial demonstrates how to integrate [LangGraph](https://langchain-ai.github.io/langgraph/) with Sequrity's Control API using the [`compile_and_run_langgraph`][sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph] method. We'll build a SQL agent with conditional routing that showcases LangGraph's powerful workflow capabilities while maintaining security through Sequrity.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ export OPENROUTER_API_KEY="your-openrouter-api-key"
 Install the required packages:
 
 ```bash
-pip install sequrity-api langgraph rich
+pip install sequrity langgraph rich
 ```
 
 The `rich` package is optional but provides nice formatted output.
@@ -40,7 +40,7 @@ When building LangGraph workflows, you often need:
 3. **LLM Integration**: Secure interaction with external LLM providers
 4. **Policy Enforcement**: Apply fine-grained security policies to tool calls and data flow
 
-Sequrity's [`compile_and_run_langgraph`][sequrity_api.control.wrapper.ControlApiWrapper.compile_and_run_langgraph] method provides all of this out-of-the-box, allowing you to focus on building your workflow logic while Sequrity handles security.
+Sequrity's [`compile_and_run_langgraph`][sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph] method provides all of this out-of-the-box, allowing you to focus on building your workflow logic while Sequrity handles security.
 
 ## Tutorial Overview: SQL Agent with Conditional Routing
 

@@ -10,7 +10,7 @@ Execute LangGraph StateGraphs securely through Sequrity's Dual-LLM runtime with 
 ---
 
 
-::: sequrity_api.control.langgraph.run_graph_sync
+::: sequrity.control.langgraph.run_graph_sync
     options:
       show_root_heading: true
       show_source: true
@@ -18,19 +18,19 @@ Execute LangGraph StateGraphs securely through Sequrity's Dual-LLM runtime with 
 ---
 
 
-::: sequrity_api.types.control.langgraph.LangGraphChatCompletionRequest
+::: sequrity.types.control.langgraph.LangGraphChatCompletionRequest
     options:
       show_root_heading: true
       show_source: true
 
-::: sequrity_api.types.control.langgraph.LangGraphChatCompletionResponse
+::: sequrity.types.control.langgraph.LangGraphChatCompletionResponse
     options:
       show_root_heading: true
       show_source: true
 
 ---
 
-::: sequrity_api.control.langgraph.graph_executor.LangGraphExecutor
+::: sequrity.control.langgraph.graph_executor.LangGraphExecutor
     options:
       show_root_heading: true
       show_source: false

@@ -7,7 +7,7 @@ You can interact with the Sequrity API using either the Sequrity client or direc
     Install the Sequrity Python client:
 
     ```bash
-    pip install sequrity-api
+    pip install sequrity
     ```
 
 === "REST API"

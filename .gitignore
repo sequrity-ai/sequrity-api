@@ -12,7 +12,7 @@ wheels/
 gitignore_*.py
 .env.*
 dist/
-src/sequrity_api/_version.py
+src/sequrity/_version.py
 
 # MkDocs
 site/
