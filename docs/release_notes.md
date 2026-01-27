@@ -5,7 +5,7 @@ hide:
 
 # Release Notes
 
-## 0.0.1
+## v0.0.1
 
 `time: 2026-01-27`
 
