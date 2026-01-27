@@ -44,7 +44,8 @@ def create_chat_completion_sync(
         security_policy: Security policy configuration.
         fine_grained_config: Fine-grained security settings.
         service_provider: LLM service provider (openai, openrouter, etc.).
-        session_id: Session ID for continuing an existing conversation.
+        session_id: Explicit session ID for continuing an existing conversation.
+            If None and no tool messages in the request, a new session is created.
         reasoning_effort: Reasoning effort level for supported models.
         response_format: Response format specification.
         seed: Random seed for reproducibility.

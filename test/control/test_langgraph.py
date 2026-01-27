@@ -132,7 +132,7 @@ class TestLangGraphCompilationAndExecution:
         graph.add_edge("send_email", END)
 
         initial_state = {"query": "Read the document", "result": ""}
-        features = FeaturesHeader.create_dual_llm_headers()
+        features = FeaturesHeader.create_dual_llm_header()
         policy = SecurityPolicyHeader.create_default()
         config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 
@@ -208,7 +208,7 @@ class TestLangGraphCompilationAndExecution:
             "result": "",
             "needs_validation": False,
         }
-        features = FeaturesHeader.create_dual_llm_headers()
+        features = FeaturesHeader.create_dual_llm_header()
         policy = SecurityPolicyHeader.create_default()
         config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 

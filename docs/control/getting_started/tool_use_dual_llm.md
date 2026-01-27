@@ -1,8 +1,8 @@
 # Secure Tool Use with Dual-LLM
 
-As mentioned at the end of [Sending your first message](./first_message.md), Dual-LLM enables advanced security features when tool calls are involved.
+As mentioned at the end of [Sending your first message](./first_message.md), [Dual-LLM](../learn/single-vs-dual-llm.md#dual-llm-agent-the-camel-framework) enables advanced security features when tool calls are involved.
 This tutorial demonstrates how to use Sequrity's Dual-LLM feature to secure tool calling in chat completion workflows.
-Specifically, the two examples below illustrate
+Specifically, the example below illustrate
 how to enforce security policies that prevent sensitive data from being sent to unauthorized recipients.
 
 ## Prerequisites
@@ -87,7 +87,7 @@ For a comprehensive guide on tool use, see [OpenAI's function calling tutorial](
 
 ## Security Features, Policies, and Fine-Grained Configs
 
-Sequrity Control API provides powerful and fine-grained control over tool use through custom headers. Let's examine the security configuration used in this example:
+Sequrity Control provides powerful and fine-grained control over tool use through custom headers. Let's examine the security configuration used in this example:
 
 === "Sequrity Client"
 
@@ -105,6 +105,7 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
 
 - **`X-Security-Features`**: Enables the Dual-LLM feature in this example
 - **`X-Security-Policy`**: Defines security policies in [SQRT language](../reference/sqrt/index.md):
+
     ```rust
     // Define sensitive document tags
     let sensitive_docs = {"internal_use", "confidential"};
@@ -117,8 +118,12 @@ Sequrity Control API provides powerful and fine-grained control over tool use th
         (not to.value in {str matching r".*@trustedcorp\.com"});
     }
     ```
+
+    The policies do the following:
+
     - Tags documents retrieved by `get_internal_document` as `internal_use` and `confidential`
     - Blocks `send_email` calls if the email body contains sensitive tags AND the recipient is not from `trustedcorp.com`
+
 - **`X-Security-Config`**: Controls response format - `include_program: true` returns the generated execution program for auditing and transparency
 
 ## Tool Definitions
@@ -141,15 +146,14 @@ Here we follow [the OpenAI chat completion's tool definition format](https://pla
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:tool_defs"
     ```
 
-
-## Example 1: Blocking Emails to Untrusted Domains
+## Case 1: Blocking Emails to Untrusted Domains
 
 Now we demonstrate how Sequrity blocks attempts to send sensitive documents to an untrusted email address `research@gmail.com`.
 
 ### Step 1: Setup Client & Model
 
 Sequrity Control API allows you to specify two LLMs for Dual-LLM tool use:
-PLLM (Planning LLM) for generating the execution plan, and QLLM (Query/Quarantined LLM) for processing data.
+PLLM for generating the execution plan, and QLLM for processing data.
 
 === "Sequrity Client"
 
@@ -159,10 +163,13 @@ PLLM (Planning LLM) for generating the execution plan, and QLLM (Query/Quarantin
     ```
 
 === "REST API"
-
+    We define a helper function `chat_completion` to call the chat completion endpoint.
     ```python
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:imports"
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:client_setup"
+
+    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:chat_completion_func"
+
     ```
 
 ### Step 2: Send User Query
@@ -171,15 +178,12 @@ The user requests to retrieve an internal document and email it to an untrusted 
 Note that we need to keep track of the `session_id` to maintain context across multiple tool calls.
 
 === "Sequrity Client"
-
     ```python
     --8<-- "examples/control/getting_started/tool_use_dual_llm/sequrity_client.py:untrusted_query"
     ```
 
 === "REST API"
-
     ```python
-    --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:chat_completion_func"
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:untrusted_query"
     ```
 
@@ -263,7 +267,7 @@ The security policy successfully blocks the email because:
 2. These tags propagate to the email body in line 12
 3. The recipient `research@gmail.com` doesn't match the trusted pattern `.*@trustedcorp\.com`
 
-## Example 2: Allowing Emails to Trusted Domains
+## Case 2: Allowing Emails to Trusted Domains
 
 Now let's see what happens when emailing to a trusted domain.
 
@@ -342,12 +346,11 @@ This time the email is allowed because the recipient matches the trusted domain 
 
 ## Key Takeaways
 
-1. In Dual-LLM, control flow and data processing are separated, enhancing security
-2. Sequrity Control API enforces security policies on tool calls, preventing unauthorized actions
-3. MetaData like tags propagate through program execution
-4. A [session ID](../learn/session_id.md) is needed for Sequrity to track context across multiple tool calls
+1. Dual-LLM separate control flow and data processing, where the control flow is a python program generated by the PLLM.
+2. MetaData like tags propagate through the program execution
+3. Sequrity Control API enforces security policies on tool calls based on the propagated metadata, preventing unauthorized actions
 
 
 ## More Complex Examples
 
-Sequrity Control API supports more complex scenarios, such as enforcing complex bussiness logics, ensuring factuality with data provenance, enforcing legal and compliance mandates, fairness, and interpretability. Go and explore [more examples](../examples/index.md) to see how Sequrity can help secure your LLM applications!
+Sequrity Control API supports more complex scenarios, such as enforcing complex business logics, ensuring factuality with data provenance, enforcing legal and compliance mandates, fairness, and interpretability. Go and explore [more examples](../examples/index.md) to see how Sequrity can help secure your LLM applications!

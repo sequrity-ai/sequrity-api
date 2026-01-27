@@ -4,7 +4,7 @@ In a Dual-LLM agentic system, [PLLM](../single-vs-dual-llm.md) generates a pytho
 Sequrity Control annotates the variables in the program with **metadata** and the metadata are propagated through the program execution.
 User can define **tool policies** on the metadata to enforce security constraints.
 
-In Sequrity Control, each variable has three metadata fields with the following semantics:
+In Sequrity Control, each variable has three metadata fields with the following semantics and **propagation rules**:
 
 ```json
 {
@@ -91,6 +91,58 @@ Sequrity Control will interrupt the program execution at line 3 to
 prevent a call to `send_email`, thus enforcing the security policy.
 
 Note that PLLM does not have access to the metadata fields during program generation & execution, thus it cannot bypass these security checks.
+
+
+## Wrapping Tool Results with Metadata
+
+Every time a tool result is received,
+Sequrity Control builds the initial metadata for the tool result by aggregating the tool call arguments' metadata (called `intial_tool_result_meta`):
+Then, Sequrity Control applies any defined metadata update rules for that tool to modify the metadata accordingly.
+
+Alteratively, users can also manually wrap tool results with custom producers, consumers, and tags
+by returning a dictionary with the structure below (called `manual_tool_result_meta`):
+
+```json
+{
+    "value": <raw_tool_result>, // required
+    "meta": {
+        "producers": [...],     // required
+        "consumers": [...],     // required
+        "tags": [...]           // required
+    },
+    "is_sequrity_var": true,    // required
+    "combine_meta": "merge"     // optional, default is "merge", can be "merge", "replace", or "ignore"
+}
+```
+
+- `value` (required): The actual tool result value.
+- `meta.producers` (required): List of producers for the tool result.
+- `meta.consumers` (required): List of consumers for the tool result.
+- `meta.tags` (required): List of tags for the tool result.
+- `is_sequrity_var` (required): Must be set to `true` to indicate that this is a Sequrity Control variable with metadata.
+- `combine_meta` (optional): Specifies how to combine the manually provided metadata with the automatically generated metadata from tool call arguments. Options are:
+    - `"merge"` (default): `tool_result_meta = intial_tool_result_meta.merge(manual_tool_result_meta)`
+    - `"replace"`: `tool_result_meta = manual_tool_result_meta`
+    - `"ignore"`: `tool_result_meta = intial_tool_result_meta`
+    where `.merge()` follows the metadata **propagation rules** described above.
+
+## Session Metadata
+
+In addition to metadata associated with variables in the program,
+Sequrity Control also maintains **session-level metadata** that can persist across multiple tool calls/attempts/turns within the same session.
+Session metadata has the same structure as variable metadata except it does not have a `value` field:
+
+```json
+{
+    "producers": ["..."],
+    "consumers": ["..."],
+    "tags": ["..."]
+}
+```
+
+The persistency of the session metadata is controlled by [`FineGrainedConfigHeader.clear_session_meta`][sequrity_api.types.control.headers.FineGrainedConfigHeader.clear_session_meta]: `"never"`, `"every_attempt"`, or `"every_turn"`.
+
+Session metadata allows users to define policies that do checks and updates throughout the session lifecycle. A simple use case is to count the number of calls to a sensitive tool and block further calls after a threshold is reached.
 
 
 

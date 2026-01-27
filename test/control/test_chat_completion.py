@@ -21,9 +21,9 @@ class TestChatCompletion:
         self, llm_mode: Literal["single-llm", "dual-llm"], service_provider: LlmServiceProviderEnum | Literal["default"]
     ):
         if llm_mode == "single-llm":
-            features_header = FeaturesHeader.create_single_llm_headers()
+            features_header = FeaturesHeader.create_single_llm_header()
         else:
-            features_header = FeaturesHeader.create_dual_llm_headers()
+            features_header = FeaturesHeader.create_dual_llm_header()
 
         policy_header = SecurityPolicyHeader.create_default()
 
@@ -45,7 +45,7 @@ class TestChatCompletion:
 
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_dual_llm_multi_turn(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
-        features_header = FeaturesHeader.create_dual_llm_headers()
+        features_header = FeaturesHeader.create_dual_llm_header()
         policy_header = SecurityPolicyHeader.create_default()
         config_header = FineGrainedConfigHeader(max_n_turns=5)
 
@@ -119,7 +119,6 @@ class TestChatCompletion:
             fine_grained_config=config_header,
             service_provider=service_provider,
             tools=tools,
-            session_id=response.session_id,
         )
         print("Second response:", response_2)
         # this should be another tool call for return flight
@@ -153,7 +152,6 @@ class TestChatCompletion:
             fine_grained_config=config_header,
             service_provider=service_provider,
             tools=tools,
-            session_id=response_2.session_id,
         )
         # this should be a final response from the model
         assert response_3 is not None
@@ -164,7 +162,7 @@ class TestChatCompletion:
 
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_dual_llm_policy_enforcement(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
-        features_header = FeaturesHeader.create_dual_llm_headers()
+        features_header = FeaturesHeader.create_dual_llm_header()
         # Create a policy that forbids discussing politics
         sqrt_lite_codes = r"""
         Tag load_applicant_profile(...) -> |= {"internal_use_only", "tool/load_applicant_profile"};
@@ -250,7 +248,6 @@ class TestChatCompletion:
             fine_grained_config=config_header,
             service_provider=service_provider,
             tools=tools,
-            session_id=response.session_id,
         )
         print("Second Response:", response_2)
         assert response_2 is not None
@@ -390,16 +387,15 @@ class TestChatCompletion:
         self, service_provider: LlmServiceProviderEnum | Literal["default"]
     ):
         """
-        Test FeaturesHeader.create_single_llm_headers with all features enabled.
+        Test FeaturesHeader.create_single_llm_header with all features enabled.
         """
-        features_header = FeaturesHeader.create_single_llm_headers(
+        features_header = FeaturesHeader.create_single_llm_header(
             toxicity_filter=True,
             pii_redaction=True,
             healthcare_guardrail=True,
             finance_guardrail=True,
             legal_guardrail=True,
             url_blocker=True,
-            long_program_mode="mid",
         )
         policy_header = SecurityPolicyHeader.create_default()
 
@@ -427,9 +423,9 @@ class TestChatCompletion:
         service_provider: LlmServiceProviderEnum | Literal["default"],
     ):
         """
-        Test FeaturesHeader.create_dual_llm_headers with different LLM modes.
+        Test FeaturesHeader.create_dual_llm_header with different LLM modes.
         """
-        features_header = FeaturesHeader.create_dual_llm_headers(
+        features_header = FeaturesHeader.create_dual_llm_header(
             mode=llm_mode,
             toxicity_filter=True,
             url_blocker=True,
@@ -463,7 +459,7 @@ class TestChatCompletion:
         """
         Test SecurityPolicyHeader.create_default with different policy languages.
         """
-        features_header = FeaturesHeader.create_dual_llm_headers()
+        features_header = FeaturesHeader.create_dual_llm_header()
         policy_header = SecurityPolicyHeader.create_default(
             language=language,
             codes="",

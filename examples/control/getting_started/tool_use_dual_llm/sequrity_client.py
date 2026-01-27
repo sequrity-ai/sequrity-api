@@ -28,6 +28,7 @@ from sequrity_api.types.control.headers import (
     FineGrainedConfigHeader,
     SecurityPolicyHeader,
 )
+
 # --8<-- [end:imports]
 from sequrity_api.types.control.headers.session_config_headers import ResponseFormat
 from sequrity_api.types.control.results import ResponseContentJsonSchema
@@ -91,7 +92,7 @@ tool_defs = [
 ]
 
 # --8<-- [start:security_headers]
-features = FeaturesHeader.create_dual_llm_headers(mode="standard")
+features = FeaturesHeader.create_dual_llm_header(mode="standard")
 security_policy = SecurityPolicyHeader(
     language="sqrt",
     codes=r"""
@@ -110,7 +111,6 @@ rprint("[bold red]" + "=" * 60 + "[/bold red]")
 rprint("[bold red]Send Email to Untrusted Domain (Should be Denied)[/bold red]")
 rprint("[bold red]" + "=" * 60 + "[/bold red]\n")
 # --8<-- [start:untrusted_query]
-session_id = None
 user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
 messages = [{"role": "user", "content": user_query}]
 
@@ -123,7 +123,6 @@ response = client.control.create_chat_completion(
     fine_grained_config=fine_grained_config,
     service_provider=service_provider,
 )
-session_id = response.session_id
 # --8<-- [end:untrusted_query]
 
 assert response.choices[0].message is not None
@@ -155,7 +154,6 @@ response = client.control.create_chat_completion(
     model=model,
     tools=tool_defs,
     service_provider=service_provider,
-    session_id=session_id,
 )
 assert response.choices[0].message is not None
 assert "denied by argument checking policies" in response.choices[0].message.content
@@ -175,7 +173,6 @@ rprint("[bold green]Send Email to Trusted Domain (Should be Allowed)[/bold green
 rprint("[bold green]" + "=" * 60 + "[/bold green]\n")
 # --8<-- [start:trusted_query]
 messages = [{"role": "user", "content": user_query.replace("research@gmail.com", "user@trustedcorp.com")}]
-session_id = None
 
 response = client.control.create_chat_completion(
     messages=messages,
@@ -186,7 +183,6 @@ response = client.control.create_chat_completion(
     service_provider=service_provider,
     fine_grained_config=fine_grained_config,
 )
-session_id = response.session_id
 # --8<-- [end:trusted_query]
 assert response.choices[0].message is not None
 assert response.choices[0].message.role == "assistant"
@@ -210,7 +206,6 @@ response = client.control.create_chat_completion(
     model=model,
     tools=tool_defs,
     service_provider=service_provider,
-    session_id=session_id,
 )
 # this should be tool call to send_email
 assert response.choices[0].message is not None
@@ -233,7 +228,6 @@ response = client.control.create_chat_completion(
     model=model,
     tools=tool_defs,
     service_provider=service_provider,
-    session_id=session_id,
 )
 # final response
 assert response.choices[0].message is not None

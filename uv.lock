@@ -1936,7 +1936,6 @@ dev = [
 docs = [
     { name = "griffe-pydantic" },
     { name = "mkdocs" },
-    { name = "mkdocs-jupyter" },
     { name = "mkdocs-material" },
     { name = "mkdocstrings", extra = ["python"] },
 ]
@@ -1965,7 +1964,6 @@ dev = [
 docs = [
     { name = "griffe-pydantic", specifier = ">=1.2.0" },
     { name = "mkdocs", specifier = ">=1.6" },
-    { name = "mkdocs-jupyter", specifier = ">=0.25.0" },
     { name = "mkdocs-material", specifier = ">=9.5" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.28" },
 ]

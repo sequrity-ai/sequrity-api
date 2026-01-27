@@ -119,13 +119,13 @@ class FeaturesHeader(BaseModel):
     Example:
         ```python
         # Create a Single LLM configuration with toxicity filtering
-        features = FeaturesHeader.create_single_llm_headers(
+        features = FeaturesHeader.create_single_llm_header(
             toxicity_filter=True,
             pii_redaction=True,
         )
 
         # Create a Dual LLM configuration with strict mode
-        features = FeaturesHeader.create_dual_llm_headers(
+        features = FeaturesHeader.create_dual_llm_header(
             mode="strict",
             toxicity_filter=True,
         )
@@ -169,7 +169,7 @@ class FeaturesHeader(BaseModel):
             raise ValueError(f"Invalid mode: {mode}. Must be 'json' or 'json_str'.")
 
     @classmethod
-    def create_single_llm_headers(
+    def create_single_llm_header(
         cls,
         toxicity_filter: bool = False,
         pii_redaction: bool = False,
@@ -177,7 +177,6 @@ class FeaturesHeader(BaseModel):
         finance_guardrail: bool = False,
         legal_guardrail: bool = False,
         url_blocker: bool = False,
-        long_program_mode: Literal["base", "mid", "long"] = "base",
     ) -> "FeaturesHeader":
         # no need of lang program support for single-llm mode
         taggers = []
@@ -198,11 +197,11 @@ class FeaturesHeader(BaseModel):
             llm=LlmModeFeature(feature_name="Single LLM", mode="standard"),
             taggers=taggers if taggers else None,
             constraints=constraints if constraints else None,
-            long_program_support=LongProgramSupportFeature(feature_name="Long Program Support", mode=long_program_mode),
+            long_program_support=LongProgramSupportFeature(feature_name="Long Program Support", mode="base"),
         )
 
     @classmethod
-    def create_dual_llm_headers(
+    def create_dual_llm_header(
         cls,
         mode: Literal["standard", "strict", "custom"] = "standard",
         toxicity_filter: bool = False,

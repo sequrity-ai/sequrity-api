@@ -31,17 +31,33 @@ For convenience, we define helper functions, `run_workflow` and `send_request_to
 
 ??? info "`run_workflow` and `send_request_to_endpoint` Functions"
 
-    `run_workflow` orchestrates the multi-turn interaction with the Sequrity Control API:
+    === "Sequrity Client"
 
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:run_workflow"
-    ```
+        `run_workflow` orchestrates the multi-turn interaction with the Sequrity Control API:
 
-    `send_request_to_endpoint` handles the HTTP communication:
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:run_workflow"
+        ```
 
-    ```python
-    --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:send_request_to_endpoint"
-    ```
+        `send_request_to_endpoint` handles the HTTP communication:
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/sequrity_client.py:send_request_to_endpoint"
+        ```
+
+    === "REST API"
+
+        `run_workflow` orchestrates the multi-turn interaction with the Sequrity Control API:
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:run_workflow"
+        ```
+
+        `send_request_to_endpoint` handles the HTTP communication:
+
+        ```python
+        --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:send_request_to_endpoint"
+        ```
 
 ---
 
@@ -653,7 +669,7 @@ Attempting to route applicants based on race is blocked:
     --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_discriminatory"
     ```
 
-??? info "Expected Output"
+!!! info "Expected Output"
     ```
     === Preventing Discriminatory Control Flow (denied) ===
     	--- Turn 1 ---
@@ -664,6 +680,44 @@ Attempting to route applicants based on race is blocked:
     	🚨 Request denied by policies:
     	The program violated control flow policies and cannot continue as retries on policy violations are disabled.
     ```
+
+    !!! info "Blocked Discriminatory `if` Statement in PLLM Program"
+
+        Line 14 is where the discriminatory branching occurs and is blocked by the policy:
+
+        ```python hl_lines="14"
+        1 # Initialize final return variable
+        2 final_return_value = None
+        3
+        4 # Step 1: retrieve applicant profile
+        5 applicant_id = "applicant-154"
+        6 profile = retrive_applicant_profile(applicant_id=applicant_id)
+        7
+        8 # Validate response
+        9 if not isinstance(profile, dict) or "race" not in profile:
+        10     final_return_value = "Failed to retrieve applicant profile or missing 'race' field."
+        11 else:
+        12     # Decide recipient based on race
+        13     race = profile.get("race")
+        14     if race == "European":
+        15         recipient = "hr-1@gmail.com"
+        16     else:
+        17         recipient = "hr-2@gmail.com"
+        18
+        19     # Prepare attachment content as JSON string
+        20     import json
+        21     attachment_content = json.dumps(profile, ensure_ascii=False, indent=2)
+        22
+        23     # Send email
+        24     subject = f"Applicant Profile: {applicant_id}"
+        25     send_email(to=recipient, subject=subject, attachment_content=attachment_content)
+        26
+        27     final_return_value = {
+        28         "sent_to": recipient,
+        29         "applicant_id": applicant_id,
+        30         "profile_sent": profile
+        31     }
+        ```
 
 ### Case 2: Non-Discriminatory Flow (Allowed)
 
@@ -767,7 +821,7 @@ Attempting to use `parse_with_ai` on data tagged with `__llm_blocked` is denied:
     --8<-- "examples/control/advanced_sqrt_examples/rest_api.py:ex5_case1_ai_parsing"
     ```
 
-??? info "Expected Output"
+!!! info "Expected Output"
     ```
     === Preventing AI Parsing of Sensitive Data (denied) ===
     	--- Turn 1 ---
@@ -778,6 +832,43 @@ Attempting to use `parse_with_ai` on data tagged with `__llm_blocked` is denied:
     	🚨 Request denied by policies:
     	Tool call parse_with_ai denied by argument checking policies.
     ```
+
+    !!! info "Blocked call to `parse_with_ai` in PLLM Program"
+
+        The following is the program where the call to `parse_with_ai` is blocked due to the `__llm_blocked` tag:
+
+        ```python hl_lines="27"
+        1 from pydantic import BaseModel, Field
+        2 # Initialize final return value variable
+        3 final_return_value = None
+        4
+        5 # Step 1: retrieve applicant profile text
+        6 applicant_id = "applicant-154"
+        7 profile_text = retrive_applicant_profile_text(applicant_id=applicant_id)
+        8
+        9 # Step 2: define output schema for parse_with_ai to extract name and education_level
+        10 class ApplicantSchema(BaseModel):
+        11     have_enough_info: bool = Field(description="Whether enough information is available to extract fields")
+        12     name: str | None = Field(description="Full name of the applicant", min_length=1, max_length=200)
+        13     education_level: str | None = Field(description="Highest education level (e.g., High School, Bachelor's, Master's, PhD)")
+        14
+        15 schema = ApplicantSchema.model_json_schema()
+        16
+        17 # Build prompt for parse_with_ai
+        18 prompt = (
+        19     "Extract the applicant's full name and highest education level from the following applicant profile text. "
+        20     "Return 'name' as the applicant's full name and 'education_level' as the highest completed education (examples: "
+        21     "High School, Associate's, Bachelor's, Master's, PhD). If the information is not available, set the field to null. "
+        22     "Here is the profile:\n\n"
+        23     + profile_text
+        24 )
+        25
+        26 # Step 3: parse the text
+        27 parsed = parse_with_ai(query=prompt, output_schema=schema)
+        28
+        29 # Step 4: prepare email attachment content and send
+        30 ... # rest of the program
+        ```
 
 ##### Case 2: Direct Processing Without AI Parsing (Allowed)
 

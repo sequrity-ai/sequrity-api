@@ -2,7 +2,6 @@
 
 The Sequrity Control API provides a chat completion endpoint that is mostly compatible with the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat). This allows you to use Sequrity's security features while maintaining compatibility with existing OpenAI-based applications.
 
-
 ## Request
 
 ### Endpoint
@@ -10,10 +9,13 @@ The Sequrity Control API provides a chat completion endpoint that is mostly comp
 Sequrity Control Chat Completion API can be accessed via the following endpoints:
 
 - Openrouter as service provider:
+
     ```
     POST https://api.sequrity.ai/control/v1/chat/completions
     ```
+
 - Specific service provider
+
     ```
     POST https://api.sequrity.ai/control/{service_provider}/v1/chat/completions
     ```
@@ -123,7 +125,6 @@ User messages support multimodal content through content parts:
 | `model` | `string` | The model used for the chat completion. |
 | `choices` | `array[Choice]` | A list of chat completion choices. Can be more than one if `n` is greater than 1. |
 | `usage` | `object` | Usage statistics for the completion request. |
-| `session_id` | `string` | The session ID associated with this chat completion, if applicable. |
 
 ### Choice Object
 

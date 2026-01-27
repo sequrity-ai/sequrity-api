@@ -84,7 +84,8 @@ class ControlApiWrapper:
                 behavior and response formatting.
             service_provider: The LLM service provider to use. Defaults to
                 auto-detection based on the model.
-            session_id: Optional session identifier for conversation continuity.
+            session_id: Explicit session identifier for conversation continuity.
+                If None and no tool messages in the request, a new session is created.
             reasoning_effort: Reasoning effort level for supported models.
             response_format: Response format specification.
             seed: Random seed for reproducible outputs.
@@ -105,7 +106,7 @@ class ControlApiWrapper:
 
             client = SequrityClient(api_key="your-sequrity-api-key")
 
-            features = FeaturesHeader.create_single_llm_headers()
+            features = FeaturesHeader.create_single_llm_header()
             security_policy = SecurityPolicyHeader.create_default()
 
 
@@ -187,7 +188,7 @@ class ControlApiWrapper:
             from sequrity_api.types.control.headers import FeaturesHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
-            features = FeaturesHeader.create_dual_llm_headers()
+            features = FeaturesHeader.create_dual_llm_header()
             security_policy = SecurityPolicyHeader.create_default()
 
 

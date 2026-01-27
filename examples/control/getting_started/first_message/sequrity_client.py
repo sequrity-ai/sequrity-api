@@ -8,21 +8,50 @@ Installation:
     pip install sequrity-api
 """
 
+# ---8<-- [start:imports_os]
 import os
 
-# --8<-- [start:imports]
+# ---8<-- [end:imports_os]
+# --8<-- [start:imports_sequrity_client]
 from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
-# --8<-- [end:imports]
 
+# --8<-- [end:imports_sequrity_client]
+# --8<-- [start:imports_headers]
+from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+
+# --8<-- [end:imports_headers]
+
+# --8<-- [start:api_keys]
 sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-key")
+# --8<-- [end:api_keys]
+
+# =============================================================================
+# First Message Example
+# =============================================================================
+
+
+# --8<-- [start:first_message]
+def first_message_example():
+    # Initialize the Sequrity client
+    client = SequrityClient(api_key=sequrity_api_key)
+
+    # Send a chat completion request
+    response = client.control.create_chat_completion(
+        messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
+        model="openai/gpt-5-mini",  # model name from your LLM provider
+        llm_api_key=openrouter_api_key,  # your LLM provider API key
+    )
+
+    print(response)
+
+
+# --8<-- [end:first_message]
+
 
 # =============================================================================
 # Single-LLM
 # =============================================================================
-# Single-LLM passes your request directly to the LLM with optional
-# security taggers and constraints.
 
 
 # --8<-- [start:single_llm]
@@ -31,30 +60,28 @@ def single_llm_example():
     client = SequrityClient(api_key=sequrity_api_key)
 
     # Create feature and policy headers
-    features = FeaturesHeader.create_single_llm_headers()
+    features = FeaturesHeader.create_single_llm_header()
     policy = SecurityPolicyHeader.create_default()
 
     # Send a chat completion request
     response = client.control.create_chat_completion(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-        model="openai/gpt-5-mini",  # model name from your LLM provider
+        model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,
-        features=features,
-        security_policy=policy,
-        service_provider="openrouter",  # or "openai"
+        features=features,  # security features
+        security_policy=policy,  # security policy
+        service_provider="openrouter",
     )
 
-    # Print the response
     print(response)
+
+
 # --8<-- [end:single_llm]
 
 
 # =============================================================================
 # Dual-LLM
 # =============================================================================
-# Dual-LLM uses a planning LLM to generate secure execution plans on which
-# security policies and features are enforced. This provides stronger security
-# guarantees for agentic use cases.
 
 
 # --8<-- [start:dual_llm]
@@ -63,7 +90,7 @@ def dual_llm_example():
     client = SequrityClient(api_key=sequrity_api_key)
 
     # Create dual LLM feature headers
-    features = FeaturesHeader.create_dual_llm_headers()
+    features = FeaturesHeader.create_dual_llm_header()
     policy = SecurityPolicyHeader.create_default()
 
     # Send a chat completion request
@@ -76,10 +103,18 @@ def dual_llm_example():
     )
 
     print(response)
+
+
 # --8<-- [end:dual_llm]
 
-
+# --8<-- [start:main]
 if __name__ == "__main__":
+    # --8<-- [end:main]
+    # <--8<-- [start:run_first_message]
+    print("=== First Message Example ===")
+    first_message_example()
+    # <--8<-- [end:run_first_message]
+
     print("=== Single LLM Mode ===")
     single_llm_example()
 
