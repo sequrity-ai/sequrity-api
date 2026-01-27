@@ -15,22 +15,16 @@ pip install sequrity
 
 ```python
 from sequrity import SequrityClient
-from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
-# Initialize the client
-client = SequrityClient(api_key="your-sequrity-api-key")
+sequrity_key = "<your-sequrity-api-key>"
+openrouter_key = "<your-openrouter-key>"
 
-# Create feature and policy headers
-features = FeaturesHeader.dual_llm() # 💡 dual-llm
-policy = SecurityPolicyHeader.dual_llm()
+client = SequrityClient(api_key=sequrity_key)
 
-# Send a chat completion request
 response = client.control.create_chat_completion(
     messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-    model="openai/gpt-5-mini", # model name from your LLM provider
-    llm_api_key="your-openrouter-key",
-    features=features,
-    security_policy=policy,
+    model="openai/gpt-5-mini", # model name on OpenRouter
+    llm_api_key=openrouter_key,
     provider="openrouter",
 )
 
