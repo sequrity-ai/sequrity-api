@@ -45,6 +45,7 @@
     langgraph=["langgraph>=1.0.6"]
     docs=[
     "griffe-pydantic>=1.2.0",
+    "mike>=2.1",
     "mkdocs>=1.6",
     "mkdocs-material>=9.5",
     "mkdocstrings[python]>=0.28",
