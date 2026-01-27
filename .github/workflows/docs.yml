@@ -42,7 +42,14 @@ jobs:
 
       - name: Deploy dev docs (main branch)
         if: github.ref == 'refs/heads/main'
-        run: uv run mike deploy --push dev
+        run: |
+          uv run mike deploy --push dev
+          # Set default to latest tag if exists, otherwise dev
+          if git describe --tags --abbrev=0 --match 'v*' >/dev/null 2>&1; then
+            uv run mike set-default --push latest
+          else
+            uv run mike set-default --push dev
+          fi
 
       - name: Deploy versioned docs (tag)
         if: startsWith(github.ref, 'refs/tags/v')
