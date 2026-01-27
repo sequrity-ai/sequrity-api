@@ -13,11 +13,11 @@ if you post to `https://api.sequrity.ai/control/openrouter/v1/chat/completions`.
 - If not provided, Sequrity will use its own API key for the service provider with *extra charges*.
 
 
-!!! info "Service Provider"
+!!! info "Example: Using X-Api-Key with OpenRouter"
 
     Chat Completions endpoint for Sequrity Control API uses the service provider in the URL path like so:
 
-    ```bash hl_lines="1 2 5 8"
+    ```bash hl_lines="1 2 6 8"
     SERVICE_PROVIDER="openrouter"
     OPENROUTER_API_KEY="your-openrouter-api-key"
 
@@ -26,8 +26,6 @@ if you post to `https://api.sequrity.ai/control/openrouter/v1/chat/completions`.
     -H "Authorization: Bearer $SEQURITY_API_KEY" \
     -H "Content-Type: application/json" \
     -H "X-Api-Key: $OPENROUTER_API_KEY" \
-    -H 'X-Security-Policy: {"language":"sqrt-lite","codes":""}' \
-    -H 'X-Security-Features: [{"feature_name":"Single LLM","config_json":"{\"mode\":\"standard\"}"},{"feature_name":"Long Program Support","config_json":"{\"mode\":\"base\"}"}]' \
     -d '{
         "model": "openai/gpt-5-mini",
         "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
@@ -42,9 +40,10 @@ if you post to `https://api.sequrity.ai/control/openrouter/v1/chat/completions`.
 X-Session-ID: uuid-session-id
 ```
 
-Session identifier for continuing an existing conversation. The session ID is returned in the response headers.
+Session identifier for continuing an existing conversation. The session ID is returned in the response headers and is encoded into tool call IDs of assistant messages.
 
-- If not provided, a new session is created.
-- If provided, the conversation history associated with that session ID like previous PLLM plans is used to maintain context.
+- If Session-ID is not provided via the `X-Session-ID` header or no tool result messages in the request messages, a new session is created.
+- Otherwise, the conversation history associated with that session ID like previous PLLM plans is used to maintain context.
 
-To use the session ID, include the `X-Session-ID` header in your request with the session ID value obtained from a previous response. Refer to the [Session ID in Sequrity Control API](../../../learn/session_id.md) for more details.
+Most of the time, you don't need to manually manage session IDs.
+Refer to the [Session ID in Sequrity Control API](../../../learn/session_id.md) for more details.

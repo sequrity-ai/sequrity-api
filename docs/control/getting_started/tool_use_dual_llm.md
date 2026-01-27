@@ -1,6 +1,6 @@
 # Secure Tool Use with Dual-LLM
 
-As mentioned at the end of [Sending your first message](./first_message.md), [Dual-LLM](../learn/single-vs-dual-llm.md) enables advanced security features when tool calls are involved.
+As mentioned at the end of [Sending your first message](./first_message.md), [Dual-LLM](../learn/single-vs-dual-llm.md#dual-llm-agent-the-camel-framework) enables advanced security features when tool calls are involved.
 This tutorial demonstrates how to use Sequrity's Dual-LLM feature to secure tool calling in chat completion workflows.
 Specifically, the example below illustrate
 how to enforce security policies that prevent sensitive data from being sent to unauthorized recipients.

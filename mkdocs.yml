@@ -115,6 +115,9 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - md_in_html
   - pymdownx.blocks.caption
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
 
 extra_css:
   - stylesheets/custom.css
@@ -143,7 +146,7 @@ nav:
       - SequrityClient: general/sequrity_client/sequrity_client.md
       - Control:
           - control/reference/index.md
-          - Supported Features in Single LLM: control/reference/single_llm_vs_dual_llm_features.md
+          - Available Features in Single-LLM and Dual-LLM Modes: control/reference/single_llm_vs_dual_llm_features.md
           - SQRT Policy Language:
               - control/reference/sqrt/index.md
               - Grammar: control/reference/sqrt/grammar.md
@@ -172,4 +175,5 @@ nav:
   - Examples:
       - Control:
           - control/examples/index.md
-          - Advanced SQRT Examples - 2025-01-25: control/examples/advanced_sqrt_examples.md
+          - Advanced SQRT Examples - 2025-01-25: control/examples/advanced_sqrt_examples_2026-01-25.md
+  - Release Notes: release_notes.md

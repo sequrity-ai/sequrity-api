@@ -117,6 +117,8 @@ def chat_completion(messages):
     response = requests.post(url, headers=headers, json=payload)
     response.raise_for_status()
     return response.json()
+
+
 # --8<-- [end:chat_completion_func]
 
 

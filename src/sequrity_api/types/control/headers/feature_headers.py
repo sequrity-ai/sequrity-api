@@ -177,7 +177,6 @@ class FeaturesHeader(BaseModel):
         finance_guardrail: bool = False,
         legal_guardrail: bool = False,
         url_blocker: bool = False,
-        long_program_mode: Literal["base", "mid", "long"] = "base",
     ) -> "FeaturesHeader":
         # no need of lang program support for single-llm mode
         taggers = []
@@ -198,7 +197,7 @@ class FeaturesHeader(BaseModel):
             llm=LlmModeFeature(feature_name="Single LLM", mode="standard"),
             taggers=taggers if taggers else None,
             constraints=constraints if constraints else None,
-            long_program_support=LongProgramSupportFeature(feature_name="Long Program Support", mode=long_program_mode),
+            long_program_support=LongProgramSupportFeature(feature_name="Long Program Support", mode="base"),
         )
 
     @classmethod
