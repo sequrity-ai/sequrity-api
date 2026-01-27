@@ -18,12 +18,12 @@ Execute LangGraph StateGraphs securely through Sequrity's Dual-LLM runtime with 
 ---
 
 
-::: sequrity.types.control.langgraph.LangGraphChatCompletionRequest
+::: sequrity.control.types.langgraph.LangGraphChatCompletionRequest
     options:
       show_root_heading: true
       show_source: true
 
-::: sequrity.types.control.langgraph.LangGraphChatCompletionResponse
+::: sequrity.control.types.langgraph.LangGraphChatCompletionResponse
     options:
       show_root_heading: true
       show_source: true
