@@ -92,7 +92,7 @@ class FineGrainedConfigHeader(BaseModel):
         default="normal", description="The detail level of debug information provided to the PLLM."
     )
     max_n_turns: int | None = Field(
-        default=1,
+        default=5,
         ge=1,
         description="Maximum number of turns allowed in the session. If None, unlimited turns are allowed.",
     )
@@ -143,3 +143,83 @@ class FineGrainedConfigHeader(BaseModel):
             return self.model_dump_json(exclude_unset=True)
         else:
             raise ValueError(f"Unsupported mode for dump_for_headers: {mode}")
+
+    @classmethod
+    def single_llm(
+        self,
+        min_num_tools_for_filtering: int | None = 10,
+        clear_session_meta: Literal["never", "every_attempt", "every_turn"] = "never",
+    ) -> "FineGrainedConfigHeader":
+        obj = self.model_validate(
+            {
+                "min_num_tools_for_filtering": min_num_tools_for_filtering,
+                "clear_session_meta": clear_session_meta,
+            }
+        )
+        return obj
+
+    @classmethod
+    def dual_llm(
+        self,
+        max_pllm_attempts: int = 4,
+        merge_system_messages: bool = True,
+        convert_system_to_developer_messages: bool = False,
+        include_other_roles_in_user_query: list[Literal["assistant", "tool"]] = ["assistant"],
+        max_tool_calls_per_attempt: int | None = 200,
+        clear_history_every_n_attempts: int | None = None,
+        retry_on_policy_violation: bool = False,
+        cache_tool_result: Literal["none", "all", "deterministic-only"] = "deterministic-only",
+        force_to_cache: list[str] = [],
+        min_num_tools_for_filtering: int | None = 10,
+        clear_session_meta: Literal["never", "every_attempt", "every_turn"] = "never",
+        disable_rllm: bool = False,
+        reduced_grammar_for_rllm_review: bool = True,
+        rllm_confidence_score_threshold: float | None = None,
+        pllm_debug_info_level: DebugInfoLevel = "normal",
+        max_n_turns: int | None = 5,
+        enable_multi_step_planning: bool = False,
+        prune_failed_steps: bool = True,
+        enabled_internal_tools: list[OptionalInternalSoToolIdType] = ["parse_with_ai", "verify_hypothesis"],
+        restate_user_query_before_planning: bool = False,
+        pllm_can_ask_for_clarification: bool = False,
+        reduced_grammar_version: Literal["v1", "v2"] = "v2",
+        response_format_strip_response_content: bool = False,
+        response_format_include_program: bool = False,
+        response_format_include_policy_check_history: bool = False,
+        response_format_include_namespace_snapshot: bool = False,
+        show_pllm_secure_var_values: Literal["none", "basic-notext", "basic-executable", "all-executable"] = "none",
+    ):
+        obj = self.model_validate(
+            {
+                "max_pllm_attempts": max_pllm_attempts,
+                "merge_system_messages": merge_system_messages,
+                "convert_system_to_developer_messages": convert_system_to_developer_messages,
+                "include_other_roles_in_user_query": include_other_roles_in_user_query,
+                "max_tool_calls_per_attempt": max_tool_calls_per_attempt,
+                "clear_history_every_n_attempts": clear_history_every_n_attempts,
+                "retry_on_policy_violation": retry_on_policy_violation,
+                "cache_tool_result": cache_tool_result,
+                "force_to_cache": force_to_cache,
+                "min_num_tools_for_filtering": min_num_tools_for_filtering,
+                "clear_session_meta": clear_session_meta,
+                "disable_rllm": disable_rllm,
+                "reduced_grammar_for_rllm_review": reduced_grammar_for_rllm_review,
+                "rllm_confidence_score_threshold": rllm_confidence_score_threshold,
+                "pllm_debug_info_level": pllm_debug_info_level,
+                "max_n_turns": max_n_turns,
+                "enable_multi_step_planning": enable_multi_step_planning,
+                "prune_failed_steps": prune_failed_steps,
+                "enabled_internal_tools": enabled_internal_tools,
+                "restate_user_query_before_planning": restate_user_query_before_planning,
+                "pllm_can_ask_for_clarification": pllm_can_ask_for_clarification,
+                "reduced_grammar_version": reduced_grammar_version,
+                "response_format": {
+                    "strip_response_content": response_format_strip_response_content,
+                    "include_program": response_format_include_program,
+                    "include_policy_check_history": response_format_include_policy_check_history,
+                    "include_namespace_snapshot": response_format_include_namespace_snapshot,
+                },
+                "show_pllm_secure_var_values": show_pllm_secure_var_values,
+            }
+        )
+        return obj
