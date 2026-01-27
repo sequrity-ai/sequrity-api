@@ -31,7 +31,7 @@ response = client.control.create_chat_completion(
     llm_api_key="your-openrouter-key",
     features=features,
     security_policy=policy,
-    service_provider="openrouter",
+    provider="openrouter",
 )
 
 # Print the response

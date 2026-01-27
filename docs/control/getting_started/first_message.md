@@ -29,9 +29,7 @@ You can interact with the Sequrity Control API using either the Sequrity Python 
 
 === "REST API"
 
-    ```bash
-    # No installation required. Use any HTTP client (curl, httpx, requests, etc.).
-    ```
+    No installation required. Use any HTTP client (curl, httpx, requests, etc.).
 
 ## Sending Your First Message
 

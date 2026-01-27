@@ -163,7 +163,7 @@ Finally, call `compile_and_run_langgraph` to execute your workflow securely:
 - **`llm_api_key`**: API key for your LLM provider
 - **`graph`**: Your LangGraph StateGraph instance
 - **`initial_state`**: Starting state for the workflow
-- **`service_provider`**: LLM provider (e.g., "openrouter", "openai")
+- **`provider`**: LLM provider (e.g., "openrouter", "openai")
 - **`node_functions`**: Dictionary mapping node names to their functions
 - **`max_exec_steps`**: Maximum execution steps (prevents infinite loops)
 - **`features`**: Security features configuration

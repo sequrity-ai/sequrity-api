@@ -140,7 +140,7 @@ Session metadata has the same structure as variable metadata except it does not 
 }
 ```
 
-The persistency of the session metadata is controlled by [`FineGrainedConfigHeader.clear_session_meta`][sequrity.control..types.headers.FineGrainedConfigHeader.clear_session_meta]: `"never"`, `"every_attempt"`, or `"every_turn"`.
+The persistency of the session metadata is controlled by [`FineGrainedConfigHeader.clear_session_meta`][sequrity.control.types.headers.FineGrainedConfigHeader.clear_session_meta]: `"never"`, `"every_attempt"`, or `"every_turn"`.
 
 Session metadata allows users to define policies that do checks and updates throughout the session lifecycle. A simple use case is to count the number of calls to a sensitive tool and block further calls after a threshold is reached.
 

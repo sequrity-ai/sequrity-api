@@ -9,6 +9,7 @@ This parser can be open-sourced and distributed alongside the grammar.lark file,
 allowing users to validate their SQRT policies without access to the translation layer.
 """
 
+from functools import cache
 from pathlib import Path
 from typing import NamedTuple
 
@@ -66,25 +67,19 @@ class ParseResult(NamedTuple):
     """The parse error if invalid, None otherwise."""
 
 
-# Lazy parser initialization
-_parser: Lark | None = None
-
-
+@cache
 def _get_parser() -> Lark:
     """Get or create the Lark parser (lazy initialization)."""
-    global _parser
-    if _parser is None:
-        grammar_path = Path(__file__).parent / "grammar.lark"
-        with open(grammar_path) as f:
-            grammar = f.read()
+    grammar_path = Path(__file__).parent / "grammar.lark"
+    with open(grammar_path) as f:
+        grammar = f.read()
 
-        _parser = Lark(
-            grammar,
-            parser="earley",
-            start="program",
-            propagate_positions=True,
-        )
-    return _parser
+    return Lark(
+        grammar,
+        parser="earley",
+        start="program",
+        propagate_positions=True,
+    )
 
 
 def _get_source_line(source_code: str, line: int) -> str | None:
@@ -141,53 +136,47 @@ def parse(sqrt_code: str) -> ParseResult:
 
 
 def validate(sqrt_code: str) -> bool:
-    """
-    Validate SQRT code syntax.
+    """Validate SQRT code syntax.
 
     A simple convenience function that returns True if the code is valid,
     False otherwise. Use parse() if you need error details.
 
-    Parameters
-    ----------
-    sqrt_code : str
-        The SQRT policy code to validate.
+    Args:
+        sqrt_code: The SQRT policy code to validate.
 
-    Returns
-    -------
-    bool
+    Returns:
         True if the syntax is valid, False otherwise.
 
-    Examples
-    --------
-    >>> validate('tool "foo" { must allow always; }')
-    True
-    >>> validate('tool "foo" { broken }')
-    False
+    Example:
+        ```python
+        validate('tool "foo" { must allow always; }')
+        # True
+
+        validate('tool "foo" { broken }')
+        # False
+        ```
     """
     return parse(sqrt_code).valid
 
 
 def check(sqrt_code: str) -> None:
-    """
-    Check SQRT code syntax, raising an exception if invalid.
+    """Check SQRT code syntax, raising an exception if invalid.
 
-    Parameters
-    ----------
-    sqrt_code : str
-        The SQRT policy code to check.
+    Args:
+        sqrt_code: The SQRT policy code to check.
 
-    Raises
-    ------
-    SqrtParseError
-        If there's a syntax error in the code.
+    Raises:
+        SqrtParseError: If there's a syntax error in the code.
 
-    Examples
-    --------
-    >>> check('tool "foo" { must allow always; }')  # No exception
-    >>> check('tool "foo" { broken }')  # Raises SqrtParseError
-    Traceback (most recent call last):
-        ...
-    SqrtParseError: ...
+    Example:
+        ```python
+        check('tool "foo" { must allow always; }')  # No exception
+
+        check('tool "foo" { broken }')  # Raises SqrtParseError
+        # Traceback (most recent call last):
+        #     ...
+        # SqrtParseError: ...
+        ```
     """
     result = parse(sqrt_code)
     if not result.valid:
@@ -195,20 +184,14 @@ def check(sqrt_code: str) -> None:
 
 
 def check_file(file_path: str | Path) -> None:
-    """
-    Check SQRT file syntax, raising an exception if invalid.
+    """Check SQRT file syntax, raising an exception if invalid.
 
-    Parameters
-    ----------
-    file_path : str or Path
-        Path to the SQRT file to check.
+    Args:
+        file_path: Path to the SQRT file to check.
 
-    Raises
-    ------
-    FileNotFoundError
-        If the file doesn't exist.
-    SqrtParseError
-        If there's a syntax error in the code.
+    Raises:
+        FileNotFoundError: If the file doesn't exist.
+        SqrtParseError: If there's a syntax error in the code.
     """
     file_path = Path(file_path)
     with open(file_path, encoding="utf-8") as f:

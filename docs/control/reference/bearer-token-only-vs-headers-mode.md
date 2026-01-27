@@ -84,7 +84,7 @@ In this case, the settings in the request headers will override those attached t
         llm_api_key="your-openrouter-key",
         features=features,
         security_policy=policy,
-        service_provider="openrouter",
+        provider="openrouter",
     )
 
     # Print the response

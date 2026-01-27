@@ -35,7 +35,7 @@ class FineGrainedConfigHeader(BaseModel):
     """
 
     max_pllm_attempts: int = Field(
-        default=4, description="Maximum number of PLLM attempts before giving up and returning an error.", ge=1
+        default=1, description="Maximum number of PLLM attempts before giving up and returning an error.", ge=1
     )
     merge_system_messages: bool = Field(
         default=True, description="Whether to merge multiple system messages into one before sending to PLLM."
@@ -80,7 +80,7 @@ class FineGrainedConfigHeader(BaseModel):
         description="When to clear session meta information. 'never': never clear; 'every_attempt': clear at the beginning of each PLLM attempt; 'every_turn': clear at the beginning of each turn.",
     )
     disable_rllm: bool = Field(
-        default=False, description="If True, disable the Response LLM (RLLM) for reviewing final responses."
+        default=True, description="If True, disable the Response LLM (RLLM) for reviewing final responses."
     )
     reduced_grammar_for_rllm_review: bool = Field(
         default=True, description="Whether to use a reduced grammar for the RLLM review process."
@@ -97,10 +97,11 @@ class FineGrainedConfigHeader(BaseModel):
         description="Maximum number of turns allowed in the session. If None, unlimited turns are allowed.",
     )
     enable_multi_step_planning: bool = Field(
-        default=False, description="If True, enable multi-step planning for complex user queries."
+        default=False,
+        description="If True, enable multi-step planning for complex user queries, otherwise use single-step with multiple attempts.",
     )
     prune_failed_steps: bool = Field(
-        default=True, description="If True, prune failed PLLM steps from session history to save tokens."
+        default=False, description="If True, prune failed PLLM steps from session history to save tokens."
     )
     enabled_internal_tools: list[OptionalInternalSoToolIdType] = Field(
         default=["parse_with_ai", "verify_hypothesis"],
@@ -149,11 +150,13 @@ class FineGrainedConfigHeader(BaseModel):
         self,
         min_num_tools_for_filtering: int | None = 10,
         clear_session_meta: Literal["never", "every_attempt", "every_turn"] = "never",
+        max_n_turns: int | None = 50,
     ) -> "FineGrainedConfigHeader":
         obj = self.model_validate(
             {
                 "min_num_tools_for_filtering": min_num_tools_for_filtering,
                 "clear_session_meta": clear_session_meta,
+                "max_n_turns": max_n_turns,
             }
         )
         return obj
@@ -161,7 +164,7 @@ class FineGrainedConfigHeader(BaseModel):
     @classmethod
     def dual_llm(
         self,
-        max_pllm_attempts: int = 4,
+        max_pllm_attempts: int = 1,
         merge_system_messages: bool = True,
         convert_system_to_developer_messages: bool = False,
         include_other_roles_in_user_query: list[Literal["assistant", "tool"]] = ["assistant"],
@@ -172,13 +175,13 @@ class FineGrainedConfigHeader(BaseModel):
         force_to_cache: list[str] = [],
         min_num_tools_for_filtering: int | None = 10,
         clear_session_meta: Literal["never", "every_attempt", "every_turn"] = "never",
-        disable_rllm: bool = False,
+        disable_rllm: bool = True,
         reduced_grammar_for_rllm_review: bool = True,
         rllm_confidence_score_threshold: float | None = None,
         pllm_debug_info_level: DebugInfoLevel = "normal",
         max_n_turns: int | None = 5,
         enable_multi_step_planning: bool = False,
-        prune_failed_steps: bool = True,
+        prune_failed_steps: bool = False,
         enabled_internal_tools: list[OptionalInternalSoToolIdType] = ["parse_with_ai", "verify_hypothesis"],
         restate_user_query_before_planning: bool = False,
         pllm_can_ask_for_clarification: bool = False,

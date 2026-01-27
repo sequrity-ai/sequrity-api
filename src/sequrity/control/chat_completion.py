@@ -20,7 +20,7 @@ def create_chat_completion_sync(
     features: FeaturesHeader | None = None,
     security_policy: SecurityPolicyHeader | None = None,
     fine_grained_config: FineGrainedConfigHeader | None = None,
-    service_provider: LlmServiceProviderEnum | Literal["default"] = "default",
+    provider: LlmServiceProviderEnum | Literal["default"] = "default",
     session_id: str | None = None,
     reasoning_effort: ReasoningEffort | None = None,
     response_format: ResponseFormat | None = None,
@@ -43,7 +43,7 @@ def create_chat_completion_sync(
         features: Security features to enable.
         security_policy: Security policy configuration.
         fine_grained_config: Fine-grained security settings.
-        service_provider: LLM service provider (openai, openrouter, etc.).
+        provider: LLM service provider (openai, openrouter, etc.).
         session_id: Explicit session ID for continuing an existing conversation.
             If None and no tool messages in the request, a new session is created.
         reasoning_effort: Reasoning effort level for supported models.
@@ -63,10 +63,10 @@ def create_chat_completion_sync(
     """
 
     # Construct the URL based on service provider
-    if service_provider == "default":
+    if provider == "default":
         path = CONTROL_API_PATHS["chat_completions"]["default"]
     else:
-        path = CONTROL_API_PATHS["chat_completions"]["with_service_provider"].format(service_provider=service_provider)
+        path = CONTROL_API_PATHS["chat_completions"]["with_service_provider"].format(service_provider=provider)
     url = urljoin(base_url, path)
 
     # Prepare the request payload

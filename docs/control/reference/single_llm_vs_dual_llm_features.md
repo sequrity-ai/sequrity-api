@@ -55,7 +55,7 @@ Single-LLM supports a limited subset of features compared to Dual-LLM mode. The 
     - :no_entry: `reduced_grammar_to_rllm_review`
     - :no_entry: `rllm_confidence_score_threshold`
     - :no_entry: `pllm_debug_info`
-    - :no_entry: `max_n_turns`
+    - :white_check_mark: `max_n_turns`
     - :no_entry: `enable_multi_step_planning`
     - :no_entry: `prune_failed_steps`
     - :no_entry: `enabled_internal_tools`

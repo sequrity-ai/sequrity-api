@@ -124,7 +124,7 @@ class TestFineGrainedConfigHeader:
 
     def test_dual_llm_default(self):
         header = FineGrainedConfigHeader.dual_llm()
-        assert header.max_pllm_attempts == 4
+        assert header.max_pllm_attempts == 1
         assert header.merge_system_messages is True
         assert header.cache_tool_result == "deterministic-only"
 
