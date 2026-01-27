@@ -242,8 +242,8 @@ if __name__ == "__main__":
 
     # --8<-- [start:security_settings]
     # Configure security features
-    features = FeaturesHeader.create_dual_llm_header()
-    security_policy = SecurityPolicyHeader.create_default()
+    features = FeaturesHeader.dual_llm()
+    security_policy = SecurityPolicyHeader.dual_llm()
     fine_grained_config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
     # --8<-- [end:security_settings]
 

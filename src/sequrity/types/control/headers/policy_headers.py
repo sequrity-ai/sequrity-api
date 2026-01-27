@@ -68,8 +68,8 @@ class SecurityPolicyHeader(BaseModel):
     Example:
         ```python
         # Create a default security policy
-        policy = SecurityPolicyHeader.create_default(
-            language="sqrt-lite",
+        policy = SecurityPolicyHeader.dual_llm(
+            language="sqrt",
             default_allow=True,
         )
         ```
@@ -103,7 +103,7 @@ class SecurityPolicyHeader(BaseModel):
             raise ValueError(f"Unsupported mode for dump_for_headers: {mode}")
 
     @classmethod
-    def create_default(
+    def dual_llm(
         cls,
         language: Literal["sqrt", "sqrt-lite", "cedar"] = "sqrt-lite",
         codes: list[str] | str = "",
@@ -133,6 +133,30 @@ class SecurityPolicyHeader(BaseModel):
                         "tags": branching_meta_policy_tags or (),
                         "consumers": branching_meta_policy_consumers or (),
                     },
+                },
+            }
+        )
+        return obj
+
+    @classmethod
+    def single_llm(
+        cls,
+        language: Literal["sqrt", "sqrt-lite", "cedar"] = "sqrt-lite",
+        codes: list[str] | str = "",
+        fail_fast: bool | None = None,
+        default_allow: bool = True,
+        enable_llm_blocked_tag: bool = True,
+    ) -> "SecurityPolicyHeader":
+        obj = cls.model_validate(
+            {
+                "language": language,
+                "codes": codes,
+                "auto_gen": False,
+                "fail_fast": fail_fast,
+                "internal_policy_preset": {
+                    "default_allow": default_allow,
+                    "enable_non_executable_memory": False,
+                    "enable_llm_blocked_tag": enable_llm_blocked_tag,
                 },
             }
         )

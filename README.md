@@ -21,8 +21,8 @@ from sequrity.types.control.headers import FeaturesHeader, SecurityPolicyHeader
 client = SequrityClient(api_key="your-sequrity-api-key")
 
 # Create feature and policy headers
-features = FeaturesHeader.create_dual_llm_header() # 💡 dual-llm
-policy = SecurityPolicyHeader.create_default()
+features = FeaturesHeader.dual_llm() # 💡 dual-llm
+policy = SecurityPolicyHeader.dual_llm()
 
 # Send a chat completion request
 response = client.control.create_chat_completion(

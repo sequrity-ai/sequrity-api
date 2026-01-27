@@ -7,14 +7,20 @@ When making requests to the Sequrity Control API, you have two options for speci
 | Bearer-Token-only | `Authorization: Bearer <sequrity-api-key>` | `X-Api-Key`, `X-Session-Id` |
 | Headers | `Authorization: Bearer <sequrity-api-key>`, `X-Security-Features`, `X-Security-Policy` | `X-Security-Config`, `X-Api-Key`, `X-Session-Id` |
 
-!!! top "Experimental"
+!!! example "Experimental"
 
-    For now, only headers-mode supports fine-grained configurations.
+    For now, only headers-mode supports fine-grained configurations, and some advanced settings like tool result caching are only available in headers-mode.
+
+!!! note "Example of Bearer-Token-only and Headers-mode"
+
+    See [Sending your first message](../getting_started/first_message.md#specifying-singledual-llm) for examples of specifying settings in both modes.
 
 ## Bearer-Token-only mode
 
 When you create a Sequrity API key in your dashboard, you already pick Single-LLM or Dual-LLM for that key, as well as other features and security policies.
 Thus, you can also just use your Sequrity API key to retrieve those settings, without specifying additional headers. This is called Bearer-Token-only mode.
+
+In this case, you only need to provide Authorization token, model name, messages. Other headers/parameters are optional.
 
 === "Sequrity Client"
 
@@ -32,7 +38,6 @@ Thus, you can also just use your Sequrity API key to retrieve those settings, wi
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini", # model name from your LLM provider
         llm_api_key="your-openrouter-key",
-        service_provider="openrouter",
     )
 
     # Print the response
@@ -69,8 +74,8 @@ In this case, the settings in the request headers will override those attached t
     client = SequrityClient(api_key="your-sequrity-api-key")
 
     # Create feature and policy headers
-    features = FeaturesHeader.create_single_llm_header()
-    policy = SecurityPolicyHeader.create_default()
+    features = FeaturesHeader.single_llm()
+    policy = SecurityPolicyHeader.single_llm()
 
     # Send a chat completion request
     response = client.control.create_chat_completion(

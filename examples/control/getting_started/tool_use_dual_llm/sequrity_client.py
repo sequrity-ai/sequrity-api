@@ -92,7 +92,7 @@ tool_defs = [
 ]
 
 # --8<-- [start:security_headers]
-features = FeaturesHeader.create_dual_llm_header(mode="standard")
+features = FeaturesHeader.dual_llm(mode="standard")
 security_policy = SecurityPolicyHeader(
     language="sqrt",
     codes=r"""

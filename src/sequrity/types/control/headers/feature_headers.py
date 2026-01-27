@@ -119,13 +119,13 @@ class FeaturesHeader(BaseModel):
     Example:
         ```python
         # Create a Single LLM configuration with toxicity filtering
-        features = FeaturesHeader.create_single_llm_header(
+        features = FeaturesHeader.single_llm(
             toxicity_filter=True,
             pii_redaction=True,
         )
 
         # Create a Dual LLM configuration with strict mode
-        features = FeaturesHeader.create_dual_llm_header(
+        features = FeaturesHeader.dual_llm(
             mode="strict",
             toxicity_filter=True,
         )
@@ -169,7 +169,7 @@ class FeaturesHeader(BaseModel):
             raise ValueError(f"Invalid mode: {mode}. Must be 'json' or 'json_str'.")
 
     @classmethod
-    def create_single_llm_header(
+    def single_llm(
         cls,
         toxicity_filter: bool = False,
         pii_redaction: bool = False,
@@ -201,7 +201,7 @@ class FeaturesHeader(BaseModel):
         )
 
     @classmethod
-    def create_dual_llm_header(
+    def dual_llm(
         cls,
         mode: Literal["standard", "strict", "custom"] = "standard",
         toxicity_filter: bool = False,

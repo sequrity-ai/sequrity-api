@@ -12,7 +12,7 @@ class TestChatCompletion:
     def setup_method(self):
         self.test_config = get_test_config()
         self.sequrity_client = client.SequrityClient(
-            api_key=self.test_config.api_key, base_url=self.test_config.base_url
+            api_key=self.test_config.api_key, base_url=self.test_config.base_url, timeout=300
         )
 
     @pytest.mark.parametrize("llm_mode", ["single-llm", "dual-llm"])
@@ -21,11 +21,11 @@ class TestChatCompletion:
         self, llm_mode: Literal["single-llm", "dual-llm"], service_provider: LlmServiceProviderEnum | Literal["default"]
     ):
         if llm_mode == "single-llm":
-            features_header = FeaturesHeader.create_single_llm_header()
+            features_header = FeaturesHeader.single_llm()
+            policy_header = SecurityPolicyHeader.single_llm()
         else:
-            features_header = FeaturesHeader.create_dual_llm_header()
-
-        policy_header = SecurityPolicyHeader.create_default()
+            features_header = FeaturesHeader.dual_llm()
+            policy_header = SecurityPolicyHeader.dual_llm()
 
         messages = [{"role": "user", "content": "What is the largest prime number below 100?"}]
         response = self.sequrity_client.control.create_chat_completion(
@@ -45,8 +45,8 @@ class TestChatCompletion:
 
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_dual_llm_multi_turn(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
-        features_header = FeaturesHeader.create_dual_llm_header()
-        policy_header = SecurityPolicyHeader.create_default()
+        features_header = FeaturesHeader.dual_llm()
+        policy_header = SecurityPolicyHeader.dual_llm()
         config_header = FineGrainedConfigHeader(max_n_turns=5)
 
         messages = [
@@ -162,13 +162,15 @@ class TestChatCompletion:
 
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_dual_llm_policy_enforcement(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
-        features_header = FeaturesHeader.create_dual_llm_header()
+        features_header = FeaturesHeader.dual_llm()
         # Create a policy that forbids discussing politics
-        sqrt_lite_codes = r"""
-        Tag load_applicant_profile(...) -> |= {"internal_use_only", "tool/load_applicant_profile"};
-        Hard Deny send_email(...) if body.tags is_superset {"internal_use_only"} & ~ (to.value in {r".*@trustedcorp\.com"});
+        sqrt_codes = r"""
+        tool "load_applicant_profile" -> @tags |= {"internal_use_only", "tool/load_applicant_profile"};
+        tool "send_email" {
+            must deny when body.tags superset of {"internal_use_only"} and (not to.value in {str matching r".*@trustedcorp\.com"});
+        }
         """
-        policy_header = SecurityPolicyHeader.create_default(language="sqrt-lite", codes=sqrt_lite_codes)
+        policy_header = SecurityPolicyHeader.dual_llm(language="sqrt", codes=sqrt_codes)
         config_header = FineGrainedConfigHeader(max_n_turns=1, retry_on_policy_violation=False)
 
         tools = [
@@ -313,7 +315,7 @@ class TestChatCompletion:
 
         # SecurityPolicyHeader with ALL entries set (no None values)
         policy_header = SecurityPolicyHeader(
-            language="sqrt-lite",
+            language="sqrt",
             codes="",  # empty policy codes, just testing header parsing
             auto_gen=False,
             fail_fast=True,
@@ -387,9 +389,9 @@ class TestChatCompletion:
         self, service_provider: LlmServiceProviderEnum | Literal["default"]
     ):
         """
-        Test FeaturesHeader.create_single_llm_header with all features enabled.
+        Test FeaturesHeader.single_llm with all features enabled.
         """
-        features_header = FeaturesHeader.create_single_llm_header(
+        features_header = FeaturesHeader.single_llm(
             toxicity_filter=True,
             pii_redaction=True,
             healthcare_guardrail=True,
@@ -397,7 +399,7 @@ class TestChatCompletion:
             legal_guardrail=True,
             url_blocker=True,
         )
-        policy_header = SecurityPolicyHeader.create_default()
+        policy_header = SecurityPolicyHeader.single_llm()
 
         messages = [{"role": "user", "content": "What is 3 + 3?"}]
         response = self.sequrity_client.control.create_chat_completion(
@@ -423,15 +425,15 @@ class TestChatCompletion:
         service_provider: LlmServiceProviderEnum | Literal["default"],
     ):
         """
-        Test FeaturesHeader.create_dual_llm_header with different LLM modes.
+        Test FeaturesHeader.dual_llm with different LLM modes.
         """
-        features_header = FeaturesHeader.create_dual_llm_header(
+        features_header = FeaturesHeader.dual_llm(
             mode=llm_mode,
             toxicity_filter=True,
             url_blocker=True,
             long_program_mode="base",
         )
-        policy_header = SecurityPolicyHeader.create_default()
+        policy_header = SecurityPolicyHeader.dual_llm()
 
         messages = [{"role": "user", "content": "What is 5 + 5?"}]
         response = self.sequrity_client.control.create_chat_completion(
@@ -457,10 +459,10 @@ class TestChatCompletion:
         service_provider: LlmServiceProviderEnum | Literal["default"],
     ):
         """
-        Test SecurityPolicyHeader.create_default with different policy languages.
+        Test SecurityPolicyHeader.dual_llm with different policy languages.
         """
-        features_header = FeaturesHeader.create_dual_llm_header()
-        policy_header = SecurityPolicyHeader.create_default(
+        features_header = FeaturesHeader.dual_llm()
+        policy_header = SecurityPolicyHeader.dual_llm(
             language=language,
             codes="",
             auto_gen=False,

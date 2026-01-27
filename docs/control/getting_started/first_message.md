@@ -167,7 +167,7 @@ You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
     Whichever Sequrity API key you use (Single-LLM or Dual-LLM),
     you can always override the mode in the request headers:
 
-    - For Sequrity client, use [`FeaturesHeader.create_single_llm_header`][sequrity.types.control.headers.FeaturesHeader.create_single_llm_header] / [`FeaturesHeader.create_dual_llm_header`][sequrity.types.control.headers.FeaturesHeader.create_dual_llm_header] and [`SecurityPolicyHeader`][sequrity.types.control.headers.SecurityPolicyHeader]
+    - For Sequrity client, use [`FeaturesHeader.single_llm`][sequrity.types.control.headers.FeaturesHeader.single_llm] / [`FeaturesHeader.dual_llm`][sequrity.types.control.headers.FeaturesHeader.dual_llm] and [`SecurityPolicyHeader`][sequrity.types.control.headers.SecurityPolicyHeader]
     - For REST API, use custom headers [`X-Security-Features`](../reference/rest_api/headers/security_features.md) and [`X-Security-Policy`](../reference/rest_api/headers/security_policy.md)
 
     When the features header and security policy header are present in the request,
@@ -207,7 +207,7 @@ You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
     - In Sequrity Control API, *Selecting mode when creating API key while omitting custom headers* is called **Bearer-Token-only** mode.
     - *Specifying mode using custom headers* is called **Headers-mode**.
 
-    Refer to [Bearer-Token-only vs Headers-Mode](../reference/rest_api/bearer-token-only-vs-headers-mode.md) for details.
+    Refer to [Bearer-Token-only vs Headers-Mode](../reference/bearer-token-only-vs-headers-mode.md) for details.
 
 ## Next Steps
 

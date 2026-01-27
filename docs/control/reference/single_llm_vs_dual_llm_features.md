@@ -1,6 +1,5 @@
-# Available Features in Single-LLM and Dual-LLM Modes
+# Available Features in Single-LLM Architecture
 
-<!-- mention our single llm does roughly nothing, it directly send requests to service provider and have some guardrails. -->
 
 Sequrity Control supports two agent architectures for tool access control: **Single-LLM** and **Dual-LLM**. The Single-LLM in Sequrity Control is designed primarily for compatibility with existing systems, providing guardrail functionalities and limited policy enforcement based on session metadata. In contrast, **Dual-LLM offers all basic & advanced security features, i.e., all features listed in [Security Features](../reference/sequrity_client/headers/features_header.md), [Security Policies](../reference/sequrity_client/headers/policy_header.md), and [Fine-Grained Configurations](../reference/sequrity_client/headers/config_header.md)**.
 
@@ -24,13 +23,13 @@ Single-LLM supports a limited subset of features compared to Dual-LLM mode. The 
 - [Security Policies](../reference/sequrity_client/headers/policy_header.md) / [X-Security-Policy](../reference/rest_api/headers/security_policy.md)
     - :white_check_mark: `language`
     - :white_check_mark: `codes`
-    - :white_check_mark: `auto_gen`
+    - :no_entry: `auto_gen`
     - :white_check_mark: `fail_fast`
     - `internal_policy_preset`
         - :white_check_mark: `default_allow`
         - :white_check_mark: `default_allow_enforcement_level`
         - :no_entry: `enable_non_executable_memory`
-        - :no_entry: `enable_llm_blocked_tag`
+        - :white_check_mark: `enable_llm_blocked_tag`
         - :no_entry: `branching_meta_policy`
 
     !!! warning "Limited Policy Enforcement in Single-LLM"

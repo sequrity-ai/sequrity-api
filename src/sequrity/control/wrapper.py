@@ -106,8 +106,8 @@ class ControlApiWrapper:
 
             client = SequrityClient(api_key="your-sequrity-api-key")
 
-            features = FeaturesHeader.create_single_llm_header()
-            security_policy = SecurityPolicyHeader.create_default()
+            features = FeaturesHeader.single_llm()
+            security_policy = SecurityPolicyHeader.single_llm()
 
 
             response = client.control.create_chat_completion(
@@ -188,8 +188,8 @@ class ControlApiWrapper:
             from sequrity.types.control.headers import FeaturesHeader
 
             client = SequrityClient(api_key="your-sequrity-api-key")
-            features = FeaturesHeader.create_dual_llm_header()
-            security_policy = SecurityPolicyHeader.create_default()
+            features = FeaturesHeader.dual_llm()
+            security_policy = SecurityPolicyHeader.dual_llm()
 
 
             # Define your graph

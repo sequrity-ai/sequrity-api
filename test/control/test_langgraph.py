@@ -132,8 +132,8 @@ class TestLangGraphCompilationAndExecution:
         graph.add_edge("send_email", END)
 
         initial_state = {"query": "Read the document", "result": ""}
-        features = FeaturesHeader.create_dual_llm_header()
-        policy = SecurityPolicyHeader.create_default()
+        features = FeaturesHeader.dual_llm()
+        policy = SecurityPolicyHeader.dual_llm()
         config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 
         result = self.sequrity_client.control.compile_and_run_langgraph(
@@ -199,6 +199,7 @@ class TestLangGraphCompilationAndExecution:
             "generate_query": generate_query,
             "validate_query": validate_query,
             "execute_query": execute_query,
+            "route_validation": route_validation,  # Routing function for conditional edges
         }
         initial_state = {
             "query": "Find all users with recent orders",
@@ -208,8 +209,8 @@ class TestLangGraphCompilationAndExecution:
             "result": "",
             "needs_validation": False,
         }
-        features = FeaturesHeader.create_dual_llm_header()
-        policy = SecurityPolicyHeader.create_default()
+        features = FeaturesHeader.dual_llm()
+        policy = SecurityPolicyHeader.dual_llm()
         config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 
         result = self.sequrity_client.control.compile_and_run_langgraph(

@@ -146,14 +146,14 @@ nav:
       - SequrityClient: general/sequrity_client/sequrity_client.md
       - Control:
           - control/reference/index.md
-          - Available Features in Single-LLM and Dual-LLM Modes: control/reference/single_llm_vs_dual_llm_features.md
+          - Available Features in Single-LLM Arch: control/reference/single_llm_vs_dual_llm_features.md
+          - Bearer-Token-only vs Headers-Mode: control/reference/bearer-token-only-vs-headers-mode.md
           - SQRT Policy Language:
               - control/reference/sqrt/index.md
               - Grammar: control/reference/sqrt/grammar.md
           - REST API:
               - control/reference/rest_api/index.md
               - Service Providers: general/rest_api/service_provider.md
-              - Bearer-Token-only vs Headers-Mode: control/reference/rest_api/bearer-token-only-vs-headers-mode.md
               - Chat Completion: control/reference/rest_api/chat_completion.md
               - Custom Headers:
                   - X-Api-Key and X-Session-Id: control/reference/rest_api/headers/api_key_session_id.md
