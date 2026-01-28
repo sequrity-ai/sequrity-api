@@ -6,7 +6,7 @@ hide:
 # Release Notes
 
 
-## v0.0.3
+## v0.0.2
 
 `time: 2026-01-28`
 
@@ -16,14 +16,6 @@ hide:
 
 - Change default value of `pllm_can_ask_for_clarification` in `security_config` header to `true`.
 - Update docs deployment workflow to set default to `dev` instead of `latest` until docs are stable.
-
-## v0.0.2
-
-`time: 2026-01-27`
-
-| Product  | Version |
-| ---------|---------|
-| Control API | `b5fa6c922513373e157502dc99be44a6e88a3766` |
 
 ## v0.0.1
 
