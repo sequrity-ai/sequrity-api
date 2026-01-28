@@ -44,16 +44,21 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           uv run mike deploy --push dev
-          # Set default to latest tag if exists, otherwise dev
-          if git describe --tags --abbrev=0 --match 'v*' >/dev/null 2>&1; then
-            uv run mike set-default --push latest
-          else
-            uv run mike set-default --push dev
-          fi
+          # TODO: When docs are stable, uncomment the block below and remove the line after it
+          #       to change default back to "latest"
+          # # Set default to latest tag if exists, otherwise dev
+          # if git describe --tags --abbrev=0 --match 'v*' >/dev/null 2>&1; then
+          #   uv run mike set-default --push latest
+          # else
+          #   uv run mike set-default --push dev
+          # fi
+          uv run mike set-default --push dev
 
       - name: Deploy versioned docs (tag)
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           uv run mike deploy --push --update-aliases $VERSION latest
-          uv run mike set-default --push latest
+          # TODO: When docs are stable, change back to "latest"
+          # uv run mike set-default --push latest
+          uv run mike set-default --push dev
