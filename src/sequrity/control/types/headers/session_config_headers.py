@@ -111,7 +111,7 @@ class FineGrainedConfigHeader(BaseModel):
         description="If True, the user query will be restated before planning to provide clearer context.",
     )
     pllm_can_ask_for_clarification: bool = Field(
-        default=False,
+        default=True,
         description="If True, allow the PLLM to ask clarifying questions when the user query is ambiguous.",
     )
     reduced_grammar_version: Literal["v1", "v2"] = Field(
@@ -184,7 +184,7 @@ class FineGrainedConfigHeader(BaseModel):
         prune_failed_steps: bool = False,
         enabled_internal_tools: list[OptionalInternalSoToolIdType] = ["parse_with_ai", "verify_hypothesis"],
         restate_user_query_before_planning: bool = False,
-        pllm_can_ask_for_clarification: bool = False,
+        pllm_can_ask_for_clarification: bool = True,
         reduced_grammar_version: Literal["v1", "v2"] = "v2",
         response_format_strip_response_content: bool = False,
         response_format_include_program: bool = False,
