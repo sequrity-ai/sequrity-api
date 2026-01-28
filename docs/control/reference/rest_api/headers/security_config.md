@@ -28,7 +28,7 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
   "prune_failed_steps": false,
   "enabled_internal_tools": ["parse_with_ai", "verify_hypothesis"],
   "restate_user_query_before_planning": false,
-  "pllm_can_ask_for_clarification": false,
+  "pllm_can_ask_for_clarification": true,
   "reduced_grammar_version": "v2",
   "show_pllm_secure_var_values": "none",
   "response_format": {
