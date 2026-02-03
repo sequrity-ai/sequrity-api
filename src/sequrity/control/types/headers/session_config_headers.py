@@ -37,6 +37,9 @@ class FineGrainedConfigHeader(BaseModel):
     max_pllm_attempts: int = Field(
         default=1, description="Maximum number of PLLM attempts before giving up and returning an error.", ge=1
     )
+    overwrite_pllm_prompt: str | None = Field(
+        default=None, description="If provided, this prompt will overwrite the PLLM mission prompt."
+    )
     merge_system_messages: bool = Field(
         default=True, description="Whether to merge multiple system messages into one before sending to PLLM."
     )
@@ -165,6 +168,7 @@ class FineGrainedConfigHeader(BaseModel):
     def dual_llm(
         self,
         max_pllm_attempts: int = 1,
+        overwrite_pllm_prompt: str | None = None,
         merge_system_messages: bool = True,
         convert_system_to_developer_messages: bool = False,
         include_other_roles_in_user_query: list[Literal["assistant", "tool"]] = ["assistant"],
@@ -195,6 +199,7 @@ class FineGrainedConfigHeader(BaseModel):
         obj = self.model_validate(
             {
                 "max_pllm_attempts": max_pllm_attempts,
+                "overwrite_pllm_prompt": overwrite_pllm_prompt,
                 "merge_system_messages": merge_system_messages,
                 "convert_system_to_developer_messages": convert_system_to_developer_messages,
                 "include_other_roles_in_user_query": include_other_roles_in_user_query,
