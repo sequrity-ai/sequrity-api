@@ -13,6 +13,7 @@
     "httpx>=0.28.1",
     "lark>=1.3.1",
     "mkdocs-jupyter>=0.24.1",
+    "openai>=1.0.0",
     "pydantic>=2.11.9",
 ]
     dynamic=["version"]
@@ -42,8 +43,9 @@
     version-file="src/sequrity_api/_version.py"
 
 [dependency-groups]
-    dev=["openai>=1.107.3", "pytest>=9.0.2", "ruff>=0.14.13", "ty"]
+    dev=["openai>=1.107.3", "pytest>=9.0.2", "pytest-asyncio>=0.24.0", "ruff>=0.14.13", "ty"]
     langgraph=["langgraph>=1.0.6"]
+    agents=["openai-agents>=0.1.0"]
     docs=[
     "griffe-pydantic>=1.2.0",
     "mkdocs>=1.6",
