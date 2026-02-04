@@ -184,3 +184,4 @@ nav:
           - control/examples/index.md
           - Advanced SQRT Examples - 2025-01-25: control/examples/advanced_sqrt_examples.md
           - OpenAI Agents SDK Integration: control/examples/openai_sdk_integration.md
+  - Release Notes: release_notes.md
