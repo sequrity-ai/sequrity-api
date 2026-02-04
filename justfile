@@ -7,5 +7,9 @@ local-docs: sync-all
 format:
     uv run ruff format src/ test/
 
+lint:
+    uv run ruff format --check
+    uv run ty check --exclude "examples/**" --exclude "test/**" src/
+
 sync-all:
     uv sync --all-groups

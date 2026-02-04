@@ -42,7 +42,7 @@
     version-file="src/sequrity_api/_version.py"
 
 [dependency-groups]
-    dev=["openai>=1.107.3", "pytest>=9.0.2", "ruff>=0.14.13"]
+    dev=["openai>=1.107.3", "pytest>=9.0.2", "ruff>=0.14.13", "ty"]
     langgraph=["langgraph>=1.0.6"]
     docs=[
     "griffe-pydantic>=1.2.0",
@@ -60,3 +60,10 @@
 [tool.pytest.ini_options]
     minversion="9.0"
     testpaths=["test"]
+
+[tool.ty]
+    # ty type checker configuration
+
+    [tool.ty.rules]
+        # Ignore unresolved imports for optional dependencies
+        unresolved-import = "ignore"

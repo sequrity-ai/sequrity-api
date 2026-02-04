@@ -88,6 +88,8 @@ def run_graph_sync(
 ) -> dict:
     if features.llm.feature_name != "Dual LLM":
         raise ValueError("LangGraph execution requires 'Dual LLM' feature to be enabled.")
+    if fine_grained_config is None:
+        raise ValueError("LangGraph execution requires 'fine_grained_config' to be provided.")
     if fine_grained_config.response_format.strip_response_content:
         raise ValueError("LangGraph execution requires 'strip_response_content' to be False.")
     if fine_grained_config.disable_rllm is not True:
@@ -140,9 +142,14 @@ def run_graph_sync(
             timeout=timeout,
             session_id=session_id,
         )
+        if isinstance(response, dict):
+            raise RuntimeError("Unexpected dict response from create_langgraph_chat_completion_sync")
         session_id = response.session_id
         tool_calls = response.choices[0].message.tool_calls
-        content = ResponseContentJsonSchema.parse_raw(response.choices[0].message.content)
+        message_content = response.choices[0].message.content
+        if message_content is None:
+            raise RuntimeError(f"No message content in response at step {step}")
+        content = ResponseContentJsonSchema.parse_json_safe(message_content)
 
         if response.choices[0].finish_reason != "tool_calls":
             final_state = current_state
