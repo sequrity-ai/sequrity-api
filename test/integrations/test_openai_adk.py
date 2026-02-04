@@ -9,9 +9,9 @@ import os
 
 import pytest
 
-from sequrity_api.integrations.openai_adk import create_sequrity_openai_client
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
-from sequrity_api_unittest.config import get_test_config
+from sequrity.integrations.openai_adk import create_sequrity_openai_client
+from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity_unittest.config import get_test_config
 
 
 # Check if OpenAI Agent ADK is available
@@ -37,8 +37,8 @@ class TestOpenAIADKIntegration:
         # Create Sequrity client with dual-LLM features
         client = create_sequrity_openai_client(
             sequrity_api_key=self.test_config.api_key,
-            features=FeaturesHeader.create_dual_llm_headers(),
-            security_policy=SecurityPolicyHeader.create_default(),
+            features=FeaturesHeader.dual_llm(),
+            security_policy=SecurityPolicyHeader.dual_llm(),
             service_provider="openrouter",
             llm_api_key=self.test_config.llm_api_key_openrouter,
             base_url=self.test_config.base_url,
@@ -80,7 +80,7 @@ class TestOpenAIADKIntegration:
         # Create Sequrity client
         client = create_sequrity_openai_client(
             sequrity_api_key=self.test_config.api_key,
-            features=FeaturesHeader.create_dual_llm_headers(),
+            features=FeaturesHeader.dual_llm(),
             service_provider="openrouter",
             llm_api_key=self.test_config.llm_api_key_openrouter,
             base_url=self.test_config.base_url,
@@ -138,8 +138,8 @@ class TestOpenAIADKIntegration:
         # Create Sequrity client
         client = create_sequrity_openai_client(
             sequrity_api_key=self.test_config.api_key,
-            features=FeaturesHeader.create_dual_llm_headers(),
-            security_policy=SecurityPolicyHeader.create_default(),
+            features=FeaturesHeader.dual_llm(),
+            security_policy=SecurityPolicyHeader.dual_llm(),
             service_provider="openrouter",
             llm_api_key=self.test_config.llm_api_key_openrouter,
             base_url=self.test_config.base_url,
@@ -167,8 +167,8 @@ class TestOpenAIADKIntegration:
         # Create Sequrity client
         client = create_sequrity_openai_client(
             sequrity_api_key=self.test_config.api_key,
-            features=FeaturesHeader.create_single_llm_headers(),
-            security_policy=SecurityPolicyHeader.create_default(),
+            features=FeaturesHeader.single_llm(),
+            security_policy=SecurityPolicyHeader.dual_llm(),
             service_provider="openrouter",
             llm_api_key=self.test_config.llm_api_key_openrouter,
             base_url=self.test_config.base_url,

@@ -6,7 +6,7 @@ hide:
 # Release Notes
 
 
-## v0.0.3 (Unreleased)
+## v0.0.3
 
 `time: 2026-02-04`
 

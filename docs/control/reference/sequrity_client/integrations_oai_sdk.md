@@ -6,7 +6,7 @@ The integrations module provides compatibility layers for popular AI/ML framewor
 
 AsyncOpenAI-compatible client for seamless integration with the OpenAI Agent ADK framework.
 
-::: sequrity_api.integrations.openai_adk
+::: sequrity.integrations.openai_adk
     options:
       show_root_heading: false
       show_source: false

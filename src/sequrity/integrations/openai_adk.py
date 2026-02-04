@@ -6,14 +6,14 @@ Sequrity's secure orchestrator with automatic session management and security fe
 
 Example:
     ```python
-    from sequrity_api.integrations.openai_adk import create_sequrity_openai_client
-    from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+    from sequrity.integrations.openai_adk import create_sequrity_openai_client
+    from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 
     # Create client with Sequrity security features
     client = create_sequrity_openai_client(
         sequrity_api_key="your-sequrity-key",
-        features=FeaturesHeader.create_dual_llm_headers(),
-        security_policy=SecurityPolicyHeader.create_default()
+        features=FeaturesHeader.dual_llm(),
+        security_policy=SecurityPolicyHeader.dual_llm()
     )
 
     # Use with OpenAI Agent ADK
@@ -29,7 +29,7 @@ from typing import Any
 import httpx
 from openai import AsyncOpenAI
 
-from ..types.control.headers import (
+from ..control.types.headers import (
     FeaturesHeader,
     FineGrainedConfigHeader,
     SecurityPolicyHeader,
@@ -61,8 +61,8 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
 
     Example:
         ```python
-        features = FeaturesHeader.create_dual_llm_headers()
-        policy = SecurityPolicyHeader.create_default()
+        features = FeaturesHeader.dual_llm()
+        policy = SecurityPolicyHeader.dual_llm()
 
         client = SequrityAsyncOpenAI(
             sequrity_api_key="your-key",
@@ -241,21 +241,21 @@ def create_sequrity_openai_client(
 
     Example:
         ```python
-        from sequrity_api.integrations.openai_adk import create_sequrity_openai_client
-        from sequrity_api.types.control.headers import FeaturesHeader
+        from sequrity.integrations.openai_adk import create_sequrity_openai_client
+        from sequrity.control.types.headers import FeaturesHeader
 
         # Basic usage with dual-LLM
         client = create_sequrity_openai_client(
             sequrity_api_key="your-key",
-            features=FeaturesHeader.create_dual_llm_headers()
+            features=FeaturesHeader.dual_llm()
         )
 
         # With security policy
-        from sequrity_api.types.control.headers import SecurityPolicyHeader
+        from sequrity.control.types.headers import SecurityPolicyHeader
         client = create_sequrity_openai_client(
             sequrity_api_key="your-key",
-            features=FeaturesHeader.create_dual_llm_headers(),
-            security_policy=SecurityPolicyHeader.create_default()
+            features=FeaturesHeader.dual_llm(),
+            security_policy=SecurityPolicyHeader.dual_llm()
         )
 
         # Use with OpenAI Agent ADK

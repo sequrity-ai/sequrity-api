@@ -15,7 +15,7 @@ The `SequrityAsyncOpenAI` client is a drop-in replacement for OpenAI's `AsyncOpe
 
 ```bash
 # Install sequrity-api with OpenAI support (included by default)
-pip install sequrity-api
+pip install sequrity
 
 # Optional: Install OpenAI Agent ADK for agent framework support
 pip install openai-agents
@@ -26,15 +26,15 @@ pip install openai-agents
 ```python
 import asyncio
 from agents import Agent, Runner, RunConfig
-from sequrity_api.integrations import create_sequrity_openai_client
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity.integrations import create_sequrity_openai_client
+from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 
 async def main():
     # Create Sequrity client
     client = create_sequrity_openai_client(
         sequrity_api_key="your-sequrity-api-key",
-        features=FeaturesHeader.create_dual_llm_headers(),
-        security_policy=SecurityPolicyHeader.create_default()
+        features=FeaturesHeader.dual_llm(),
+        security_policy=SecurityPolicyHeader.dual_llm()
     )
 
     # Create an agent
@@ -67,14 +67,14 @@ The client automatically tracks session IDs across requests for conversation con
 
 ```python
 import asyncio
-from sequrity_api.integrations import create_sequrity_openai_client
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity.integrations import create_sequrity_openai_client
+from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 
 async def main():
     client = create_sequrity_openai_client(
         sequrity_api_key="your-key",
-        features=FeaturesHeader.create_dual_llm_headers(),
-        security_policy=SecurityPolicyHeader.create_default()
+        features=FeaturesHeader.dual_llm(),
+        security_policy=SecurityPolicyHeader.dual_llm()
     )
 
     # First request - establishes session
@@ -102,8 +102,8 @@ asyncio.run(main())
 
 
 ```python
-from sequrity_api.integrations import create_sequrity_openai_client
-from sequrity_api.types.control.headers import (
+from sequrity.integrations import create_sequrity_openai_client
+from sequrity.control.types.headers import (
     FeaturesHeader,
     SecurityPolicyHeader,
     FineGrainedConfigHeader
@@ -111,7 +111,7 @@ from sequrity_api.types.control.headers import (
 
 client = create_sequrity_openai_client(
     sequrity_api_key="your-key",
-    features=FeaturesHeader.create_dual_llm_headers(),
+    features=FeaturesHeader.dual_llm(),
     security_policy=SecurityPolicyHeader.from_sqrt_code(
         """
         tool "search" {
