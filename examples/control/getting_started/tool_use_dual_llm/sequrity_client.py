@@ -21,25 +21,29 @@ except ImportError:
             return self.code
 
 
-from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import (
+# --8<-- [start:imports]
+# --8<-- [end:imports]
+from sequrity import SequrityClient
+from sequrity.control import (
     FeaturesHeader,
     FineGrainedConfigHeader,
+    ResponseContentJsonSchema,
+    ResponseFormat,
     SecurityPolicyHeader,
 )
-from sequrity_api.types.control.headers.session_config_headers import ResponseFormat
-from sequrity_api.types.control.results import ResponseContentJsonSchema
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
-sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
+sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
-assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
+assert sequrity_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
 
-client = SequrityClient(api_key=sequrity_api_key, base_url=base_url)
+# --8<-- [start:client_setup]
+client = SequrityClient(api_key=sequrity_key, base_url=base_url)
 service_provider = "openrouter"
 model = "openai/gpt-5-mini,openai/gpt-5-nano"  # Dual-LLM: PLLM, QLLM
+# --8<-- [end:client_setup]
 
 tool_defs = [
     {
@@ -86,7 +90,8 @@ tool_defs = [
     },
 ]
 
-features = FeaturesHeader.create_dual_llm_headers(mode="standard")
+# --8<-- [start:security_headers]
+features = FeaturesHeader.dual_llm(mode="standard")
 security_policy = SecurityPolicyHeader(
     language="sqrt",
     codes=r"""
@@ -98,12 +103,13 @@ security_policy = SecurityPolicyHeader(
     """,
 )
 fine_grained_config = FineGrainedConfigHeader(response_format=ResponseFormat(include_program=True))
+# --8<-- [end:security_headers]
 
 rprint("\n[bold blue] Testing Dual-LLM Secure Tool Use Example[/bold blue]\n")
 rprint("[bold red]" + "=" * 60 + "[/bold red]")
 rprint("[bold red]Send Email to Untrusted Domain (Should be Denied)[/bold red]")
 rprint("[bold red]" + "=" * 60 + "[/bold red]\n")
-session_id = None
+# --8<-- [start:untrusted_query]
 user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
 messages = [{"role": "user", "content": user_query}]
 
@@ -114,19 +120,22 @@ response = client.control.create_chat_completion(
     features=features,
     security_policy=security_policy,
     fine_grained_config=fine_grained_config,
-    service_provider=service_provider,
+    provider=service_provider,
 )
-session_id = response.session_id
+# --8<-- [end:untrusted_query]
 
 assert response.choices[0].message is not None
 assert response.choices[0].message.role == "assistant"
 assert response.choices[0].message.tool_calls is not None
+# --8<-- [start:tool_call_check]
 assert response.choices[0].message.tool_calls[0].function.name == "get_internal_document"
 tool_call = response.choices[0].message.tool_calls[0]
+# --8<-- [end:tool_call_check]
 
 # append assistant message (tool call to get_internal_document)
 messages.append(response.choices[0].message.model_dump(mode="json"))
 
+# --8<-- [start:tool_result]
 # simulate tool execution and get tool response
 messages.append(
     {
@@ -135,14 +144,15 @@ messages.append(
         "tool_call_id": tool_call.id,
     }
 )
+# --8<-- [end:tool_result]
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
 
+# --8<-- [start:denied_response]
 response = client.control.create_chat_completion(
     messages=messages,
     model=model,
     tools=tool_defs,
-    service_provider=service_provider,
-    session_id=session_id,
+    provider=service_provider,
 )
 assert response.choices[0].message is not None
 assert "denied by argument checking policies" in response.choices[0].message.content
@@ -154,13 +164,14 @@ rprint(f"[yellow]Error:[/yellow] {content.error.message}\n")
 rprint("[bold yellow]Generated Program:[/bold yellow]")
 syntax = Syntax(content.program, "python", theme="monokai", line_numbers=True, word_wrap=False)
 rprint(syntax)
+# --8<-- [end:denied_response]
 
 # However, if the email is to a trusted domain, it should be allowed
 rprint("[bold green]" + "=" * 60 + "[/bold green]")
 rprint("[bold green]Send Email to Trusted Domain (Should be Allowed)[/bold green]")
 rprint("[bold green]" + "=" * 60 + "[/bold green]\n")
+# --8<-- [start:trusted_query]
 messages = [{"role": "user", "content": user_query.replace("research@gmail.com", "user@trustedcorp.com")}]
-session_id = None
 
 response = client.control.create_chat_completion(
     messages=messages,
@@ -168,15 +179,16 @@ response = client.control.create_chat_completion(
     tools=tool_defs,
     features=features,
     security_policy=security_policy,
-    service_provider=service_provider,
+    provider=service_provider,
     fine_grained_config=fine_grained_config,
 )
-session_id = response.session_id
+# --8<-- [end:trusted_query]
 assert response.choices[0].message is not None
 assert response.choices[0].message.role == "assistant"
 assert response.choices[0].message.tool_calls is not None
 assert response.choices[0].message.tool_calls[0].function.name == "get_internal_document"
 tool_call = response.choices[0].message.tool_calls[0]
+# --8<-- [start:trusted_flow]
 # append assistant message (tool call to get_internal_document)
 messages.append(response.choices[0].message.model_dump(mode="json"))
 # simulate tool execution and get tool response
@@ -192,8 +204,7 @@ response = client.control.create_chat_completion(
     messages=messages,
     model=model,
     tools=tool_defs,
-    service_provider=service_provider,
-    session_id=session_id,
+    provider=service_provider,
 )
 # this should be tool call to send_email
 assert response.choices[0].message is not None
@@ -215,14 +226,14 @@ response = client.control.create_chat_completion(
     messages=messages,
     model=model,
     tools=tool_defs,
-    service_provider=service_provider,
-    session_id=session_id,
+    provider=service_provider,
 )
 # final response
 assert response.choices[0].message is not None
 content = ResponseContentJsonSchema.parse_raw(response.choices[0].message.content)
 assert content.status == "success"
 rprint("\n[bold green]✅ Email allowed to trusted domain[/bold green]")
+# --8<-- [end:trusted_flow]
 rprint(f"[green]Status:[/green] {content.status}")
 rprint(f"[green]Return Value:[/green] {content.final_return_value}\n")
 

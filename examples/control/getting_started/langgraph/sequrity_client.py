@@ -8,12 +8,8 @@ to create a secure SQL agent with conditional routing.
 import os
 from typing import Literal, TypedDict
 
-from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import (
-    FeaturesHeader,
-    FineGrainedConfigHeader,
-    SecurityPolicyHeader,
-)
+from sequrity import SequrityClient
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 # Try to import rich for better output formatting
 try:
@@ -31,17 +27,20 @@ except ImportError:
     rprint("⚠️  LangGraph is not installed. Please install it with: pip install langgraph")
     exit(1)
 
+# --8<-- [start:client_init]
 # Initialize Sequrity client
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
-sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
+sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
 base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
-assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
+assert sequrity_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
 
-client = SequrityClient(api_key=sequrity_api_key, base_url=base_url)
+client = SequrityClient(api_key=sequrity_key, base_url=base_url)
+# --8<-- [end:client_init]
 
 
+# --8<-- [start:state_schema]
 # Define the state schema for the SQL agent
 class SQLAgentState(TypedDict):
     """State for SQL agent workflow
@@ -63,6 +62,10 @@ class SQLAgentState(TypedDict):
     needs_validation: bool
 
 
+# --8<-- [end:state_schema]
+
+
+# --8<-- [start:external_nodes]
 # Define node functions for the workflow
 def list_tables(state: SQLAgentState) -> dict:
     """List available database tables
@@ -85,6 +88,10 @@ def get_schema(state: SQLAgentState) -> dict:
     return {"schema": schema_info}
 
 
+# --8<-- [end:external_nodes]
+
+
+# --8<-- [start:generate_query]
 def generate_query(state: SQLAgentState) -> dict:
     """Generate SQL query based on user question
 
@@ -110,6 +117,10 @@ def generate_query(state: SQLAgentState) -> dict:
     return {"sql_query": sql, "needs_validation": needs_validation}
 
 
+# --8<-- [end:generate_query]
+
+
+# --8<-- [start:validate_execute_nodes]
 def validate_query(state: SQLAgentState) -> dict:
     """Validate and potentially modify the generated SQL query
 
@@ -139,6 +150,10 @@ def execute_query(state: SQLAgentState) -> dict:
     return {"result": result}
 
 
+# --8<-- [end:validate_execute_nodes]
+
+
+# --8<-- [start:route_validation]
 def route_validation(state: SQLAgentState) -> Literal["validate_query", "execute_query"]:
     """Conditional routing: decide whether query needs validation
 
@@ -154,6 +169,10 @@ def route_validation(state: SQLAgentState) -> Literal["validate_query", "execute
         return "execute_query"
 
 
+# --8<-- [end:route_validation]
+
+
+# --8<-- [start:build_graph]
 # Build the LangGraph workflow
 def build_sql_agent_graph():
     """Construct the SQL agent workflow graph"""
@@ -182,6 +201,9 @@ def build_sql_agent_graph():
     return graph
 
 
+# --8<-- [end:build_graph]
+
+
 # Main execution
 if __name__ == "__main__":
     rprint("\n" + "=" * 70)
@@ -191,6 +213,7 @@ if __name__ == "__main__":
     # Build the graph
     graph = build_sql_agent_graph()
 
+    # --8<-- [start:initial_state_and_functions]
     # Define initial state
     initial_state: SQLAgentState = {
         "query": "Find all users with recent orders",
@@ -211,28 +234,33 @@ if __name__ == "__main__":
         "execute_query": execute_query,
         "route_validation": route_validation,  # Routing function for conditional edges
     }
+    # --8<-- [end:initial_state_and_functions]
 
+    # --8<-- [start:security_settings]
     # Configure security features
-    features = FeaturesHeader.create_dual_llm_headers()
-    security_policy = SecurityPolicyHeader.create_default()
+    features = FeaturesHeader.dual_llm()
+    security_policy = SecurityPolicyHeader.dual_llm()
     fine_grained_config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
+    # --8<-- [end:security_settings]
 
     rprint(f"📝 User query: {initial_state['query']}\n")
     rprint("🔄 Running workflow with Sequrity Control API...\n")
 
+    # --8<-- [start:execute_graph]
     # Execute the graph with Sequrity
     result = client.control.compile_and_run_langgraph(
         model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,
         graph=graph,
         initial_state=initial_state,
-        service_provider="openrouter",
+        provider="openrouter",
         node_functions=node_functions,
         max_exec_steps=30,
         features=features,
         security_policy=security_policy,
         fine_grained_config=fine_grained_config,
     )
+    # --8<-- [end:execute_graph]
 
     # Display results
     rprint("\n" + "=" * 70)

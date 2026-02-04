@@ -2,11 +2,11 @@ from typing import Literal, TypedDict
 
 import pytest
 
-from sequrity_api import client
-from sequrity_api.control.langgraph.graph_executor import LangGraphExecutor
-from sequrity_api.service_provider import LlmServiceProviderEnum
-from sequrity_api.types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from sequrity_api_unittest.config import get_test_config
+from sequrity import client
+from sequrity.control.langgraph.graph_executor import LangGraphExecutor
+from sequrity.control.types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from sequrity.service_provider import LlmServiceProviderEnum
+from sequrity_unittest.config import get_test_config
 
 try:
     from langgraph.graph import StateGraph
@@ -132,8 +132,8 @@ class TestLangGraphCompilationAndExecution:
         graph.add_edge("send_email", END)
 
         initial_state = {"query": "Read the document", "result": ""}
-        features = FeaturesHeader.create_dual_llm_headers()
-        policy = SecurityPolicyHeader.create_default()
+        features = FeaturesHeader.dual_llm()
+        policy = SecurityPolicyHeader.dual_llm()
         config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 
         result = self.sequrity_client.control.compile_and_run_langgraph(
@@ -141,7 +141,7 @@ class TestLangGraphCompilationAndExecution:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             graph=graph,
             initial_state=initial_state,
-            service_provider=service_provider,
+            provider=service_provider,
             max_exec_steps=20,
             features=features,
             security_policy=policy,
@@ -199,6 +199,7 @@ class TestLangGraphCompilationAndExecution:
             "generate_query": generate_query,
             "validate_query": validate_query,
             "execute_query": execute_query,
+            "route_validation": route_validation,  # Routing function for conditional edges
         }
         initial_state = {
             "query": "Find all users with recent orders",
@@ -208,8 +209,8 @@ class TestLangGraphCompilationAndExecution:
             "result": "",
             "needs_validation": False,
         }
-        features = FeaturesHeader.create_dual_llm_headers()
-        policy = SecurityPolicyHeader.create_default()
+        features = FeaturesHeader.dual_llm()
+        policy = SecurityPolicyHeader.dual_llm()
         config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
 
         result = self.sequrity_client.control.compile_and_run_langgraph(
@@ -217,7 +218,7 @@ class TestLangGraphCompilationAndExecution:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             graph=graph,
             initial_state=initial_state,
-            service_provider=service_provider,
+            provider=service_provider,
             node_functions=node_functions,
             max_exec_steps=30,
             features=features,

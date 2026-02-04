@@ -1,11 +1,13 @@
 # Sending Your First Message with Sequrity Control API
 
-This guide shows you how to send your first chat completion request through the Sequrity Control API.
+This guide shows you how to send your first chat completion request through the [Sequrity Control API][sequrity.control.wrapper.ControlApiWrapper].
 
 ## Prerequisites
 
-- **Sequrity API Key**: Sign up at [Sequrity](https://sequrity.ai) to get your API key from the dashboard
-- **LLM Provider API Key**: This example uses OpenRouter, but you can use any supported provider
+- **Sequrity API Key**: Log in to the [Sequrity Dashboard](https://sequrity.ai/dashboard), navigate to **API Keys**, and create a new API key by selecting **Dual LLM** option.
+- **LLM Provider API Key**: You can consider Sequrity as a relay service that forwards your requests to LLM service providers, thus you need to offer LLM API keys. This example uses OpenRouter, but you can use any supported provider[^1]
+
+[^1]: See [Supported Providers](../../general/rest_api/service_provider.md) for a list of supported LLM providers in REST API, and [LLM Service Provider Enum](../../general/sequrity_client/service_provider.md) for Sequrity Client.
 
 ??? tip "Download Tutorial Scripts"
 
@@ -22,7 +24,7 @@ You can interact with the Sequrity Control API using either the Sequrity Python 
     Install the Sequrity Python client:
 
     ```bash
-    pip install sequrity-api
+    pip install sequrity
     ```
 
 === "REST API"
@@ -31,137 +33,52 @@ You can interact with the Sequrity Control API using either the Sequrity Python 
 
 ## Sending Your First Message
 
-Both Sequrity client and REST API are similar to OpenAI's Chat Completions API, with additional headers for security features and policies.
+Both Sequrity client and REST API are compatible with [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat).
 
+### Request
 
-
-Sequrity Control API supports two architectures for interacting with LLMs:
-
-- **Single-LLM** is how most existing applications interact with LLMs today, i.e., sending all requests to a single LLM, and letting the LLM handle both instruction and data.
-- **Dual-LLM** uses a planning LLM (pllm) to generate execution plans, and a quarantined LLM (qllm) to process data, which provides stronger security guarantees.
-
-??? question "Learn More about single vs dual LLM?"
-    See [Single vs Dual LLM](../learn/single-vs-dual-llm.md) for a detailed comparison.
-
-### Single-LLM
-
-#### Request
-
-You can specify Single-LLM by
-
-- using `FeaturesHeader.create_single_llm_headers` (Sequrity client), or
-- setting the `X-Security-Features` headers in your request (REST API)
-
-together with your `SecurityPolicyHeader` / security policy headers.
+Let's send a simple message asking "What is the largest prime number below 100?"
 
 === "Sequrity Client"
-
     ```python
-    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:13:14,26:45"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:imports_os"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:imports_sequrity_client"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:api_keys"
+
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:first_message"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:main"
+    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:run_first_message"
     ```
+
+    We create an instance of `SequrityClient` with your Sequrity API key, and send messages using [`control.create_chat_completion`][sequrity.control.wrapper.ControlApiWrapper.create_chat_completion], specifying the model name on OpenRouter and your OpenRouter API key.
 
 === "REST API"
 
     ```bash
-    --8<-- "examples/control/getting_started/first_message/rest_api.sh:19:28"
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:setup_env_vars"
+
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:first_message"
     ```
 
-#### Response
+    We use `curl` to send a POST request to the Sequrity Control API's endpoint for OpenRouter, specifying the model name on OpenRouter and your OpenRouter API key in the request body.
 
-The response of Single-LLM follows the OpenAI Chat Completions format:
+### Response
 
-=== "Sequrity Client"
+The response follows [the OpenAI Chat Completions format](https://platform.openai.com/docs/api-reference/chat/create).
 
-    ```python
-    ChatCompletionResponse(
-        id="gen-1769043728-aRBhZvLVJRJe7IJGnjXO",
-        choices=[
-            Choice(
-                finish_reason="stop",
-                index=0,
-                message=ResponseMessage(
-                    role="assistant",
-                    content="97\n\n97 is prime because it's not divisible by 2, 3, 5, or 7 (the primes ≤ √97 ≈ 9.85).",
-                    refusal=None,
-                    annotations=None,
-                    audio=None,
-                    function_call=None,
-                    tool_calls=None,
-                ),
-                logprobs=None,
-            )
-        ],
-        created=1769043728,
-        model="openai/gpt-5-mini",
-        object="chat.completion",
-        usage=CompletionUsage(completion_tokens=105, prompt_tokens=16, total_tokens=121),
-        session_id="f9ba994f-f72d-11f0-9a63-e4261df3ef60",
-    )
-    ```
+??? info "Minor Difference from OpenAI Chat Completions API"
 
-=== "REST API"
+    Compared to OpenAI's Chat Completions API, Sequrity Control API adds an extra piece of information to the response, **Session ID**.
 
-    ```json
-    {
-    "id": "gen-1769043249-xDdDWhvVTwkwAHCDyBSf",
-    "choices": [
-        {
-        "finish_reason": "stop",
-        "index": 0,
-        "message": {
-            "content": "97\n\n97 is prime because it has no divisors other than 1 and itself (checking primes 2, 3, 5, and 7 — none divide 97).",
-            "role": "assistant"
-        }
-        }
-    ],
-    "created": 1769043249,
-    "model": "openai/gpt-5-mini",
-    "object": "chat.completion",
-    "usage": {
-        "completion_tokens": 108,
-        "prompt_tokens": 16,
-        "total_tokens": 124
-    }
-    }
-    ```
+    - For Sequrity client, the session ID is available as [`ChatCompletionResponse.session_id`][sequrity.types.chat_completion.response.ChatCompletionResponse.session_id].
+    - For REST API, the response has a custom header [`X-Session-ID`](../reference/rest_api/headers/api_key_session_id.md#x-session-id-optional) for REST API.
 
+    The session ID is for maintaining context across multiple interactions in a chat session.
 
-??? info "Bearer-Token-only, Headers-mode, and Fine-grained Configurations"
-    **Bearer-Token-only vs Headers-mode**: When making requests to the Sequrity Control API, you have two options for specifying security features, policies, and fine-grained configurations: Bearer-Token-only mode and Headers-mode. Refer to [Bearer-Token-only vs Headers-Mode](../reference/rest_api/bearer-token-only-vs-headers-mode.md) for details.
+    **However, users do not need to manually handle session IDs in most cases**,
+    because Sequrity Control also encodes session ID into tool call ID of ChatCompletion requests, and will parse the session ID from requests with tool results.
 
-    **Fine-grained Configurations**:
-    You can further customize the chat session with fine-grained configurations, such as `max_pllm_attempts`, `cache_tool_results`, etc.
-    See [Fine-grained Configurations](../reference/rest_api/headers/security_config.md) for details.
-
-
-### Dual-LLM
-
-#### Request
-
-You can specify Dual-LLM by
-
-- using `FeaturesHeader.create_dual_llm_headers` (Sequrity client), or
-- setting the `X-Security-Features` headers in your request (REST API)
-
-together with your `SecurityPolicyHeader` / security policy headers.
-
-=== "Sequrity Client"
-
-    ```python
-    --8<-- "examples/control/getting_started/first_message/sequrity_client.py:56:73"
-    ```
-
-=== "REST API"
-
-    ```bash
-    --8<-- "examples/control/getting_started/first_message/rest_api.sh:39:48"
-    ```
-
-#### Response
-
-The response of Dual-LLM follows the OpenAI Chat Completions format,
-except that the response headers include a **session ID** (`X-Session-ID`),
-which can be sent back in subsequent request headers for multi-turn conversations.
+    Read more in [Session ID and Multi-turn Sessions](../learn/session_id.md).
 
 === "Dual-LLM Sequrity Client"
 
@@ -217,6 +134,78 @@ which can be sent back in subsequent request headers for multi-turn conversation
         }
     }
     ```
+
+## Specifying Single/Dual LLM
+
+You may notice we selected Dual LLM when creating the API key in [Prerequisites](#prerequisites).
+Sequrity Control API supports two architectures for interacting with LLMs:
+
+- **Single-LLM** is how most existing applications interact with LLMs today, i.e., sending all requests to a single LLM, and letting the LLM handle everything, including
+both instruction and data. Sequrity Control adds [*basic security features*](../reference/single_llm_vs_dual_llm_features.md) on top of this architecture.
+
+- **Dual-LLM** uses a planning LLM (pllm) to generate execution plans, and a quarantined LLM (qllm) to process data, which
+decouples control flow from data flow, and
+provides [*advanced and stronger security guarantees*](../reference/single_llm_vs_dual_llm_features.md).
+
+    ??? question "Learn More about single vs dual LLM?"
+        See [Single vs Dual LLM](../learn/single-vs-dual-llm.md) for a detailed comparison.
+
+You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
+
+1. **Select mode when creating API key**
+
+    Log in to the [Sequrity Dashboard](https://sequrity.ai/dashboard), navigate to *API Keys*, and create a new API key by selecting the *Single LLM* or *Dual LLM* option.
+
+    ??? info "Example: Select Single-LLM in Dashboard"
+
+        ![Select Single-LLM in Dashboard](../../assets/images/control/config-single-llm-dashboard.png){width="720"}
+
+2. **Specify mode in request headers**
+
+    Whichever Sequrity API key you use (Single-LLM or Dual-LLM),
+    you can always override the mode in the request headers:
+
+    - For Sequrity client, use [`FeaturesHeader.single_llm`][sequrity.control.types.headers.FeaturesHeader.single_llm] / [`FeaturesHeader.dual_llm`][sequrity.control.types.headers.FeaturesHeader.dual_llm] and [`SecurityPolicyHeader`][sequrity.control.types.headers.SecurityPolicyHeader]
+    - For REST API, use custom headers [`X-Security-Features`](../reference/rest_api/headers/security_features.md) and [`X-Security-Policy`](../reference/rest_api/headers/security_policy.md)
+
+    When the features header and security policy header are present in the request,
+    they take precedence over the API key configuration.
+
+    !!! info "Specify Single-LLM via Request Headers"
+
+        === "Sequrity Client"
+
+            ```python hl_lines="8-9"
+            --8<-- "examples/control/getting_started/first_message/sequrity_client.py:imports_headers"
+            --8<-- "examples/control/getting_started/first_message/sequrity_client.py:single_llm"
+            ```
+
+        === "REST API"
+
+            ```bash hl_lines="5-6"
+            --8<-- "examples/control/getting_started/first_message/rest_api.sh:single_llm"
+            ```
+
+    !!! info "Specify Dual-LLM via Request Headers"
+
+        === "Sequrity Client"
+
+            ```python hl_lines="6-7"
+            --8<-- "examples/control/getting_started/first_message/sequrity_client.py:dual_llm"
+            ```
+
+        === "REST API"
+
+            ```bash hl_lines="5-6"
+            --8<-- "examples/control/getting_started/first_message/rest_api.sh:dual_llm"
+            ```
+
+??? question "Bearer-Token-only vs Custom Headers"
+
+    - In Sequrity Control API, *Selecting mode when creating API key while omitting custom headers* is called **Bearer-Token-only** mode.
+    - *Specifying mode using custom headers* is called **Headers-mode**.
+
+    Refer to [Bearer-Token-only vs Headers-Mode](../reference/bearer-token-only-vs-headers-mode.md) for details.
 
 ## Next Steps
 

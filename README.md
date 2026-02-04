@@ -1,37 +1,31 @@
-# Sequrity-API
+# Sequrity
 
 Please see the full [Documentation](https://sequrity-ai.github.io/sequrity-api/)
 
-Python client and REST API for the Sequrity API.
+Python client and REST API for Sequrity.
 
 
 ## Installation
 
 ```bash
-pip install sequrity-api
+pip install sequrity
 ```
 
 ## Quick Start
 
 ```python
-from sequrity_api import SequrityClient
-from sequrity_api.types.control.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity import SequrityClient
 
-# Initialize the client
-client = SequrityClient(api_key="your-sequrity-api-key")
+sequrity_key = "<your-sequrity-api-key>"
+openrouter_key = "<your-openrouter-key>"
 
-# Create feature and policy headers
-features = FeaturesHeader.create_dual_llm_headers() # 💡 dual-llm
-policy = SecurityPolicyHeader.create_default()
+client = SequrityClient(api_key=sequrity_key)
 
-# Send a chat completion request
 response = client.control.create_chat_completion(
     messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-    model="openai/gpt-5-mini", # model name from your LLM provider
-    llm_api_key="your-openrouter-key",
-    features=features,
-    security_policy=policy,
-    service_provider="openrouter",
+    model="openai/gpt-5-mini", # model name on OpenRouter
+    llm_api_key=openrouter_key,
+    provider="openrouter",
 )
 
 # Print the response

@@ -1,8 +1,11 @@
+# --8<-- [start:imports]
 import json
 import os
 import re
 
 import requests
+
+# --8<-- [end:imports]
 
 # Try to import rich, fallback to plain print if not available
 try:
@@ -23,15 +26,18 @@ except ImportError:
 
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
-sequrity_api_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
-base_url = os.getenv("SEQURITY_BASE_URL", "https://api.sequrity.ai")
+sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
+base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
-assert sequrity_api_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
+assert sequrity_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
 
+# --8<-- [start:client_setup]
 service_provider = "openrouter"
 model = "openai/gpt-5-mini,openai/gpt-5-nano"  # Dual-LLM: PLLM, QLLM
+# --8<-- [end:client_setup]
 
+# --8<-- [start:tool_defs]
 tool_defs = [
     {
         "type": "function",
@@ -67,7 +73,9 @@ tool_defs = [
         },
     },
 ]
+# --8<-- [end:tool_defs]
 
+# --8<-- [start:security_headers]
 # Custom headers as JSON (no classes)
 features = json.dumps(
     [
@@ -90,25 +98,28 @@ security_policy = json.dumps(
 )
 
 fine_grained_config = json.dumps({"response_format": {"include_program": True}})
+# --8<-- [end:security_headers]
 
 
-def chat_completion(messages, session_id=None):
+# --8<-- [start:chat_completion_func]
+def chat_completion(messages):
     url = f"{base_url}/control/{service_provider}/v1/chat/completions"
     headers = {
-        "Authorization": f"Bearer {sequrity_api_key}",
+        "Authorization": f"Bearer {sequrity_key}",
         "Content-Type": "application/json",
         "X-Api-Key": openrouter_api_key,
         "X-Security-Features": features,
         "X-Security-Policy": security_policy,
         "X-Security-Config": fine_grained_config,
     }
-    if session_id:
-        headers["X-Session-Id"] = session_id
 
     payload = {"messages": messages, "model": model, "tools": tool_defs}
     response = requests.post(url, headers=headers, json=payload)
     response.raise_for_status()
-    return response.json(), response.headers.get("X-Session-Id")
+    return response.json()
+
+
+# --8<-- [end:chat_completion_func]
 
 
 rprint("\n[bold blue] Testing Dual-LLM Secure Tool Use Example[/bold blue]\n")
@@ -116,17 +127,21 @@ rprint("[bold red]" + "=" * 60 + "[/bold red]")
 rprint("[bold red]Send Email to Untrusted Domain (Should be Denied)[/bold red]")
 rprint("[bold red]" + "=" * 60 + "[/bold red]\n")
 
-session_id = None
+# --8<-- [start:untrusted_query]
 user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
 messages = [{"role": "user", "content": user_query}]
 
-response_data, session_id = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
+# --8<-- [end:untrusted_query]
 assert response_data["choices"][0]["message"]["role"] == "assistant"
+# --8<-- [start:tool_call_check]
 assert response_data["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "get_internal_document"
 tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
+# --8<-- [end:tool_call_check]
 
 # append assistant message (tool call to get_internal_document)
 messages.append(response_data["choices"][0]["message"])
+# --8<-- [start:tool_result]
 # simulate tool execution and get tool response
 messages.append(
     {
@@ -135,9 +150,11 @@ messages.append(
         "tool_call_id": tool_call["id"],
     }
 )
+# --8<-- [end:tool_result]
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
 
-response_data, _ = chat_completion(messages, session_id)
+# --8<-- [start:denied_response]
+response_data = chat_completion(messages)
 assert "denied by argument checking policies" in response_data["choices"][0]["message"]["content"]
 
 content = json.loads(response_data["choices"][0]["message"]["content"])
@@ -147,19 +164,22 @@ rprint(f"[yellow]Error:[/yellow] {content['error']['message']}\n")
 rprint("[bold yellow]Generated Program:[/bold yellow]")
 syntax = Syntax(content["program"], "python", theme="monokai", line_numbers=True, word_wrap=False)
 rprint(syntax)
+# --8<-- [end:denied_response]
 
 # Test with trusted domain
 rprint("[bold green]" + "=" * 60 + "[/bold green]")
 rprint("[bold green]Send Email to Trusted Domain (Should be Allowed)[/bold green]")
 rprint("[bold green]" + "=" * 60 + "[/bold green]\n")
 
+# --8<-- [start:trusted_query]
 messages = [{"role": "user", "content": user_query.replace("research@gmail.com", "user@trustedcorp.com")}]
-session_id = None
 
-response_data, session_id = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
+# --8<-- [end:trusted_query]
 assert response_data["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "get_internal_document"
 tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
 
+# --8<-- [start:trusted_flow]
 messages.append(response_data["choices"][0]["message"])
 messages.append(
     {
@@ -170,7 +190,7 @@ messages.append(
 )
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
 
-response_data, _ = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
 assert response_data["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "send_email"
 tool_call = response_data["choices"][0]["message"]["tool_calls"][0]
 
@@ -178,10 +198,11 @@ messages.append(response_data["choices"][0]["message"])
 messages.append({"role": "tool", "content": "Email sent successfully", "tool_call_id": tool_call["id"]})
 rprint("\n[dim]→ Executing tool call: [bold]send_email[/bold][/dim]")
 
-response_data, _ = chat_completion(messages, session_id)
+response_data = chat_completion(messages)
 content = json.loads(response_data["choices"][0]["message"]["content"])
 assert content["status"] == "success"
 rprint("\n[bold green]✅ Email allowed to trusted domain[/bold green]")
+# --8<-- [end:trusted_flow]
 rprint(f"[green]Status:[/green] {content['status']}")
 rprint(f"[green]Return Value:[/green] {content['final_return_value']}\n")
 

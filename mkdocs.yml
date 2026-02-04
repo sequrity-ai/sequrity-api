@@ -1,6 +1,6 @@
-site_name: Sequrity API
+site_name: Sequrity
 site_url: https://sequrity-ai.github.io/sequrity-api/
-site_description: A Python client for Sequrity API
+site_description: A Python client for Sequrity
 repo_url: https://github.com/sequrity-ai/sequrity-api
 repo_name: sequrity-ai/sequrity-api
 
@@ -32,6 +32,7 @@ theme:
     - search.highlight
     - content.code.copy
     - content.footnote.tooltips
+    - toc.follow
 
 plugins:
   - search
@@ -84,7 +85,7 @@ plugins:
 
             # OTHER
             show_bases: false
-  - mkdocs-jupyter
+  - tags
 
 markdown_extensions:
   - admonition
@@ -112,9 +113,19 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
 
 extra_css:
   - stylesheets/custom.css
+
+extra:
+  version:
+    provider: mike
+    default: dev
 
 nav:
   - Home: index.md
@@ -128,8 +139,10 @@ nav:
       - Control:
           - control/learn/index.md
           - "Single vs. Dual-LLM": control/learn/single-vs-dual-llm.md
+          - "Session ID and Multi-turn Sessions": control/learn/session_id.md
           - "Policy Language: SQRT":
               - control/learn/sqrt/index.md
+              - 00-Metadata: control/learn/sqrt/00_metadata.md
               - 01-Basic Types: control/learn/sqrt/01_basic_types.md
               - 02-Set Operations: control/learn/sqrt/02_set_operations.md
               - 03-Predicates: control/learn/sqrt/03_predicates.md
@@ -138,13 +151,14 @@ nav:
       - SequrityClient: general/sequrity_client/sequrity_client.md
       - Control:
           - control/reference/index.md
+          - Available Features in Single-LLM Arch: control/reference/single_llm_vs_dual_llm_features.md
+          - Bearer-Token-only vs Headers-Mode: control/reference/bearer-token-only-vs-headers-mode.md
           - SQRT Policy Language:
               - control/reference/sqrt/index.md
               - Grammar: control/reference/sqrt/grammar.md
           - REST API:
               - control/reference/rest_api/index.md
               - Service Providers: general/rest_api/service_provider.md
-              - Bearer-Token-only vs Headers-Mode: control/reference/rest_api/bearer-token-only-vs-headers-mode.md
               - Chat Completion: control/reference/rest_api/chat_completion.md
               - Custom Headers:
                   - X-Api-Key and X-Session-Id: control/reference/rest_api/headers/api_key_session_id.md

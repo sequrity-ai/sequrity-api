@@ -2,17 +2,17 @@ from typing import Literal
 
 import pytest
 
-from sequrity_api import client
-from sequrity_api.service_provider import LlmServiceProviderEnum
-from sequrity_api.types.control.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from sequrity_api_unittest.config import get_test_config
+from sequrity import client
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from sequrity.service_provider import LlmServiceProviderEnum
+from sequrity_unittest.config import get_test_config
 
 
 class TestChatCompletion:
     def setup_method(self):
         self.test_config = get_test_config()
         self.sequrity_client = client.SequrityClient(
-            api_key=self.test_config.api_key, base_url=self.test_config.base_url
+            api_key=self.test_config.api_key, base_url=self.test_config.base_url, timeout=300
         )
 
     @pytest.mark.parametrize("llm_mode", ["single-llm", "dual-llm"])
@@ -21,11 +21,11 @@ class TestChatCompletion:
         self, llm_mode: Literal["single-llm", "dual-llm"], service_provider: LlmServiceProviderEnum | Literal["default"]
     ):
         if llm_mode == "single-llm":
-            features_header = FeaturesHeader.create_single_llm_headers()
+            features_header = FeaturesHeader.single_llm()
+            policy_header = SecurityPolicyHeader.single_llm()
         else:
-            features_header = FeaturesHeader.create_dual_llm_headers()
-
-        policy_header = SecurityPolicyHeader.create_default()
+            features_header = FeaturesHeader.dual_llm()
+            policy_header = SecurityPolicyHeader.dual_llm()
 
         messages = [{"role": "user", "content": "What is the largest prime number below 100?"}]
         response = self.sequrity_client.control.create_chat_completion(
@@ -34,7 +34,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         assert response is not None
@@ -45,8 +45,8 @@ class TestChatCompletion:
 
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_dual_llm_multi_turn(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
-        features_header = FeaturesHeader.create_dual_llm_headers()
-        policy_header = SecurityPolicyHeader.create_default()
+        features_header = FeaturesHeader.dual_llm()
+        policy_header = SecurityPolicyHeader.dual_llm()
         config_header = FineGrainedConfigHeader(max_n_turns=5)
 
         messages = [
@@ -78,7 +78,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
         )
         print("First response:", response)
@@ -117,9 +117,8 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
-            session_id=response.session_id,
         )
         print("Second response:", response_2)
         # this should be another tool call for return flight
@@ -151,9 +150,8 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
-            session_id=response_2.session_id,
         )
         # this should be a final response from the model
         assert response_3 is not None
@@ -164,13 +162,15 @@ class TestChatCompletion:
 
     @pytest.mark.parametrize("service_provider", ["default"])
     def test_dual_llm_policy_enforcement(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
-        features_header = FeaturesHeader.create_dual_llm_headers()
+        features_header = FeaturesHeader.dual_llm()
         # Create a policy that forbids discussing politics
-        sqrt_lite_codes = r"""
-        Tag load_applicant_profile(...) -> |= {"internal_use_only", "tool/load_applicant_profile"};
-        Hard Deny send_email(...) if body.tags is_superset {"internal_use_only"} & ~ (to.value in {r".*@trustedcorp\.com"});
+        sqrt_codes = r"""
+        tool "load_applicant_profile" -> @tags |= {"internal_use_only", "tool/load_applicant_profile"};
+        tool "send_email" {
+            must deny when body.tags superset of {"internal_use_only"} and (not to.value in {str matching r".*@trustedcorp\.com"});
+        }
         """
-        policy_header = SecurityPolicyHeader.create_default(language="sqrt-lite", codes=sqrt_lite_codes)
+        policy_header = SecurityPolicyHeader.dual_llm(language="sqrt", codes=sqrt_codes)
         config_header = FineGrainedConfigHeader(max_n_turns=1, retry_on_policy_violation=False)
 
         tools = [
@@ -217,7 +217,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
         )
         print("Response:", response)
@@ -248,9 +248,8 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
             tools=tools,
-            session_id=response.session_id,
         )
         print("Second Response:", response_2)
         assert response_2 is not None
@@ -267,17 +266,17 @@ class TestChatCompletion:
         Test that all header entries can be set with non-None values.
         This validates that the header classes match the server-side parsing.
         """
-        from sequrity_api.types.control.headers.feature_headers import (
+        from sequrity.control.types.headers.feature_headers import (
             ConstraintFeature,
             LlmModeFeature,
             LongProgramSupportFeature,
             TaggerFeature,
         )
-        from sequrity_api.types.control.headers.policy_headers import (
+        from sequrity.control.types.headers.policy_headers import (
             ControlFlowMetaPolicy,
             InternalPolicyPreset,
         )
-        from sequrity_api.types.control.headers.session_config_headers import ResponseFormat
+        from sequrity.control.types.headers.session_config_headers import ResponseFormat
 
         # FeaturesHeader with ALL entries set (no None values)
         # Note: file_blocker is NOT a valid feature - it doesn't exist on the server.
@@ -316,7 +315,7 @@ class TestChatCompletion:
 
         # SecurityPolicyHeader with ALL entries set (no None values)
         policy_header = SecurityPolicyHeader(
-            language="sqrt-lite",
+            language="sqrt",
             codes="",  # empty policy codes, just testing header parsing
             auto_gen=False,
             fail_fast=True,
@@ -374,7 +373,7 @@ class TestChatCompletion:
             features=features_header,
             security_policy=policy_header,
             fine_grained_config=config_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print("Response:", response)
@@ -390,18 +389,17 @@ class TestChatCompletion:
         self, service_provider: LlmServiceProviderEnum | Literal["default"]
     ):
         """
-        Test FeaturesHeader.create_single_llm_headers with all features enabled.
+        Test FeaturesHeader.single_llm with all features enabled.
         """
-        features_header = FeaturesHeader.create_single_llm_headers(
+        features_header = FeaturesHeader.single_llm(
             toxicity_filter=True,
             pii_redaction=True,
             healthcare_guardrail=True,
             finance_guardrail=True,
             legal_guardrail=True,
             url_blocker=True,
-            long_program_mode="mid",
         )
-        policy_header = SecurityPolicyHeader.create_default()
+        policy_header = SecurityPolicyHeader.single_llm()
 
         messages = [{"role": "user", "content": "What is 3 + 3?"}]
         response = self.sequrity_client.control.create_chat_completion(
@@ -410,7 +408,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print("Response:", response)
@@ -427,15 +425,15 @@ class TestChatCompletion:
         service_provider: LlmServiceProviderEnum | Literal["default"],
     ):
         """
-        Test FeaturesHeader.create_dual_llm_headers with different LLM modes.
+        Test FeaturesHeader.dual_llm with different LLM modes.
         """
-        features_header = FeaturesHeader.create_dual_llm_headers(
+        features_header = FeaturesHeader.dual_llm(
             mode=llm_mode,
             toxicity_filter=True,
             url_blocker=True,
             long_program_mode="base",
         )
-        policy_header = SecurityPolicyHeader.create_default()
+        policy_header = SecurityPolicyHeader.dual_llm()
 
         messages = [{"role": "user", "content": "What is 5 + 5?"}]
         response = self.sequrity_client.control.create_chat_completion(
@@ -444,7 +442,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print(f"Response for mode={llm_mode}:", response)
@@ -461,10 +459,10 @@ class TestChatCompletion:
         service_provider: LlmServiceProviderEnum | Literal["default"],
     ):
         """
-        Test SecurityPolicyHeader.create_default with different policy languages.
+        Test SecurityPolicyHeader.dual_llm with different policy languages.
         """
-        features_header = FeaturesHeader.create_dual_llm_headers()
-        policy_header = SecurityPolicyHeader.create_default(
+        features_header = FeaturesHeader.dual_llm()
+        policy_header = SecurityPolicyHeader.dual_llm(
             language=language,
             codes="",
             auto_gen=False,
@@ -480,7 +478,7 @@ class TestChatCompletion:
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
             security_policy=policy_header,
-            service_provider=service_provider,
+            provider=service_provider,
         )
 
         print(f"Response for language={language}:", response)

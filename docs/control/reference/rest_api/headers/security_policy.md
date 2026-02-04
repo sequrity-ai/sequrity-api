@@ -8,10 +8,10 @@ This header is **required** when using Headers-Only Mode (must be provided toget
 
 ```json
 {
-  "language": "sqrt",
+  "language": "sqrt-lite",
   "codes": "",
   "auto_gen": false,
-  "fail_fast": true,
+  "fail_fast": null,
   "internal_policy_preset": {
     "default_allow": true,
     "default_allow_enforcement_level": "soft",
@@ -32,8 +32,8 @@ This header is **required** when using Headers-Only Mode (must be provided toget
 ### `language`
 
 | Type | Required | Default |
-|------|----------|---------|
-| `string` | Yes | - |
+|------|----------|---------||
+| `string` | No | `"sqrt-lite"` |
 
 The policy language to use. Supported values:
 
@@ -45,7 +45,7 @@ The policy language to use. Supported values:
 
 | Type | Required | Default |
 |------|----------|---------|
-| `string` or `list[string]` | Yes | - |
+| `string` or `list[string]` | No | `""` |
 
 The policy code as a string or a list of strings. Can be empty (`""` or `[]`) for no custom policies.
 
@@ -61,7 +61,7 @@ When enabled, security policies are auto-generated based on the user query. The 
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `true` |
+| `boolean` or `null` | No | `null` |
 
 Stop execution on the first policy violation. **Only available for sqrt languages** (`sqrt`, `sqrt-lite`). Not available for `cedar`.
 
@@ -93,14 +93,9 @@ The enforcement level for the default allow/deny policy.
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | **Automatically set** |
+| `boolean` | No | `true` |
 
-Enable non-executable memory protection for tool result tags.
-
-**Note:** This value is **automatically determined by the policy language** and any user-provided value will be ignored:
-
-- `true` for sqrt languages (`sqrt`, `sqrt-lite`)
-- `false` for `cedar`
+Inject non-executable tag to tool result tags by default.
 
 #### `internal_policy_preset.enable_llm_blocked_tag`
 
@@ -108,7 +103,7 @@ Enable non-executable memory protection for tool result tags.
 |------|----------|---------|
 | `boolean` | No | `true` |
 
-When enabled, QLLM inputs tagged with `__llm_blocked` tag will be blocked from being sent to the LLM.
+Whether to enable hard deny when `__llm_blocked` tag is in args of parse_with_ai.
 
 #### `internal_policy_preset.branching_meta_policy`
 
@@ -116,7 +111,7 @@ When enabled, QLLM inputs tagged with `__llm_blocked` tag will be blocked from b
 |------|----------|---------|
 | `object` | No | See below |
 
-Control flow policy for branching operations.
+Metadata that are allowed or forbidden in branching.
 
 ##### `branching_meta_policy.mode`
 

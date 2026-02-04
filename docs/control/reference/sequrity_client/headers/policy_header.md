@@ -2,19 +2,19 @@
 
 Configure security policies using sqrt, sqrt-lite, or cedar policy languages.
 
-::: sequrity_api.types.control.headers.SecurityPolicyHeader
+::: sequrity.control.types.headers.SecurityPolicyHeader
     options:
       show_root_heading: true
       show_source: true
 
 
-::: sequrity_api.types.control.headers.policy_headers.InternalPolicyPreset
+::: sequrity.control.types.headers.policy_headers.InternalPolicyPreset
     options:
       show_root_heading: true
       show_source: false
 
 
-::: sequrity_api.types.control.headers.policy_headers.ControlFlowMetaPolicy
+::: sequrity.control.types.headers.policy_headers.ControlFlowMetaPolicy
     options:
       show_root_heading: true
       show_source: false

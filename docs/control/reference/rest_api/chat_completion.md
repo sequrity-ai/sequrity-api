@@ -2,7 +2,6 @@
 
 The Sequrity Control API provides a chat completion endpoint that is mostly compatible with the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat). This allows you to use Sequrity's security features while maintaining compatibility with existing OpenAI-based applications.
 
-
 ## Request
 
 ### Endpoint
@@ -10,10 +9,13 @@ The Sequrity Control API provides a chat completion endpoint that is mostly comp
 Sequrity Control Chat Completion API can be accessed via the following endpoints:
 
 - Openrouter as service provider:
+
     ```
     POST https://api.sequrity.ai/control/v1/chat/completions
     ```
+
 - Specific service provider
+
     ```
     POST https://api.sequrity.ai/control/{service_provider}/v1/chat/completions
     ```
@@ -123,7 +125,6 @@ User messages support multimodal content through content parts:
 | `model` | `string` | The model used for the chat completion. |
 | `choices` | `array[Choice]` | A list of chat completion choices. Can be more than one if `n` is greater than 1. |
 | `usage` | `object` | Usage statistics for the completion request. |
-| `session_id` | `string` | The session ID associated with this chat completion, if applicable. |
 
 ### Choice Object
 
@@ -185,47 +186,78 @@ The following headers can be included in your requests to the Sequrity Control A
 
 | Header | Description |
 |--------|-------------|
-| `X-Session-Id` | The session ID associated with this response. This will be returned if a session was created or used for the request. Use this value in subsequent requests to maintain session continuity. |
+| `X-Session-Id` | The session ID associated with this response. This will be returned if a session was created or used for the request. User doesn't need to handle it manually most of the time. Read more in [Session ID and Multi-turn Sessions](../../learn/session_id.md). |
 
-## Example
+## Examples
 
-### Request
+Request examples
 
-```bash
-curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
-    -H "Authorization: Bearer your-sequrity-api-key" \
-    -H "Content-Type: application/json" \
-    -H "X-Api-Key: sk-your-openrouter-key" \
-    -H 'X-Security-Policy: {"language":"sqrt-lite","codes":""}' \
-    -H 'X-Security-Features: [{"feature_name":"Dual LLM","config_json":"{\"mode\":\"standard\"}"},{"feature_name":"Long Program Support","config_json":"{\"mode\":\"base\"}"}]' \
-    -d '{
-    "model": "openai/gpt-5-mini",
-    "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
-    }'
-```
+=== "Single LLM"
 
-### Response
+    ```bash
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:setup_env_vars"
 
-```json
-{
-    "id": "df728048-f72c-11f0-b1e5-0f87f79310f1",
-    "choices": [
-        {
-        "finish_reason": "stop",
-        "index": 0,
-        "message": {
-            "content": "{\"status\": \"success\", \"final_return_value\": {\"value\": 97, \"meta\": {\"tags\": [], \"consumers\": [\"*\"], \"producers\": []}}}",
-            "role": "assistant"
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:single_llm"
+    ```
+
+=== "Dual LLM"
+
+    ```bash
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:setup_env_vars"
+
+    --8<-- "examples/control/getting_started/first_message/rest_api.sh:dual_llm"
+    ```
+
+Response examples
+
+=== "Single LLM"
+
+    ```json
+    {
+        "id": "gen-1769519573-03eFDboLr45TxWIgz76t",
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {
+                    "content": "97\n\nExplanation: 99, 98, and 100 are composite (99 = 3×33, 98 = 2×49, 100 = 2×50). 97 has no divisors among primes ≤ √97 (2, 3, 5, 7), so it is prime.",
+                    "role": "assistant"
+                }
+            }
+        ],
+        "created": 1769519573,
+        "model": "openai/gpt-5-mini",
+        "object": "chat.completion",
+        "usage": {
+            "completion_tokens": 186,
+            "prompt_tokens": 16,
+            "total_tokens": 202
         }
-        }
-    ],
-    "created": 1769043264,
-    "model": "openai/gpt-5-mini,openai/gpt-5-mini",
-    "object": "chat.completion",
-    "usage": {
-        "completion_tokens": 312,
-        "prompt_tokens": 2889,
-        "total_tokens": 3201
     }
-}
-```
+    ```
+
+=== "Dual LLM"
+
+    ```json
+    {
+        "id": "e71f5e2f-fb81-11f0-a50b-b80bf871da67",
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {
+                    "content": "{\"status\": \"success\", \"final_return_value\": {\"value\": 97, \"meta\": {\"tags\": [], \"consumers\": [\"*\"], \"producers\": []}}}",
+                    "role": "assistant"
+                }
+            }
+        ],
+        "created": 1769519589,
+        "model": "openai/gpt-5-mini,openai/gpt-5-mini",
+        "object": "chat.completion",
+        "usage": {
+            "completion_tokens": 354,
+            "prompt_tokens": 2885,
+            "total_tokens": 3239
+        }
+    }
+    ```

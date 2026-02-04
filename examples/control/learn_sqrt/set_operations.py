@@ -8,7 +8,7 @@ This script demonstrates set operations in SQRT:
 - Meta field access (arg.tags, @args.tags, etc.)
 """
 
-from sequrity_api.control.sqrt.parser import check
+from sequrity.control.sqrt import check
 
 # --8<-- [start:set_literals]
 # Set literals

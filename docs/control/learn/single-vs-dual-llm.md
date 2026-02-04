@@ -48,11 +48,11 @@ The paper proposes a more robust architecture based on the Dual LLM pattern (and
 ```mermaid
 
 graph TD
-    User((User)) -- "Trusted Query" --> PLLM[Privileged LLM<br/>'The Planner']
-    PLLM -- "Control Flow / Plan" --> Inter[Interpreter / Controller]
+    User((User)) -- "Trusted Query" --> PLLM[PLLM<br/>'The Planner']
+    PLLM -- "Control Flow / Plan" --> Inter[Interpreter]
 
     subgraph "Untrusted Zone"
-        Data[(Untrusted Data)] --> QLLM[Quarantined LLM<br/>'Data Processor']
+        Data[(Untrusted Data)] --> QLLM[QLLM<br/>'Data Processor']
         QLLM -- "Structured Data Only" --> Inter
     end
 
@@ -67,8 +67,11 @@ graph TD
     style Inter fill:#dfd,stroke:#333,stroke-width:4px
 ```
 
-## See also
+At [Sequrity.ai](https://sequrity.ai/), we started from the Dual-LLM architecture to build secure autonomous agents. By enforcing strict separation between planning and data processing, we can provide stronger guarantees against prompt injection attacks.
+
+## Read More
 
 - [CaMeL Paper](https://arxiv.org/abs/2503.18813)
-- [Sequrity.ai Blog](https://sequrity.ai/how)
-- [CaMel for Computer Use Agents](https://arxiv.org/abs/2601.09923)
+- [CaMeL for Computer Use Agents](https://arxiv.org/abs/2601.09923)
+- [Sequrity.ai Blog - Guarantees, Not Guardrails](https://sequrity.ai/how)
+- [Ilia's Substack - Thoughs about AI and Insecurities](https://iliaishacked.substack.com/p/some-thoughts-about-ai-and-insecurities)

@@ -1,17 +1,27 @@
 # SQRT Policy Parser
 
-::: sequrity_api.control.sqrt.parser.parse
+::: sequrity.control.sqrt.parser.check
     options:
       show_root_heading: true
 
+::: sequrity.control.sqrt.parser.check_file
+  options:
+    show_root_heading: true
+
+::: sequrity.control.sqrt.parser.validate
+    options:
+      show_root_heading: true
+
+::: sequrity.control.sqrt.parser.parse
+    options:
+      show_root_heading: true
 ---
 
-::: sequrity_api.control.sqrt.parser.ParseResult
+::: sequrity.control.sqrt.parser.ParseResult
     options:
       show_root_heading: true
       show_source: true
 
-::: sequrity_api.control.sqrt.parser.SqrtParseError
+::: sequrity.control.sqrt.parser.SqrtParseError
     options:
       show_root_heading: true
-      show_source: true

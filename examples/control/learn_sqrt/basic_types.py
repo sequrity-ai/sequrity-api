@@ -8,7 +8,7 @@ This script demonstrates the basic type domains in SQRT:
 - Datetime domains
 """
 
-from sequrity_api.control.sqrt.parser import check, parse
+from sequrity.control.sqrt import check
 
 # --8<-- [start:bool_domains]
 # Boolean domains constrain values to true or false
