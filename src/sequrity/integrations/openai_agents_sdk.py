@@ -6,11 +6,11 @@ Sequrity's secure orchestrator with automatic session management and security fe
 
 Example:
     ```python
-    from sequrity.integrations.openai_adk import create_sequrity_openai_client
+    from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
     from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 
     # Create client with Sequrity security features
-    client = create_sequrity_openai_client(
+    client = create_sequrity_openai_agents_sdk_client(
         sequrity_api_key="your-sequrity-key",
         features=FeaturesHeader.dual_llm(),
         security_policy=SecurityPolicyHeader.dual_llm()
@@ -208,7 +208,7 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
         self._session_id = session_id
 
 
-def create_sequrity_openai_client(
+def create_sequrity_openai_agents_sdk_client(
     sequrity_api_key: str,
     features: FeaturesHeader | None = None,
     security_policy: SecurityPolicyHeader | None = None,
@@ -241,18 +241,18 @@ def create_sequrity_openai_client(
 
     Example:
         ```python
-        from sequrity.integrations.openai_adk import create_sequrity_openai_client
+        from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
         from sequrity.control.types.headers import FeaturesHeader
 
         # Basic usage with dual-LLM
-        client = create_sequrity_openai_client(
+        client = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key="your-key",
             features=FeaturesHeader.dual_llm()
         )
 
         # With security policy
         from sequrity.control.types.headers import SecurityPolicyHeader
-        client = create_sequrity_openai_client(
+        client = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key="your-key",
             features=FeaturesHeader.dual_llm(),
             security_policy=SecurityPolicyHeader.dual_llm()
@@ -260,7 +260,7 @@ def create_sequrity_openai_client(
 
         # Use with OpenAI Agent ADK
         from agents import Agent, Runner, RunConfig
-        config = RunConfig(model="gpt-4", model_provider=client)
+        config = RunConfig(model="gpt-5", model_provider=client)
         result = await Runner.run(agent, input="Hello", run_config=config)
         ```
     """

@@ -1,20 +1,20 @@
 """
-Tests for OpenAI Agent ADK integration.
+Tests for OpenAI Agents SDK integration.
 
 This module tests the SequrityAsyncOpenAI client's compatibility with
-the OpenAI Agent ADK framework.
+the OpenAI Agents SDK framework.
 """
 
 import os
 
 import pytest
 
-from sequrity.integrations.openai_adk import create_sequrity_openai_client
+from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
 from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 from sequrity_unittest.config import get_test_config
 
 
-# Check if OpenAI Agent ADK is available
+# Check if OpenAI Agents SDK is available
 try:
     from agents import Agent, Runner, RunConfig
 
@@ -23,19 +23,19 @@ except ImportError:
     AGENTS_AVAILABLE = False
 
 
-class TestOpenAIADKIntegration:
-    """Tests for OpenAI Agent ADK integration."""
+class TestOpenAIAgentsSDKIntegration:
+    """Tests for OpenAI Agents SDK integration."""
 
     def setup_method(self):
         """Set up test fixtures."""
         self.test_config = get_test_config()
 
-    @pytest.mark.skipif(not AGENTS_AVAILABLE, reason="OpenAI Agent ADK is not installed")
+    @pytest.mark.skipif(not AGENTS_AVAILABLE, reason="OpenAI Agents SDK is not installed")
     @pytest.mark.asyncio
     async def test_basic_agent_with_sequrity(self):
         """Test basic agent execution with Sequrity dual-LLM."""
         # Create Sequrity client with dual-LLM features
-        client = create_sequrity_openai_client(
+        client = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key=self.test_config.api_key,
             features=FeaturesHeader.dual_llm(),
             security_policy=SecurityPolicyHeader.dual_llm(),
@@ -73,12 +73,12 @@ class TestOpenAIADKIntegration:
         # Check that the response mentions 4
         assert "4" in result.final_output
 
-    @pytest.mark.skipif(not AGENTS_AVAILABLE, reason="OpenAI Agent ADK is not installed")
+    @pytest.mark.skipif(not AGENTS_AVAILABLE, reason="OpenAI Agents SDK is not installed")
     @pytest.mark.asyncio
     async def test_session_tracking(self):
         """Test that session IDs are tracked across multiple requests."""
         # Create Sequrity client
-        client = create_sequrity_openai_client(
+        client = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key=self.test_config.api_key,
             features=FeaturesHeader.dual_llm(),
             service_provider="openrouter",
@@ -136,7 +136,7 @@ class TestOpenAIADKIntegration:
     async def test_direct_chat_completion(self):
         """Test direct chat.completions.create() without Agent ADK."""
         # Create Sequrity client
-        client = create_sequrity_openai_client(
+        client = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key=self.test_config.api_key,
             features=FeaturesHeader.dual_llm(),
             security_policy=SecurityPolicyHeader.dual_llm(),
@@ -165,7 +165,7 @@ class TestOpenAIADKIntegration:
     async def test_manual_session_management(self):
         """Test manually setting and getting session IDs."""
         # Create Sequrity client
-        client = create_sequrity_openai_client(
+        client = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key=self.test_config.api_key,
             features=FeaturesHeader.single_llm(),
             security_policy=SecurityPolicyHeader.dual_llm(),

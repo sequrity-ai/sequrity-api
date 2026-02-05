@@ -1,6 +1,6 @@
 # OpenAI Agents SDK Integration
 
-This guide demonstrates how to use Sequrity with the [OpenAI Agent ADK](https://github.com/openai/openai-agents) framework.
+This guide demonstrates how to use Sequrity with the [OpenAI Agents SDK](https://github.com/openai/openai-agents) framework.
 
 ## Overview
 
@@ -9,7 +9,7 @@ The `SequrityAsyncOpenAI` client is a drop-in replacement for OpenAI's `AsyncOpe
 - **Dual-LLM Architecture**: Separate planning and quarantined execution
 - **Automatic Session Tracking**: Maintains conversation context across requests
 - **Security Headers**: Automatically injects features, policies, and configuration
-- **Full OpenAI Compatibility**: Works seamlessly with OpenAI Agent ADK
+- **Full OpenAI Compatibility**: Works seamlessly with OpenAI Agents SDK
 
 ## Installation
 
@@ -17,7 +17,7 @@ The `SequrityAsyncOpenAI` client is a drop-in replacement for OpenAI's `AsyncOpe
 # Install sequrity-api with OpenAI support (included by default)
 pip install sequrity
 
-# Optional: Install OpenAI Agent ADK for agent framework support
+# Optional: Install OpenAI Agents SDK for agent framework support
 pip install openai-agents
 ```
 
@@ -26,12 +26,12 @@ pip install openai-agents
 ```python
 import asyncio
 from agents import Agent, Runner, RunConfig
-from sequrity.integrations import create_sequrity_openai_client
+from sequrity.integrations import create_sequrity_openai_agents_sdk_client
 from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 
 async def main():
     # Create Sequrity client
-    client = create_sequrity_openai_client(
+    client = create_sequrity_openai_agents_sdk_client(
         sequrity_api_key="your-sequrity-api-key",
         features=FeaturesHeader.dual_llm(),
         security_policy=SecurityPolicyHeader.dual_llm()
@@ -67,11 +67,11 @@ The client automatically tracks session IDs across requests for conversation con
 
 ```python
 import asyncio
-from sequrity.integrations import create_sequrity_openai_client
+from sequrity.integrations import create_sequrity_openai_agents_sdk_client
 from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 
 async def main():
-    client = create_sequrity_openai_client(
+    client = create_sequrity_openai_agents_sdk_client(
         sequrity_api_key="your-key",
         features=FeaturesHeader.dual_llm(),
         security_policy=SecurityPolicyHeader.dual_llm()
@@ -102,14 +102,14 @@ asyncio.run(main())
 
 
 ```python
-from sequrity.integrations import create_sequrity_openai_client
+from sequrity.integrations import create_sequrity_openai_agents_sdk_client
 from sequrity.control.types.headers import (
     FeaturesHeader,
     SecurityPolicyHeader,
     FineGrainedConfigHeader
 )
 
-client = create_sequrity_openai_client(
+client = create_sequrity_openai_agents_sdk_client(
     sequrity_api_key="your-key",
     features=FeaturesHeader.dual_llm(),
     security_policy=SecurityPolicyHeader.from_sqrt_code(
@@ -136,4 +136,4 @@ client = create_sequrity_openai_client(
 - [FeaturesHeader Documentation](../reference/sequrity_client/headers/features_header.md)
 - [SecurityPolicyHeader Documentation](../reference/sequrity_client/headers/policy_header.md)
 - [FineGrainedConfigHeader Documentation](../reference/sequrity_client/headers/config_header.md)
-- [OpenAI Agent ADK Documentation](https://github.com/openai/openai-agents)
+- [OpenAI Agents SDK Documentation](https://github.com/openai/openai-agents)
