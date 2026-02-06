@@ -16,10 +16,11 @@ hide:
 
 ### New Features
 
-- **OpenAI Agent ADK Integration**: Added `SequrityAsyncOpenAI` client for seamless integration with OpenAI Agent ADK
+- **OpenAI Agents SDK Integration**: Added `SequrityAsyncOpenAI` client for seamless integration with OpenAI Agent ADK
   - Drop-in AsyncOpenAI replacement with automatic session management
   - Full support for Sequrity security features (dual-LLM, policies, fine-grained config)
   - Comprehensive documentation and examples
+- **LangGraph Integration** 
 - **Type Checking**: Integrated `ty` type checker into CI/CD pipeline
   - All source code now type-checked with `ty`
   - Added to `just lint` command for local development

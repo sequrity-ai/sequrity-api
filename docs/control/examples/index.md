@@ -11,4 +11,5 @@ This guide demonstrates the capabilities of **Sequrity Control** through practic
 
 ## Framework Integrations
 
-- [OpenAI Agent ADK Integration](openai_sdk_integration.md) - Use Sequrity with the OpenAI Agent ADK framework
+- [OpenAI Agents SDK Integration](openai_sdk_integration.md) - Use Sequrity with the OpenAI Agents SDK framework
+- [LangGraph Integration](langgraph_integration.md) - Use Sequrity with LangChain and LangGraph frameworks

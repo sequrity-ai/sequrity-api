@@ -1,8 +1,4 @@
-# Integrations
-
-The integrations module provides compatibility layers for popular AI/ML frameworks and libraries.
-
-## OpenAI Agents SDK
+# OpenAI Agents SDK
 
 AsyncOpenAI-compatible client for seamless integration with the OpenAI Agents SDK framework.
 
