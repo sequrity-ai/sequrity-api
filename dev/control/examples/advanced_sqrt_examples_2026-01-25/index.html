@@ -16,7 +16,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../../../release_notes/">
+        <link rel="next" href="../openai_sdk_integration/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Advanced SQRT Examples - 2025-01-25 - Sequrity</title>
+        <title>Advanced SQRT Examples - Sequrity</title>
       
     
     
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Advanced SQRT Examples - 2025-01-25
+              Advanced SQRT Examples
             
           </span>
         </div>
@@ -1310,7 +1310,7 @@
   <span class="md-ellipsis">
     
   
-    Available Features in Single-LLM Arch
+    Features in Single-LLM Arch
   
 
     
@@ -1338,7 +1338,7 @@
   <span class="md-ellipsis">
     
   
-    Bearer-Token-only vs Headers-Mode
+    Bearer-Token vs Headers
   
 
     
@@ -1795,6 +1795,8 @@
       
         
       
+        
+      
     
     
     
@@ -2201,6 +2203,130 @@
   
   
   
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_6_2" id="__nav_4_2_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SequrityClient.integrations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SequrityClient.integrations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/sequrity_client/integrations/integrations_oai_sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI Agents SDK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/sequrity_client/integrations/integrations_langgraph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LangGraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../../general/sequrity_client/service_provider/" class="md-nav__link">
         
@@ -2209,7 +2335,7 @@
   <span class="md-ellipsis">
     
   
-    Service Provider
+    service_provider
   
 
     
@@ -2324,6 +2450,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2404,7 +2534,7 @@
   <span class="md-ellipsis">
     
   
-    Advanced SQRT Examples - 2025-01-25
+    Advanced SQRT Examples
   
 
     
@@ -2422,7 +2552,7 @@
   <span class="md-ellipsis">
     
   
-    Advanced SQRT Examples - 2025-01-25
+    Advanced SQRT Examples
   
 
     
@@ -2840,6 +2970,62 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openai_sdk_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI Agents SDK Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../langgraph_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LangGraph Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -3439,9 +3625,11 @@
 </details>
 <h2 id="setup-helper-functions">Setup &amp; Helper Functions</h2>
 <p>Before running the examples, configure your API keys and endpoint:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">open_router_key</span> <span class="o">=</span> <span class="s2">&quot;your OpenRouter/OAI key&quot;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">sequrity_key</span> <span class="o">=</span> <span class="s2">&quot;your SequrityAI key&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">endpoint_url</span> <span class="o">=</span> <span class="s2">&quot;https://api.sequrity.ai/control/openrouter/v1/chat/completions&quot;</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;open_router_api_key&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPENROUTER_API_KEY&quot;</span><span class="p">),</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="s2">&quot;sequrity_key&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;SEQURITY_API_KEY&quot;</span><span class="p">),</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;ENDPOINT_URL&quot;</span><span class="p">,</span> <span class="s2">&quot;https://api.sequrity.ai/control/openrouter/v1/chat/completions&quot;</span><span class="p">),</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="helper-functions">Helper Functions</h3>
 <p>For convenience, we define helper functions, <code>run_workflow</code> and <code>send_request_to_endpoint</code>, to run the agentic workflow, which involves sending requests to the Sequrity Control API and executing tool calls as directed by the AI agent, and sending tool results back to the API.</p>

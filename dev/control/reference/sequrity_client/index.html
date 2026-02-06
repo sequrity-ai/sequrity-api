@@ -1314,7 +1314,7 @@
   <span class="md-ellipsis">
     
   
-    Available Features in Single-LLM Arch
+    Features in Single-LLM Arch
   
 
     
@@ -1342,7 +1342,7 @@
   <span class="md-ellipsis">
     
   
-    Bearer-Token-only vs Headers-Mode
+    Bearer-Token vs Headers
   
 
     
@@ -1801,6 +1801,8 @@
       
         
       
+        
+      
     
     
     
@@ -2205,6 +2207,130 @@
   
   
   
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_6_2" id="__nav_4_2_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SequrityClient.integrations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SequrityClient.integrations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="integrations/integrations_oai_sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI Agents SDK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="integrations/integrations_langgraph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LangGraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../../general/sequrity_client/service_provider/" class="md-nav__link">
         
@@ -2213,7 +2339,7 @@
   <span class="md-ellipsis">
     
   
-    Service Provider
+    service_provider
   
 
     
@@ -2323,6 +2449,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2393,7 +2523,63 @@
   <span class="md-ellipsis">
     
   
-    Advanced SQRT Examples - 2025-01-25
+    Advanced SQRT Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/openai_sdk_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenAI Agents SDK Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/langgraph_integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LangGraph Integration
   
 
     
@@ -2666,8 +2852,20 @@
 <td>Chat completion API, request/response types, and result schemas</td>
 </tr>
 <tr>
-<td><a href="langgraph/">LangGraph</a></td>
+<td><a href="langgraph/">LangGraph sequrity mode</a></td>
 <td>LangGraph execution API and related types</td>
+</tr>
+<tr>
+<td><a href="integrations/integrations_langgraph/">LangGraph</a></td>
+<td>LangGraph execution API and related types</td>
+</tr>
+<tr>
+<td><a href="integrations/integrations_oai_sdk/">Integrations - OAI Agents SDK</a></td>
+<td>Framework integrations (OpenAI Agents SDK)</td>
+</tr>
+<tr>
+<td><a href="integrations/integrations_oai_sdk/">Integrations - LangGraph</a></td>
+<td>Framework integrations (LangGraph)</td>
 </tr>
 <tr>
 <td><a href="value_with_meta/">ValueWithMeta</a></td>
@@ -3133,19 +3331,19 @@ object, "json" for raw dictionary.</p>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n"><a class="autorefs autorefs-internal" title="llm_api_key (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(llm_api_key))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(llm_api_key)">llm_api_key</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n"><a class="autorefs autorefs-internal" title="graph (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(graph))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(graph)">graph</a></span><span class="p">:</span> <span class="n"><span title="langgraph.graph.StateGraph">StateGraph</span></span><span class="p">,</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n"><a class="autorefs autorefs-internal" title="initial_state (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(initial_state))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(initial_state)">initial_state</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n"><a class="autorefs autorefs-internal" title="initial_state_meta (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(initial_state_meta))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(initial_state_meta)">initial_state_meta</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            MetaData
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n"><a class="autorefs autorefs-internal" title="features (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(features))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(features)">features</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            FeaturesHeader
+
+
+  
+      pydantic-model
+   (sequrity.control.types.headers.FeaturesHeader)" href="headers/features_header/#sequrity.control.types.headers.FeaturesHeader">FeaturesHeader</a></span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n"><a class="autorefs autorefs-internal" title="initial_state_meta (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(initial_state_meta))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(initial_state_meta)">initial_state_meta</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            MetaData
 
 
   
       pydantic-model
    (sequrity.control.types.value_with_meta.MetaData)" href="value_with_meta/#sequrity.control.types.value_with_meta.MetaData">MetaData</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n"><a class="autorefs autorefs-internal" title="max_exec_steps (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(max_exec_steps))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(max_exec_steps)">max_exec_steps</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n"><a class="autorefs autorefs-internal" title="features (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(features))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(features)">features</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            FeaturesHeader
-
-
-  
-      pydantic-model
-   (sequrity.control.types.headers.FeaturesHeader)" href="headers/features_header/#sequrity.control.types.headers.FeaturesHeader">FeaturesHeader</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n"><a class="autorefs autorefs-internal" title="max_exec_steps (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(max_exec_steps))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(max_exec_steps)">max_exec_steps</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n"><a class="autorefs autorefs-internal" title="security_policy (sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(security_policy))" href="#sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(security_policy)">security_policy</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SecurityPolicyHeader
 
 
@@ -3207,6 +3405,19 @@ executes it through Sequrity's secure runtime with policy enforcement.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
+<h3 id="sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(features)" class="doc doc-heading doc-heading-parameter">              <b><code>features</code></b>
+</h3>              (<code><a class="autorefs autorefs-internal" title="            FeaturesHeader
+
+
+  
+      pydantic-model
+   (sequrity.control.types.headers.FeaturesHeader)" href="headers/features_header/#sequrity.control.types.headers.FeaturesHeader">FeaturesHeader</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Security features configuration (required).</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
 <h3 id="sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(initial_state_meta)" class="doc doc-heading doc-heading-parameter">              <b><code>initial_state_meta</code></b>
 </h3>              (<code><a class="autorefs autorefs-internal" title="            MetaData
 
@@ -3229,21 +3440,6 @@ executes it through Sequrity's secure runtime with policy enforcement.</p>
           –
           <div class="doc-md-description">
             <p>Maximum number of execution steps. Defaults to 20.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h3 id="sequrity.control.wrapper.ControlApiWrapper.compile_and_run_langgraph(features)" class="doc doc-heading doc-heading-parameter">              <b><code>features</code></b>
-</h3>              (<code><a class="autorefs autorefs-internal" title="            FeaturesHeader
-
-
-  
-      pydantic-model
-   (sequrity.control.types.headers.FeaturesHeader)" href="headers/features_header/#sequrity.control.types.headers.FeaturesHeader">FeaturesHeader</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Security features configuration.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -3353,9 +3549,9 @@ executes it through Sequrity's secure runtime with policy enforcement.</p>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">llm_api_key</span><span class="o">=</span><span class="s2">&quot;your-openrouter-key&quot;</span><span class="p">,</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="n">initial_state</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;Read the document&quot;</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;openrouter&quot;</span><span class="p">,</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">max_exec_steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">service_provider</span><span class="o">=</span><span class="s2">&quot;openrouter&quot;</span><span class="p">,</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">max_exec_steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">security_policy</span><span class="o">=</span><span class="n">security_policy</span><span class="p">,</span>
 </span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">node_functions</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;read_file&quot;</span><span class="p">:</span> <span class="n">read_fine_func</span><span class="p">},</span>
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">)</span>
