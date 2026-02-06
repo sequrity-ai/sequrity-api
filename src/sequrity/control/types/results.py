@@ -29,7 +29,8 @@ class ResponseContentJsonSchema(BaseModel):
     model_config = ConfigDict(extra="allow")
 
     @classmethod
-    def parse_raw(cls, data: str) -> "ResponseContentJsonSchema":
+    def parse_json_safe(cls, data: str) -> "ResponseContentJsonSchema":
+        """Parse JSON data safely, returning an unknown status if parsing fails."""
         try:
             validated = cls.model_validate_json(data)
         except Exception:

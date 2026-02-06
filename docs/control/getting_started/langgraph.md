@@ -8,7 +8,6 @@ Before starting, ensure you have:
 
 - **Sequrity API Key**: Sign up at [Sequrity](https://sequrity.ai) to get your API key
 - **LLM Provider API Key**: This example uses OpenRouter, but you can use any supported provider
-- **LangGraph Installed**: Install via `pip install langgraph`
 
 Set your API keys as environment variables:
 
@@ -26,10 +25,34 @@ export OPENROUTER_API_KEY="your-openrouter-api-key"
 Install the required packages:
 
 ```bash
-pip install sequrity langgraph rich
+pip install sequrity
 ```
 
-The `rich` package is optional but provides nice formatted output.
+### Using with LangGraph Integration
+
+If you want to use the direct LangGraph integration (not shown in this tutorial), you need to install the `langgraph` dependency group:
+
+```bash
+# Using pip
+pip install sequrity[langgraph]
+
+# Using uv (recommended for development)
+uv sync --group langgraph
+```
+
+For this tutorial with `rich` output formatting:
+
+```bash
+pip install sequrity rich
+```
+
+!!! note "Dependency Groups"
+    The Sequrity package includes optional dependency groups for different integrations:
+
+    - `langgraph`: For LangGraph integration (install with `pip install sequrity[langgraph]`)
+    - `agents`: For OpenAI Agents SDK integration (install with `pip install sequrity[agents]`)
+
+    These are only needed if you're using the direct integration helpers like `create_sequrity_langgraph_client()` or `create_sequrity_openai_agents_sdk_client()`. The core Sequrity functionality works without these.
 
 ## Why Use Sequrity with LangGraph?
 

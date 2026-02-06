@@ -67,7 +67,7 @@ class TestSecurityPolicyHeader:
 
     def test_single_llm_default(self):
         header = SecurityPolicyHeader.single_llm()
-        assert header.language == "sqrt-lite"
+        assert header.language == "sqrt"
         assert header.auto_gen is False
         assert header.internal_policy_preset.default_allow is True
         assert header.internal_policy_preset.enable_non_executable_memory is False
@@ -79,7 +79,7 @@ class TestSecurityPolicyHeader:
 
     def test_dual_llm_default(self):
         header = SecurityPolicyHeader.dual_llm()
-        assert header.language == "sqrt-lite"
+        assert header.language == "sqrt"
         assert header.internal_policy_preset.enable_non_executable_memory is True
 
     def test_dual_llm_auto_gen(self):

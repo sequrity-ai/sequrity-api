@@ -14,7 +14,10 @@ The Control API enables secure LLM interactions with policy enforcement. Key cap
 | Module | Description |
 |--------|-------------|
 | [Chat Completion](chat_completion.md) | Chat completion API, request/response types, and result schemas |
-| [LangGraph](langgraph.md) | LangGraph execution API and related types |
+| [LangGraph sequrity mode](langgraph.md) | LangGraph execution API and related types |
+| [LangGraph](integrations/integrations_langgraph.md) | LangGraph execution API and related types |
+| [Integrations - OAI Agents SDK](integrations/integrations_oai_sdk.md) | Framework integrations (OpenAI Agents SDK) |
+| [Integrations - LangGraph](integrations/integrations_oai_sdk.md) | Framework integrations (LangGraph) |
 | [ValueWithMeta](value_with_meta.md) | Value wrapper with metadata for policy enforcement |
 | [SQRT](sqrt.md) | SQRT policy parser and utilities |
 

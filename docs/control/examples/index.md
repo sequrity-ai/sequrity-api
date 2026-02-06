@@ -9,3 +9,7 @@ This guide demonstrates the capabilities of **Sequrity Control** through practic
     - [Enforcing Legal and Compliance Mandates](advanced_sqrt_examples_2026-01-25.md#example-4-enforcing-legal-and-compliance-mandates)
     - [Audit, Fairness, Transparency, and Interpretability](advanced_sqrt_examples_2026-01-25.md#example-5-audit-fairness-transparency-and-interpretability)
 
+## Framework Integrations
+
+- [OpenAI Agents SDK Integration](openai_sdk_integration.md) - Use Sequrity with the OpenAI Agents SDK framework
+- [LangGraph Integration](langgraph_integration.md) - Use Sequrity with LangChain and LangGraph frameworks

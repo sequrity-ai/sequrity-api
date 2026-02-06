@@ -180,6 +180,8 @@ def check(sqrt_code: str) -> None:
     """
     result = parse(sqrt_code)
     if not result.valid:
+        if result.error is None:
+            raise ValueError("Parse failed but no error was provided")
         raise result.error
 
 

@@ -148,9 +148,9 @@ class ControlApiWrapper:
         llm_api_key: str | None,
         graph: "StateGraph",
         initial_state: dict,
+        features: FeaturesHeader,
         initial_state_meta: MetaData | None = None,
         max_exec_steps: int = 20,
-        features: FeaturesHeader | None = None,
         security_policy: SecurityPolicyHeader | None = None,
         fine_grained_config: FineGrainedConfigHeader | None = None,
         provider: LlmServiceProviderEnum = LlmServiceProviderEnum.OPENROUTER,
@@ -168,9 +168,9 @@ class ControlApiWrapper:
             llm_api_key: API key for the LLM provider.
             graph: A LangGraph StateGraph instance defining the agent workflow.
             initial_state: Initial state dictionary to start graph execution.
+            features: Security features configuration (required).
             initial_state_meta: Optional metadata for the initial state.
             max_exec_steps: Maximum number of execution steps. Defaults to 20.
-            features: Security features configuration.
             security_policy: Security policy configuration.
             fine_grained_config: Advanced configuration options.
             provider: The LLM service provider. Defaults to OPENROUTER.
@@ -203,9 +203,9 @@ class ControlApiWrapper:
                 llm_api_key="your-openrouter-key",
                 graph=graph,
                 initial_state={"query": "Read the document", "result": ""},
-                provider="openrouter",
-                max_exec_steps=20,
                 features=features,
+                service_provider="openrouter",
+                max_exec_steps=20,
                 security_policy=security_policy,
                 node_functions={"read_file": read_fine_func},
             )
