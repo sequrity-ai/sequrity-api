@@ -23,6 +23,7 @@ llm = create_sequrity_langgraph_client(
     security_policy=SecurityPolicyHeader.dual_llm(),
     service_provider="openrouter",
     llm_api_key=os.getenv("OPENROUTER_API_KEY"),
+    model="gpt-5-mini",
 )
 # --8<-- [end:basic-setup]
 
@@ -87,8 +88,10 @@ graph = graph_builder.compile()
 # --8<-- [start:run-graph]
 def run_example():
     """Run the example."""
+    from langchain_core.messages import HumanMessage
+
     # Run the graph
-    events = graph.stream({"messages": [{"role": "user", "content": "Search for LangGraph and calculate 2+2"}]})
+    events = graph.stream({"messages": [HumanMessage(content="Search for LangGraph and calculate 2+2")]})
 
     # Print results
     for event in events:

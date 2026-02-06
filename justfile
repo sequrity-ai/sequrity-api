@@ -1,7 +1,7 @@
 test_target := "test/"
 
 local-test target=test_target:
-    uv run --env-file .env.local pytest {{target}}
+    uv run --group agents --env-file .env.local pytest {{target}}
 
 # Run all example scripts to test if they work
 test-examples:
@@ -11,20 +11,20 @@ test-examples:
     echo ""
 
     echo "📚 Getting Started Examples"
-    uv run --env-file .env.local python examples/control/getting_started/first_message/sequrity_client.py
-    uv run --env-file .env.local python examples/control/getting_started/tool_use_dual_llm/rest_api.py
-    uv run --env-file .env.local python examples/control/getting_started/tool_use_dual_llm/sequrity_client.py
-    uv run --env-file .env.local python examples/control/getting_started/langgraph/sequrity_client.py
+    uv run --group examples --env-file .env.local python examples/control/getting_started/first_message/sequrity_client.py
+    uv run --group examples --env-file .env.local python examples/control/getting_started/tool_use_dual_llm/rest_api.py
+    uv run --group examples --env-file .env.local python examples/control/getting_started/tool_use_dual_llm/sequrity_client.py
+    uv run --group examples --group langgraph --env-file .env.local python examples/control/getting_started/langgraph/sequrity_client.py
 
     echo ""
     echo "🔌 Integration Examples"
-    uv run --env-file .env.local python examples/control/integrations/langgraph_basic.py
-    uv run --env-file .env.local python examples/control/integrations/openai_agents_sdk_basic.py
+    uv run --group examples --group langgraph --env-file .env.local python examples/control/integrations/langgraph_basic.py
+    uv run --group examples --group agents --env-file .env.local python examples/control/integrations/openai_agents_sdk_basic.py
 
     echo ""
     echo "🔒 Advanced SQRT Examples"
-    uv run --env-file .env.local python examples/control/advanced_sqrt_examples/rest_api.py
-    uv run --env-file .env.local python examples/control/advanced_sqrt_examples/sequrity_client.py
+    uv run --group examples --env-file .env.local python examples/control/advanced_sqrt_examples/rest_api.py
+    uv run --group examples --env-file .env.local python examples/control/advanced_sqrt_examples/sequrity_client.py
 
     echo ""
     echo "📖 SQRT Learning Examples"

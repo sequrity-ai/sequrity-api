@@ -29,7 +29,7 @@ client = create_sequrity_openai_agents_sdk_client(
 async def basic_completion():
     """Simple chat completion example."""
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5-mini",
         messages=[{"role": "user", "content": "What is 2 + 2? Answer briefly."}],
     )
 
@@ -44,17 +44,22 @@ async def basic_completion():
 async def session_management():
     """Demonstrate session management."""
     # First request - establishes session
+    messages = [{"role": "user", "content": "My name is Alice."}]
     response1 = await client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": "My name is Alice."}],
+        model="gpt-5-mini",
+        messages=messages,
     )
     print(f"First response: {response1.choices[0].message.content}")
     print(f"Session ID: {client.session_id}")
 
-    # Second request - uses same session
+    # Add assistant response to message history
+    messages.append({"role": "assistant", "content": response1.choices[0].message.content})
+
+    # Second request - uses same session with full message history
+    messages.append({"role": "user", "content": "What is my name?"})
     response2 = await client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": "What is my name?"}],
+        model="gpt-5-mini",
+        messages=messages,
     )
     print(f"Second response: {response2.choices[0].message.content}")
 
@@ -79,7 +84,7 @@ async def with_agents_sdk():
         )
 
         # Configure agent to use Sequrity
-        run_config = RunConfig(model="gpt-4o-mini", model_provider=client)
+        run_config = RunConfig(model="gpt-5-mini", model_provider=client)
 
         # Run the agent
         result = await Runner.run(
@@ -101,8 +106,14 @@ async def main():
     print("=== Basic Completion ===")
     await basic_completion()
 
+    # Reset session before next example
+    client.reset_session()
+
     print("\n=== Session Management ===")
     await session_management()
+
+    # Reset session before next example
+    client.reset_session()
 
     print("\n=== With Agents SDK ===")
     await with_agents_sdk()

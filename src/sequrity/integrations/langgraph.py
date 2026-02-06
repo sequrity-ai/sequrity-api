@@ -26,14 +26,15 @@ Example:
     ```
 """
 
+import json
 from typing import Any, AsyncIterator, Iterator
 
 from langchain_core.callbacks import (
     AsyncCallbackManagerForLLMRun,
     CallbackManagerForLLMRun,
 )
-from langchain_core.messages import BaseMessage
-from langchain_core.outputs import ChatGenerationChunk, ChatResult
+from langchain_core.messages import AIMessage, BaseMessage
+from langchain_core.outputs import ChatGeneration, ChatGenerationChunk, ChatResult
 from langchain_openai import ChatOpenAI
 from pydantic import Field
 
@@ -147,6 +148,51 @@ class LangGraphChatSequrityAI(ChatOpenAI):
             **kwargs,
         )
 
+    def _unwrap_sequrity_response(self, result: ChatResult) -> ChatResult:
+        """
+        Unwrap Sequrity dual-LLM JSON response format.
+
+        Sequrity's dual-LLM returns responses in the format:
+        {"status": "success", "final_return_value": {"value": "...", "meta": {...}}}
+
+        This method extracts the actual content from the wrapper.
+        Only unwraps if there are no tool calls (tool calls should not be unwrapped).
+        """
+        if not result.generations:
+            return result
+
+        for generation in result.generations:
+            if isinstance(generation, ChatGeneration) and isinstance(generation.message, AIMessage):
+                # Don't unwrap if there are tool calls - they're already in the correct format
+                if generation.message.tool_calls:
+                    continue
+
+                content = generation.message.content
+
+                # Try to parse as JSON to detect Sequrity wrapper
+                if isinstance(content, str) and content:
+                    try:
+                        parsed = json.loads(content)
+                        # Check if it's a Sequrity dual-LLM response
+                        if isinstance(parsed, dict):
+                            if "status" in parsed and "final_return_value" in parsed:
+                                # Extract the actual value
+                                if parsed["status"] == "success":
+                                    final_value = parsed["final_return_value"]["value"]
+                                    # Update the message content with unwrapped value
+                                    generation.message.content = (
+                                        str(final_value) if not isinstance(final_value, str) else final_value
+                                    )
+                                elif parsed["status"] == "failure":
+                                    # Handle error responses
+                                    error_msg = parsed.get("error", {}).get("message", "Unknown error")
+                                    generation.message.content = f"Error: {error_msg}"
+                    except (json.JSONDecodeError, KeyError, TypeError):
+                        # Not a JSON response or not in expected format, leave as is
+                        pass
+
+        return result
+
     def _generate(
         self,
         messages: list[BaseMessage],
@@ -154,7 +200,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         run_manager: CallbackManagerForLLMRun | None = None,
         **kwargs: Any,
     ) -> ChatResult:
-        """Override _generate to extract and reuse session IDs."""
+        """Override _generate to extract and reuse session IDs and unwrap Sequrity responses."""
         # Add session ID to extra_headers if we have one
         if self._session_id is not None:
             if "extra_headers" not in kwargs:
@@ -172,6 +218,9 @@ class LangGraphChatSequrityAI(ChatOpenAI):
                 if session_id:
                     self._session_id = session_id
 
+        # Unwrap Sequrity dual-LLM response format
+        result = self._unwrap_sequrity_response(result)
+
         return result
 
     async def _agenerate(
@@ -181,7 +230,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         run_manager: AsyncCallbackManagerForLLMRun | None = None,
         **kwargs: Any,
     ) -> ChatResult:
-        """Override _agenerate to extract and reuse session IDs (async version)."""
+        """Override _agenerate to extract and reuse session IDs and unwrap Sequrity responses (async version)."""
         # Add session ID to extra_headers if we have one
         if self._session_id is not None:
             if "extra_headers" not in kwargs:
@@ -198,6 +247,9 @@ class LangGraphChatSequrityAI(ChatOpenAI):
                 session_id = gen_info["headers"].get("x-session-id") or gen_info["headers"].get("X-Session-Id")
                 if session_id:
                     self._session_id = session_id
+
+        # Unwrap Sequrity dual-LLM response format
+        result = self._unwrap_sequrity_response(result)
 
         return result
 

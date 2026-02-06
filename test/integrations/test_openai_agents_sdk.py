@@ -81,6 +81,7 @@ class TestOpenAIAgentsSDKIntegration:
         client = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key=self.test_config.api_key,
             features=FeaturesHeader.dual_llm(),
+            security_policy=SecurityPolicyHeader.dual_llm(),
             service_provider="openrouter",
             llm_api_key=self.test_config.llm_api_key_openrouter,
             base_url=self.test_config.base_url,

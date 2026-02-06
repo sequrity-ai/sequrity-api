@@ -8,26 +8,36 @@ Example:
     ```python
     from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
     from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
+    from agents import Agent, Runner, RunConfig
 
     # Create client with Sequrity security features
-    client = create_sequrity_openai_agents_sdk_client(
+    provider = create_sequrity_openai_agents_sdk_client(
         sequrity_api_key="your-sequrity-key",
         features=FeaturesHeader.dual_llm(),
         security_policy=SecurityPolicyHeader.dual_llm()
     )
 
-    # Use with OpenAI Agent ADK
-    response = await client.chat.completions.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": "Hello!"}]
-    )
+    # Use with OpenAI Agents SDK
+    agent = Agent(name="Assistant", instructions="You are helpful.")
+    config = RunConfig(model="gpt-5-mini", model_provider=provider)
+    result = await Runner.run(agent, input="Hello!", run_config=config)
     ```
 """
 
-from typing import Any
+from typing import TYPE_CHECKING, Any, AsyncIterator, Optional
 
 import httpx
 from openai import AsyncOpenAI
+from openai.types.responses.response_prompt_param import ResponsePromptParam
+
+# Import Agents SDK types for runtime
+from agents.agent_output import AgentOutputSchemaBase
+from agents.handoffs import Handoff
+from agents.items import ModelResponse, TResponseInputItem, TResponseStreamEvent
+from agents.model_settings import ModelSettings
+from agents.models.interface import Model, ModelProvider, ModelTracing
+from agents.models.openai_chatcompletions import OpenAIChatCompletionsModel
+from agents.tool import Tool
 
 from ..control.types.headers import (
     FeaturesHeader,
@@ -208,6 +218,164 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
         self._session_id = session_id
 
 
+class SequrityModel(Model):
+    """
+    A Model wrapper that tracks session IDs across requests for Sequrity.
+
+    Sequrity requires maintaining the same X-Session-Id header across all turns
+    of a conversation to properly track state in the dual-LLM architecture.
+    """
+
+    def __init__(self, base_model: OpenAIChatCompletionsModel, openai_client: SequrityAsyncOpenAI):
+        self.base_model = base_model
+        self.openai_client = openai_client
+
+    async def get_response(
+        self,
+        system_instructions: str | None,
+        input: str | list[TResponseInputItem],
+        model_settings: ModelSettings,
+        tools: list[Tool],
+        output_schema: AgentOutputSchemaBase | None,
+        handoffs: list[Handoff],
+        tracing: ModelTracing,
+        *,
+        previous_response_id: str | None,
+        conversation_id: str | None,
+        prompt: ResponsePromptParam | None,
+    ) -> ModelResponse:
+        # Reset session ID for each Runner.run() call
+        # This ensures each agent execution starts fresh
+        self.openai_client.reset_session()
+
+        # Delegate to base model - session tracking is handled by SequrityAsyncOpenAI's httpx hooks
+        response = await self.base_model.get_response(
+            system_instructions,
+            input,
+            model_settings,
+            tools,
+            output_schema,
+            handoffs,
+            tracing,
+            previous_response_id=previous_response_id,
+            conversation_id=conversation_id,
+            prompt=prompt,
+        )
+
+        return response
+
+    async def stream_response(
+        self,
+        system_instructions: str | None,
+        input: str | list[TResponseInputItem],
+        model_settings: ModelSettings,
+        tools: list[Tool],
+        output_schema: AgentOutputSchemaBase | None,
+        handoffs: list[Handoff],
+        tracing: ModelTracing,
+        *,
+        previous_response_id: str | None,
+        conversation_id: str | None,
+        prompt: ResponsePromptParam | None,
+    ) -> AsyncIterator[TResponseStreamEvent]:
+        # Reset session ID for each Runner.run() call
+        # This ensures each agent execution starts fresh
+        self.openai_client.reset_session()
+
+        # Delegate to base model - session tracking is handled by SequrityAsyncOpenAI's httpx hooks
+        async for event in self.base_model.stream_response(
+            system_instructions,
+            input,
+            model_settings,
+            tools,
+            output_schema,
+            handoffs,
+            tracing,
+            previous_response_id=previous_response_id,
+            conversation_id=conversation_id,
+            prompt=prompt,
+        ):
+            yield event
+
+
+class SequrityModelProvider(ModelProvider):
+    """
+    ModelProvider implementation for Sequrity's dual-LLM architecture.
+
+    This provider wraps the SequrityAsyncOpenAI client and implements the
+    ModelProvider interface required by the OpenAI Agents SDK. It also exposes
+    the underlying AsyncOpenAI client interface for direct API access.
+
+    Args:
+        openai_client: SequrityAsyncOpenAI client configured with Sequrity settings
+
+    Example:
+        ```python
+        # Use as a ModelProvider with Agents SDK
+        provider = SequrityModelProvider(SequrityAsyncOpenAI(sequrity_api_key="your-key"))
+        config = RunConfig(model="gpt-5-mini", model_provider=provider)
+        result = await Runner.run(agent, input="Hello", run_config=config)
+
+        # Or use directly as an AsyncOpenAI client
+        response = await provider.chat.completions.create(
+            model="gpt-5-mini",
+            messages=[{"role": "user", "content": "Hello"}]
+        )
+        ```
+    """
+
+    def __init__(self, openai_client: SequrityAsyncOpenAI):
+        self.openai_client = openai_client
+        self._model_cache: dict[str, SequrityModel] = {}
+
+    def get_model(self, model_name: str | None) -> Model:
+        """
+        Get a model configured to use Sequrity's endpoint.
+
+        Args:
+            model_name: The name of the model to use (e.g., "gpt-4", "gpt-5-mini")
+
+        Returns:
+            A Model instance configured for Sequrity with session tracking
+        """
+        if model_name is None:
+            model_name = "gpt-5-mini"  # Default model
+
+        # Return cached model if it exists (to maintain session state)
+        if model_name in self._model_cache:
+            return self._model_cache[model_name]
+
+        # Create base OpenAI model
+        base_model = OpenAIChatCompletionsModel(
+            model=model_name,
+            openai_client=self.openai_client,
+        )
+
+        # Wrap with session tracking and cache it
+        sequrity_model = SequrityModel(base_model, self.openai_client)
+        self._model_cache[model_name] = sequrity_model
+        return sequrity_model
+
+    # Expose AsyncOpenAI interface by delegating to the underlying client
+    @property
+    def chat(self):
+        """Access to chat completions API."""
+        return self.openai_client.chat
+
+    @property
+    def session_id(self) -> str | None:
+        """Get the current session ID."""
+        return self.openai_client.session_id
+
+    def set_session_id(self, session_id: str | None) -> None:
+        """Set the session ID."""
+        self.openai_client.set_session_id(session_id)
+
+    def reset_session(self) -> None:
+        """Reset the session ID."""
+        self.openai_client.reset_session()
+
+
 def create_sequrity_openai_agents_sdk_client(
     sequrity_api_key: str,
     features: FeaturesHeader | None = None,
@@ -218,12 +386,13 @@ def create_sequrity_openai_agents_sdk_client(
     base_url: str = "https://api.sequrity.ai",
     timeout: float = 60.0,
     **kwargs: Any,
-) -> SequrityAsyncOpenAI:
+) -> SequrityModelProvider:
     """
-    Create an AsyncOpenAI-compatible client with Sequrity security features.
+    Create a ModelProvider for use with OpenAI Agents SDK and Sequrity.
 
-    This is a convenience factory function that creates a SequrityAsyncOpenAI instance
-    configured to route requests through Sequrity's secure orchestrator.
+    This factory function creates a SequrityModelProvider that wraps a
+    SequrityAsyncOpenAI client, providing the ModelProvider interface
+    required by the OpenAI Agents SDK's RunConfig.
 
     Args:
         sequrity_api_key: Sequrity API key (required)
@@ -237,34 +406,28 @@ def create_sequrity_openai_agents_sdk_client(
         **kwargs: Additional arguments passed to AsyncOpenAI
 
     Returns:
-        Configured SequrityAsyncOpenAI client instance
+        Configured SequrityModelProvider instance
 
     Example:
         ```python
         from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
         from sequrity.control.types.headers import FeaturesHeader
+        from agents import Agent, Runner, RunConfig
 
-        # Basic usage with dual-LLM
-        client = create_sequrity_openai_agents_sdk_client(
+        # Create provider with dual-LLM
+        provider = create_sequrity_openai_agents_sdk_client(
             sequrity_api_key="your-key",
             features=FeaturesHeader.dual_llm()
         )
 
-        # With security policy
-        from sequrity.control.types.headers import SecurityPolicyHeader
-        client = create_sequrity_openai_agents_sdk_client(
-            sequrity_api_key="your-key",
-            features=FeaturesHeader.dual_llm(),
-            security_policy=SecurityPolicyHeader.dual_llm()
-        )
-
-        # Use with OpenAI Agent ADK
-        from agents import Agent, Runner, RunConfig
-        config = RunConfig(model="gpt-5", model_provider=client)
+        # Use with OpenAI Agents SDK
+        agent = Agent(name="Assistant", instructions="You are helpful.")
+        config = RunConfig(model="gpt-5-mini", model_provider=provider)
         result = await Runner.run(agent, input="Hello", run_config=config)
         ```
     """
-    return SequrityAsyncOpenAI(
+    # Create the AsyncOpenAI client with Sequrity configuration
+    client = SequrityAsyncOpenAI(
         sequrity_api_key=sequrity_api_key,
         features=features,
         security_policy=security_policy,
@@ -275,3 +438,6 @@ def create_sequrity_openai_agents_sdk_client(
         timeout=timeout,
         **kwargs,
     )
+
+    # Wrap in ModelProvider for Agents SDK compatibility
+    return SequrityModelProvider(client)
