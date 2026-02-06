@@ -2,76 +2,41 @@
 
 This guide demonstrates how to use Sequrity with [LangGraph](https://github.com/langchain-ai/langgraph) and [LangChain](https://github.com/langchain-ai/langchain).
 
+## Installation
 
-## Basic Usage
-
-```python
-from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
-
-# Create client
-llm = create_sequrity_langgraph_client(
-    sequrity_api_key="your-key",
-    features=FeaturesHeader.dual_llm(),
-    security_policy=SecurityPolicyHeader.dual_llm()
-)
-
-# Use with LangChain
-response = llm.invoke([{"role": "user", "content": "Hello!"}])
+```bash
+pip install sequrity langchain-openai langchain-core langgraph
 ```
 
-## LangGraph Example
+## Basic Setup
+
+Create a Sequrity-enabled LangGraph client:
 
 ```python
-from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-from sequrity.control.types.headers import FeaturesHeader
-from langgraph.graph import StateGraph, START
-from langgraph.prebuilt import ToolNode, tools_condition
-from langchain_core.tools import tool
-
-# Create client
-llm = create_sequrity_langgraph_client(
-    sequrity_api_key="your-key",
-    features=FeaturesHeader.dual_llm()
-)
-
-# Define tools and bind to LLM
-@tool
-def search(query: str) -> str:
-    """Search for information."""
-    return f"Results for: {query}"
-
-llm_with_tools = llm.bind_tools([search])
-
-# Build graph
-def chatbot(state):
-    return {"messages": [llm_with_tools.invoke(state["messages"])]}
-
-graph = StateGraph({"messages": list})
-graph.add_node("chatbot", chatbot)
-graph.add_node("tools", ToolNode([search]))
-graph.add_conditional_edges("chatbot", tools_condition)
-graph.add_edge("tools", "chatbot")
-graph.add_edge(START, "chatbot")
-
-# Run
-app = graph.compile()
-for event in app.stream({"messages": [{"role": "user", "content": "Search for LangGraph"}]}):
-    print(event)
+--8<-- "examples/control/integrations/langgraph_basic.py:basic-setup"
 ```
 
-## Session Management
+## Define Tools
 
 ```python
-llm = create_sequrity_langgraph_client(sequrity_api_key="your-key")
-
-# Session tracked automatically
-llm.invoke([{"role": "user", "content": "My name is Alice"}])
-print(llm.session_id)
-
-# Reset for new conversation
-llm.reset_session()
+--8<-- "examples/control/integrations/langgraph_basic.py:define-tools"
 ```
+
+## Build Graph
+
+```python
+--8<-- "examples/control/integrations/langgraph_basic.py:build-graph"
+```
+
+## Run the Graph
+
+```python
+--8<-- "examples/control/integrations/langgraph_basic.py:run-graph"
+```
+
+## Complete Example
+
+See the complete working example at [`examples/control/integrations/langgraph_basic.py`](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/integrations/langgraph_basic.py).
 
 ## See Also
 

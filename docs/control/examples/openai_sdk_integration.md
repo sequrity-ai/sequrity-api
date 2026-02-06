@@ -21,115 +21,33 @@ pip install sequrity
 pip install openai-agents
 ```
 
-## Basic Usage
+## Basic Setup
 
 ```python
-import asyncio
-from agents import Agent, Runner, RunConfig
-from sequrity.integrations import create_sequrity_openai_agents_sdk_client
-from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
+--8<-- "examples/control/integrations/openai_agents_sdk_basic.py:basic-setup"
+```
 
-async def main():
-    # Create Sequrity client
-    client = create_sequrity_openai_agents_sdk_client(
-        sequrity_api_key="your-sequrity-api-key",
-        features=FeaturesHeader.dual_llm(),
-        security_policy=SecurityPolicyHeader.dual_llm()
-    )
+## Basic Completion
 
-    # Create an agent
-    agent = Agent(
-        name="ResearchAssistant",
-        instructions="You are a helpful research assistant."
-    )
-
-    # Configure agent to use Sequrity
-    run_config = RunConfig(
-        model="gpt-5-mini",
-        model_provider=client
-    )
-
-    # Run the agent
-    result = await Runner.run(
-        agent,
-        input="What are the main benefits of dual-LLM architecture?",
-        run_config=run_config
-    )
-
-    print(result.final_output)
-
-asyncio.run(main())
+```python
+--8<-- "examples/control/integrations/openai_agents_sdk_basic.py:basic-completion"
 ```
 
 ## Session Management
 
-The client automatically tracks session IDs across requests for conversation continuity:
-
 ```python
-import asyncio
-from sequrity.integrations import create_sequrity_openai_agents_sdk_client
-from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
-
-async def main():
-    client = create_sequrity_openai_agents_sdk_client(
-        sequrity_api_key="your-key",
-        features=FeaturesHeader.dual_llm(),
-        security_policy=SecurityPolicyHeader.dual_llm()
-    )
-
-    # First request - establishes session
-    response1 = await client.chat.completions.create(
-        model="gpt-5-mini",
-        messages=[{"role": "user", "content": "My name is Alice."}]
-    )
-    print(f"Session ID: {client.session_id}")
-
-    # Second request - uses same session
-    response2 = await client.chat.completions.create(
-        model="gpt-5-mini",
-        messages=[{"role": "user", "content": "What is my name?"}]
-    )
-    print(response2.choices[0].message.content)  # Should mention Alice
-
-    # Reset session for new conversation
-    client.reset_session()
-    print(f"Session ID after reset: {client.session_id}")  # None
-
-asyncio.run(main())
+--8<-- "examples/control/integrations/openai_agents_sdk_basic.py:session-management"
 ```
 
-## Security Configuration
-
+## Using with OpenAI Agents SDK
 
 ```python
-from sequrity.integrations import create_sequrity_openai_agents_sdk_client
-from sequrity.control.types.headers import (
-    FeaturesHeader,
-    SecurityPolicyHeader,
-    FineGrainedConfigHeader
-)
-
-client = create_sequrity_openai_agents_sdk_client(
-    sequrity_api_key="your-key",
-    features=FeaturesHeader.dual_llm(),
-    security_policy=SecurityPolicyHeader.from_sqrt_code(
-        """
-        tool "search" {
-            must allow if query not contains "password";
-            must deny always;
-        }
-
-        tool "database" {
-            must deny always;
-        }
-        """
-    ),
-    fine_grained_config=FineGrainedConfigHeader(
-        max_n_turns=10,
-        include_program=True  # Include execution program in response
-    )
-)
+--8<-- "examples/control/integrations/openai_agents_sdk_basic.py:with-agents-sdk"
 ```
+
+## Complete Example
+
+See the complete working example at [`examples/control/integrations/openai_agents_sdk_basic.py`](https://github.com/sequrity-ai/sequrity-api/blob/main/examples/control/integrations/openai_agents_sdk_basic.py).
 
 ## See Also
 
