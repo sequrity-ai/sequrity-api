@@ -88,9 +88,7 @@ def route_validation(state: SQLAgentState) -> str:
 class TestLangGraphCompilationAndExecution:
     def setup_method(self):
         self.test_config = get_test_config()
-        self.sequrity_client = SequrityClient(
-            api_key=self.test_config.api_key, base_url=self.test_config.base_url
-        )
+        self.sequrity_client = SequrityClient(api_key=self.test_config.api_key, base_url=self.test_config.base_url)
 
     @pytest.mark.skipif(not LANGGRAPH_AVAILABLE, reason="LangGraph is not installed")
     def test_graph_executor(self):

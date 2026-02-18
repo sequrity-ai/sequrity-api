@@ -213,7 +213,9 @@ ToolUnionParam = ToolParam | dict[str, Any]
 class ToolChoiceAutoParam(BaseModel):
     """Auto tool choice — model decides whether to use tools."""
 
-    type: Literal["auto"] = Field(default="auto", description="The model will automatically decide whether to use tools.")
+    type: Literal["auto"] = Field(
+        default="auto", description="The model will automatically decide whether to use tools."
+    )
     disable_parallel_tool_use: bool | None = Field(
         default=None,
         description="Whether to disable parallel tool use. If true, the model will output at most one tool use.",

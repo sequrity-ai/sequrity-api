@@ -76,7 +76,9 @@ class ChatResource:
         ).model_dump(exclude_none=True)
 
         url = self._transport.build_url(
-            RestApiType.CHAT_COMPLETIONS, provider=provider, endpoint_type=endpoint_type,
+            RestApiType.CHAT_COMPLETIONS,
+            provider=provider,
+            endpoint_type=endpoint_type,
         )
 
         response = self._transport.request(
@@ -136,7 +138,9 @@ class AsyncChatResource:
         ).model_dump(exclude_none=True)
 
         url = self._transport.build_url(
-            RestApiType.CHAT_COMPLETIONS, provider=provider, endpoint_type=endpoint_type,
+            RestApiType.CHAT_COMPLETIONS,
+            provider=provider,
+            endpoint_type=endpoint_type,
         )
 
         response = await self._transport.request(

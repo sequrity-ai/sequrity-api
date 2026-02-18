@@ -93,7 +93,9 @@ class LangGraphExecutor:
 
         for node_name in self.external_nodes:
             func = self.node_functions.get(node_name)
-            description = getattr(func, "__doc__", f"Execute node: {node_name}") if func else f"Execute node: {node_name}"
+            description = (
+                getattr(func, "__doc__", f"Execute node: {node_name}") if func else f"Execute node: {node_name}"
+            )
 
             parameters = {
                 "type": "object",
@@ -145,6 +147,9 @@ class LangGraphExecutor:
                 arguments = json.loads(arguments_str)
             except json.JSONDecodeError:
                 arguments = {}
+
+        if not tool_name:
+            raise RuntimeError("Tool call missing tool name")
 
         node_func = self.node_functions.get(tool_name)
         if not node_func:

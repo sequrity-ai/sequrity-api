@@ -42,9 +42,7 @@ class TestLangGraphIntegration:
         )
 
         # Test invoke
-        response = await llm.ainvoke(
-            [HumanMessage(content="What is 2 + 2? Answer with just the number.")]
-        )
+        response = await llm.ainvoke([HumanMessage(content="What is 2 + 2? Answer with just the number.")])
 
         # Verify response
         assert response is not None

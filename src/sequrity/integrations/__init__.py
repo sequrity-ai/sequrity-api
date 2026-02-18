@@ -28,14 +28,23 @@ Example:
     ```
 """
 
+
 def __getattr__(name: str):
     """Lazy imports to avoid requiring optional dependencies at package import time."""
     if name in ("SequrityAsyncOpenAI", "create_sequrity_openai_agents_sdk_client"):
         from .openai_agents_sdk import SequrityAsyncOpenAI, create_sequrity_openai_agents_sdk_client
-        return {"SequrityAsyncOpenAI": SequrityAsyncOpenAI, "create_sequrity_openai_agents_sdk_client": create_sequrity_openai_agents_sdk_client}[name]
+
+        return {
+            "SequrityAsyncOpenAI": SequrityAsyncOpenAI,
+            "create_sequrity_openai_agents_sdk_client": create_sequrity_openai_agents_sdk_client,
+        }[name]
     if name in ("LangGraphChatSequrityAI", "create_sequrity_langgraph_client"):
         from .langgraph import LangGraphChatSequrityAI, create_sequrity_langgraph_client
-        return {"LangGraphChatSequrityAI": LangGraphChatSequrityAI, "create_sequrity_langgraph_client": create_sequrity_langgraph_client}[name]
+
+        return {
+            "LangGraphChatSequrityAI": LangGraphChatSequrityAI,
+            "create_sequrity_langgraph_client": create_sequrity_langgraph_client,
+        }[name]
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 

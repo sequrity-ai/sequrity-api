@@ -38,9 +38,7 @@ class TestConfig:
         elif service_provider is None:
             return self.llm_api_key_openrouter
         else:
-            raise ValueError(
-                f"No LLM API key configured for service provider: {service_provider}"
-            )
+            raise ValueError(f"No LLM API key configured for service provider: {service_provider}")
 
 
 def get_test_config():
@@ -51,18 +49,10 @@ def get_test_config():
     llm_api_key_anthropic = os.getenv("ANTHROPIC_API_KEY")
     llm_api_key_sequrity_azure = os.getenv("SEQURITY_AZURE_API_KEY")
 
-    assert api_key is not None, (
-        "SEQURITY_API_KEY must be set in environment variables for tests."
-    )
-    assert llm_api_key_openai is not None, (
-        "OPENAI_API_KEY must be set in environment variables for tests."
-    )
-    assert llm_api_key_openrouter is not None, (
-        "OPENROUTER_API_KEY must be set in environment variables for tests."
-    )
-    assert llm_api_key_anthropic is not None, (
-        "ANTHROPIC_API_KEY must be set in environment variables for tests."
-    )
+    assert api_key is not None, "SEQURITY_API_KEY must be set in environment variables for tests."
+    assert llm_api_key_openai is not None, "OPENAI_API_KEY must be set in environment variables for tests."
+    assert llm_api_key_openrouter is not None, "OPENROUTER_API_KEY must be set in environment variables for tests."
+    assert llm_api_key_anthropic is not None, "ANTHROPIC_API_KEY must be set in environment variables for tests."
     assert llm_api_key_sequrity_azure is not None, (
         "SEQURITY_AZURE_API_KEY must be set in environment variables for tests."
     )

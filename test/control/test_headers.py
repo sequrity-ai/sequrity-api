@@ -116,9 +116,7 @@ class TestFeaturesHeader:
         assert len(result["errors"]) > 0
 
     def test_extra_field_rejected(self):
-        resp = self.client.post(
-            self.url, json={"x_features": '{"agent_arch": "single-llm", "unknown_field": 123}'}
-        )
+        resp = self.client.post(self.url, json={"x_features": '{"agent_arch": "single-llm", "unknown_field": 123}'})
         assert resp.status_code == 200
         result = resp.json()["x_features"]
         assert result["valid"] is False
@@ -221,9 +219,7 @@ class TestSecurityPolicyHeader:
         assert len(result["errors"]) > 0
 
     def test_extra_field_rejected(self):
-        resp = self.client.post(
-            self.url, json={"x_policy": '{"mode": "standard", "bogus": true}'}
-        )
+        resp = self.client.post(self.url, json={"x_policy": '{"mode": "standard", "bogus": true}'})
         assert resp.status_code == 200
         result = resp.json()["x_policy"]
         assert result["valid"] is False
@@ -325,9 +321,7 @@ class TestFineGrainedConfigHeader:
         assert result["valid"] is True
 
     def test_extra_field_rejected(self):
-        resp = self.client.post(
-            self.url, json={"x_config": '{"fsm": {"max_n_turns": 5}, "nonexistent": true}'}
-        )
+        resp = self.client.post(self.url, json={"x_config": '{"fsm": {"max_n_turns": 5}, "nonexistent": true}'})
         assert resp.status_code == 200
         result = resp.json()["x_config"]
         assert result["valid"] is False

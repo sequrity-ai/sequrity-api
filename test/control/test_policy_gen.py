@@ -105,11 +105,13 @@ class TestPolicyGeneration:
 
     def test_openai_chat_completion_format(self):
         """Test policy generation with OpenAI Chat Completion tool format."""
-        request = PolicyGenRequestOpenAiChatCompletion.model_validate({
-            "model": self.test_config.get_model_name(LlmServiceProvider.OPENAI),
-            "description": "Allow the agent to read files but prevent it from deleting any files.",
-            "tools": [OAI_READ_FILE_TOOL, OAI_DELETE_FILE_TOOL],
-        })
+        request = PolicyGenRequestOpenAiChatCompletion.model_validate(
+            {
+                "model": self.test_config.get_model_name(LlmServiceProvider.OPENAI),
+                "description": "Allow the agent to read files but prevent it from deleting any files.",
+                "tools": [OAI_READ_FILE_TOOL, OAI_DELETE_FILE_TOOL],
+            }
+        )
 
         response = self.sequrity_client.policy.generate(
             request=request,
@@ -127,11 +129,13 @@ class TestPolicyGeneration:
 
     def test_openrouter_chat_completion_format(self):
         """Test policy generation with OpenRouter Chat Completion tool format."""
-        request = PolicyGenRequestOpenRouterChatCompletion.model_validate({
-            "model": self.test_config.get_model_name(LlmServiceProvider.OPENROUTER),
-            "description": "Only allow the agent to send emails to addresses ending in @company.com.",
-            "tools": [OAI_SEND_EMAIL_TOOL],
-        })
+        request = PolicyGenRequestOpenRouterChatCompletion.model_validate(
+            {
+                "model": self.test_config.get_model_name(LlmServiceProvider.OPENROUTER),
+                "description": "Only allow the agent to send emails to addresses ending in @company.com.",
+                "tools": [OAI_SEND_EMAIL_TOOL],
+            }
+        )
 
         response = self.sequrity_client.policy.generate(
             request=request,
@@ -145,11 +149,13 @@ class TestPolicyGeneration:
 
     def test_anthropic_messages_format(self):
         """Test policy generation with Anthropic Messages tool format."""
-        request = PolicyGenRequestAnthropicMessages.model_validate({
-            "model": self.test_config.get_model_name(LlmServiceProvider.ANTHROPIC),
-            "description": "Allow the agent to search the web but block any file operations.",
-            "tools": [ANTHROPIC_WEB_SEARCH_TOOL, ANTHROPIC_WRITE_FILE_TOOL],
-        })
+        request = PolicyGenRequestAnthropicMessages.model_validate(
+            {
+                "model": self.test_config.get_model_name(LlmServiceProvider.ANTHROPIC),
+                "description": "Allow the agent to search the web but block any file operations.",
+                "tools": [ANTHROPIC_WEB_SEARCH_TOOL, ANTHROPIC_WRITE_FILE_TOOL],
+            }
+        )
 
         response = self.sequrity_client.policy.generate(
             request=request,
@@ -163,11 +169,13 @@ class TestPolicyGeneration:
 
     def test_sequrity_azure_chat_completion_format(self):
         """Test policy generation with Sequrity Azure Chat Completion tool format."""
-        request = PolicyGenRequestSequrityAzureChatCompletion.model_validate({
-            "model": self.test_config.get_model_name(None),
-            "description": "Allow the agent to read files but prevent it from deleting any files.",
-            "tools": [OAI_READ_FILE_TOOL],
-        })
+        request = PolicyGenRequestSequrityAzureChatCompletion.model_validate(
+            {
+                "model": self.test_config.get_model_name(None),
+                "description": "Allow the agent to read files but prevent it from deleting any files.",
+                "tools": [OAI_READ_FILE_TOOL],
+            }
+        )
 
         response = self.sequrity_client.policy.generate(
             request=request,

@@ -108,7 +108,9 @@ class MessagesResource:
         ).model_dump(exclude_none=True)
 
         url = self._transport.build_url(
-            RestApiType.MESSAGES, provider=provider, endpoint_type=endpoint_type,
+            RestApiType.MESSAGES,
+            provider=provider,
+            endpoint_type=endpoint_type,
         )
 
         response = self._transport.request(
@@ -182,7 +184,9 @@ class AsyncMessagesResource:
         ).model_dump(exclude_none=True)
 
         url = self._transport.build_url(
-            RestApiType.MESSAGES, provider=provider, endpoint_type=endpoint_type,
+            RestApiType.MESSAGES,
+            provider=provider,
+            endpoint_type=endpoint_type,
         )
 
         response = await self._transport.request(

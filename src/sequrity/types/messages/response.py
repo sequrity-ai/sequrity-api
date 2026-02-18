@@ -160,8 +160,6 @@ class AnthropicMessageResponse(BaseModel):
         ...,
         description="Billing and rate-limit usage statistics.",
     )
-    session_id: str | None = Field(
-        default=None, description="The Sequrity session ID associated with this response."
-    )
+    session_id: str | None = Field(default=None, description="The Sequrity session ID associated with this response.")
 
     model_config = ConfigDict(extra="ignore")

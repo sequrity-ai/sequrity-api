@@ -30,7 +30,9 @@ class TestMessage:
 
         The server uses preset defaults from the bearer token / DB lookup.
         """
-        messages = [{"role": "user", "content": "What is the largest prime number below 100? Answer with just the number."}]
+        messages = [
+            {"role": "user", "content": "What is the largest prime number below 100? Answer with just the number."}
+        ]
         response = self.sequrity_client.messages.create(
             messages=messages,
             model="claude-sonnet-4-5-20250929",
@@ -56,7 +58,9 @@ class TestMessage:
         else:
             features_header = FeaturesHeader.dual_llm()
 
-        messages = [{"role": "user", "content": "What is the largest prime number below 100? Answer with just the number."}]
+        messages = [
+            {"role": "user", "content": "What is the largest prime number below 100? Answer with just the number."}
+        ]
         response = self.sequrity_client.messages.create(
             messages=messages,
             model="claude-sonnet-4-5-20250929",
