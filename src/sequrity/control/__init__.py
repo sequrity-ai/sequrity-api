@@ -33,9 +33,11 @@ from .types.dual_llm_response import (
 from .types.enums import EndpointType
 from .types.headers import (
     ConstraintConfig,
+    ControlFlowMetaPolicy,
     FeaturesHeader,
     FineGrainedConfigHeader,
     FsmOverrides,
+    InternalPolicyPresets,
     SecurityPolicyHeader,
     TaggerConfig,
 )
@@ -53,6 +55,8 @@ __all__ = [
     "FsmOverrides",
     "TaggerConfig",
     "ConstraintConfig",
+    "ControlFlowMetaPolicy",
+    "InternalPolicyPresets",
     # Dual-LLM response types
     "MetaData",
     "ValueWithMeta",

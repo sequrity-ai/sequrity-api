@@ -10,15 +10,13 @@ Installation:
 
 # ---8<-- [start:imports_os]
 import os
-
 # ---8<-- [end:imports_os]
 # --8<-- [start:imports_sequrity_client]
 from sequrity import SequrityClient
 
 # --8<-- [end:imports_sequrity_client]
 # --8<-- [start:imports_headers]
-from sequrity import FeaturesHeader
-
+from sequrity.control import FeaturesHeader
 # --8<-- [end:imports_headers]
 
 # --8<-- [start:api_keys]
@@ -37,7 +35,7 @@ def first_message_example():
     client = SequrityClient(api_key=sequrity_key)
 
     # Send a chat completion request
-    response = client.chat.create(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",  # model name from your LLM provider
         llm_api_key=openrouter_api_key,  # your LLM provider API key
@@ -64,7 +62,7 @@ def single_llm_example():
     features = FeaturesHeader.single_llm()
 
     # Send a chat completion request
-    response = client.chat.create(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,
@@ -93,7 +91,7 @@ def dual_llm_example():
     features = FeaturesHeader.dual_llm()
 
     # Send a chat completion request
-    response = client.chat.create(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,

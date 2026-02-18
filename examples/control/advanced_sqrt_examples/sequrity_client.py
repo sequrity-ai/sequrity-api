@@ -40,14 +40,15 @@ from rich.console import Console
 from rich.syntax import Syntax
 
 from sequrity import SequrityClient
-from sequrity import (
+from sequrity.control import (
     ControlFlowMetaPolicy,
     FeaturesHeader,
     FineGrainedConfigHeader,
+    FsmOverrides,
     InternalPolicyPresets,
     SecurityPolicyHeader,
 )
-from sequrity.types.headers import FsmOverrides, ResponseFormatOverrides
+from sequrity.control.types.headers import ResponseFormatOverrides
 
 # Client configuration
 open_router_key = "your OpenRouter/OAI key"  # @param {type: "string"}
@@ -182,7 +183,7 @@ def send_request_to_endpoint(
     session_id: str | None = None,
 ):
     try:
-        response = client.chat.create(
+        response = client.control.chat.create(
             messages=messages,
             model=model,
             llm_api_key=CONFIG["open_router_api_key"],

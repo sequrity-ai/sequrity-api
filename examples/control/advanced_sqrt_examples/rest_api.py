@@ -42,7 +42,7 @@ from rich.syntax import Syntax
 CONFIG = {
     "open_router_api_key": os.getenv("OPENROUTER_API_KEY"),
     "sequrity_key": os.getenv("SEQURITY_API_KEY"),
-    "endpoint_url": os.getenv("SEQURITY_API_URL", "https://api.sequrity.ai").rstrip("/")
+    "endpoint_url": os.getenv("SEQURITY_BASE_URL", "https://api.sequrity.ai").rstrip("/")
     + "/control/chat/openrouter/v1/chat/completions",
 }
 # --8<-- [end:config]

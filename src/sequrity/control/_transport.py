@@ -69,7 +69,7 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
-        include_session: bool = True,
+        include_session: bool = False,
     ) -> httpx.Response:
         """POST *payload* as JSON to *url* with merged Sequrity headers.
 
@@ -82,8 +82,7 @@ class ControlSyncTransport:
             fine_grained_config: ``FineGrainedConfigHeader`` override.
             session_id: Explicit session ID override. ``NOT_GIVEN`` uses the
                 auto-tracked session ID.
-            include_session: Whether to include session-related headers. Set to
-                ``False`` for endpoints like policy generation that don't use sessions.
+            include_session: Whether to include session-related headers.
 
         Returns:
             The raw ``httpx.Response`` (status already validated).

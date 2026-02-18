@@ -11,18 +11,18 @@ from langchain_core.tools import tool
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from sequrity import FeaturesHeader
-from sequrity.integrations.langgraph import create_sequrity_langgraph_client
+from sequrity.control import FeaturesHeader
+from sequrity.control.integrations.langgraph import create_sequrity_langgraph_client
 
 
 # --8<-- [start:basic-setup]
 # Create Sequrity LangGraph client — only features is needed to select dual-llm arch.
 # security_policy and fine_grained_config are optional (server uses defaults).
 llm = create_sequrity_langgraph_client(
-    sequrity_api_key=os.getenv("SEQURITY_API_KEY"),
+    sequrity_api_key=os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key"),
     features=FeaturesHeader.dual_llm(),
     service_provider="openrouter",
-    llm_api_key=os.getenv("OPENROUTER_API_KEY"),
+    llm_api_key=os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key"),
     model="gpt-5-mini",
 )
 # --8<-- [end:basic-setup]

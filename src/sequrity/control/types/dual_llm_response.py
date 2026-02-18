@@ -44,7 +44,7 @@ class ValueWithMeta(BaseModel):
     value: Any
     meta: MetaData = Field(default_factory=MetaData)
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ErrorInfo(BaseModel):

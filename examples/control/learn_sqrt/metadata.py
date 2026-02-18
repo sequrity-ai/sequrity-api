@@ -1,5 +1,5 @@
 from sequrity.sqrt.parser import check
-from sequrity.types.dual_llm_response import MetaData, ValueWithMeta
+from sequrity.control.types.dual_llm_response import MetaData, ValueWithMeta
 
 # --8<-- [start:policy_meta_update]
 policy_1 = r"""

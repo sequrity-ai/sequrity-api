@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 from ..._sentinel import NOT_GIVEN, _NotGiven
-from .._transport import ControlAsyncTransport, ControlSyncTransport
 from ...types.chat_completion.request import ChatCompletionRequest, Message, ReasoningEffort, ResponseFormat, Tool
 from ...types.chat_completion.response import ChatCompletionResponse
 from ...types.enums import RestApiType
+from .._transport import ControlAsyncTransport, ControlSyncTransport
 from ..types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 
@@ -89,6 +89,7 @@ class ChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            include_session=False,
         )
 
         result = ChatCompletionResponse.model_validate(response.json())
@@ -151,6 +152,7 @@ class AsyncChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            include_session=False,
         )
 
         result = ChatCompletionResponse.model_validate(response.json())

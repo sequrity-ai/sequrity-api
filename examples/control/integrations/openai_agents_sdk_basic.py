@@ -7,8 +7,8 @@ This example demonstrates how to use Sequrity with the OpenAI Agents SDK.
 import asyncio
 import os
 
-from sequrity import FeaturesHeader
-from sequrity.integrations.openai_agents_sdk import (
+from sequrity.control import FeaturesHeader
+from sequrity.control.integrations.openai_agents_sdk import (
     create_sequrity_openai_agents_sdk_client,
 )
 

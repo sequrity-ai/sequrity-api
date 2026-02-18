@@ -24,23 +24,22 @@ except ImportError:
 # --8<-- [start:imports]
 # --8<-- [end:imports]
 from sequrity import SequrityClient
-from sequrity import (
+from sequrity.control import (
     FeaturesHeader,
     FineGrainedConfigHeader,
     SecurityPolicyHeader,
 )
-from sequrity.types.dual_llm_response import ResponseContentJsonSchema
-from sequrity.types.headers import ResponseFormatOverrides
+from sequrity.control.types.dual_llm_response import ResponseContentJsonSchema
+from sequrity.control.types.headers import ResponseFormatOverrides
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
 sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
-base_url = os.getenv("SEQURITY_BASE_URL", None)
 
 assert openrouter_api_key != "your-openrouter-api-key", "Please set your OPENROUTER_API_KEY environment variable."
 assert sequrity_key != "your-sequrity-api-key", "Please set your SEQURITY_API_KEY environment variable."
 
 # --8<-- [start:client_setup]
-client = SequrityClient(api_key=sequrity_key, base_url=base_url)
+client = SequrityClient(api_key=sequrity_key)
 service_provider = "openrouter"
 model = "openai/gpt-5-mini,openai/gpt-5-nano"  # Dual-LLM: PLLM, QLLM
 # --8<-- [end:client_setup]
@@ -112,7 +111,7 @@ rprint("[bold red]" + "=" * 60 + "[/bold red]\n")
 user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
 messages = [{"role": "user", "content": user_query}]
 
-response = client.chat.create(
+response = client.control.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -147,16 +146,17 @@ messages.append(
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
 
 # --8<-- [start:denied_response]
-response = client.chat.create(
+response = client.control.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
     provider=service_provider,
 )
 assert response.choices[0].message is not None
+assert response.choices[0].message.content is not None
 assert "denied by argument checking policies" in response.choices[0].message.content
 
-content = ResponseContentJsonSchema.parse_raw(response.choices[0].message.content)
+content = ResponseContentJsonSchema.model_validate_json(response.choices[0].message.content)
 rprint("\n[bold red]🚨 Send email denied by security policy[/bold red]")
 rprint(f"[yellow]Error:[/yellow] {content.error.message}\n")
 
@@ -172,7 +172,7 @@ rprint("[bold green]" + "=" * 60 + "[/bold green]\n")
 # --8<-- [start:trusted_query]
 messages = [{"role": "user", "content": user_query.replace("research@gmail.com", "user@trustedcorp.com")}]
 
-response = client.chat.create(
+response = client.control.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -199,7 +199,7 @@ messages.append(
     }
 )
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
-response = client.chat.create(
+response = client.control.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -221,7 +221,7 @@ messages.append(
     }
 )
 rprint("\n[dim]→ Executing tool call: [bold]send_email[/bold][/dim]")
-response = client.chat.create(
+response = client.control.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -229,7 +229,8 @@ response = client.chat.create(
 )
 # final response
 assert response.choices[0].message is not None
-content = ResponseContentJsonSchema.parse_raw(response.choices[0].message.content)
+assert response.choices[0].message.content is not None
+content = ResponseContentJsonSchema.model_validate_json(response.choices[0].message.content)
 assert content.status == "success"
 rprint("\n[bold green]✅ Email allowed to trusted domain[/bold green]")
 # --8<-- [end:trusted_flow]

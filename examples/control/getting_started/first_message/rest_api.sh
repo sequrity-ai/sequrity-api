@@ -9,7 +9,13 @@
 SEQURITY_API_KEY="${SEQURITY_API_KEY:-your-sequrity-api-key}"
 OPENROUTER_API_KEY="${OPENROUTER_API_KEY:-your-openrouter-key}"
 SERVICE_PROVIDER="openrouter"
+REST_API_URL="https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions"
 # --8<-- [end:setup_env_vars]
+
+# If SEQURITY_BASE_URL is set, use it instead of the default.
+if [ -n "$SEQURITY_BASE_URL" ]; then
+  REST_API_URL="${SEQURITY_BASE_URL}/control/chat/${SERVICE_PROVIDER}/v1/chat/completions"
+fi
 
 # =============================================================================
 # First Message Example
@@ -17,7 +23,7 @@ SERVICE_PROVIDER="openrouter"
 
 echo "=== First Message Example ==="
 # --8<-- [start:first_message]
-curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions \
+curl -X POST $REST_API_URL \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: $OPENROUTER_API_KEY" \
@@ -36,7 +42,7 @@ echo "=== Single LLM Mode ==="
 # Only X-Features is needed to select the architecture.
 # X-Policy and X-Config are optional — the server uses preset defaults.
 # --8<-- [start:single_llm]
-curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions \
+curl -X POST $REST_API_URL \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: $OPENROUTER_API_KEY" \
@@ -54,7 +60,7 @@ curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/co
 echo "=== Dual LLM ==="
 
 # --8<-- [start:dual_llm]
-curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions \
+curl -X POST $REST_API_URL \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: $OPENROUTER_API_KEY" \

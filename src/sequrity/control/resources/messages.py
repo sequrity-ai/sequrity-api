@@ -5,9 +5,7 @@ from __future__ import annotations
 from typing import Literal
 
 from ..._sentinel import NOT_GIVEN, _NotGiven
-from .._transport import ControlAsyncTransport, ControlSyncTransport
 from ...types.enums import RestApiType
-from ..types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from ...types.messages.request import (
     AnthropicMessageRequest,
     MessageParam,
@@ -19,6 +17,8 @@ from ...types.messages.request import (
     ToolParam,
 )
 from ...types.messages.response import AnthropicMessageResponse
+from .._transport import ControlAsyncTransport, ControlSyncTransport
+from ..types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 
 class MessagesResource:
@@ -121,6 +121,7 @@ class MessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            include_session=False,
         )
 
         result = AnthropicMessageResponse.model_validate(response.json())
@@ -197,6 +198,7 @@ class AsyncMessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            include_session=False,
         )
 
         result = AnthropicMessageResponse.model_validate(response.json())

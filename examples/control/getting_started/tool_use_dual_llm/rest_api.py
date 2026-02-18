@@ -81,14 +81,16 @@ features = json.dumps({"agent_arch": "dual-llm"})
 
 security_policy = json.dumps(
     {
-        "mode": "standard",
-        "codes": r"""
-    let sensitive_docs = {"internal_use", "confidential"};
-    tool "get_internal_document" -> @tags |= sensitive_docs;
-    tool "send_email" {
-        hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
-    }
-    """,
+        "codes": {
+            "code": r"""
+                let sensitive_docs = {"internal_use", "confidential"};
+                tool "get_internal_document" -> @tags |= sensitive_docs;
+                tool "send_email" {
+                    hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
+                }
+            """,
+            "language": "sqrt",
+        },
     }
 )
 

@@ -8,7 +8,7 @@ import httpx
 
 from .control._client import AsyncControlClient, ControlClient
 from .control._config import ControlConfig
-from .control._constants import SEQURITY_API_URL
+from .control._constants import SEQURITY_BASE_URL
 
 
 class SequrityClient:
@@ -51,7 +51,7 @@ class SequrityClient:
 
         Args:
             api_key: Your Sequrity API key for authentication.
-            base_url: Sequrity API base URL. Defaults to the ``SEQURITY_API_URL``
+            base_url: Sequrity API base URL. Defaults to the ``SEQURITY_BASE_URL``
                 environment variable, or ``https://api.sequrity.ai``.
             timeout: Default request timeout in seconds. Defaults to 300.
             control: Configuration for the Sequrity Control product. When omitted,
@@ -59,7 +59,7 @@ class SequrityClient:
                 per-request instead).
         """
         self._api_key = api_key
-        self._base_url = base_url or os.environ.get("SEQURITY_API_URL") or SEQURITY_API_URL
+        self._base_url = base_url or os.environ.get("SEQURITY_BASE_URL") or SEQURITY_BASE_URL
         self._http_client = httpx.Client(timeout=timeout)
 
         self.control = ControlClient(
@@ -107,7 +107,7 @@ class AsyncSequrityClient:
         control: ControlConfig | None = None,
     ):
         self._api_key = api_key
-        self._base_url = base_url or os.environ.get("SEQURITY_API_URL") or SEQURITY_API_URL
+        self._base_url = base_url or os.environ.get("SEQURITY_BASE_URL") or SEQURITY_BASE_URL
         self._http_client = httpx.AsyncClient(timeout=timeout)
 
         self.control = AsyncControlClient(

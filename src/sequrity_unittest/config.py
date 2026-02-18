@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 
-from sequrity.control._constants import SEQURITY_API_URL
+from sequrity.control._constants import SEQURITY_BASE_URL
 from sequrity.types.enums import LlmServiceProvider
 
 DEFAULT_TEST_MODEL: dict[LlmServiceProvider | None, str] = {
@@ -60,7 +60,7 @@ def get_test_config():
     if test_mode == "local":
         base_url = os.getenv("SEQURITY_BASE_URL", "http://localhost:8000")
     else:
-        base_url = SEQURITY_API_URL
+        base_url = SEQURITY_BASE_URL
 
     return TestConfig(
         test_mode=test_mode,

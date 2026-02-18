@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from ..types.enums import RestApiType
 
-SEQURITY_API_URL = "https://api.sequrity.ai"
+SEQURITY_BASE_URL = "https://api.sequrity.ai"
 SEQURITY_API_VERSION = "v1"
 
 # URL suffix for each REST API type
