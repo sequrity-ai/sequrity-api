@@ -94,7 +94,7 @@ class TestLangGraphCompilationAndExecution:
     def test_graph_executor(self):
         from langgraph.graph import END, START, StateGraph
 
-        graph = StateGraph(SimpleState)
+        graph = StateGraph(SimpleState)  # ty: ignore[invalid-argument-type]
         graph.add_node("read_file", read_file)
         graph.add_node("send_email", send_email)
         graph.add_edge(START, "read_file")
@@ -122,7 +122,7 @@ class TestLangGraphCompilationAndExecution:
     def test_minimal(self, service_provider: LlmServiceProvider):
         from langgraph.graph import END, START, StateGraph
 
-        graph = StateGraph(SimpleState)
+        graph = StateGraph(SimpleState)  # ty: ignore[invalid-argument-type]
         graph.add_node("read_file", read_file)
         graph.add_node("send_email", send_email)
         graph.add_edge(START, "read_file")
@@ -169,7 +169,7 @@ class TestLangGraphCompilationAndExecution:
     def test_sql_agent_with_conditional_routing(self, service_provider: LlmServiceProvider):
         from langgraph.graph import END, START, StateGraph
 
-        graph = StateGraph(SQLAgentState)
+        graph = StateGraph(SQLAgentState)  # ty: ignore[invalid-argument-type]
 
         # Add all nodes
         graph.add_node("list_tables", list_tables)

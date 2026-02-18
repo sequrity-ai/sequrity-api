@@ -8,13 +8,14 @@ All config headers (X-Features, X-Policy, X-Config) are optional.
 The server falls back to preset defaults for any header not provided.
 """
 
-from typing import Literal
+from typing import Literal, cast
 
 import pytest
 
 from sequrity import SequrityClient, FeaturesHeader, FineGrainedConfigHeader
 from sequrity.types.headers import FsmOverrides
 from sequrity.types.enums import LlmServiceProvider
+from sequrity.types.messages.response import ToolUseBlock
 from sequrity_unittest.config import get_test_config
 
 
@@ -46,7 +47,7 @@ class TestMessage:
         assert response.role == "assistant"
         assert len(response.content) > 0
         text_content = "".join(
-            block.text for block in response.content if hasattr(block, "text") and block.type == "text"
+            str(block.text) for block in response.content if hasattr(block, "text") and block.type == "text"
         )
         assert "97" in text_content
 
@@ -75,7 +76,7 @@ class TestMessage:
         assert response.role == "assistant"
         assert len(response.content) > 0
         text_content = "".join(
-            block.text for block in response.content if hasattr(block, "text") and block.type == "text"
+            str(block.text) for block in response.content if hasattr(block, "text") and block.type == "text"
         )
         assert "97" in text_content
 
@@ -132,7 +133,7 @@ class TestMessage:
         assert len(response.content) > 0
         # Should request a tool call
         assert response.stop_reason == "tool_use"
-        tool_use_blocks = [block for block in response.content if block.type == "tool_use"]
+        tool_use_blocks = [cast(ToolUseBlock, block) for block in response.content if block.type == "tool_use"]
         assert len(tool_use_blocks) > 0
         assert tool_use_blocks[0].name == "get_weather"
         assert "London" in str(tool_use_blocks[0].input)

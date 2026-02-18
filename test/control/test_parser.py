@@ -92,6 +92,7 @@ let y = broken
 let z = {"bar"};"""
         result = parse(code)
         assert result.valid is False
+        assert result.error is not None
         assert result.error.line is not None
 
     def test_parse_result_is_named_tuple(self):

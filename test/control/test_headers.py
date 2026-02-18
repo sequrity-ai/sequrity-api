@@ -4,6 +4,8 @@ Dumps each header class with dump_for_headers() and sends the serialized
 JSON strings to the server for validation.
 """
 
+from typing import Literal
+
 import httpx
 import pytest
 
@@ -176,7 +178,7 @@ class TestSecurityPolicyHeader:
         assert result["valid"] is True
 
     @pytest.mark.parametrize("mode", ["standard", "strict", "custom"])
-    def test_dual_llm_modes(self, mode: str):
+    def test_dual_llm_modes(self, mode: Literal["standard", "strict", "custom"]):
         header = SecurityPolicyHeader.dual_llm(
             mode=mode,
             codes="",
