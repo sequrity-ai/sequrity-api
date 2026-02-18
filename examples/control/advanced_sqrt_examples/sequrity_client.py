@@ -40,14 +40,14 @@ from rich.console import Console
 from rich.syntax import Syntax
 
 from sequrity import SequrityClient
-from sequrity.control import (
+from sequrity import (
     ControlFlowMetaPolicy,
     FeaturesHeader,
     FineGrainedConfigHeader,
-    InternalPolicyPreset,
-    ResponseFormat,
+    InternalPolicyPresets,
     SecurityPolicyHeader,
 )
+from sequrity.types.headers import FsmOverrides, ResponseFormatOverrides
 
 # Client configuration
 open_router_key = "your OpenRouter/OAI key"  # @param {type: "string"}
@@ -182,7 +182,7 @@ def send_request_to_endpoint(
     session_id: str | None = None,
 ):
     try:
-        response = client.control.create_chat_completion(
+        response = client.chat.create(
             messages=messages,
             model=model,
             llm_api_key=CONFIG["open_router_api_key"],
@@ -304,11 +304,11 @@ tool_map = {
 
 # --8<-- [start:ex1_session_config]
 # Create features header using FeaturesHeader class
-features = FeaturesHeader.dual_llm(mode="standard")
+features = FeaturesHeader.dual_llm()
 
 # Create security policy using SecurityPolicyHeader class
 security_policy = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=r"""
     let sensitive_docs = {"internal_use", "confidential"};
     tool "get_internal_document" -> @tags |= sensitive_docs;
@@ -318,7 +318,7 @@ security_policy = SecurityPolicyHeader(
     """,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -326,8 +326,7 @@ security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config using FineGrainedConfigHeader class
 fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -461,11 +460,11 @@ refund_tool_map = {
 
 # --8<-- [start:ex2_security_config]
 # Create features header for refund example
-refund_features = FeaturesHeader.dual_llm(mode="standard")
+refund_features = FeaturesHeader.dual_llm()
 
 # Create security policy for refund example
 refund_security_policy = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=r"""
     tool "issue_refund" {
         session before {
@@ -486,7 +485,7 @@ refund_security_policy = SecurityPolicyHeader(
     """,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -494,13 +493,13 @@ refund_security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config for refund example
 refund_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="none",
-    clear_session_meta="never",
-    retry_on_policy_violation=False,
-    pllm_debug_info_level="minimal",
-    max_pllm_attempts=1,  # disable auto-retry as we want to count attempts accurately
-    max_n_turns=5,  # we need multiple turns to reach the refund approval
-    response_format=ResponseFormat(
+    fsm=FsmOverrides(
+        clear_session_meta="never",
+        retry_on_policy_violation=False,
+        max_pllm_steps=1,  # disable auto-retry as we want to count attempts accurately
+        max_n_turns=5,  # we need multiple turns to reach the refund approval
+    ),
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -728,11 +727,11 @@ provenance_tool_map = {
 
 # --8<-- [start:ex3_security_config]
 # Create features header for provenance example
-provenance_features = FeaturesHeader.dual_llm(mode="standard")
+provenance_features = FeaturesHeader.dual_llm()
 
 # Create security policy for provenance example
 provenance_security_policy = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=r"""
     tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
     tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
@@ -743,7 +742,7 @@ provenance_security_policy = SecurityPolicyHeader(
     """,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -751,8 +750,7 @@ provenance_security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config for provenance example
 provenance_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -920,11 +918,11 @@ compliance_tool_map = {
 
 # --8<-- [start:ex4_security_config]
 # Create features header for compliance example
-compliance_features = FeaturesHeader.dual_llm(mode="standard")
+compliance_features = FeaturesHeader.dual_llm()
 
 # Create security policy for compliance example
 compliance_security_policy = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=r"""
     tool "load_patient_record" -> @tags |= {"pii"};
     tool "de_identify_data" -> @tags -= {"pii"};
@@ -934,7 +932,7 @@ compliance_security_policy = SecurityPolicyHeader(
     """,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -942,8 +940,7 @@ compliance_security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config for compliance example
 compliance_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -1032,8 +1029,9 @@ assert result == "denied by policies"
 # configuring the policy to deny branching on this tag, you can prevent discriminatory decision-making at the architectural level.
 #
 # ```json
-# "enabled_features": [{"feature_name": "Dual LLM", "config_json": "{\"mode\": \"custom\"}"}]
-# "internal_policy_preset": {
+# "agent_arch": "dual-llm"
+# "mode": "custom"
+# "presets": {
 #     "branching_meta_policy": {
 #         "mode": "deny",
 #         "tags": ["RACE"]
@@ -1124,7 +1122,7 @@ fairness_tool_map = {
 
 # --8<-- [start:ex5_fairness_enabled_features]
 # Create features header for fairness example (custom mode)
-fairness_features = FeaturesHeader.dual_llm(mode="custom")
+fairness_features = FeaturesHeader.dual_llm()
 # --8<-- [end:ex5_fairness_enabled_features]
 
 # --8<-- [start:ex5_fairness_base_config]
@@ -1135,8 +1133,7 @@ tool "retrive_applicant_profile" -> @tags |= {"RACE"};
 
 # Create fine-grained config for fairness example
 fairness_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -1159,16 +1156,16 @@ print("=== Preventing Discriminatory Control Flow (denied) ===")
 # Add branching_meta_policy to deny control flow based on RACE tag
 # --8<-- [start:ex5_fairness_policies_deny]
 fairness_security_policy_deny = SecurityPolicyHeader(
-    language="sqrt",
+    mode="custom",
     codes=fairness_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         # --8<-- [start:ex5_branching_meta_policy]
         branching_meta_policy=ControlFlowMetaPolicy(
             mode="deny",
-            tags=("RACE",),
+            tags={"RACE"},
         ),
         # --8<-- [end:ex5_branching_meta_policy]
     ),
@@ -1209,11 +1206,11 @@ print("=== Non-Discriminatory Flow (allowed) ===")
 
 # Without branching_meta_policy restriction
 fairness_security_policy_allow = SecurityPolicyHeader(
-    language="sqrt",
+    mode="custom",
     codes=fairness_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
     ),
 )
@@ -1249,8 +1246,8 @@ assert result == "success"
 # policy to enable this flag, you prevent the AI from ever "seeing" the sensitive data.
 #
 # ```json
-# "enabled_features": [{"feature_name": "Dual LLM"}]
-# "internal_policy_preset": {"enable_llm_blocked_tag": true}
+# "agent_arch": "dual-llm"
+# "presets": {"enable_llm_blocked_tag": true}
 # ```
 #
 # This ensures that even if the raw data contains protected attributes, the AI parsing model will not process it,
@@ -1322,7 +1319,7 @@ qllm_policy_tool_map = {
 
 # --8<-- [start:ex5_qllm_base_config]
 # Create features header for QLLM policy example
-qllm_policy_features = FeaturesHeader.dual_llm(mode="standard")
+qllm_policy_features = FeaturesHeader.dual_llm()
 
 # Base security policy for QLLM policy example
 qllm_policy_security_policy_base_codes = r"""
@@ -1331,8 +1328,7 @@ tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
 
 # Create fine-grained config for QLLM policy example
 qllm_policy_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -1355,11 +1351,11 @@ print("=== Preventing AI Parsing of Sensitive Data (denied) ===")
 # Add enable_llm_blocked_tag to deny QLLM inputs with __llm_blocked tag
 # --8<-- [start:ex5_qllm_policies_deny]
 qllm_policy_security_policy_deny = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=qllm_policy_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_llm_blocked_tag=True,
     ),
@@ -1400,11 +1396,11 @@ print("=== Direct Data Processing (allowed) ===")
 # Without enable_llm_blocked_tag restriction
 # --8<-- [start:ex5_qllm_policies_allow]
 qllm_policy_security_policy_allow = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=qllm_policy_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_llm_blocked_tag=False,
     ),

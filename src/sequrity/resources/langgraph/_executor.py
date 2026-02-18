@@ -1,11 +1,13 @@
-"""LangGraph integration for SequrityClient.
+"""LangGraph StateGraph to code compiler.
 
-This module provides functionality to execute LangGraph StateGraphs securely
-through the Sequrity orchestrator.
+This module converts LangGraph StateGraph definitions into executable
+Python code and maps nodes to tool definitions.
 """
 
 import json
 from typing import Callable
+
+from ...types.enums import RestApiType
 
 try:
     from langgraph.graph import END, START, StateGraph
@@ -64,17 +66,9 @@ class LangGraphExecutor:
         self.generated_code = self._graph_to_code(graph, self.node_functions)
 
     def _extract_function_map(self, graph: "StateGraph") -> dict[str, Callable]:
-        """Extract node functions from LangGraph StateGraph.
-
-        Args:
-            graph: The StateGraph to extract functions from.
-
-        Returns:
-            Dict mapping node names to their callable functions.
-        """
+        """Extract node functions from LangGraph StateGraph."""
         function_map = {}
 
-        # Access internal graph structure to get nodes
         if hasattr(graph, "nodes"):
             for node_name, node_data in graph.nodes.items():
                 if hasattr(node_data, "func"):
@@ -84,47 +78,56 @@ class LangGraphExecutor:
 
         return function_map
 
-    def build_tool_definitions(self) -> list[dict]:
-        """Build OpenAI-style tool definitions for external nodes.
+    def build_tool_definitions(self, rest_api_type: RestApiType = RestApiType.CHAT_COMPLETIONS) -> list[dict]:
+        """Build tool definitions for external nodes.
 
-        Each external node becomes a tool that the orchestrator can call.
+        Args:
+            rest_api_type: The REST API type determining the tool definition format.
+                ``CHAT_COMPLETIONS`` produces OpenAI-style definitions.
+                ``MESSAGES`` produces Anthropic-style definitions.
 
         Returns:
-            List of tool definition dicts in OpenAI function calling format.
+            List of tool definition dicts in the appropriate format.
         """
         tools = []
 
         for node_name in self.external_nodes:
             func = self.node_functions.get(node_name)
+            description = getattr(func, "__doc__", f"Execute node: {node_name}") if func else f"Execute node: {node_name}"
 
-            # Get description from function if available
-            if func:
-                description = getattr(func, "__doc__", f"Execute node: {node_name}")
-            else:
-                description = f"Execute node: {node_name}"
+            parameters = {
+                "type": "object",
+                "properties": {"state": {"type": "object", "description": "Current state dict"}},
+                "required": ["state"],
+            }
 
-            # Build tool schema
-            tool_def = {
-                "type": "function",
-                "function": {
+            if rest_api_type == RestApiType.MESSAGES:
+                tool_def = {
                     "name": node_name,
                     "description": description,
-                    "parameters": {
-                        "type": "object",
-                        "properties": {"state": {"type": "object", "description": "Current state dict"}},
-                        "required": ["state"],
+                    "input_schema": parameters,
+                }
+            else:
+                tool_def = {
+                    "type": "function",
+                    "function": {
+                        "name": node_name,
+                        "description": description,
+                        "parameters": parameters,
                     },
-                },
-            }
+                }
             tools.append(tool_def)
 
         return tools
 
-    def execute_tool_call(self, tool_call: dict) -> dict:
+    def execute_tool_call(self, tool_call: dict, rest_api_type: RestApiType = RestApiType.CHAT_COMPLETIONS) -> dict:
         """Execute a tool call (external node).
 
         Args:
-            tool_call: Tool call dict with id, name, and arguments.
+            tool_call: Tool call dict. Format depends on ``rest_api_type``:
+                - ``CHAT_COMPLETIONS``: ``{"function": {"name": ..., "arguments": ...}}``
+                - ``MESSAGES``: ``{"name": ..., "input": {...}}``
+            rest_api_type: The REST API type determining the tool call format.
 
         Returns:
             The result dict from executing the node function.
@@ -132,41 +135,28 @@ class LangGraphExecutor:
         Raises:
             RuntimeError: If no function is found for the specified tool name.
         """
-        tool_name = tool_call.get("function", {}).get("name")
-        arguments_str = tool_call.get("function", {}).get("arguments", "{}")
+        if rest_api_type == RestApiType.MESSAGES:
+            tool_name = tool_call.get("name")
+            arguments = tool_call.get("input", {})
+        else:
+            tool_name = tool_call.get("function", {}).get("name")
+            arguments_str = tool_call.get("function", {}).get("arguments", "{}")
+            try:
+                arguments = json.loads(arguments_str)
+            except json.JSONDecodeError:
+                arguments = {}
 
-        # Parse arguments
-        try:
-            arguments = json.loads(arguments_str)
-        except json.JSONDecodeError:
-            arguments = {}
-
-        # Get the node function
         node_func = self.node_functions.get(tool_name)
         if not node_func:
             raise RuntimeError(f"No function found for external node: {tool_name}")
 
-        # Execute the node function
         state = arguments.get("state", {})
         result = node_func(state)
 
         return result
 
     def _graph_to_code(self, graph: "StateGraph", function_map: dict[str, Callable]) -> str:
-        """Convert a LangGraph StateGraph into executable Python code.
-
-        Generates:
-            - Module-level code with state = initial_state
-            - Linear flow with if-else for conditional routing
-            - Uses keyword arguments for function calls
-
-        Args:
-            graph: The StateGraph to convert.
-            function_map: Dict mapping node names to their callable functions.
-
-        Returns:
-            Generated Python code as a string.
-        """
+        """Convert a LangGraph StateGraph into executable Python code."""
         nodes = graph.nodes
         edges = list(graph.edges)
         branches = dict(graph.branches)
@@ -176,14 +166,12 @@ class LangGraphExecutor:
         code_lines.append("state = initial_state")
         code_lines.append("")
 
-        # Find starting node
         start_edges = [target for source, target in edges if source == START]
         if not start_edges:
             code_lines.append("# Extract final result for user")
             code_lines.append("final_return_value = state.get('result', state)")
             return "\n".join(code_lines)
 
-        # Generate code for each node
         visited = set()
         self._generate_node_code(start_edges[0], nodes, edges, branches, function_map, code_lines, visited, indent=0)
 
@@ -194,25 +182,13 @@ class LangGraphExecutor:
         return "\n".join(code_lines)
 
     def _generate_node_code(self, node_name, nodes, edges, branches, function_map, code_lines, visited, indent=0):
-        """Recursively generate code for a node and its successors.
-
-        Args:
-            node_name: Name of the current node to generate code for.
-            nodes: Dict of all nodes in the graph.
-            edges: List of edge tuples (source, target).
-            branches: Dict of conditional branch specifications.
-            function_map: Dict mapping node names to their callable functions.
-            code_lines: List to append generated code lines to.
-            visited: Set of already visited node names.
-            indent: Current indentation level.
-        """
+        """Recursively generate code for a node and its successors."""
         if node_name in visited or node_name == END or node_name == "__end__":
             return
 
         visited.add(node_name)
         indent_str = "    " * indent
 
-        # Get function name
         node_spec = nodes.get(node_name)
         if not node_spec:
             return
@@ -223,7 +199,6 @@ class LangGraphExecutor:
         else:
             func_name = getattr(node_func, "__name__", getattr(node_func, "name", str(node_name)))
 
-        # Generate node execution code with keyword arguments
         code_lines.append(f"{indent_str}# Node: {node_name}")
         code_lines.append(f"{indent_str}{node_name}_result = {func_name}(state=state)")
         code_lines.append(f"{indent_str}# Update state")
@@ -237,22 +212,16 @@ class LangGraphExecutor:
         code_lines.append(f"{indent_str}        state[key] = value")
         code_lines.append("")
 
-        # Check for conditional edges
         if node_name in branches and branches[node_name]:
-            # Has conditional routing
             branch_name = list(branches[node_name].keys())[0]
             branch_spec = branches[node_name][branch_name]
-
-            # Use the branch name as the condition function name
             condition_name = branch_name
 
-            # Get possible next nodes
             possible_next = set()
             if hasattr(branch_spec, "ends"):
                 ends = branch_spec.ends
                 possible_next.update(ends.values() if isinstance(ends, dict) else ends)
 
-            # Also check edges
             for source, target in edges:
                 if source == node_name and target not in (END, "__end__"):
                     possible_next.add(target)
@@ -261,7 +230,6 @@ class LangGraphExecutor:
             code_lines.append(f"{indent_str}next_node = {condition_name}(state=state)")
             code_lines.append("")
 
-            # Generate if-else for each possible path
             if possible_next:
                 first = True
                 for next_node in sorted(possible_next):
@@ -274,7 +242,6 @@ class LangGraphExecutor:
                         next_node, nodes, edges, branches, function_map, code_lines, branch_visited, indent + 1
                     )
         else:
-            # Regular edge - no condition
             next_nodes = [target for source, target in edges if source == node_name]
             if next_nodes and next_nodes[0] != END and next_nodes[0] != "__end__":
                 self._generate_node_code(

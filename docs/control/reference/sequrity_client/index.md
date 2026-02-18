@@ -1,6 +1,6 @@
-# SequrityClient.control API Reference
+# SequrityClient API Reference
 
-This section provides the API reference for `SequrityClient.control`, the Python interface for Sequrity's Control API.
+This section provides the API reference for `SequrityClient`, the Python interface for Sequrity's Control API.
 
 ## Overview
 
@@ -31,8 +31,8 @@ Configuration headers for customizing security behavior:
 
 
 
-::: sequrity.control.wrapper.ControlApiWrapper
+::: sequrity._client.SequrityClient
     options:
       show_root_heading: true
       show_source: false
-      members: ["create_chat_completion", "compile_and_run_langgraph"]
+      members: ["chat", "messages", "policy", "langgraph"]

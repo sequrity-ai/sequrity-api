@@ -1,156 +1,74 @@
-# X-Security-Features
+# X-Features
 
-The `X-Security-Features` header is a JSON array that defines enabled security features and their configurations.
+The `X-Features` header is a JSON object that defines the agent architecture and enabled security features.
 
-This header is **required** when using Headers-Only Mode (must be provided together with `X-Security-Policy`).
+This header is **required** when using Headers-Only Mode (must be provided together with `X-Policy`).
 
 ## Data Structure
 
 ```json
-[
-  {
-    "feature_name": "Dual LLM",
-    "config_json": "{\"mode\": \"standard\"}"
-  },
-  {
-    "feature_name": "Toxicity Filter",
-    "config_json": "{\"enabled\": false, \"mode\": \"normal\"}"
-  },
-  {
-    "feature_name": "PII Redaction",
-    "config_json": "{\"enabled\": false, \"threshold\": 0.5}"
-  },
-  {
-    "feature_name": "Healthcare Topic Guardrail",
-    "config_json": "{\"enabled\": false, \"mode\": \"strict\"}"
-  },
-  {
-    "feature_name": "Finance Topic Guardrail",
-    "config_json": "{\"enabled\": false, \"threshold\": 0.3}"
-  },
-  {
-    "feature_name": "Legal Topic Guardrail",
-    "config_json": "{\"enabled\": false, \"tag_name\": \"legal_content\"}"
-  },
-  {
-    "feature_name": "URL Blocker",
-    "config_json": "{\"enabled\": false}"
-  },
-  {
-    "feature_name": "Long Program Support",
-    "config_json": "{\"mode\": \"mid\"}"
-  }
-]
+{
+  "agent_arch": "dual-llm",
+  "content_classifiers": [
+    {"name": "toxicity_filter", "threshold": 0.5, "mode": "normal"},
+    {"name": "pii_redaction", "threshold": 0.5},
+    {"name": "healthcare_topic_guardrail", "threshold": 0.5},
+    {"name": "finance_topic_guardrail", "threshold": 0.5}
+  ],
+  "content_blockers": [
+    {"name": "url_blocker"},
+    {"name": "file_blocker"}
+  ]
+}
 ```
 
-## Feature Entry Fields
+## Top-Level Fields
 
-Each entry in the array has the following structure:
-
-### `feature_name`
+### `agent_arch`
 
 | Type | Required | Default |
 |------|----------|---------|
 | `string` | Yes | - |
 
-The display name of the feature to enable. See [Available Features](#available-features) for valid values.
+The agent architecture to use. Valid values:
 
-### `config_json`
+- `"single-llm"`: Single-model agent mode. The same LLM handles both planning and execution.
+- `"dual-llm"`: Dual-model agent mode with separate planning and execution LLMs.
+
+### `content_classifiers`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `string` | No | `null` |
+| `array[object]` | No | `null` |
 
-A JSON string containing feature-specific configuration options. The structure depends on the feature type.
+An array of content classifier configurations. Each classifier has the following fields:
 
----
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `name` | `string` | Yes | - | Classifier identifier (see below) |
+| `threshold` | `float` | No | `0.5` | Detection sensitivity threshold (0.0 - 1.0) |
+| `mode` | `string` | No | `null` | Preset mode that overrides threshold: `"normal"` or `"strict"` |
 
-## Available Features
+Available classifiers:
 
-### Agent Mode Features
+- `"toxicity_filter"`: Detect toxic, harmful, or abusive content in tool call inputs and outputs.
+- `"pii_redaction"`: Detect and redact personally identifiable information (names, emails, phone numbers, etc.).
+- `"healthcare_topic_guardrail"`: Detect healthcare-related content that may require professional medical advice.
+- `"finance_topic_guardrail"`: Detect finance-related content that may require professional financial advice.
 
-Choose one of the following agent modes (mutually exclusive):
+### `content_blockers`
 
-#### Single LLM
+| Type | Required | Default |
+|------|----------|---------|
+| `array[object]` | No | `null` |
 
-- **Feature Name:** `"Single LLM"`
-- **Description:** Single-model agent mode. The same LLM handles both planning and execution.
-- **Config Options:** None
+An array of content blocker configurations. Each blocker has the following fields:
 
-#### Dual LLM
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `name` | `string` | Yes | - | Blocker identifier (see below) |
 
-- **Feature Name:** `"Dual LLM"`
-- **Description:** Dual-model agent mode with separate planning and execution LLMs.
-- **Config Options:**
+Available blockers:
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `mode` | `string` | `"standard"` | Agent mode: `"standard"`, `"strict"`, or `"custom"` |
-
----
-
-### Tagger Features
-
-Taggers are LLM-based content detection features that analyze tool call inputs and outputs.
-
-**Common Tagger Config Options:**
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `enabled` | `boolean` | `false` | Enable the tagger |
-| `threshold` | `float` | `0.5` | Detection threshold (0.0 - 1.0) |
-| `mode` | `string` | `null` | Preset mode: `"normal"` (threshold 0.7) or `"strict"` (threshold 0.3) |
-| `tag_name` | `string` | `null` | Override the default tag name |
-
-#### Toxicity Filter
-
-- **Feature Name:** `"Toxicity Filter"`
-- **Description:** Detect toxic, harmful, or abusive content in tool call inputs and outputs.
-
-#### PII Redaction
-
-- **Feature Name:** `"PII Redaction"`
-- **Description:** Detect and redact personally identifiable information (names, emails, phone numbers, etc.).
-
-#### Healthcare Topic Guardrail
-
-- **Feature Name:** `"Healthcare Topic Guardrail"`
-- **Description:** Detect healthcare-related content that may require professional medical advice.
-
-#### Finance Topic Guardrail
-
-- **Feature Name:** `"Finance Topic Guardrail"`
-- **Description:** Detect finance-related content that may require professional financial advice.
-
-#### Legal Topic Guardrail
-
-- **Feature Name:** `"Legal Topic Guardrail"`
-- **Description:** Detect legal-related content that may require professional legal advice.
-
----
-
-### Constraint Features
-
-Constraints are non-LLM stateless security checks applied to tool calls.
-
-#### URL Blocker
-
-- **Feature Name:** `"URL Blocker"`
-- **Description:** Block URL access in tool calls.
-- **Config Options:**
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `enabled` | `boolean` | `false` | Enable the constraint |
-
----
-
-### Long Program Support
-
-- **Feature Name:** `"Long Program Support"`
-- **Description:** Adjust interpreter gas limits for longer program execution.
-- **Config Options:**
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `mode` | `string` | `"base"` | Gas limit tier: `"base"` (10K gas), `"mid"` (100K gas), or `"long"` (1M gas) |
+- `"url_blocker"`: Block URL access in tool calls.
+- `"file_blocker"`: Block file access in tool calls.

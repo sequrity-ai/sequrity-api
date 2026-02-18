@@ -1,6 +1,6 @@
 # Sending Your First Message with Sequrity Control API
 
-This guide shows you how to send your first chat completion request through the [Sequrity Control API][sequrity.control.wrapper.ControlApiWrapper].
+This guide shows you how to send your first chat completion request through the [Sequrity Control API][sequrity._client.SequrityClient].
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ Let's send a simple message asking "What is the largest prime number below 100?"
     --8<-- "examples/control/getting_started/first_message/sequrity_client.py:run_first_message"
     ```
 
-    We create an instance of `SequrityClient` with your Sequrity API key, and send messages using [`control.create_chat_completion`][sequrity.control.wrapper.ControlApiWrapper.create_chat_completion], specifying the model name on OpenRouter and your OpenRouter API key.
+    We create an instance of `SequrityClient` with your Sequrity API key, and send messages using [`chat.create`][sequrity.resources.chat.ChatResource.create], specifying the model name on OpenRouter and your OpenRouter API key.
 
 === "REST API"
 
@@ -160,29 +160,30 @@ You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
 
         ![Select Single-LLM in Dashboard](../../assets/images/control/config-single-llm-dashboard.png){width="720"}
 
-2. **Specify mode in request headers**
+2. **Override mode via the `X-Features` header**
 
     Whichever Sequrity API key you use (Single-LLM or Dual-LLM),
-    you can always override the mode in the request headers:
+    you can always override the mode by passing the `X-Features` header:
 
-    - For Sequrity client, use [`FeaturesHeader.single_llm`][sequrity.control.types.headers.FeaturesHeader.single_llm] / [`FeaturesHeader.dual_llm`][sequrity.control.types.headers.FeaturesHeader.dual_llm] and [`SecurityPolicyHeader`][sequrity.control.types.headers.SecurityPolicyHeader]
-    - For REST API, use custom headers [`X-Security-Features`](../reference/rest_api/headers/security_features.md) and [`X-Security-Policy`](../reference/rest_api/headers/security_policy.md)
+    - For Sequrity client, use [`FeaturesHeader.single_llm`][sequrity.types.headers.FeaturesHeader.single_llm] / [`FeaturesHeader.dual_llm`][sequrity.types.headers.FeaturesHeader.dual_llm]
+    - For REST API, use the [`X-Features`](../reference/rest_api/headers/security_features.md) header
 
-    When the features header and security policy header are present in the request,
-    they take precedence over the API key configuration.
+    Only the `X-Features` header is needed to switch the architecture.
+    The other config headers (`X-Policy`, `X-Config`) are optional — the server
+    uses preset defaults for any header not provided.
 
     !!! info "Specify Single-LLM via Request Headers"
 
         === "Sequrity Client"
 
-            ```python hl_lines="8-9"
+            ```python hl_lines="7"
             --8<-- "examples/control/getting_started/first_message/sequrity_client.py:imports_headers"
             --8<-- "examples/control/getting_started/first_message/sequrity_client.py:single_llm"
             ```
 
         === "REST API"
 
-            ```bash hl_lines="5-6"
+            ```bash hl_lines="5"
             --8<-- "examples/control/getting_started/first_message/rest_api.sh:single_llm"
             ```
 
@@ -190,22 +191,29 @@ You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
 
         === "Sequrity Client"
 
-            ```python hl_lines="6-7"
+            ```python hl_lines="6"
             --8<-- "examples/control/getting_started/first_message/sequrity_client.py:dual_llm"
             ```
 
         === "REST API"
 
-            ```bash hl_lines="5-6"
+            ```bash hl_lines="5"
             --8<-- "examples/control/getting_started/first_message/rest_api.sh:dual_llm"
             ```
 
-??? question "Bearer-Token-only vs Custom Headers"
+??? question "How is the session config built?"
 
-    - In Sequrity Control API, *Selecting mode when creating API key while omitting custom headers* is called **Bearer-Token-only** mode.
-    - *Specifying mode using custom headers* is called **Headers-mode**.
+    Every request to Sequrity Control runs inside a **session** governed by a session config.
+    The config is built at request time through a layered pipeline:
 
-    Refer to [Bearer-Token-only vs Headers-Mode](../reference/bearer-token-only-vs-headers-mode.md) for details.
+    1. **Base config** from your API key (DB lookup) or a default preset
+    2. **Header overrides** — `X-Features`, `X-Policy`, `X-Config` (all optional, applied in order)
+    3. **Request-level LLM config** — model name and API key from the request body/headers
+
+    All three config headers are independent and optional.
+    You can pass any combination of them, and omitted headers simply keep their preset defaults.
+
+    Refer to [How Session Config Is Built](../reference/bearer-token-only-vs-headers-mode.md) for details.
 
 ## Next Steps
 

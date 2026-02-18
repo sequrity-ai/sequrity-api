@@ -17,7 +17,7 @@ SERVICE_PROVIDER="openrouter"
 
 echo "=== First Message Example ==="
 # --8<-- [start:first_message]
-curl -X POST https://api.sequrity.ai/control/${SERVICE_PROVIDER}/v1/chat/completions \
+curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: $OPENROUTER_API_KEY" \
@@ -33,13 +33,14 @@ curl -X POST https://api.sequrity.ai/control/${SERVICE_PROVIDER}/v1/chat/complet
 
 echo "=== Single LLM Mode ==="
 
+# Only X-Features is needed to select the architecture.
+# X-Policy and X-Config are optional — the server uses preset defaults.
 # --8<-- [start:single_llm]
-curl -X POST https://api.sequrity.ai/control/${SERVICE_PROVIDER}/v1/chat/completions \
+curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: $OPENROUTER_API_KEY" \
-  -H 'X-Security-Policy: {"language":"sqrt-lite","codes":""}' \
-  -H 'X-Security-Features: [{"feature_name":"Single LLM","config_json":"{\"mode\":\"standard\"}"},{"feature_name":"Long Program Support","config_json":"{\"mode\":\"base\"}"}]' \
+  -H 'X-Features: {"agent_arch":"single-llm"}' \
   -d '{
     "model": "openai/gpt-5-mini",
     "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
@@ -53,12 +54,11 @@ curl -X POST https://api.sequrity.ai/control/${SERVICE_PROVIDER}/v1/chat/complet
 echo "=== Dual LLM ==="
 
 # --8<-- [start:dual_llm]
-curl -X POST https://api.sequrity.ai/control/${SERVICE_PROVIDER}/v1/chat/completions \
+curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions \
   -H "Authorization: Bearer $SEQURITY_API_KEY" \
   -H "Content-Type: application/json" \
   -H "X-Api-Key: $OPENROUTER_API_KEY" \
-  -H 'X-Security-Policy: {"language":"sqrt-lite","codes":""}' \
-  -H 'X-Security-Features: [{"feature_name":"Dual LLM","config_json":"{\"mode\":\"standard\"}"},{"feature_name":"Long Program Support","config_json":"{\"mode\":\"base\"}"}]' \
+  -H 'X-Features: {"agent_arch":"dual-llm"}' \
   -d '{
     "model": "openai/gpt-5-mini",
     "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]

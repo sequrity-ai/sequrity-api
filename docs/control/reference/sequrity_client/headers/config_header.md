@@ -1,15 +1,25 @@
-# Fine-Grained Configuration / X-Security-Config
+# Fine-Grained Configuration / X-Config
 
-Advanced configuration for session behavior, response formatting, and internal tools.
+Advanced configuration for session behavior, prompt settings, and response formatting.
 
-::: sequrity.control.types.headers.FineGrainedConfigHeader
+::: sequrity.types.headers.FineGrainedConfigHeader
     options:
       show_root_heading: true
       show_source: true
 
 ---
 
-::: sequrity.control.types.headers.session_config_headers.ResponseFormat
+::: sequrity.types.headers.FsmOverrides
+    options:
+      show_root_heading: true
+      show_source: false
+
+::: sequrity.types.headers.PromptOverrides
+    options:
+      show_root_heading: true
+      show_source: false
+
+::: sequrity.types.headers.ResponseFormatOverrides
     options:
       show_root_heading: true
       show_source: false

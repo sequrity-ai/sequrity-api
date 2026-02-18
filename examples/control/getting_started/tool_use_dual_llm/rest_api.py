@@ -77,16 +77,11 @@ tool_defs = [
 
 # --8<-- [start:security_headers]
 # Custom headers as JSON (no classes)
-features = json.dumps(
-    [
-        {"feature_name": "Dual LLM", "config_json": json.dumps({"mode": "standard"})},
-        {"feature_name": "Long Program Support", "config_json": json.dumps({"mode": "base"})},
-    ]
-)
+features = json.dumps({"agent_arch": "dual-llm"})
 
 security_policy = json.dumps(
     {
-        "language": "sqrt",
+        "mode": "standard",
         "codes": r"""
     let sensitive_docs = {"internal_use", "confidential"};
     tool "get_internal_document" -> @tags |= sensitive_docs;
@@ -103,14 +98,14 @@ fine_grained_config = json.dumps({"response_format": {"include_program": True}})
 
 # --8<-- [start:chat_completion_func]
 def chat_completion(messages):
-    url = f"{base_url}/control/{service_provider}/v1/chat/completions"
+    url = f"{base_url}/control/chat/{service_provider}/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {sequrity_key}",
         "Content-Type": "application/json",
         "X-Api-Key": openrouter_api_key,
-        "X-Security-Features": features,
-        "X-Security-Policy": security_policy,
-        "X-Security-Config": fine_grained_config,
+        "X-Features": features,
+        "X-Policy": security_policy,
+        "X-Config": fine_grained_config,
     }
 
     payload = {"messages": messages, "model": model, "tools": tool_defs}

@@ -1,20 +1,18 @@
-## Security Policy / X-Security-Policy
+## Security Policy / X-Policy
 
-Configure security policies using sqrt, sqrt-lite, or cedar policy languages.
+Configure security policies using SQRT policy language.
 
-::: sequrity.control.types.headers.SecurityPolicyHeader
+::: sequrity.types.headers.SecurityPolicyHeader
     options:
       show_root_heading: true
       show_source: true
 
-
-::: sequrity.control.types.headers.policy_headers.InternalPolicyPreset
+::: sequrity.types.headers.InternalPolicyPresets
     options:
       show_root_heading: true
       show_source: false
 
-
-::: sequrity.control.types.headers.policy_headers.ControlFlowMetaPolicy
+::: sequrity.types.headers.ControlFlowMetaPolicy
     options:
       show_root_heading: true
       show_source: false

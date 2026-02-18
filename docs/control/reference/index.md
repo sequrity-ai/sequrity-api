@@ -11,4 +11,4 @@ Complete reference documentation for Sequrity Control, including API interfaces,
 ## Architecture and Configuration
 
 - **[Available Features in Single-LLM Architecture](single_llm_vs_dual_llm_features.md)** - Feature availability comparison
-- **[Bearer-Token-only vs Headers-Mode](bearer-token-only-vs-headers-mode.md)** - Authentication and configuration modes
+- **[How Session Config Is Built](bearer-token-only-vs-headers-mode.md)** - Resolver pipeline, optional config headers, and BYOK

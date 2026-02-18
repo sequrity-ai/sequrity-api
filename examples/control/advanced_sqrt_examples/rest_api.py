@@ -42,7 +42,8 @@ from rich.syntax import Syntax
 CONFIG = {
     "open_router_api_key": os.getenv("OPENROUTER_API_KEY"),
     "sequrity_key": os.getenv("SEQURITY_API_KEY"),
-    "endpoint_url": os.getenv("ENDPOINT_URL", "https://api.sequrity.ai/control/openrouter/v1/chat/completions"),
+    "endpoint_url": os.getenv("SEQURITY_API_URL", "https://api.sequrity.ai").rstrip("/")
+    + "/control/chat/openrouter/v1/chat/completions",
 }
 # --8<-- [end:config]
 
@@ -62,14 +63,14 @@ assert CONFIG["sequrity_key"] != "your SequrityAI key"
 #        "Content-Type": "application/json",
 #        "Authorization": f"Bearer {CONFIG['sequrity_key']}",
 #        "X-Api-Key": CONFIG["open_router_api_key"],
-#        "X-Security-Features": json.dumps(enabled_features),
+#        "X-Features": json.dumps(enabled_features),
 #    }
 #    if session_id:
 #        headers["X-Session-ID"] = session_id
 #    if security_policies:
-#        headers["X-Security-Policy"] = json.dumps(security_policies)
+#        headers["X-Policy"] = json.dumps(security_policies)
 #    if security_config:
-#        headers["X-Security-Config"] = json.dumps(security_config)
+#        headers["X-Config"] = json.dumps(security_config)
 #
 #    payload = {
 #        "model": model,
@@ -196,12 +197,12 @@ def send_request_to_endpoint(
         "Content-Type": "application/json",
         "Authorization": f"Bearer {CONFIG['sequrity_key']}",
         "X-Api-Key": CONFIG["open_router_api_key"],
-        "X-Security-Features": json.dumps(enabled_features),
+        "X-Features": json.dumps(enabled_features),
     }
     if security_policies:
-        headers["X-Security-Policy"] = json.dumps(security_policies)
+        headers["X-Policy"] = json.dumps(security_policies)
     if security_config:
-        headers["X-Security-Config"] = json.dumps(security_config)
+        headers["X-Config"] = json.dumps(security_config)
     if session_id:
         headers["X-Session-ID"] = session_id
 
@@ -330,9 +331,9 @@ tool_map = {
 # --8<-- [end:ex1_tool_defs]
 
 # --8<-- [start:ex1_session_config]
-enabled_features = [{"feature_name": "Dual LLM"}]
+enabled_features = {"agent_arch": "dual-llm"}
 security_policies = {
-    "language": "sqrt",
+    "mode": "standard",
     "codes": r"""
     let sensitive_docs = {"internal_use", "confidential"};
     tool "get_internal_document" -> @tags |= sensitive_docs;
@@ -340,7 +341,7 @@ security_policies = {
         hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
     }
     """,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
     },
@@ -348,7 +349,6 @@ security_policies = {
     "auto_gen": False,
 }
 security_config = {
-    "cache_tool_result": "all",
     "response_format": {
         "strip_response_content": False,
         "include_program": True,
@@ -479,9 +479,9 @@ refund_tool_map = {
 # --8<-- [end:ex2_tool_defs]
 
 # --8<-- [start:ex2_security_config]
-refund_enabled_features = [{"feature_name": "Dual LLM"}]
+refund_enabled_features = {"agent_arch": "dual-llm"}
 refund_security_policies = {
-    "language": "sqrt",
+    "mode": "standard",
     "codes": r"""
     tool "issue_refund" {
         session before {
@@ -500,7 +500,7 @@ refund_security_policies = {
         hard allow when "final_attempt" in @session.tags;
     }
     """,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
     },
@@ -508,12 +508,17 @@ refund_security_policies = {
     "auto_gen": False,
 }
 refund_security_config = {
-    "cache_tool_result": "none",
-    "clear_session_meta": "never",
-    "retry_on_policy_violation": False,
-    "pllm_debug_info_level": "minimal",
-    "max_pllm_attempts": 1,  # disable auto-retry as we want to count attempts accurately
-    "max_n_turns": 5,  # we need multiple turns to reach the refund approval
+    "fsm": {
+        "clear_session_meta": "never",
+        "retry_on_policy_violation": False,
+        "max_pllm_steps": 1,  # disable auto-retry as we want to count attempts accurately
+        "max_n_turns": 5,  # we need multiple turns to reach the refund approval
+    },
+    "prompt": {
+        "pllm": {
+            "debug_info_level": "minimal",
+        },
+    },
     "response_format": {
         "strip_response_content": False,
         "include_program": True,
@@ -737,9 +742,9 @@ provenance_tool_map = {
 # --8<-- [end:ex3_tool_defs]
 
 # --8<-- [start:ex3_security_config]
-provenance_enabled_features = [{"feature_name": "Dual LLM"}]
+provenance_enabled_features = {"agent_arch": "dual-llm"}
 provenance_security_policies = {
-    "language": "sqrt",
+    "mode": "standard",
     "codes": r"""
     tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
     tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
@@ -748,7 +753,7 @@ provenance_security_policies = {
         hard allow when @args.producers superset of {"verified_financial_data", "verified_marketing_data"};
     }
     """,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
     },
@@ -756,7 +761,6 @@ provenance_security_policies = {
     "auto_gen": False,
 }
 provenance_security_config = {
-    "cache_tool_result": "all",
     "response_format": {
         "strip_response_content": False,
         "include_program": True,
@@ -916,9 +920,9 @@ compliance_tool_map = {
 # --8<-- [end:ex4_tool_defs]
 
 # --8<-- [start:ex4_security_config]
-compliance_enabled_features = [{"feature_name": "Dual LLM"}]
+compliance_enabled_features = {"agent_arch": "dual-llm"}
 compliance_security_policies = {
-    "language": "sqrt",
+    "mode": "standard",
     "codes": r"""
     tool "load_patient_record" -> @tags |= {"pii"};
     tool "de_identify_data" -> @tags -= {"pii"};
@@ -926,7 +930,7 @@ compliance_security_policies = {
         hard deny when "pii" in data.tags;
     }
     """,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
     },
@@ -934,7 +938,6 @@ compliance_security_policies = {
     "auto_gen": False,
 }
 compliance_security_config = {
-    "cache_tool_result": "all",
     "response_format": {
         "strip_response_content": False,
         "include_program": True,
@@ -1022,8 +1025,9 @@ assert result == "denied by policies"
 #  configuring the policy to deny branching on this tag, you can prevent discriminatory decision-making at the architectural level.
 #
 #  ```json
-#  "enabled_features": [{"feature_name": "Dual LLM", "config_json": "{\"mode\": \"custom\"}"}]
-#  "internal_policy_preset": {
+#  "agent_arch": "dual-llm"
+#  "mode": "custom"
+#  "presets": {
 #      "branching_meta_policy": {
 #          "mode": "deny",
 #          "tags": ["RACE"]
@@ -1112,13 +1116,13 @@ fairness_tool_map = {
 }
 
 # --8<-- [start:ex5_fairness_enabled_features]
-fairness_enabled_features = [{"feature_name": "Dual LLM", "config_json": '{"mode": "custom"}'}]
+fairness_enabled_features = {"agent_arch": "dual-llm"}
 # --8<-- [end:ex5_fairness_enabled_features]
 
 # --8<-- [start:ex5_fairness_base_config]
 # Policy that tags applicant profile output with "RACE"
 fairness_security_policies_base = {
-    "language": "sqrt",
+    "mode": "custom",
     "codes": r"""
     tool "retrive_applicant_profile" -> @tags |= {"RACE"};
     """,
@@ -1127,7 +1131,6 @@ fairness_security_policies_base = {
 }
 
 fairness_security_config = {
-    "cache_tool_result": "all",
     "response_format": {
         "strip_response_content": False,
         "include_program": True,
@@ -1151,7 +1154,7 @@ print("=== Preventing Discriminatory Control Flow (denied) ===")
 # --8<-- [start:ex5_fairness_policies_deny]
 fairness_security_policies_deny = {
     **fairness_security_policies_base,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
         # --8<-- [start:ex5_branching_meta_policy]
         "branching_meta_policy": {
@@ -1195,7 +1198,7 @@ print("=== Non-Discriminatory Flow (allowed) ===")
 # Without branching_meta_policy restriction
 fairness_security_policies_allow = {
     **fairness_security_policies_base,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
     },
 }
@@ -1231,8 +1234,8 @@ assert result == "success"
 #  policy to enable this flag, you prevent the AI from ever "seeing" the sensitive data.
 #
 #  ```json
-#  "enabled_features": [{"feature_name": "Dual LLM"}]
-#  "internal_policy_preset": {"enable_llm_blocked_tag": true}
+#  "enabled_features": {"agent_arch": "dual-llm"}
+#  "presets": {"enable_llm_blocked_tag": true}
 #  ```
 #
 #  This ensures that even if the raw data contains protected attributes, the AI parsing model will not process it,
@@ -1303,11 +1306,11 @@ qllm_policy_tool_map = {
 }
 
 # --8<-- [start:ex5_qllm_base_config]
-qllm_policy_enabled_features = [{"feature_name": "Dual LLM"}]
+qllm_policy_enabled_features = {"agent_arch": "dual-llm"}
 
 # Policy that tags applicant profile text output with "__llm_blocked"
 qllm_policy_security_policies_base = {
-    "language": "sqrt",
+    "mode": "standard",
     "codes": r"""
     tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
     """,
@@ -1316,7 +1319,6 @@ qllm_policy_security_policies_base = {
 }
 
 qllm_policy_security_config = {
-    "cache_tool_result": "all",
     "response_format": {
         "strip_response_content": False,
         "include_program": True,
@@ -1340,7 +1342,7 @@ print("=== Preventing AI Parsing of Sensitive Data (denied) ===")
 # --8<-- [start:ex5_qllm_policies_deny]
 qllm_policy_security_policies_deny = {
     **qllm_policy_security_policies_base,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
         "enable_llm_blocked_tag": True,
     },
@@ -1382,7 +1384,7 @@ print("=== Direct Data Processing (allowed) ===")
 # --8<-- [start:ex5_qllm_policies_allow]
 qllm_policy_security_policies_allow = {
     **qllm_policy_security_policies_base,
-    "internal_policy_preset": {
+    "presets": {
         "default_allow": True,
         "enable_llm_blocked_tag": False,
     },

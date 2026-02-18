@@ -1,11 +1,11 @@
 # ValueWithMeta
 
-::: sequrity.control.types.value_with_meta.ValueWithMeta
+::: sequrity.types.dual_llm_response.ValueWithMeta
     options:
       show_root_heading: true
       show_source: true
 
-::: sequrity.control.types.value_with_meta.MetaData
+::: sequrity.types.dual_llm_response.MetaData
     options:
       show_root_heading: true
       show_source: true

@@ -37,17 +37,18 @@ the session context is not retained for subsequent requests after a cycle of `[u
 
 **Multi-turn**: To enable multi-turn sessions, you need to explicitly configure the maximum number of turns allowed in a session.
 
-- For Sequrity client, you can set [`max_n_turns` in `FineGrainedConfigHeader`][sequrity.control.types.headers.FineGrainedConfigHeader.max_n_turns] to a value greater than `1`.
+- For Sequrity client, you can set `max_n_turns` in `FineGrainedConfigHeader` to a value greater than `1`.
 
     ```python
-    from sequrity.control import FineGrainedConfigHeader
+    from sequrity import FineGrainedConfigHeader
+    from sequrity.types.headers import FsmOverrides
 
-    fine_grained_config = FineGrainedConfigHeader(max_n_turns=5)
+    fine_grained_config = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=5))
     ```
-- For REST API, you need to set [`max_n_turns` in your security config](../reference/rest_api/headers/security_config.md#max_n_turns) to a value greater than `1`.
+- For REST API, you need to set `max_n_turns` in the `fsm` section of your `X-Config` header to a value greater than `1`.
 
     ```http
-    X-Security-Config: {"max_n_turns": 5}
+    X-Config: {"fsm": {"max_n_turns": 5}}
     ```
 
 ## When to Use Session ID
@@ -64,7 +65,7 @@ and (2) also encodes the session ID into tool call IDs of assistant messages.
         Session ID in the response headers can be accessed via the `session_id` attribute of the [`ChatCompletionResponse` object][sequrity.types.chat_completion.response.ChatCompletionResponse.session_id]:
 
         ```python
-        response = client.control.create_chat_completion(
+        response = client.chat.create(
             messages=messages,
             model=model,
             llm_api_key="your-llm-api-key",
@@ -77,7 +78,7 @@ and (2) also encodes the session ID into tool call IDs of assistant messages.
 
         ```python
         response = requests.post(
-            url="https://api.sequrity.ai/control/openrouter/v1/chat/completions",
+            url="https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions",
             headers={
                 "Authorization": "Bearer <your-sequrity-api-key>",
                 "Content-Type": "application/json",
@@ -113,7 +114,7 @@ as Sequrity Control automatically parses the session ID from tool call IDs in as
 Of course, you can also manually set the session ID
 
 - in the [`X-Session-ID`](../reference/rest_api/headers/api_key_session_id.md#x-session-id-optional) header for REST API
-- via parameter `session_id` of [`create_chat_completion` method][sequrity.control.wrapper.ControlApiWrapper.create_chat_completion] for Sequrity client
+- via parameter `session_id` of [`chat.create` method][sequrity.resources.chat.ChatResource.create] for Sequrity client
 
 to continue an existing multi-turn session.
 

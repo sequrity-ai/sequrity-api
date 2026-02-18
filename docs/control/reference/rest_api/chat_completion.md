@@ -1,26 +1,27 @@
 # Sequrity Control Chat Completion API
 
-The Sequrity Control API provides a chat completion endpoint that is mostly compatible with the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat). This allows you to use Sequrity's security features while maintaining compatibility with existing OpenAI-based applications.
+The Sequrity Control API provides chat completion and messages endpoints that are compatible with the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat) and the [Anthropic Messages API](https://docs.anthropic.com/en/api/messages). This allows you to use Sequrity's security features while maintaining compatibility with existing LLM applications.
 
 ## Request
 
-### Endpoint
+### Endpoints
 
-Sequrity Control Chat Completion API can be accessed via the following endpoints:
+#### OpenAI-Compatible Chat Completions
 
-- Openrouter as service provider:
+| Endpoint | Provider |
+|----------|----------|
+| `POST https://api.sequrity.ai/control/chat/v1/chat/completions` | Default |
+| `POST https://api.sequrity.ai/control/chat/openai/v1/chat/completions` | OpenAI |
+| `POST https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions` | OpenRouter |
 
-    ```
-    POST https://api.sequrity.ai/control/v1/chat/completions
-    ```
+#### Anthropic-Compatible Messages
 
-- Specific service provider
+| Endpoint | Provider |
+|----------|----------|
+| `POST https://api.sequrity.ai/control/chat/v1/messages` | Default |
+| `POST https://api.sequrity.ai/control/chat/anthropic/v1/messages` | Anthropic |
 
-    ```
-    POST https://api.sequrity.ai/control/{service_provider}/v1/chat/completions
-    ```
-
-    See [Service Providers](../../../general/rest_api/service_provider.md) for available service providers.
+See [Service Providers](../../../general/rest_api/service_provider.md) for available service providers.
 
 ### Request Body Schema
 
@@ -172,21 +173,21 @@ The following headers can be included in your requests to the Sequrity Control A
 
 | Header | Description |
 |--------|-------------|
-| `X-Security-Features` | Enable or disable specific security features for this request. Allows fine-grained control over which security checks are applied. See [Security Features](./headers/security_features.md) for detailed configuration options. |
-| `X-Security-Policy` | Specify security policies using SQRT, SQRT-Lite, or Cedar policy languages. Policies define rules for content filtering, access control, and compliance. See [Security Policy](./headers/security_policy.md) for policy syntax and examples. |
-| `X-Security-Config` | Provide a complete security configuration object for this request. Combines features, policies, and additional settings in a single header. See [Security Config](./headers/security_config.md) for the full configuration schema. |
+| `X-Features` | Enable or disable specific security features for this request. Allows fine-grained control over which security checks are applied. See [Security Features](./headers/security_features.md) for detailed configuration options. |
+| `X-Policy` | Specify security policies using SQRT policy language. Policies define rules for content filtering, access control, and compliance. See [Security Policy](./headers/security_policy.md) for policy syntax and examples. |
+| `X-Config` | Provide fine-grained configuration for this request. Includes FSM overrides, prompt settings, and response format options. See [Security Config](./headers/security_config.md) for the full configuration schema. |
 
 #### Session Management
 
 | Header | Description |
 |--------|-------------|
-| `X-Session-Id` | Specify a session ID to associate this request with an existing session. Useful for maintaining conversation context and applying session-level security policies. |
+| `X-Session-ID` | Specify a session ID to associate this request with an existing session. Useful for maintaining conversation context and applying session-level security policies. |
 
 ### Response Headers
 
 | Header | Description |
 |--------|-------------|
-| `X-Session-Id` | The session ID associated with this response. This will be returned if a session was created or used for the request. User doesn't need to handle it manually most of the time. Read more in [Session ID and Multi-turn Sessions](../../learn/session_id.md). |
+| `X-Session-ID` | The session ID associated with this response. This will be returned if a session was created or used for the request. User doesn't need to handle it manually most of the time. Read more in [Session ID and Multi-turn Sessions](../../learn/session_id.md). |
 
 ## Examples
 

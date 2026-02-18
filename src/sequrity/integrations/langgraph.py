@@ -7,7 +7,7 @@ Sequrity's secure orchestrator with automatic session management and security fe
 Example:
     ```python
     from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-    from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
+    from sequrity import FeaturesHeader, SecurityPolicyHeader
 
     # Create client with Sequrity security features
     llm = create_sequrity_langgraph_client(
@@ -38,7 +38,9 @@ from langchain_core.outputs import ChatGeneration, ChatGenerationChunk, ChatResu
 from langchain_openai import ChatOpenAI
 from pydantic import Field
 
-from ..control.types.headers import (
+from .._constants import build_control_base_url, build_sequrity_headers
+from ..types.enums import EndpointType
+from ..types.headers import (
     FeaturesHeader,
     FineGrainedConfigHeader,
     SecurityPolicyHeader,
@@ -62,21 +64,20 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         features: Security features configuration (LLM mode, taggers, constraints)
         security_policy: Security policy configuration (SQRT/Cedar policies)
         fine_grained_config: Fine-grained session configuration
-        service_provider: LLM service provider (openai, openrouter, azurecredits)
+        service_provider: LLM service provider (openai, openrouter, anthropic)
         llm_api_key: Optional API key for the LLM provider
         base_url: Sequrity base URL (default: https://api.sequrity.ai)
+        endpoint_type: Endpoint type (chat, code, lang-graph). Defaults to chat.
         model: Model name to use (default: gpt-4)
         **kwargs: Additional arguments passed to ChatOpenAI
 
     Example:
         ```python
         features = FeaturesHeader.dual_llm()
-        policy = SecurityPolicyHeader.dual_llm()
 
         llm = LangGraphChatSequrityAI(
             sequrity_api_key="your-key",
             features=features,
-            security_policy=policy
         )
 
         # Session ID is automatically tracked
@@ -96,35 +97,19 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         service_provider: str = "openrouter",
         llm_api_key: str | None = None,
         base_url: str = "https://api.sequrity.ai",
+        endpoint_type: EndpointType | str = EndpointType.CHAT,
         model: str = "gpt-4",
         **kwargs: Any,
     ):
         """Initialize Sequrity-enabled LangGraph ChatOpenAI client."""
-        # Build custom headers dict
-        custom_headers: dict[str, str] = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {sequrity_api_key}",
-        }
-
-        # Add LLM provider API key if provided
-        if llm_api_key:
-            custom_headers["X-Api-Key"] = llm_api_key
-
-        # Add security headers if configured
-        if features:
-            features_header = features.dump_for_headers(mode="json_str")
-            if isinstance(features_header, str):
-                custom_headers["X-Security-Features"] = features_header
-
-        if security_policy:
-            policy_header = security_policy.dump_for_headers(mode="json_str")
-            if isinstance(policy_header, str):
-                custom_headers["X-Security-Policy"] = policy_header
-
-        if fine_grained_config:
-            config_header = fine_grained_config.dump_for_headers(mode="json_str")
-            if isinstance(config_header, str):
-                custom_headers["X-Security-Config"] = config_header
+        # Build custom headers using shared builder
+        custom_headers = build_sequrity_headers(
+            api_key=sequrity_api_key,
+            llm_api_key=llm_api_key,
+            features=features.dump_for_headers(mode="json_str") if features else None,
+            policy=security_policy.dump_for_headers(mode="json_str") if security_policy else None,
+            config=fine_grained_config.dump_for_headers(mode="json_str") if fine_grained_config else None,
+        )
 
         # Merge with any user-provided headers
         if "default_headers" not in kwargs:
@@ -136,7 +121,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
             kwargs["include_response_headers"] = True
 
         # Construct Sequrity API endpoint URL with service provider
-        sequrity_base_url = f"{base_url}/control/{service_provider}/v1"
+        sequrity_base_url = build_control_base_url(base_url, endpoint_type, service_provider)
 
         # Set base_url and model in kwargs for parent class
         kwargs["base_url"] = sequrity_base_url
@@ -205,7 +190,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         if self._session_id is not None:
             if "extra_headers" not in kwargs:
                 kwargs["extra_headers"] = {}
-            kwargs["extra_headers"]["X-Session-Id"] = self._session_id
+            kwargs["extra_headers"]["X-Session-ID"] = self._session_id
 
         # Call parent's _generate method
         result = super()._generate(messages, stop=stop, run_manager=run_manager, **kwargs)
@@ -214,7 +199,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         if result.generations and len(result.generations) > 0:
             gen_info = result.generations[0].generation_info
             if gen_info and "headers" in gen_info:
-                session_id = gen_info["headers"].get("x-session-id") or gen_info["headers"].get("X-Session-Id")
+                session_id = gen_info["headers"].get("x-session-id") or gen_info["headers"].get("X-Session-ID")
                 if session_id:
                     self._session_id = session_id
 
@@ -235,7 +220,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         if self._session_id is not None:
             if "extra_headers" not in kwargs:
                 kwargs["extra_headers"] = {}
-            kwargs["extra_headers"]["X-Session-Id"] = self._session_id
+            kwargs["extra_headers"]["X-Session-ID"] = self._session_id
 
         # Call parent's _agenerate method
         result = await super()._agenerate(messages, stop=stop, run_manager=run_manager, **kwargs)
@@ -244,7 +229,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         if result.generations and len(result.generations) > 0:
             gen_info = result.generations[0].generation_info
             if gen_info and "headers" in gen_info:
-                session_id = gen_info["headers"].get("x-session-id") or gen_info["headers"].get("X-Session-Id")
+                session_id = gen_info["headers"].get("x-session-id") or gen_info["headers"].get("X-Session-ID")
                 if session_id:
                     self._session_id = session_id
 
@@ -265,7 +250,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         if self._session_id:
             if "extra_headers" not in kwargs:
                 kwargs["extra_headers"] = {}
-            kwargs["extra_headers"]["X-Session-Id"] = self._session_id
+            kwargs["extra_headers"]["X-Session-ID"] = self._session_id
 
         # Call parent's _stream method and extract session ID from first chunk
         is_first_chunk = True
@@ -274,7 +259,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
             if is_first_chunk and chunk.generation_info and "headers" in chunk.generation_info:
                 session_id = chunk.generation_info["headers"].get("x-session-id") or chunk.generation_info[
                     "headers"
-                ].get("X-Session-Id")
+                ].get("X-Session-ID")
                 if session_id:
                     self._session_id = session_id
                 is_first_chunk = False
@@ -292,7 +277,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         if self._session_id:
             if "extra_headers" not in kwargs:
                 kwargs["extra_headers"] = {}
-            kwargs["extra_headers"]["X-Session-Id"] = self._session_id
+            kwargs["extra_headers"]["X-Session-ID"] = self._session_id
 
         # Call parent's _astream method and extract session ID from first chunk
         is_first_chunk = True
@@ -301,7 +286,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
             if is_first_chunk and chunk.generation_info and "headers" in chunk.generation_info:
                 session_id = chunk.generation_info["headers"].get("x-session-id") or chunk.generation_info[
                     "headers"
-                ].get("X-Session-Id")
+                ].get("X-Session-ID")
                 if session_id:
                     self._session_id = session_id
                 is_first_chunk = False
@@ -356,6 +341,7 @@ def create_sequrity_langgraph_client(
     service_provider: str = "openrouter",
     llm_api_key: str | None = None,
     base_url: str = "https://api.sequrity.ai",
+    endpoint_type: EndpointType | str = EndpointType.CHAT,
     model: str = "gpt-4",
     **kwargs: Any,
 ) -> LangGraphChatSequrityAI:
@@ -370,9 +356,10 @@ def create_sequrity_langgraph_client(
         features: Security features configuration (LLM mode, taggers, etc.)
         security_policy: Security policy configuration (SQRT/Cedar policies)
         fine_grained_config: Fine-grained session configuration
-        service_provider: LLM service provider (openai, openrouter, azurecredits)
+        service_provider: LLM service provider (openai, openrouter, anthropic)
         llm_api_key: Optional API key for the LLM provider
         base_url: Sequrity base URL (default: https://api.sequrity.ai)
+        endpoint_type: Endpoint type (chat, code, lang-graph). Defaults to chat.
         model: Model name to use (default: gpt-4)
         **kwargs: Additional arguments passed to ChatOpenAI
 
@@ -382,7 +369,7 @@ def create_sequrity_langgraph_client(
     Example:
         ```python
         from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-        from sequrity.control.types.headers import FeaturesHeader
+        from sequrity import FeaturesHeader
 
         # Basic usage with dual-LLM
         llm = create_sequrity_langgraph_client(
@@ -391,7 +378,7 @@ def create_sequrity_langgraph_client(
         )
 
         # With security policy
-        from sequrity.control.types.headers import SecurityPolicyHeader
+        from sequrity import SecurityPolicyHeader
         llm = create_sequrity_langgraph_client(
             sequrity_api_key="your-key",
             features=FeaturesHeader.dual_llm(),
@@ -416,6 +403,7 @@ def create_sequrity_langgraph_client(
         service_provider=service_provider,
         llm_api_key=llm_api_key,
         base_url=base_url,
+        endpoint_type=endpoint_type,
         model=model,
         **kwargs,
     )

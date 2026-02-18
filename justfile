@@ -1,7 +1,7 @@
 test_target := "test/"
 
 local-test target=test_target:
-    uv run --group agents --env-file .env.local pytest {{target}}
+    uv run --group agents --env-file .env.local pytest {{ target }}
 
 # Run all example scripts to test if they work
 test-examples:

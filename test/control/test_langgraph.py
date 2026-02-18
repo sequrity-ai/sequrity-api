@@ -2,10 +2,10 @@ from typing import Literal, TypedDict
 
 import pytest
 
-from sequrity import client
-from sequrity.control.langgraph.graph_executor import LangGraphExecutor
-from sequrity.control.types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from sequrity.service_provider import LlmServiceProviderEnum
+from sequrity import SequrityClient, FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from sequrity.resources.langgraph._executor import LangGraphExecutor
+from sequrity.types.headers import FsmOverrides
+from sequrity.types.enums import LlmServiceProvider
 from sequrity_unittest.config import get_test_config
 
 try:
@@ -88,7 +88,7 @@ def route_validation(state: SQLAgentState) -> str:
 class TestLangGraphCompilationAndExecution:
     def setup_method(self):
         self.test_config = get_test_config()
-        self.sequrity_client = client.SequrityClient(
+        self.sequrity_client = SequrityClient(
             api_key=self.test_config.api_key, base_url=self.test_config.base_url
         )
 
@@ -120,8 +120,8 @@ class TestLangGraphCompilationAndExecution:
         assert "send_email" in executor.external_nodes
 
     @pytest.mark.skipif(not LANGGRAPH_AVAILABLE, reason="LangGraph is not installed")
-    @pytest.mark.parametrize("service_provider", list(LlmServiceProviderEnum))
-    def test_minimal(self, service_provider: LlmServiceProviderEnum):
+    @pytest.mark.parametrize("service_provider", list(LlmServiceProvider))
+    def test_minimal(self, service_provider: LlmServiceProvider):
         from langgraph.graph import END, START, StateGraph
 
         graph = StateGraph(SimpleState)
@@ -134,9 +134,9 @@ class TestLangGraphCompilationAndExecution:
         initial_state = {"query": "Read the document", "result": ""}
         features = FeaturesHeader.dual_llm()
         policy = SecurityPolicyHeader.dual_llm()
-        config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
+        config = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=10, disable_rllm=True))
 
-        result = self.sequrity_client.control.compile_and_run_langgraph(
+        result = self.sequrity_client.langgraph.run(
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             graph=graph,
@@ -167,8 +167,8 @@ class TestLangGraphCompilationAndExecution:
         )
 
     @pytest.mark.skipif(not LANGGRAPH_AVAILABLE, reason="LangGraph is not installed")
-    @pytest.mark.parametrize("service_provider", list(LlmServiceProviderEnum))
-    def test_sql_agent_with_conditional_routing(self, service_provider: LlmServiceProviderEnum):
+    @pytest.mark.parametrize("service_provider", list(LlmServiceProvider))
+    def test_sql_agent_with_conditional_routing(self, service_provider: LlmServiceProvider):
         from langgraph.graph import END, START, StateGraph
 
         graph = StateGraph(SQLAgentState)
@@ -211,9 +211,9 @@ class TestLangGraphCompilationAndExecution:
         }
         features = FeaturesHeader.dual_llm()
         policy = SecurityPolicyHeader.dual_llm()
-        config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
+        config = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=10, disable_rllm=True))
 
-        result = self.sequrity_client.control.compile_and_run_langgraph(
+        result = self.sequrity_client.langgraph.run(
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             graph=graph,

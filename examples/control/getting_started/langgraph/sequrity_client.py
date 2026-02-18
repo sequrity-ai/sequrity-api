@@ -9,7 +9,7 @@ import os
 from typing import Literal, TypedDict
 
 from sequrity import SequrityClient
-from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from sequrity import FeaturesHeader, FineGrainedConfigHeader
 
 # Try to import rich for better output formatting
 try:
@@ -237,9 +237,9 @@ if __name__ == "__main__":
     # --8<-- [end:initial_state_and_functions]
 
     # --8<-- [start:security_settings]
-    # Configure security features
+    # Configure security features — only features is needed to select dual-llm arch.
+    # security_policy is optional (server uses defaults).
     features = FeaturesHeader.dual_llm()
-    security_policy = SecurityPolicyHeader.dual_llm()
     fine_grained_config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
     # --8<-- [end:security_settings]
 
@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
     # --8<-- [start:execute_graph]
     # Execute the graph with Sequrity
-    result = client.control.compile_and_run_langgraph(
+    result = client.langgraph.run(
         model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,
         graph=graph,
@@ -257,7 +257,6 @@ if __name__ == "__main__":
         node_functions=node_functions,
         max_exec_steps=30,
         features=features,
-        security_policy=security_policy,
         fine_grained_config=fine_grained_config,
     )
     # --8<-- [end:execute_graph]

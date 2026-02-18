@@ -7,7 +7,7 @@ or policy runtime, allowing it to be open-sourced separately.
 
 import pytest
 
-from sequrity.control.sqrt.parser import (
+from sequrity.sqrt.parser import (
     ParseResult,
     SqrtParseError,
     check,

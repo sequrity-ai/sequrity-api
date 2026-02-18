@@ -36,7 +36,8 @@ theme:
 
 plugins:
   - search
-  - autorefs
+  - autorefs:
+      resolve_closest: true
   - mkdocstrings:
       handlers:
         python:
@@ -152,7 +153,7 @@ nav:
       - Control:
           - control/reference/index.md
           - Features in Single-LLM Arch: control/reference/single_llm_vs_dual_llm_features.md
-          - Bearer-Token vs Headers: control/reference/bearer-token-only-vs-headers-mode.md
+          - How Session Config Is Built: control/reference/bearer-token-only-vs-headers-mode.md
           - SQRT Policy Language:
               - control/reference/sqrt/index.md
               - Grammar: control/reference/sqrt/grammar.md
@@ -161,15 +162,17 @@ nav:
               - Service Providers: general/rest_api/service_provider.md
               - Chat Completion: control/reference/rest_api/chat_completion.md
               - Custom Headers:
-                  - X-Api-Key and X-Session-Id: control/reference/rest_api/headers/api_key_session_id.md
-                  - X-Security-Features: control/reference/rest_api/headers/security_features.md
-                  - X-Security-Policy: control/reference/rest_api/headers/security_policy.md
-                  - X-Security-Config: control/reference/rest_api/headers/security_config.md
+                  - X-Api-Key and X-Session-ID: control/reference/rest_api/headers/api_key_session_id.md
+                  - X-Features: control/reference/rest_api/headers/security_features.md
+                  - X-Policy: control/reference/rest_api/headers/security_policy.md
+                  - X-Config: control/reference/rest_api/headers/security_config.md
           - SequrityClient:
               - SequrityClient.control:
                   - control/reference/sequrity_client/index.md
                   - Chat Completion: control/reference/sequrity_client/chat_completion.md
+                  - Messages: control/reference/sequrity_client/message.md
                   - LangGraph: control/reference/sequrity_client/langgraph.md
+                  - Policy Generation: control/reference/sequrity_client/policy_gen.md
                   - Headers:
                       - FeaturesHeader: control/reference/sequrity_client/headers/features_header.md
                       - PolicyHeader: control/reference/sequrity_client/headers/policy_header.md
@@ -177,6 +180,7 @@ nav:
                   - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
                   - SQRT: control/reference/sequrity_client/sqrt.md
               - SequrityClient.integrations:
+                  - control/reference/sequrity_client/integrations/index.md
                   - OpenAI Agents SDK: control/reference/sequrity_client/integrations/integrations_oai_sdk.md
                   - LangGraph: control/reference/sequrity_client/integrations/integrations_langgraph.md
               - service_provider: general/sequrity_client/service_provider.md

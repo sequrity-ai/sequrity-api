@@ -103,8 +103,8 @@ Sequrity Control provides powerful and fine-grained control over tool use throug
     --8<-- "examples/control/getting_started/tool_use_dual_llm/rest_api.py:security_headers"
     ```
 
-- **`X-Security-Features`**: Enables the Dual-LLM feature in this example
-- **`X-Security-Policy`**: Defines security policies in [SQRT language](../reference/sqrt/index.md):
+- **`X-Features`**: Enables the Dual-LLM feature in this example
+- **`X-Policy`**: Defines security policies in [SQRT language](../reference/sqrt/index.md):
 
     ```rust
     // Define sensitive document tags
@@ -124,7 +124,7 @@ Sequrity Control provides powerful and fine-grained control over tool use throug
     - Tags documents retrieved by `get_internal_document` as `internal_use` and `confidential`
     - Blocks `send_email` calls if the email body contains sensitive tags AND the recipient is not from `trustedcorp.com`
 
-- **`X-Security-Config`**: Controls response format - `include_program: true` returns the generated execution program for auditing and transparency
+- **`X-Config`**: Controls response format - `include_program: true` returns the generated execution program for auditing and transparency
 
 ## Tool Definitions
 
@@ -191,7 +191,7 @@ Note that we need to keep track of the `session_id` to maintain context across m
 
 The LLM first calls `get_internal_document` to retrieve the document. This tool call is allowed because there are no denying policies for it[^2].
 
-[^2]: `get_internal_documet` has no user-defined policy but got allowed. This is because [`InternalPolicyPreset`](../reference/sequrity_client/headers/policy_header.md#sequrity.control.types.headers.policy_headers.InternalPolicyPreset) has `default_allow=true` by default.
+[^2]: `get_internal_documet` has no user-defined policy but got allowed. This is because [`InternalPolicyPresets`](../reference/sequrity_client/headers/policy_header.md#sequrity.types.headers.InternalPolicyPresets) has `default_allow=true` by default.
 
 === "Sequrity Client"
 

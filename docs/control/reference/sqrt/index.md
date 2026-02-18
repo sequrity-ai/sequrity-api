@@ -5,5 +5,5 @@ Sequrity Control uses SQRT to secure tool calls based on argument values and ses
 
 Refer to the [SQRT Learning Guide](../../learn/sqrt/index.md) for tutorials,
 [Sequrity Control Examples](../../examples/index.md) for examples,
-[`sequrity.control.sqrt`][sequrity.control.sqrt.check] for parsing SQRT code in Sequrity Client,
+[`sequrity.sqrt`][sequrity.sqrt.parser.check] for parsing SQRT code in Sequrity Client,
 and the [SQRT Grammar](./grammar.md) for a complete language reference.

@@ -6,7 +6,7 @@ hide:
 # Release Notes
 
 
-## v0.0.3
+## v0.3
 
 `time: 2026-02-04`
 
@@ -20,7 +20,7 @@ hide:
   - Drop-in AsyncOpenAI replacement with automatic session management
   - Full support for Sequrity security features (dual-LLM, policies, fine-grained config)
   - Comprehensive documentation and examples
-- **LangGraph Integration** 
+- **LangGraph Integration**
 - **Type Checking**: Integrated `ty` type checker into CI/CD pipeline
   - All source code now type-checked with `ty`
   - Added to `just lint` command for local development

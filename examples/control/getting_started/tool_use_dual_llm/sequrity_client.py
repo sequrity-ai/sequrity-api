@@ -24,13 +24,13 @@ except ImportError:
 # --8<-- [start:imports]
 # --8<-- [end:imports]
 from sequrity import SequrityClient
-from sequrity.control import (
+from sequrity import (
     FeaturesHeader,
     FineGrainedConfigHeader,
-    ResponseContentJsonSchema,
-    ResponseFormat,
     SecurityPolicyHeader,
 )
+from sequrity.types.dual_llm_response import ResponseContentJsonSchema
+from sequrity.types.headers import ResponseFormatOverrides
 
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY", "your-openrouter-api-key")
 sequrity_key = os.getenv("SEQURITY_API_KEY", "your-sequrity-api-key")
@@ -91,9 +91,8 @@ tool_defs = [
 ]
 
 # --8<-- [start:security_headers]
-features = FeaturesHeader.dual_llm(mode="standard")
-security_policy = SecurityPolicyHeader(
-    language="sqrt",
+features = FeaturesHeader.dual_llm()
+security_policy = SecurityPolicyHeader.dual_llm(
     codes=r"""
     let sensitive_docs = {"internal_use", "confidential"};
     tool "get_internal_document" -> @tags |= sensitive_docs;
@@ -102,7 +101,7 @@ security_policy = SecurityPolicyHeader(
     }
     """,
 )
-fine_grained_config = FineGrainedConfigHeader(response_format=ResponseFormat(include_program=True))
+fine_grained_config = FineGrainedConfigHeader(response_format=ResponseFormatOverrides(include_program=True))
 # --8<-- [end:security_headers]
 
 rprint("\n[bold blue] Testing Dual-LLM Secure Tool Use Example[/bold blue]\n")
@@ -113,7 +112,7 @@ rprint("[bold red]" + "=" * 60 + "[/bold red]\n")
 user_query = "Retrieve the internal document with ID 'DOC12345' and email it to research@gmail.com"
 messages = [{"role": "user", "content": user_query}]
 
-response = client.control.create_chat_completion(
+response = client.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -148,7 +147,7 @@ messages.append(
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
 
 # --8<-- [start:denied_response]
-response = client.control.create_chat_completion(
+response = client.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -173,7 +172,7 @@ rprint("[bold green]" + "=" * 60 + "[/bold green]\n")
 # --8<-- [start:trusted_query]
 messages = [{"role": "user", "content": user_query.replace("research@gmail.com", "user@trustedcorp.com")}]
 
-response = client.control.create_chat_completion(
+response = client.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -200,7 +199,7 @@ messages.append(
     }
 )
 rprint("\n[dim]→ Executing tool call: [bold]get_internal_document[/bold][/dim]")
-response = client.control.create_chat_completion(
+response = client.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,
@@ -222,7 +221,7 @@ messages.append(
     }
 )
 rprint("\n[dim]→ Executing tool call: [bold]send_email[/bold][/dim]")
-response = client.control.create_chat_completion(
+response = client.chat.create(
     messages=messages,
     model=model,
     tools=tool_defs,

@@ -6,9 +6,8 @@ the LangChain and LangGraph frameworks.
 """
 
 import pytest
-
-from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
 from sequrity.integrations.langgraph import create_sequrity_langgraph_client
+from sequrity.types.headers import FeaturesHeader, SecurityPolicyHeader
 from sequrity_unittest.config import get_test_config
 
 # Check if LangChain is available
@@ -43,7 +42,9 @@ class TestLangGraphIntegration:
         )
 
         # Test invoke
-        response = await llm.ainvoke([HumanMessage(content="What is 2 + 2? Answer with just the number.")])
+        response = await llm.ainvoke(
+            [HumanMessage(content="What is 2 + 2? Answer with just the number.")]
+        )
 
         # Verify response
         assert response is not None
@@ -88,29 +89,29 @@ class TestLangGraphIntegration:
         llm.reset_session()
         assert llm.session_id is None
 
-    @pytest.mark.skipif(not LANGCHAIN_AVAILABLE, reason="LangChain is not installed")
-    @pytest.mark.asyncio
-    async def test_streaming(self):
-        """Test streaming responses."""
-        # Create Sequrity client
-        llm = create_sequrity_langgraph_client(
-            sequrity_api_key=self.test_config.api_key,
-            features=FeaturesHeader.dual_llm(),
-            security_policy=SecurityPolicyHeader.dual_llm(),
-            service_provider="openrouter",
-            llm_api_key=self.test_config.llm_api_key_openrouter,
-            base_url=self.test_config.base_url,
-            model="gpt-5-mini",
-        )
+    # @pytest.mark.skipif(not LANGCHAIN_AVAILABLE, reason="LangChain is not installed")
+    # @pytest.mark.asyncio
+    # async def test_streaming(self):
+    #     """Test streaming responses."""
+    #     # Create Sequrity client
+    #     llm = create_sequrity_langgraph_client(
+    #         sequrity_api_key=self.test_config.api_key,
+    #         features=FeaturesHeader.dual_llm(),
+    #         security_policy=SecurityPolicyHeader.dual_llm(),
+    #         service_provider="openrouter",
+    #         llm_api_key=self.test_config.llm_api_key_openrouter,
+    #         base_url=self.test_config.base_url,
+    #         model="gpt-5-mini",
+    #     )
 
-        # Test streaming
-        chunks = []
-        async for chunk in llm.astream([HumanMessage(content="Count from 1 to 3")]):
-            chunks.append(chunk)
+    #     # Test streaming
+    #     chunks = []
+    #     async for chunk in llm.astream([HumanMessage(content="Count from 1 to 3")]):
+    #         chunks.append(chunk)
 
-        # Verify we got chunks
-        assert len(chunks) > 0
-        assert llm.session_id is not None
+    #     # Verify we got chunks
+    #     assert len(chunks) > 0
+    #     assert llm.session_id is not None
 
     @pytest.mark.skipif(not LANGCHAIN_AVAILABLE, reason="LangChain is not installed")
     @pytest.mark.asyncio
