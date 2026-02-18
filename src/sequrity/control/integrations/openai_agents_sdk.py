@@ -24,11 +24,10 @@ Example:
     ```
 """
 
+import os
 from typing import Any, AsyncIterator
 
 import httpx
-from openai import AsyncOpenAI
-from openai.types.responses.response_prompt_param import ResponsePromptParam
 
 # Import Agents SDK types for runtime
 from agents.agent_output import AgentOutputSchemaBase
@@ -38,8 +37,10 @@ from agents.model_settings import ModelSettings
 from agents.models.interface import Model, ModelProvider, ModelTracing
 from agents.models.openai_chatcompletions import OpenAIChatCompletionsModel
 from agents.tool import Tool
+from openai import AsyncOpenAI
+from openai.types.responses.response_prompt_param import ResponsePromptParam
 
-from .._constants import build_control_base_url, build_sequrity_headers
+from .._constants import SEQURITY_BASE_URL, build_control_base_url, build_sequrity_headers
 from ..types.enums import EndpointType
 from ..types.headers import (
     FeaturesHeader,
@@ -95,12 +96,15 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
         fine_grained_config: FineGrainedConfigHeader | None = None,
         service_provider: str = "openrouter",
         llm_api_key: str | None = None,
-        base_url: str = "https://api.sequrity.ai",
+        base_url: str | None = None,
         endpoint_type: EndpointType | str = EndpointType.CHAT,
         timeout: float = 60.0,
         **kwargs: Any,
     ):
         """Initialize Sequrity-enabled AsyncOpenAI client."""
+        if base_url is None:
+            base_url = os.getenv("SEQURITY_BASE_URL", SEQURITY_BASE_URL)
+
         # Store Sequrity-specific configuration
         self._sequrity_features = features
         self._sequrity_policy = security_policy
@@ -371,7 +375,7 @@ def create_sequrity_openai_agents_sdk_client(
     fine_grained_config: FineGrainedConfigHeader | None = None,
     service_provider: str = "openrouter",
     llm_api_key: str | None = None,
-    base_url: str = "https://api.sequrity.ai",
+    base_url: str | None = None,
     endpoint_type: EndpointType | str = EndpointType.CHAT,
     timeout: float = 60.0,
     **kwargs: Any,

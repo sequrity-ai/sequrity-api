@@ -27,6 +27,7 @@ Example:
 """
 
 import json
+import os
 from typing import Any, AsyncIterator, Iterator
 
 from langchain_core.callbacks import (
@@ -37,7 +38,7 @@ from langchain_core.messages import AIMessage, BaseMessage
 from langchain_core.outputs import ChatGeneration, ChatGenerationChunk, ChatResult
 from langchain_openai import ChatOpenAI
 
-from .._constants import build_control_base_url, build_sequrity_headers
+from .._constants import SEQURITY_BASE_URL, build_control_base_url, build_sequrity_headers
 from ..types.enums import EndpointType
 from ..types.headers import (
     FeaturesHeader,
@@ -95,12 +96,14 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         fine_grained_config: FineGrainedConfigHeader | None = None,
         service_provider: str = "openrouter",
         llm_api_key: str | None = None,
-        base_url: str = "https://api.sequrity.ai",
+        base_url: str | None = None,
         endpoint_type: EndpointType | str = EndpointType.CHAT,
         model: str = "gpt-4",
         **kwargs: Any,
     ):
         """Initialize Sequrity-enabled LangGraph ChatOpenAI client."""
+        if base_url is None:
+            base_url = os.getenv("SEQURITY_BASE_URL", SEQURITY_BASE_URL)
         # Build custom headers using shared builder
         custom_headers = build_sequrity_headers(
             api_key=sequrity_api_key,
@@ -339,7 +342,7 @@ def create_sequrity_langgraph_client(
     fine_grained_config: FineGrainedConfigHeader | None = None,
     service_provider: str = "openrouter",
     llm_api_key: str | None = None,
-    base_url: str = "https://api.sequrity.ai",
+    base_url: str | None = None,
     endpoint_type: EndpointType | str = EndpointType.CHAT,
     model: str = "gpt-4",
     **kwargs: Any,

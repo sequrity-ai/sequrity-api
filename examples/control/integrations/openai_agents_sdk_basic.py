@@ -7,20 +7,20 @@ This example demonstrates how to use Sequrity with the OpenAI Agents SDK.
 import asyncio
 import os
 
-from sequrity.control import FeaturesHeader
+from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 from sequrity.control.integrations.openai_agents_sdk import (
     create_sequrity_openai_agents_sdk_client,
 )
 
 
 # --8<-- [start:basic-setup]
-# Create Sequrity client — only features is needed to select dual-llm arch.
-# security_policy and fine_grained_config are optional (server uses defaults).
+# Create Sequrity client
 client = create_sequrity_openai_agents_sdk_client(
-    sequrity_api_key=os.getenv("SEQURITY_API_KEY"),
+    sequrity_api_key=os.environ["SEQURITY_API_KEY"],
     features=FeaturesHeader.dual_llm(),
+    security_policy=SecurityPolicyHeader.dual_llm(),
     service_provider="openrouter",
-    llm_api_key=os.getenv("OPENROUTER_API_KEY"),
+    llm_api_key=os.environ["OPENROUTER_API_KEY"],
 )
 # --8<-- [end:basic-setup]
 
