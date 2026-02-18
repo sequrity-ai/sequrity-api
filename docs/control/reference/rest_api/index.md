@@ -62,7 +62,7 @@ https://api.sequrity.ai/control/{endpoint_type}/{service_provider?}/{version}/{a
 | Segment | Description | Examples |
 |---------|-------------|---------|
 | `endpoint_type` | The type of endpoint | `chat`, `code`, `lang-graph`, `policy-gen` |
-| `service_provider` | Optional LLM service provider | `openai`, `openrouter`, `anthropic` |
+| `service_provider` | Optional LLM service provider | `openai`, `openrouter`, `anthropic`, `sequrity_azure` |
 | `version` | API version | `v1` |
 | `api_suffix` | API-specific suffix | `chat/completions`, `messages`, `generate` |
 
@@ -71,7 +71,8 @@ When `service_provider` is omitted, the default provider is used.
 ## Documentation
 
 - **[Service Providers](../../../general/rest_api/service_provider.md)** - Available LLM service providers
-- **[Chat Completion](chat_completion.md)** - Chat completion and Messages API reference
+- **[Chat Completion](chat_completion.md)** - OpenAI-compatible Chat Completions API reference
+- **[Messages](messages.md)** - Anthropic-compatible Messages API reference
 
 ### Custom Headers
 

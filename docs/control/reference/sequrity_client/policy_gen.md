@@ -2,7 +2,7 @@
 
 The Policy Generation API generates SQRT security policies from natural language descriptions.
 
-::: sequrity.resources.policy.PolicyResource
+::: sequrity.control.resources.policy.PolicyResource
     options:
       show_root_heading: true
       show_source: false
@@ -11,37 +11,37 @@ The Policy Generation API generates SQRT security policies from natural language
 
 ## Request Types
 
-::: sequrity.types.policy_gen.PolicyGenRequestBase
+::: sequrity.control.types.policy_gen.PolicyGenRequestBase
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.policy_gen.PolicyGenRequestOpenAiChatCompletion
+::: sequrity.control.types.policy_gen.PolicyGenRequestOpenAiChatCompletion
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.policy_gen.PolicyGenRequestOpenRouterChatCompletion
+::: sequrity.control.types.policy_gen.PolicyGenRequestOpenRouterChatCompletion
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.policy_gen.PolicyGenRequestAnthropicMessages
+::: sequrity.control.types.policy_gen.PolicyGenRequestAnthropicMessages
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.policy_gen.PolicyGenRequestOaiResponses
+::: sequrity.control.types.policy_gen.PolicyGenRequestOaiResponses
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.policy_gen.PolicyGenRequestSequrityAzureChatCompletion
+::: sequrity.control.types.policy_gen.PolicyGenRequestSequrityAzureChatCompletion
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.policy_gen.PolicyGenRequestSequrityAzureResponses
+::: sequrity.control.types.policy_gen.PolicyGenRequestSequrityAzureResponses
     options:
       show_root_heading: true
       show_source: false
@@ -50,7 +50,7 @@ The Policy Generation API generates SQRT security policies from natural language
 
 ## Response Types
 
-::: sequrity.types.policy_gen.PolicyGenResponse
+::: sequrity.control.types.policy_gen.PolicyGenResponse
     options:
       show_root_heading: true
       show_source: false

@@ -18,7 +18,7 @@ This installs the required `openai-agents` package along with Sequrity.
 
 ## API Reference
 
-::: sequrity.integrations.openai_agents_sdk
+::: sequrity.control.integrations.openai_agents_sdk
     options:
       show_root_heading: false
       show_source: false

@@ -39,6 +39,7 @@ def first_message_example():
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",  # model name from your LLM provider
         llm_api_key=openrouter_api_key,  # your LLM provider API key
+        provider="openrouter", # specify the LLM provider
     )
 
     print(response)

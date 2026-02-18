@@ -9,7 +9,7 @@ This header is **required** when using Headers-Only Mode (must be provided toget
 ```json
 {
   "mode": "standard",
-  "codes": "",
+  "codes": {"code": "", "language": "sqrt"},
   "auto_gen": false,
   "fail_fast": null,
   "presets": {
@@ -46,9 +46,14 @@ The security mode. Valid values:
 
 | Type | Required | Default |
 |------|----------|---------|
-| `string` or `list[string]` | No | `""` |
+| `object` | No | `{"code": "", "language": "sqrt"}` |
 
-The SQRT policy code as a string or a list of strings. Can be empty (`""` or `[]`) for no custom policies.
+An object containing the policy code and its language. Fields:
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `code` | `string` | `""` | The policy code. Can be empty for no custom policies. |
+| `language` | `string` | `"sqrt"` | The policy language: `"sqrt"` or `"cedar"`. |
 
 ### `auto_gen`
 

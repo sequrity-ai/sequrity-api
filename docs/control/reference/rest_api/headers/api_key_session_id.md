@@ -3,10 +3,10 @@
 ## X-Api-Key (Optional)
 
 ```http
-X-Api-Key: your-sequrity-api-key
+X-Api-Key: your-provider-api-key
 ```
 
-This header is the LLM service API key associated with the service provider you picked.
+This header is the LLM API key associated with the service provider you picked, e.g., OpenRouter, Anthropic, etc.
 
 - For example, you need to provide your OpenRouter API key in the `X-Api-Key` header
 if you post to `https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions`.

@@ -33,7 +33,7 @@ You can interact with the Sequrity Control API using either the Sequrity Python 
 
 ## Sending Your First Message
 
-Both Sequrity client and REST API are compatible with [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat).
+Both Sequrity client and REST API are compatible with [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat) and [Anthropic Messages API](https://platform.claude.com/docs/en/api/messages). In this example, we use OpenAI Chat Completions API.
 
 ### Request
 
@@ -50,7 +50,7 @@ Let's send a simple message asking "What is the largest prime number below 100?"
     --8<-- "examples/control/getting_started/first_message/sequrity_client.py:run_first_message"
     ```
 
-    We create an instance of `SequrityClient` with your Sequrity API key, and send messages using [`chat.create`][sequrity.resources.chat.ChatResource.create], specifying the model name on OpenRouter and your OpenRouter API key.
+    We create an instance of `SequrityClient` with your Sequrity API key, and send messages using [`chat.create`][sequrity.control.resources.chat.ChatResource.create], specifying the model name on OpenRouter and your OpenRouter API key.
 
 === "REST API"
 
@@ -165,7 +165,7 @@ You can specify Single-LLM or Dual-LLM mode in either of the following two ways:
     Whichever Sequrity API key you use (Single-LLM or Dual-LLM),
     you can always override the mode by passing the `X-Features` header:
 
-    - For Sequrity client, use [`FeaturesHeader.single_llm`][sequrity.types.headers.FeaturesHeader.single_llm] / [`FeaturesHeader.dual_llm`][sequrity.types.headers.FeaturesHeader.dual_llm]
+    - For Sequrity client, use [`FeaturesHeader.single_llm`][sequrity.control.types.headers.FeaturesHeader.single_llm] / [`FeaturesHeader.dual_llm`][sequrity.control.types.headers.FeaturesHeader.dual_llm]
     - For REST API, use the [`X-Features`](../reference/rest_api/headers/security_features.md) header
 
     Only the `X-Features` header is needed to switch the architecture.

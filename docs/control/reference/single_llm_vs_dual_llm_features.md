@@ -36,6 +36,7 @@ Single-LLM supports a limited subset of features compared to Dual-LLM mode. The 
 
         For Single-LLM, there is no program execution and metadata propagation, so the security policies for Single-LLM must rely on
 
+        - [Tool arguments](../learn/sqrt/00_metadata.md#tool-call-metadata-checks)
         - [Tool results wrapped in metadata](../learn/sqrt/00_metadata.md#wrapping-tool-results-with-metadata)
         - [Session metadata](../learn/sqrt/00_metadata.md#session-metadata)
 

@@ -160,7 +160,8 @@ nav:
           - REST API:
               - control/reference/rest_api/index.md
               - Service Providers: general/rest_api/service_provider.md
-              - Chat Completion: control/reference/rest_api/chat_completion.md
+              - Chat Completions API: control/reference/rest_api/chat_completion.md
+              - Messages API: control/reference/rest_api/messages.md
               - Custom Headers:
                   - X-Api-Key and X-Session-ID: control/reference/rest_api/headers/api_key_session_id.md
                   - X-Features: control/reference/rest_api/headers/security_features.md
@@ -169,8 +170,8 @@ nav:
           - SequrityClient:
               - SequrityClient.control:
                   - control/reference/sequrity_client/index.md
-                  - Chat Completion: control/reference/sequrity_client/chat_completion.md
-                  - Messages: control/reference/sequrity_client/message.md
+                  - Chat Completions API: control/reference/sequrity_client/chat_completion.md
+                  - Messages API: control/reference/sequrity_client/message.md
                   - LangGraph: control/reference/sequrity_client/langgraph.md
                   - Policy Generation: control/reference/sequrity_client/policy_gen.md
                   - Headers:
@@ -179,7 +180,7 @@ nav:
                       - ConfigHeader: control/reference/sequrity_client/headers/config_header.md
                   - ValueWithMeta: control/reference/sequrity_client/value_with_meta.md
                   - SQRT: control/reference/sequrity_client/sqrt.md
-              - SequrityClient.integrations:
+              - Integrations:
                   - control/reference/sequrity_client/integrations/index.md
                   - OpenAI Agents SDK: control/reference/sequrity_client/integrations/integrations_oai_sdk.md
                   - LangGraph: control/reference/sequrity_client/integrations/integrations_langgraph.md

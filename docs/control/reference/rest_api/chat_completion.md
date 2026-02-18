@@ -1,197 +1,185 @@
-# Sequrity Control Chat Completion API
+# Chat Completion API
 
-The Sequrity Control API provides chat completion and messages endpoints that are compatible with the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat) and the [Anthropic Messages API](https://docs.anthropic.com/en/api/messages). This allows you to use Sequrity's security features while maintaining compatibility with existing LLM applications.
+The Sequrity Control Chat Completion API is compatible with the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat). This allows you to use Sequrity's security features while maintaining compatibility with existing OpenAI-based applications.
 
-## Request
+For the Anthropic Messages format, see the [Messages API](./messages.md) reference.
 
-### Endpoints
-
-#### OpenAI-Compatible Chat Completions
+## Endpoints
 
 | Endpoint | Provider |
 |----------|----------|
-| `POST https://api.sequrity.ai/control/chat/v1/chat/completions` | Default |
-| `POST https://api.sequrity.ai/control/chat/openai/v1/chat/completions` | OpenAI |
-| `POST https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions` | OpenRouter |
+| `POST /control/{endpoint_type}/v1/chat/completions` | Default |
+| `POST /control/{endpoint_type}/openai/v1/chat/completions` | OpenAI |
+| `POST /control/{endpoint_type}/openrouter/v1/chat/completions` | OpenRouter |
+| `POST /control/{endpoint_type}/sequrity_azure/v1/chat/completions` | Sequrity Azure |
 
-#### Anthropic-Compatible Messages
+Where `{endpoint_type}` is `chat`, `code`, `agent`, or `lang-graph`. See [URL Pattern](./index.md#url-pattern) and [Service Providers](../../../general/rest_api/service_provider.md).
 
-| Endpoint | Provider |
-|----------|----------|
-| `POST https://api.sequrity.ai/control/chat/v1/messages` | Default |
-| `POST https://api.sequrity.ai/control/chat/anthropic/v1/messages` | Anthropic |
-
-See [Service Providers](../../../general/rest_api/service_provider.md) for available service providers.
-
-### Request Body Schema
+## Request Body
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `messages` | `array[Message]` | Yes | A list of messages comprising the conversation so far. See [Message Types](#message-types) below. |
-| `model` | `string` | Yes | Model ID used to generate the response, like `openai/gpt-5-mini`. For Dual-LLM, two models can be specified separated by a comma, like `openai/gpt-5-mini,openai/gpt-5-nano`, for PLLM and QLLM |
-| `reasoning_effort` | `string` | No | Constrains effort on reasoning for reasoning models. Supported values: `minimal`, `low`, `medium`, `high`. |
-| `response_format` | `object` | No | An object specifying the format that the model must output. Setting to `json_schema` enables Structured Outputs. See [Response Format](#response-format). |
-| `seed` | `integer` | No | If specified, the system will make a best effort to sample deterministically for reproducible results. |
-| `stream` | `boolean` | No | If set to `true`, partial message deltas will be sent as server-sent events. |
-| `temperature` | `float` | No | Sampling temperature to use, between 0 and 2. Higher values make output more random. |
-| `tools` | `array[Tool]` | No | A list of tools the model may call. Currently, only functions are supported as a tool. See [Tools](#tools). |
-| `top_p` | `float` | No | An alternative to sampling with temperature, called nucleus sampling. Use 0.1 for top 10% probability mass. |
+| `messages` | `array[Message]` | Yes | A list of messages comprising the conversation so far. See [Message Types](#message-types). |
+| `model` | `string` | Yes | Model ID, e.g. `openai/gpt-5-mini`. For Dual-LLM, specify two models separated by a comma (`pllm,qllm`). |
+| `temperature` | `float` | No | Sampling temperature (0–2). Higher values produce more random output. |
+| `top_p` | `float` | No | Nucleus sampling threshold. Use `0.1` for top 10% probability mass. |
+| `tools` | `array[Tool]` | No | Tools the model may call. See [Tools](#tools). |
+| `stream` | `boolean` | No | If `true`, partial deltas are sent as server-sent events. |
+| `seed` | `integer` | No | Seed for deterministic sampling (best-effort). |
+| `reasoning_effort` | `string` | No | Reasoning effort for reasoning models: `"minimal"`, `"low"`, `"medium"`, `"high"`. |
+| `response_format` | `object` | No | Output format constraint. See [Response Format](#response-format). |
 
 ### Message Types
 
-Messages can be one of the following types, distinguished by the `role` field:
+Messages are distinguished by the `role` field.
 
 #### System Message
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `role` | `"system"` | Yes | The role of the message author. |
-| `content` | `string` or `array[ContentPartText]` | Yes | The contents of the system message. |
-| `name` | `string` | No | An optional name for the participant to differentiate between participants of the same role. |
+| `role` | `"system"` | Yes | |
+| `content` | `string \| array[ContentPartText]` | Yes | The system prompt. |
+| `name` | `string` | No | Optional participant name. |
 
 #### Developer Message
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `role` | `"developer"` | Yes | The role of the message author. |
-| `content` | `string` or `array[ContentPartText]` | Yes | The contents of the developer message. |
-| `name` | `string` | No | An optional name for the participant. |
+| `role` | `"developer"` | Yes | |
+| `content` | `string \| array[ContentPartText]` | Yes | The developer message. |
+| `name` | `string` | No | Optional participant name. |
 
 #### User Message
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `role` | `"user"` | Yes | The role of the message author. |
-| `content` | `string` or `array[ContentPart]` | Yes | The contents of the user message. Supports text, images, audio, and files. |
-| `name` | `string` | No | An optional name for the participant. |
+| `role` | `"user"` | Yes | |
+| `content` | `string \| array[ContentPart]` | Yes | Supports text, images, audio, and files. See [Content Parts](#content-parts). |
+| `name` | `string` | No | Optional participant name. |
 
 #### Assistant Message
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `role` | `"assistant"` | Yes | The role of the message author. |
-| `content` | `string` or `array[ContentPartText \| ContentPartRefusal]` | No | The contents of the assistant message. Required unless `tool_calls` is specified. |
-| `name` | `string` | No | An optional name for the participant. |
-| `refusal` | `string` | No | The refusal message by the assistant. |
-| `audio` | `object` | No | Data about a previous audio response from the model. |
-| `tool_calls` | `array[ToolCall]` | No | The tool calls generated by the model, such as function calls. |
-| `function_call` | `object` | No | **Deprecated.** Replaced by `tool_calls`. |
+| `role` | `"assistant"` | Yes | |
+| `content` | `string \| array[ContentPartText \| ContentPartRefusal] \| null` | No | Required unless `tool_calls` is specified. |
+| `name` | `string` | No | Optional participant name. |
+| `refusal` | `string` | No | Refusal message by the assistant. |
+| `audio` | `object` | No | Reference to a previous audio response. |
+| `tool_calls` | `array[ToolCall]` | No | Tool calls generated by the model. |
+| `function_call` | `object` | No | **Deprecated.** Use `tool_calls`. |
 
 #### Tool Message
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `role` | `"tool"` | Yes | The role of the message author. |
-| `content` | `string` or `array[ContentPartText]` | Yes | The contents of the tool message. |
-| `tool_call_id` | `string` | Yes | Tool call that this message is responding to. |
+| `role` | `"tool"` | Yes | |
+| `content` | `string \| array[ContentPartText]` | Yes | The tool result. |
+| `tool_call_id` | `string` | Yes | ID of the tool call this responds to. |
+
+#### Function Message (deprecated)
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `role` | `"function"` | Yes | |
+| `content` | `string \| null` | Yes | The function result. |
+| `name` | `string` | Yes | The function name. |
 
 ### Content Parts
 
-User messages support multimodal content through content parts:
+User messages support multimodal content:
 
-| Type | Fields | Description |
-|------|--------|-------------|
-| `text` | `type`, `text` | Plain text content. |
-| `image_url` | `type`, `image_url.url`, `image_url.detail` | Image content via URL or base64. Detail can be `auto`, `low`, or `high`. |
-| `input_audio` | `type`, `input_audio.data`, `input_audio.format` | Audio content as base64. Format can be `wav` or `mp3`. |
-| `file` | `type`, `file.file_data`, `file.file_id`, `file.filename` | File content via base64 data or file ID. |
+| Type | Key Fields | Description |
+|------|------------|-------------|
+| `text` | `type`, `text` | Plain text. |
+| `image_url` | `type`, `image_url.url`, `image_url.detail` | Image via URL or base64. Detail: `"auto"`, `"low"`, `"high"`. |
+| `input_audio` | `type`, `input_audio.data`, `input_audio.format` | Audio as base64. Format: `"wav"`, `"mp3"`. |
+| `file` | `type`, `file.file_data`, `file.file_id`, `file.filename` | File via base64 or file ID. |
 
 ### Tools
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `type` | `"function"` | Yes | The type of the tool. Currently, only `function` is supported. |
-| `function.name` | `string` | Yes | The name of the function. Must be a-z, A-Z, 0-9, underscores, or dashes (max 64 characters). |
-| `function.description` | `string` | No | A description of what the function does. |
-| `function.parameters` | `object` | No | The parameters the function accepts, described as a JSON Schema object. |
-| `function.strict` | `boolean` | No | Whether to enable strict schema adherence when generating the function call. |
+| `type` | `"function"` | Yes | Currently only `"function"` is supported. |
+| `function.name` | `string` | Yes | Function name (a-z, A-Z, 0-9, underscores, dashes; max 64 chars). |
+| `function.description` | `string` | No | What the function does. |
+| `function.parameters` | `object` | No | JSON Schema describing the function parameters. |
+| `function.strict` | `boolean` | No | Enable strict schema adherence. |
 
 ### Response Format
 
 | Type | Description |
 |------|-------------|
-| `text` | Default text response format. |
-| `json_object` | Enables JSON mode. The model will output valid JSON. |
-| `json_schema` | Enables Structured Outputs with a specific JSON Schema. Includes `name`, `description`, `schema`, and `strict` fields. |
+| `text` | Default text response. |
+| `json_object` | JSON mode — model outputs valid JSON. |
+| `json_schema` | Structured Outputs with a JSON Schema. Fields: `name`, `description`, `schema`, `strict`. |
 
-## Response
-
-### Response Body Schema
+## Response Body
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | `string` | A unique identifier for the chat completion. |
-| `object` | `"chat.completion"` | The object type, always `chat.completion`. |
-| `created` | `integer` | The Unix timestamp (in seconds) of when the chat completion was created. |
-| `model` | `string` | The model used for the chat completion. |
-| `choices` | `array[Choice]` | A list of chat completion choices. Can be more than one if `n` is greater than 1. |
-| `usage` | `object` | Usage statistics for the completion request. |
+| `id` | `string` | Unique identifier for the chat completion. |
+| `object` | `"chat.completion"` | Always `"chat.completion"`. |
+| `created` | `integer` | Unix timestamp (seconds) when created. |
+| `model` | `string` | The model used. |
+| `choices` | `array[Choice]` | Completion choices. |
+| `usage` | `CompletionUsage` | Token usage statistics. |
+| `session_id` | `string \| null` | Sequrity session ID (also available via `X-Session-ID` response header). |
 
-### Choice Object
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `index` | `integer` | The index of the choice in the list of choices. |
-| `message` | `object` | A chat completion message generated by the model. |
-| `finish_reason` | `string` | The reason the model stopped generating tokens: `stop`, `length`, `tool_calls`, `content_filter`, or `function_call`. |
-| `logprobs` | `object` | Log probability information for the choice, if requested. |
-
-### Response Message Object
+### Choice
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `role` | `"assistant"` | The role of the author of this message. |
-| `content` | `string` | The contents of the message. |
-| `refusal` | `string` | The refusal message generated by the model, if applicable. |
-| `annotations` | `array[Annotation]` | Annotations for the message, such as URL citations when using web search. |
-| `audio` | `object` | Audio response data, if audio output was requested. |
-| `tool_calls` | `array[ToolCall]` | The tool calls generated by the model, such as function calls. |
-| `function_call` | `object` | **Deprecated.** Replaced by `tool_calls`. |
+| `index` | `integer` | Index of this choice. |
+| `message` | `ResponseMessage` | The generated message. |
+| `finish_reason` | `string` | Why generation stopped: `"stop"`, `"length"`, `"tool_calls"`, `"content_filter"`, `"error"`. |
+| `logprobs` | `object \| null` | Log probability information, if requested. |
 
-### Usage Object
+### Response Message
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `prompt_tokens` | `integer` | Number of tokens in the prompt. |
-| `completion_tokens` | `integer` | Number of tokens in the generated completion. |
-| `total_tokens` | `integer` | Total number of tokens used in the request (prompt + completion). |
+| `role` | `"assistant"` | Always `"assistant"`. |
+| `content` | `string \| null` | The message content. |
+| `refusal` | `string \| null` | Refusal message, if applicable. |
+| `annotations` | `array[Annotation] \| null` | URL citations (e.g. from web search). |
+| `audio` | `object \| null` | Audio response data. |
+| `tool_calls` | `array[ToolCall] \| null` | Tool calls generated by the model. |
+
+### ToolCall
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | The tool call ID. |
+| `type` | `"function"` | Always `"function"`. |
+| `function.name` | `string` | Name of the called function. |
+| `function.arguments` | `string` | JSON-encoded arguments. |
+
+### CompletionUsage
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `prompt_tokens` | `integer` | Tokens in the prompt. |
+| `completion_tokens` | `integer` | Tokens in the completion. |
+| `total_tokens` | `integer` | Total tokens used. |
 
 ## Headers
 
-### Request Headers
+See [Custom Headers](./index.md#custom-headers) for the full list. Summary:
 
-The following headers can be included in your requests to the Sequrity Control API:
-
-#### Authentication
-
-| Header | Description |
-|--------|-------------|
-| `Authorization` | Bearer token authentication. Format: `Bearer <your-token>`. Used for authenticating requests with JWT tokens. |
-| `X-Api-Key` | API key authentication. Alternative to Bearer token authentication for simpler integrations. |
-
-#### Security Configuration
-
-| Header | Description |
-|--------|-------------|
-| `X-Features` | Enable or disable specific security features for this request. Allows fine-grained control over which security checks are applied. See [Security Features](./headers/security_features.md) for detailed configuration options. |
-| `X-Policy` | Specify security policies using SQRT policy language. Policies define rules for content filtering, access control, and compliance. See [Security Policy](./headers/security_policy.md) for policy syntax and examples. |
-| `X-Config` | Provide fine-grained configuration for this request. Includes FSM overrides, prompt settings, and response format options. See [Security Config](./headers/security_config.md) for the full configuration schema. |
-
-#### Session Management
-
-| Header | Description |
-|--------|-------------|
-| `X-Session-ID` | Specify a session ID to associate this request with an existing session. Useful for maintaining conversation context and applying session-level security policies. |
-
-### Response Headers
-
-| Header | Description |
-|--------|-------------|
-| `X-Session-ID` | The session ID associated with this response. This will be returned if a session was created or used for the request. User doesn't need to handle it manually most of the time. Read more in [Session ID and Multi-turn Sessions](../../learn/session_id.md). |
+| Header | Direction | Description |
+|--------|-----------|-------------|
+| `Authorization` | Request | `Bearer <sequrity-api-key>` |
+| `X-Api-Key` | Request | LLM provider API key (BYOK). |
+| `X-Features` | Request | [Security features](./headers/security_features.md) (agent arch, classifiers, blockers). |
+| `X-Policy` | Request | [Security policy](./headers/security_policy.md) (SQRT rules). |
+| `X-Config` | Request | [Fine-grained config](./headers/security_config.md) (FSM, prompts, response format). |
+| `X-Session-ID` | Request | Explicit session ID for multi-turn conversations. |
+| `X-Session-ID` | Response | Session ID assigned by the server. |
 
 ## Examples
 
-Request examples
+### Request
 
 === "Single LLM"
 
@@ -209,7 +197,7 @@ Request examples
     --8<-- "examples/control/getting_started/first_message/rest_api.sh:dual_llm"
     ```
 
-Response examples
+### Response
 
 === "Single LLM"
 
@@ -221,7 +209,7 @@ Response examples
                 "finish_reason": "stop",
                 "index": 0,
                 "message": {
-                    "content": "97\n\nExplanation: 99, 98, and 100 are composite (99 = 3×33, 98 = 2×49, 100 = 2×50). 97 has no divisors among primes ≤ √97 (2, 3, 5, 7), so it is prime.",
+                    "content": "97\n\nExplanation: 99, 98, and 100 are composite ...",
                     "role": "assistant"
                 }
             }

@@ -2,7 +2,7 @@
 
 The Messages API provides an Anthropic-compatible interface for secure LLM interactions using the Messages format.
 
-::: sequrity.resources.messages.MessagesResource
+::: sequrity.control.resources.messages.MessagesResource
     options:
       show_root_heading: true
       show_source: false

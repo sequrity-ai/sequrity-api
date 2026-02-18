@@ -4,7 +4,7 @@ The chat completion API provides an OpenAI-compatible interface for secure LLM i
 
 
 
-::: sequrity.resources.chat.ChatResource
+::: sequrity.control.resources.chat.ChatResource
     options:
       show_root_heading: true
       show_source: false
@@ -94,12 +94,12 @@ The chat completion API provides an OpenAI-compatible interface for secure LLM i
 
 When using Dual-LLM mode, the response content follows `ResponseContentJsonSchema`.
 
-::: sequrity.types.dual_llm_response.ResponseContentJsonSchema
+::: sequrity.control.types.dual_llm_response.ResponseContentJsonSchema
     options:
       show_root_heading: true
       show_source: true
 
-::: sequrity.types.dual_llm_response.ErrorInfo
+::: sequrity.control.types.dual_llm_response.ErrorInfo
     options:
       show_root_heading: true
       show_source: true

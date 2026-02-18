@@ -22,13 +22,6 @@ All three config headers — `X-Features`, `X-Policy`, and `X-Config` — are **
 
 When a header is omitted, the server uses the preset default for that part of the config (from your API key's DB entry, or the built-in preset).
 
-**Examples of valid header combinations:**
-
-- No config headers at all → uses all preset defaults
-- Only `X-Features` → override agent arch, keep default policy and FSM config
-- Only `X-Policy` → keep default arch, override policy
-- `X-Features` + `X-Config` → override arch and FSM, keep default policy
-- All three → full override
 
 ## Resolver Pipeline
 
@@ -41,28 +34,16 @@ The session config resolver runs a **four-step pipeline**:
 4. Request LLM config ──► model name + API key from request body / headers
 ```
 
-**Step 1 — Base config:** Your Sequrity API key is looked up in the database. If a config was saved for that key, it is used as the starting point. Otherwise, a default preset is selected based on `(endpoint_type, provider, agent_arch)`.
-
-**Step 2 — Deep copy:** A deep copy is made to prevent mutation of shared preset singletons.
-
-**Step 3 — Header overrides:** Three optional JSON headers are applied in fixed order:
-
-| Order | Header       | What it controls                                  |
-|-------|--------------|---------------------------------------------------|
-| 1     | `X-Features` | Agent arch switch, content classifiers/blockers    |
-| 2     | `X-Policy`   | Policy engine: mode, codes, auto_gen, fail_fast    |
-| 3     | `X-Config`   | FSM behavior, prompt settings, response format     |
-
 !!! info "Order matters"
 
     `X-Features` can rebuild the entire config (e.g. switching from single-llm to dual-llm), so it runs first. `X-Policy` and `X-Config` apply on top.
 
-**Step 4 — Request-level LLM config:** The final step applies the model name and API key from the request:
+**Model names:** Step 4 applies the model name and API key from the request:
 
 - A single model name like `"gpt-5-mini"` sets both PLLM and QLLM.
 - Two model names separated by a comma like `"gpt-5-mini,gpt-5-nano"` set PLLM and QLLM independently.
 - If `X-Api-Key` is provided (BYOK), the user's key is set on all LLM services matching the provider. Any model name is accepted.
-- If `X-Api-Key` is **not** provided, model names are validated against the server's model allow list.
+- If `X-Api-Key` is **not** provided, model names are validated against Sequrity's **model allow list**.
 
 ## Minimal Request (No Config Headers)
 
@@ -81,7 +62,7 @@ In this case, you only need to provide the Authorization token, model name, and 
 
     # No features, policy, or config headers needed —
     # the server uses the settings saved for your API key.
-    response = client.chat.create(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",
         llm_api_key="your-openrouter-key",
@@ -112,14 +93,15 @@ You can pass any subset of config headers to override specific parts of the sess
 === "Sequrity Client"
 
     ```python hl_lines="6"
-    from sequrity import SequrityClient, FeaturesHeader
+    from sequrity import SequrityClient
+    from sequrity.control import FeaturesHeader
 
     client = SequrityClient(api_key="your-sequrity-api-key")
 
     # Only X-Features is needed to switch the architecture.
     features = FeaturesHeader.dual_llm()
 
-    response = client.chat.create(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",
         llm_api_key="your-openrouter-key",
@@ -146,14 +128,15 @@ You can pass any subset of config headers to override specific parts of the sess
 === "Sequrity Client"
 
     ```python hl_lines="6-7"
-    from sequrity import SequrityClient, FeaturesHeader, SecurityPolicyHeader
+    from sequrity import SequrityClient
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
     client = SequrityClient(api_key="your-sequrity-api-key")
 
     features = FeaturesHeader.dual_llm()
     policy = SecurityPolicyHeader.dual_llm(codes='tool "x" { must allow always; }')
 
-    response = client.chat.create(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "Hello!"}],
         model="openai/gpt-5-mini",
         llm_api_key="your-openrouter-key",
@@ -182,4 +165,4 @@ You can pass any subset of config headers to override specific parts of the sess
 The `X-Api-Key` header controls whether you use your own LLM provider API key or Sequrity's managed keys:
 
 - **With `X-Api-Key` (BYOK):** Your key is used for all LLM calls to the matching provider. Any model name is accepted.
-- **Without `X-Api-Key`:** Sequrity uses its own server-managed API key for the provider. Model names are validated against the server's allow list, and extra charges may apply.
+- **Without `X-Api-Key`:** Sequrity uses its own server-managed API key for the provider. Model names are validated against the server's allow list, and **extra charges may apply**.

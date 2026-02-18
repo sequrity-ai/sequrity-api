@@ -19,6 +19,7 @@ POST https://api.sequrity.ai/control/chat/v1/chat/completions
 | `openai` | [OpenAI](https://openai.com/) | :white_check_mark: Supported |
 | `openrouter` | [OpenRouter](https://openrouter.ai/) | :white_check_mark: Supported |
 | `anthropic` | [Anthropic](https://anthropic.com/) | :white_check_mark: Supported |
+| `sequrity_azure` | Sequrity Internal Dev | 📝 Not Open to Public |
 
 !!! note "Anthropic Messages API"
 

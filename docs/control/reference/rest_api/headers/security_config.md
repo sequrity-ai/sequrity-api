@@ -11,11 +11,11 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
   "fsm": {
     "min_num_tools_for_filtering": 10,
     "clear_session_meta": "never",
-    "max_n_turns": 5,
+    "max_n_turns": null,
     "clear_history_every_n_attempts": null,
     "disable_rllm": true,
-    "enable_multistep_planning": false,
-    "enabled_internal_tools": ["parse_with_ai", "verify_hypothesis"],
+    "enable_multistep_planning": null,
+    "enabled_internal_tools": null,
     "prune_failed_steps": false,
     "force_to_cache": [],
     "max_pllm_steps": null,
@@ -29,8 +29,6 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
     "strict_tool_result_parsing": null
   },
   "prompt": {
-    "flavor": null,
-    "version": null,
     "pllm": {
       "debug_info_level": "normal",
       "clarify_ambiguous_queries": null,
@@ -94,9 +92,9 @@ When to clear session metadata:
 
 | Type | Required | Default | Constraints |
 |------|----------|---------|-------------|
-| `integer` or `null` | No | `5` | >= 1 |
+| `integer` or `null` | No | endpoint-dependent | >= 1 |
 
-Maximum number of conversation turns allowed in the session.
+Maximum number of conversation turns allowed in the session. When not set, the server applies a default based on the endpoint type.
 
 ### Dual-LLM Only Fields
 
@@ -116,6 +114,14 @@ Maximum number of PLLM steps before giving up and returning an error.
 
 Maximum number of tool calls allowed per PLLM step.
 
+#### `fsm.allow_history_mismatch`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `boolean` or `null` | No | `null` |
+
+Allow mismatches between the stored session history and the incoming messages.
+
 #### `fsm.clear_history_every_n_attempts`
 
 | Type | Required | Default | Constraints |
@@ -123,6 +129,14 @@ Maximum number of tool calls allowed per PLLM step.
 | `integer` or `null` | No | `null` | >= 1 |
 
 If set, clears the tool call history every n PLLM attempts to save token usage.
+
+#### `fsm.max_pllm_failed_steps`
+
+| Type | Required | Default | Constraints |
+|------|----------|---------|-------------|
+| `integer` or `null` | No | `null` | >= 1 |
+
+Maximum number of failed PLLM steps allowed before giving up and returning an error.
 
 #### `fsm.retry_on_policy_violation`
 
@@ -168,9 +182,9 @@ Prune failed PLLM steps from session history to save tokens.
 
 | Type | Required | Default |
 |------|----------|---------|
-| `array[string]` | No | `["parse_with_ai", "verify_hypothesis"]` |
+| `array[string]` | No | endpoint-dependent |
 
-Internal tools to enable. Valid values: `"parse_with_ai"`, `"verify_hypothesis"`.
+Internal tools to enable. Valid values: `"parse_with_ai"`, `"verify_hypothesis"`. When not set, the server applies a default based on the endpoint type.
 
 #### `fsm.force_to_cache`
 
@@ -225,13 +239,6 @@ Enable strict parsing of tool results.
 ## Prompt Overrides (`prompt`)
 
 Per-LLM prompt configuration. Each sub-object corresponds to a different LLM in the pipeline.
-
-Top-level `flavor` and `version` fields are **broadcast** to every LLM prompt sub-config. Per-LLM overrides (e.g. `pllm`, `rllm`) are applied afterwards and take precedence.
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `flavor` | `string` | `null` | Prompt flavor (broadcast to all LLMs) |
-| `version` | `string` | `null` | Prompt version (broadcast to all LLMs) |
 
 ### `prompt.pllm`
 

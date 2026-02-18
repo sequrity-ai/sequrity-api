@@ -1,6 +1,6 @@
 # LangGraph Integration with Sequrity Control API
 
-This tutorial demonstrates how to integrate [LangGraph](https://langchain-ai.github.io/langgraph/) with Sequrity's Control API using the [`langgraph.run`][sequrity.resources.langgraph.LangGraphResource.run] method. We'll build a SQL agent with conditional routing that showcases LangGraph's powerful workflow capabilities while maintaining security through Sequrity.
+This tutorial demonstrates how to integrate [LangGraph](https://langchain-ai.github.io/langgraph/) with Sequrity's Control API using the [`langgraph.run`][sequrity.control.resources.langgraph.LangGraphResource.run] method. We'll build a SQL agent with conditional routing that showcases LangGraph's powerful workflow capabilities while maintaining security through Sequrity.
 
 ## Prerequisites
 
@@ -63,7 +63,7 @@ When building LangGraph workflows, you often need:
 3. **LLM Integration**: Secure interaction with external LLM providers
 4. **Policy Enforcement**: Apply fine-grained security policies to tool calls and data flow
 
-Sequrity's [`langgraph.run`][sequrity.resources.langgraph.LangGraphResource.run] method provides all of this out-of-the-box, allowing you to focus on building your workflow logic while Sequrity handles security.
+Sequrity's [`langgraph.run`][sequrity.control.resources.langgraph.LangGraphResource.run] method provides all of this out-of-the-box, allowing you to focus on building your workflow logic while Sequrity handles security.
 
 ## Tutorial Overview: SQL Agent with Conditional Routing
 
@@ -240,8 +240,7 @@ Results: Found 3 matching records:
 You can define custom SQRT policies to restrict specific operations:
 
 ```python
-security_policy = SecurityPolicyHeader(
-    language="sqrt",
+security_policy = SecurityPolicyHeader.dual_llm(
     codes=r"""
     // Prevent DELETE operations
     tool "execute_query" {

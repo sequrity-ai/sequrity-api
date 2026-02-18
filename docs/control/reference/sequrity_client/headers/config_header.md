@@ -2,24 +2,24 @@
 
 Advanced configuration for session behavior, prompt settings, and response formatting.
 
-::: sequrity.types.headers.FineGrainedConfigHeader
+::: sequrity.control.types.headers.FineGrainedConfigHeader
     options:
       show_root_heading: true
       show_source: true
 
 ---
 
-::: sequrity.types.headers.FsmOverrides
+::: sequrity.control.types.headers.FsmOverrides
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.headers.PromptOverrides
+::: sequrity.control.types.headers.PromptOverrides
     options:
       show_root_heading: true
       show_source: false
 
-::: sequrity.types.headers.ResponseFormatOverrides
+::: sequrity.control.types.headers.ResponseFormatOverrides
     options:
       show_root_heading: true
       show_source: false
