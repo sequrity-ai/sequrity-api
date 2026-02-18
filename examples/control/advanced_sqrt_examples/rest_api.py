@@ -40,14 +40,13 @@ from rich.syntax import Syntax
 # Client configuration
 # --8<-- [start:config]
 CONFIG = {
-    "open_router_api_key": os.getenv("OPENROUTER_API_KEY"),
-    "sequrity_key": os.getenv("SEQURITY_API_KEY"),
-    "endpoint_url": os.getenv("SEQURITY_BASE_URL", "https://api.sequrity.ai").rstrip("/")
-    + "/control/chat/openrouter/v1/chat/completions",
+    "open_router_api_key": os.getenv("OPENROUTER_API_KEY", "your OpenRouter key"),
+    "sequrity_key": os.getenv("SEQURITY_API_KEY", "your SequrityAI key"),
+    "endpoint_url": os.getenv("SEQURITY_BASE_URL", "https://api.sequrity.ai").rstrip("/") + "/control/chat/openrouter/v1/chat/completions",
 }
 # --8<-- [end:config]
 
-assert CONFIG["open_router_api_key"] != "your OpenRouter/OAI key"
+assert CONFIG["open_router_api_key"] != "your OpenRouter key"
 assert CONFIG["sequrity_key"] != "your SequrityAI key"
 
 # %% [markdown]
@@ -127,7 +126,7 @@ def run_workflow(
         messages.append(response_json["choices"][0]["message"])
 
         finish_reason = response_json["choices"][0]["finish_reason"]
-        if finish_reason == "stop":
+        if finish_reason == "stop" or finish_reason == "error":
             content = response_json["choices"][0]["message"]["content"]
             details = json.loads(content)
             if "program" in details:
@@ -136,10 +135,7 @@ def run_workflow(
                 console.print(syntax)
 
             if details["status"] == "failure":
-                if (
-                    "denied by argument checking policies" in content
-                    or "program violated control flow policies" in content
-                ):
+                if "denied by argument checking policies" in content or "Control flow violation" in content:
                     t_print(f"\t🚨 Request denied by policies:\n\t{details['error']['message']}")
                     return "denied by policies", messages
                 elif '"denied": [{' in content:
@@ -150,7 +146,7 @@ def run_workflow(
                     return "unexpected error", messages
             else:
                 # status == "success"
-                t_print(f"\t☑️ Final Response:\n\t{content}")
+                t_print(f"☑️ Final response: {content}")
                 return "success", messages
         elif finish_reason == "tool_calls":
             tool_calls = response_json["choices"][0]["message"]["tool_calls"]
@@ -165,7 +161,6 @@ def run_workflow(
                     messages.append(
                         {
                             "role": "tool",
-                            "name": tool_name,
                             "content": tool_result,
                             "tool_call_id": tool_call["id"],
                         }
@@ -174,7 +169,7 @@ def run_workflow(
                     t_print(f"\t⛔ Tool '{tool_name}' not found in tool map.")
                     return "unexpected error", messages
         else:
-            print(f"\t⛔ Unknown finish reason: {finish_reason}, terminating workflow.")
+            print(f"\t⛔ Unknown finish reason: {finish_reason}, terminating workflow. Messages: {messages[-1]}")
             return "unexpected error", messages
         interaction_id += 1
 
@@ -336,13 +331,15 @@ tool_map = {
 enabled_features = {"agent_arch": "dual-llm"}
 security_policies = {
     "mode": "standard",
-    "codes": r"""
+    "codes": {
+        "code": r"""
     let sensitive_docs = {"internal_use", "confidential"};
     tool "get_internal_document" -> @tags |= sensitive_docs;
     tool "send_email" {
         hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
     }
     """,
+    },
     "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
@@ -484,24 +481,27 @@ refund_tool_map = {
 refund_enabled_features = {"agent_arch": "dual-llm"}
 refund_security_policies = {
     "mode": "standard",
-    "codes": r"""
-    tool "issue_refund" {
-        session before {
-            when "attempt3" in @tags { @tags |= {"final_attempt"}; }
-        }
-        session before {
-            when "attempt2" in @tags { @tags |= {"attempt3"}; }
-        }
-        session before {
-            when "attempt1" in @tags { @tags |= {"attempt2"}; }
-        }
-        session before {
-            @tags |= {"attempt1"};
-        }
+    "codes": {
+        "language": "sqrt",
+        "code": r"""
+            tool "issue_refund" {
+                session before {
+                    when "attempt3" in @tags { @tags |= {"final_attempt"}; }
+                }
+                session before {
+                    when "attempt2" in @tags { @tags |= {"attempt3"}; }
+                }
+                session before {
+                    when "attempt1" in @tags { @tags |= {"attempt2"}; }
+                }
+                session before {
+                    @tags |= {"attempt1"};
+                }
 
-        hard allow when "final_attempt" in @session.tags;
-    }
-    """,
+                hard allow when "final_attempt" in @session.tags;
+            }
+        """,
+    },
     "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
@@ -515,11 +515,6 @@ refund_security_config = {
         "retry_on_policy_violation": False,
         "max_pllm_steps": 1,  # disable auto-retry as we want to count attempts accurately
         "max_n_turns": 5,  # we need multiple turns to reach the refund approval
-    },
-    "prompt": {
-        "pllm": {
-            "debug_info_level": "minimal",
-        },
     },
     "response_format": {
         "strip_response_content": False,
@@ -574,7 +569,6 @@ def run_refund_tool(tool_call: dict, tool_map: dict) -> dict:
     print(f"\t🛠️ Executed tool '{tool_name}' with args {tool_args}, result: {tool_result}")
     return {
         "role": "tool",
-        "name": tool_name,
         "content": tool_result,
         "tool_call_id": tool_call["id"],
     }
@@ -605,7 +599,7 @@ for i in range(1, 5):
         reasoning_effort="minimal",
     )
     if i < 4:
-        assert "Tool call issue_refund denied" in messages[-1]["content"]
+        assert "'issue_refund' is denied by argument" in messages[-1]["content"]
         print(f"\t🚨 Attempt {i} denied by policies")
         messages.append({"role": "user", "content": user_query})
     else:
@@ -750,14 +744,17 @@ provenance_tool_map = {
 provenance_enabled_features = {"agent_arch": "dual-llm"}
 provenance_security_policies = {
     "mode": "standard",
-    "codes": r"""
-    tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
-    tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
-    // Allow generating business summary only if data comes from verified financial and marketing sources
-    tool "generate_business_summary" {
-        hard allow when @args.producers superset of {"verified_financial_data", "verified_marketing_data"};
-    }
-    """,
+    "codes": {
+        "language": "sqrt",
+        "code": r"""
+            tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
+            tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
+            // Allow generating business summary only if data comes from verified financial and marketing sources
+            tool "generate_business_summary" {
+                hard allow when @args.producers superset of {"verified_financial_data", "verified_marketing_data"};
+            }
+        """,
+    },
     "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
@@ -805,7 +802,12 @@ assert result == "success"
 # --8<-- [start:ex3_case2]
 print("=== Data Provenance (only financial data) ===")
 provenance_tool_defs_reduced = [td for td in provenance_tool_defs if td["function"]["name"] != "get_marketing_analysis"]
-messages = [{"role": "user", "content": "Generate a business summary for 'Sequrity AI' for Q1 2025."}]
+messages = [
+    {
+        "role": "user",
+        "content": "Generate a business summary for 'Sequrity AI' for Q1 2025. Use 'The marketing analysis indicates a strong brand presence' as argument `marketing_analysis` when generating the summary.",
+    }
+]
 result, _ = run_workflow(
     model="openai/gpt-5-mini,openai/gpt-5-nano",
     messages=messages,
@@ -928,13 +930,16 @@ compliance_tool_map = {
 compliance_enabled_features = {"agent_arch": "dual-llm"}
 compliance_security_policies = {
     "mode": "standard",
-    "codes": r"""
+    "codes": {
+        "language": "sqrt",
+        "code": r"""
     tool "load_patient_record" -> @tags |= {"pii"};
     tool "de_identify_data" -> @tags -= {"pii"};
     tool r"send_to_.*" {
         hard deny when "pii" in data.tags;
     }
     """,
+    },
     "presets": {
         "default_allow": True,
         "enable_non_executable_memory": True,
@@ -1047,7 +1052,7 @@ assert result == "denied by policies"
 # Mock functions for fairness example
 
 
-def mock_send_email(to: str, subject: str, attachment_content: str) -> str:
+def mock_send_email_fairness(to: str, subject: str, attachment_content: str) -> str:
     return "Email sent successfully."
 
 
@@ -1117,7 +1122,7 @@ fairness_tool_defs = [
 
 fairness_tool_map = {
     "retrive_applicant_profile": mock_retrive_applicant_profile,
-    "send_email": mock_send_email,
+    "send_email": mock_send_email_fairness,
 }
 
 # --8<-- [start:ex5_fairness_enabled_features]
@@ -1128,9 +1133,12 @@ fairness_enabled_features = {"agent_arch": "dual-llm"}
 # Policy that tags applicant profile output with "RACE"
 fairness_security_policies_base = {
     "mode": "custom",
-    "codes": r"""
-    tool "retrive_applicant_profile" -> @tags |= {"RACE"};
-    """,
+    "codes": {
+        "language": "sqrt",
+        "code": r"""
+tool "retrive_applicant_profile" -> @tags |= {"RACE"};
+""",
+    },
     "fail_fast": True,
     "auto_gen": False,
 }
@@ -1211,7 +1219,7 @@ fairness_security_policies_allow = {
 messages = [
     {
         "role": "user",
-        "content": "Retrieve the applicant profile for applicant id = 'applicant-154' and send it to 'hr-1@gmail.com'",
+        "content": "Retrieve the applicant profile for applicant id = 'applicant-154', if the applicant's race is 'European', send the applicant profile to 'hr-1@gmail.com', otherwise send it to 'hr-2@gmail.com'",
     }
 ]
 
@@ -1307,7 +1315,7 @@ qllm_policy_tool_defs = [
 
 qllm_policy_tool_map = {
     "retrive_applicant_profile_text": mock_retrive_applicant_profile_text,
-    "send_email": mock_send_email,
+    "send_email": mock_send_email_fairness,
 }
 
 # --8<-- [start:ex5_qllm_base_config]
@@ -1316,9 +1324,12 @@ qllm_policy_enabled_features = {"agent_arch": "dual-llm"}
 # Policy that tags applicant profile text output with "__llm_blocked"
 qllm_policy_security_policies_base = {
     "mode": "standard",
-    "codes": r"""
-    tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
-    """,
+    "codes": {
+        "language": "sqrt",
+        "code": r"""
+tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
+""",
+    },
     "fail_fast": True,
     "auto_gen": False,
 }
