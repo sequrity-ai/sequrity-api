@@ -69,7 +69,6 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
-        include_session: bool = False,
     ) -> httpx.Response:
         """POST *payload* as JSON to *url* with merged Sequrity headers.
 
@@ -80,9 +79,7 @@ class ControlSyncTransport:
             features: ``FeaturesHeader`` override (``NOT_GIVEN`` -> config default).
             security_policy: ``SecurityPolicyHeader`` override.
             fine_grained_config: ``FineGrainedConfigHeader`` override.
-            session_id: Explicit session ID override. ``NOT_GIVEN`` uses the
-                auto-tracked session ID.
-            include_session: Whether to include session-related headers.
+            session_id: Explicit session ID override. ``NOT_GIVEN`` uses self._session_id, which is auto-updated from responses.
 
         Returns:
             The raw ``httpx.Response`` (status already validated).
@@ -95,11 +92,7 @@ class ControlSyncTransport:
         eff_features = _resolve(features, self._config.features)
         eff_policy = _resolve(security_policy, self._config.security_policy)
         eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
-
-        if include_session:
-            eff_session = _resolve(session_id, self._session_id)
-        else:
-            eff_session = None
+        eff_session = _resolve(session_id, self._session_id)
 
         headers = build_sequrity_headers(
             api_key=self._api_key,
@@ -119,10 +112,9 @@ class ControlSyncTransport:
             raise SequrityAPIError.from_response(response)
 
         # Auto-track session ID from response
-        if include_session:
-            new_session = response.headers.get("X-Session-ID")
-            if new_session:
-                self._session_id = new_session
+        new_session = response.headers.get("X-Session-ID")
+        if new_session:
+            self._session_id = new_session
 
         return response
 
@@ -164,7 +156,6 @@ class ControlAsyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
-        include_session: bool = True,
     ) -> httpx.Response:
         """Async variant of :meth:`ControlSyncTransport.request`."""
         eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
@@ -172,10 +163,7 @@ class ControlAsyncTransport:
         eff_policy = _resolve(security_policy, self._config.security_policy)
         eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
 
-        if include_session:
-            eff_session = _resolve(session_id, self._session_id)
-        else:
-            eff_session = None
+        eff_session = _resolve(session_id, self._session_id)
 
         headers = build_sequrity_headers(
             api_key=self._api_key,
@@ -194,9 +182,8 @@ class ControlAsyncTransport:
         if response.status_code >= 400:
             raise SequrityAPIError.from_response(response)
 
-        if include_session:
-            new_session = response.headers.get("X-Session-ID")
-            if new_session:
-                self._session_id = new_session
+        new_session = response.headers.get("X-Session-ID")
+        if new_session:
+            self._session_id = new_session
 
         return response

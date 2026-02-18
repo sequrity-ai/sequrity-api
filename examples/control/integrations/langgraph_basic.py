@@ -73,7 +73,7 @@ def chatbot(state: State):
 
 
 # Build the graph
-graph_builder = StateGraph(State)
+graph_builder = StateGraph(State)  # type: ignore[arg-type]  # TypedDict is valid for langgraph StateGraph
 graph_builder.add_node("chatbot", chatbot)
 graph_builder.add_node("tools", ToolNode(tools))
 graph_builder.add_conditional_edges("chatbot", tools_condition)

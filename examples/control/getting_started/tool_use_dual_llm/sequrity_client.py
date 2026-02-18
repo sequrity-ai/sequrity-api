@@ -158,6 +158,7 @@ assert "denied by argument checking policies" in response.choices[0].message.con
 
 content = ResponseContentJsonSchema.model_validate_json(response.choices[0].message.content)
 rprint("\n[bold red]🚨 Send email denied by security policy[/bold red]")
+assert content.error is not None, "Expected error info in denied response"
 rprint(f"[yellow]Error:[/yellow] {content.error.message}\n")
 
 rprint("[bold yellow]Generated Program:[/bold yellow]")

@@ -121,7 +121,6 @@ class MessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
-            include_session=False,
         )
 
         result = AnthropicMessageResponse.model_validate(response.json())
@@ -160,7 +159,7 @@ class AsyncMessagesResource:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
-        session_id: str | None | _NotGiven = NOT_GIVEN,
+        session_id: str | None | _NotGiven = None,
     ) -> AnthropicMessageResponse:
         """Async variant of :meth:`MessagesResource.create`."""
         payload = AnthropicMessageRequest.model_validate(
@@ -198,7 +197,6 @@ class AsyncMessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
-            include_session=False,
         )
 
         result = AnthropicMessageResponse.model_validate(response.json())

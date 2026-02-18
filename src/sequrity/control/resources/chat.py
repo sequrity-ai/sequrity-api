@@ -89,7 +89,6 @@ class ChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
-            include_session=False,
         )
 
         result = ChatCompletionResponse.model_validate(response.json())
@@ -121,7 +120,7 @@ class AsyncChatResource:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
-        session_id: str | None | _NotGiven = NOT_GIVEN,
+        session_id: str | None | _NotGiven = None,
     ) -> ChatCompletionResponse:
         """Async variant of :meth:`ChatResource.create`."""
         payload = ChatCompletionRequest.model_validate(
@@ -152,7 +151,6 @@ class AsyncChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
-            include_session=False,
         )
 
         result = ChatCompletionResponse.model_validate(response.json())

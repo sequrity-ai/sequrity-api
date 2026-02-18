@@ -51,7 +51,7 @@ class PolicyResource:
             features=None,
             security_policy=None,
             fine_grained_config=None,
-            include_session=False,
+            session_id=None,
         )
 
         return PolicyGenResponse.model_validate(response.json())
@@ -85,7 +85,6 @@ class AsyncPolicyResource:
             features=None,
             security_policy=None,
             fine_grained_config=None,
-            include_session=False,
         )
 
         return PolicyGenResponse.model_validate(response.json())

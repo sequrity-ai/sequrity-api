@@ -31,7 +31,7 @@
 import json
 import os
 import re
-from typing import Callable, Literal
+from typing import Any, Callable, Literal
 
 import requests
 from rich.console import Console
@@ -187,7 +187,7 @@ def send_request_to_endpoint(
     model: str,
     messages: list[dict],
     tool_defs: list[dict],
-    enabled_features: dict,
+    enabled_features: dict | None,
     security_policies: dict | None,
     security_config: dict | None,
     reasoning_effort: str = "minimal",
@@ -213,8 +213,10 @@ def send_request_to_endpoint(
         "reasoning_effort": reasoning_effort,
     }
 
+    url = CONFIG["endpoint_url"]
+    assert isinstance(url, str), "endpoint_url must be configured"
     try:
-        response = requests.post(url=CONFIG["endpoint_url"], headers=headers, json=payload)
+        response = requests.post(url=url, headers=headers, json=payload)
         response.raise_for_status()
         session_id = response.headers.get("X-Session-ID", None)
         return response.json(), session_id
@@ -546,7 +548,7 @@ def send_request_refund_example(
     security_config: dict | None,
     reasoning_effort: str = "minimal",
 ):
-    respnse_json, session_id = send_request_to_endpoint(
+    response_json, session_id = send_request_to_endpoint(
         model=model,
         messages=messages,
         session_id=session_id,
@@ -556,7 +558,10 @@ def send_request_refund_example(
         security_config=security_config,
         reasoning_effort=reasoning_effort,
     )
-    messages.append(respnse_json["choices"][0]["message"])
+    if response_json is None:
+        print("No response received.")
+        return messages, session_id
+    messages.append(response_json["choices"][0]["message"])
     return messages, session_id
 
 
@@ -672,7 +677,7 @@ def mock_generate_business_summary(earning_report: str, marketing_analysis: str 
 
 # --8<-- [start:ex3_tool_defs]
 # Tool definitions for provenance example
-provenance_tool_defs = [
+provenance_tool_defs: list[dict[str, Any]] = [
     {
         "type": "function",
         "function": {
@@ -858,7 +863,7 @@ def mock_send_to_research_institute(data: str) -> str:
 
 # --8<-- [start:ex4_tool_defs]
 # Tool definitions for compliance example
-compliance_tool_defs = [
+compliance_tool_defs: list[dict[str, Any]] = [
     {
         "type": "function",
         "function": {
@@ -1046,7 +1051,7 @@ def mock_send_email(to: str, subject: str, attachment_content: str) -> str:
     return "Email sent successfully."
 
 
-def mock_retrive_applicant_profile(applicant_id: str) -> dict:
+def mock_retrive_applicant_profile(applicant_id: str) -> str:
     """Retrieve applicant profile including sensitive attributes."""
     profiles = {
         "applicant-154": {
