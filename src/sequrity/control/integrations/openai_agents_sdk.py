@@ -1,13 +1,13 @@
 """
-OpenAI Agent ADK integration for Sequrity.
+OpenAI Agent ADK integration for Sequrity Control.
 
 This module provides an AsyncOpenAI-compatible client that routes requests through
 Sequrity's secure orchestrator with automatic session management and security features.
 
 Example:
     ```python
-    from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
-    from sequrity import FeaturesHeader, SecurityPolicyHeader
+    from sequrity.control.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
     from agents import Agent, Runner, RunConfig
 
     # Create client with Sequrity security features
@@ -24,7 +24,7 @@ Example:
     ```
 """
 
-from typing import TYPE_CHECKING, Any, AsyncIterator, Optional
+from typing import Any, AsyncIterator
 
 import httpx
 from openai import AsyncOpenAI
@@ -400,8 +400,8 @@ def create_sequrity_openai_agents_sdk_client(
 
     Example:
         ```python
-        from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
-        from sequrity import FeaturesHeader
+        from sequrity.control.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
+        from sequrity.control import FeaturesHeader
         from agents import Agent, Runner, RunConfig
 
         # Create provider with dual-LLM

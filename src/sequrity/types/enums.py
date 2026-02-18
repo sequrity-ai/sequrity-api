@@ -3,15 +3,6 @@
 from enum import StrEnum
 
 
-class EndpointType(StrEnum):
-    """Endpoint type determining the security processing pipeline."""
-
-    CHAT = "chat"
-    CODE = "code"
-    AGENT = "agent"
-    LANGGRAPH = "lang-graph"
-
-
 class RestApiType(StrEnum):
     """REST API style for the request/response format."""
 

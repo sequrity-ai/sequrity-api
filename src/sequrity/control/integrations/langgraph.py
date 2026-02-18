@@ -1,13 +1,13 @@
 """
-LangChain/LangGraph integration for Sequrity.
+LangChain/LangGraph integration for Sequrity Control.
 
 This module provides a ChatOpenAI-compatible client that routes requests through
 Sequrity's secure orchestrator with automatic session management and security features.
 
 Example:
     ```python
-    from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-    from sequrity import FeaturesHeader, SecurityPolicyHeader
+    from sequrity.control.integrations.langgraph import create_sequrity_langgraph_client
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
     # Create client with Sequrity security features
     llm = create_sequrity_langgraph_client(
@@ -36,7 +36,6 @@ from langchain_core.callbacks import (
 from langchain_core.messages import AIMessage, BaseMessage
 from langchain_core.outputs import ChatGeneration, ChatGenerationChunk, ChatResult
 from langchain_openai import ChatOpenAI
-from pydantic import Field
 
 from .._constants import build_control_base_url, build_sequrity_headers
 from ..types.enums import EndpointType
@@ -368,8 +367,8 @@ def create_sequrity_langgraph_client(
 
     Example:
         ```python
-        from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-        from sequrity import FeaturesHeader
+        from sequrity.control.integrations.langgraph import create_sequrity_langgraph_client
+        from sequrity.control import FeaturesHeader
 
         # Basic usage with dual-LLM
         llm = create_sequrity_langgraph_client(
@@ -378,7 +377,7 @@ def create_sequrity_langgraph_client(
         )
 
         # With security policy
-        from sequrity import SecurityPolicyHeader
+        from sequrity.control import SecurityPolicyHeader
         llm = create_sequrity_langgraph_client(
             sequrity_api_key="your-key",
             features=FeaturesHeader.dual_llm(),

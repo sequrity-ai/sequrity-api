@@ -1,38 +1,16 @@
-"""Sequrity type definitions.
+"""Sequrity universal type definitions.
 
-Re-exports the most commonly used types for convenient imports::
+Provider-agnostic types shared across all Sequrity products.
 
-    from sequrity.types import FeaturesHeader, SecurityPolicyHeader
+For Control-specific types (headers, dual-LLM response, etc.), import from
+``sequrity.control``::
+
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 """
 
-from .dual_llm_response import (
-    ErrorInfo,
-    MetaData,
-    ResponseContentJsonSchema,
-    ValueWithMeta,
-)
-from .enums import EndpointType, LlmServiceProvider, RestApiType
-from .headers import (
-    ConstraintConfig,
-    FeaturesHeader,
-    FineGrainedConfigHeader,
-    FsmOverrides,
-    SecurityPolicyHeader,
-    TaggerConfig,
-)
+from .enums import LlmServiceProvider, RestApiType
 
 __all__ = [
-    "EndpointType",
     "RestApiType",
     "LlmServiceProvider",
-    "FeaturesHeader",
-    "SecurityPolicyHeader",
-    "FineGrainedConfigHeader",
-    "FsmOverrides",
-    "TaggerConfig",
-    "ConstraintConfig",
-    "MetaData",
-    "ValueWithMeta",
-    "ErrorInfo",
-    "ResponseContentJsonSchema",
 ]

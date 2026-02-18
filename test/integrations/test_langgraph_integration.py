@@ -6,8 +6,8 @@ the LangChain and LangGraph frameworks.
 """
 
 import pytest
-from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-from sequrity.types.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity.control import FeaturesHeader, SecurityPolicyHeader
+from sequrity.control.integrations.langgraph import create_sequrity_langgraph_client
 from sequrity_unittest.config import get_test_config
 
 # Check if LangChain is available

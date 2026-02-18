@@ -12,8 +12,8 @@ from typing import Literal, cast
 
 import pytest
 
-from sequrity import SequrityClient, FeaturesHeader, FineGrainedConfigHeader
-from sequrity.types.headers import FsmOverrides
+from sequrity import SequrityClient
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, FsmOverrides
 from sequrity.types.enums import LlmServiceProvider
 from sequrity.types.messages.response import ToolUseBlock
 from sequrity_unittest.config import get_test_config
@@ -34,7 +34,7 @@ class TestMessage:
         messages = [
             {"role": "user", "content": "What is the largest prime number below 100? Answer with just the number."}
         ]
-        response = self.sequrity_client.messages.create(
+        response = self.sequrity_client.control.messages.create(
             messages=messages,
             model="claude-sonnet-4-5-20250929",
             max_tokens=256,
@@ -62,7 +62,7 @@ class TestMessage:
         messages = [
             {"role": "user", "content": "What is the largest prime number below 100? Answer with just the number."}
         ]
-        response = self.sequrity_client.messages.create(
+        response = self.sequrity_client.control.messages.create(
             messages=messages,
             model="claude-sonnet-4-5-20250929",
             max_tokens=256,
@@ -83,7 +83,7 @@ class TestMessage:
     def test_with_system_prompt(self):
         """Test Anthropic Messages API with a system prompt."""
         messages = [{"role": "user", "content": "What do you do?"}]
-        response = self.sequrity_client.messages.create(
+        response = self.sequrity_client.control.messages.create(
             messages=messages,
             model="claude-sonnet-4-5-20250929",
             max_tokens=256,
@@ -118,7 +118,7 @@ class TestMessage:
         ]
 
         messages = [{"role": "user", "content": "What's the weather in London?"}]
-        response = self.sequrity_client.messages.create(
+        response = self.sequrity_client.control.messages.create(
             messages=messages,
             model="claude-sonnet-4-5-20250929",
             max_tokens=1024,
@@ -141,7 +141,7 @@ class TestMessage:
     def test_session_tracking(self):
         """Test that session IDs are returned and can be reused."""
         messages = [{"role": "user", "content": "Hello, remember my name is Alice."}]
-        response = self.sequrity_client.messages.create(
+        response = self.sequrity_client.control.messages.create(
             messages=messages,
             model="claude-sonnet-4-5-20250929",
             max_tokens=256,

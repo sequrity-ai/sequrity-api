@@ -7,7 +7,7 @@ format.
 
 Typical usage::
 
-    from sequrity.types.dual_llm_response import ResponseContentJsonSchema
+    from sequrity.control.types.dual_llm_response import ResponseContentJsonSchema
 
     parsed = ResponseContentJsonSchema.parse_json_safe(
         response.choices[0].message.content

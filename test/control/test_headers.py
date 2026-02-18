@@ -9,7 +9,7 @@ from typing import Literal
 import httpx
 import pytest
 
-from sequrity.types.headers import (
+from sequrity.control.types.headers import (
     ConstraintConfig,
     ControlFlowMetaPolicy,
     FeaturesHeader,

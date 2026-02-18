@@ -1,4 +1,4 @@
-"""LangGraph execution loop using the Sequrity transport layer."""
+"""LangGraph execution loop using the Sequrity Control transport layer."""
 
 from __future__ import annotations
 
@@ -6,13 +6,14 @@ import json
 from typing import TYPE_CHECKING, Callable
 
 from ..._constants import build_sequrity_headers
-from ..._exceptions import SequrityAPIError, SequrityConnectionError
-from ..._sentinel import NOT_GIVEN, _NotGiven
-from ..._transport import SyncTransport, _resolve
+from ...._exceptions import SequrityAPIError, SequrityConnectionError
+from ...._sentinel import NOT_GIVEN, _NotGiven
+from ..._transport import ControlSyncTransport, _resolve
 from ...types.dual_llm_response import MetaData, ResponseContentJsonSchema, ValueWithMeta
-from ...types.enums import EndpointType, RestApiType
+from ...types.enums import EndpointType
+from ....types.enums import RestApiType
 from ...types.headers import FeaturesHeader, FineGrainedConfigHeader, FsmOverrides, SecurityPolicyHeader
-from ...types.messages.response import AnthropicMessageResponse, ToolUseBlock
+from ....types.messages.response import AnthropicMessageResponse, ToolUseBlock
 from ._types import (
     LangGraphChatCompletionRequest,
     LangGraphChatCompletionResponse,
@@ -40,7 +41,7 @@ def _update_state(current_state: dict, tool_result: dict) -> None:
 
 
 def _post_request(
-    transport: SyncTransport,
+    transport: ControlSyncTransport,
     url: str,
     payload: dict,
     headers: dict[str, str],
@@ -59,7 +60,7 @@ def _post_request(
 
 
 def _run_chat_completions_loop(
-    transport: SyncTransport,
+    transport: ControlSyncTransport,
     executor: LangGraphExecutor,
     *,
     url: str,
@@ -135,7 +136,7 @@ def _run_chat_completions_loop(
 
 
 def _run_messages_loop(
-    transport: SyncTransport,
+    transport: ControlSyncTransport,
     executor: LangGraphExecutor,
     *,
     url: str,
@@ -217,7 +218,7 @@ def _run_messages_loop(
 
 
 def run_graph_sync(
-    transport: SyncTransport,
+    transport: ControlSyncTransport,
     model: str,
     graph: "StateGraph",
     initial_state: dict,
@@ -307,7 +308,7 @@ def run_graph_sync(
 
     def _build_headers(session_id: str | None = None) -> dict[str, str]:
         return build_sequrity_headers(
-            api_key=transport._config.api_key,
+            api_key=transport._api_key,
             llm_api_key=eff_llm_key,
             features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
             policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,

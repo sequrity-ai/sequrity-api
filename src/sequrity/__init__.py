@@ -2,6 +2,11 @@
 
 This package provides a Python client for interacting with the Sequrity API,
 enabling secure LLM interactions with policy enforcement.
+
+Product-specific types (headers, configs) are imported from their respective
+product packages::
+
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader, ControlConfig
 """
 
 from ._client import AsyncSequrityClient, SequrityClient
@@ -11,15 +16,13 @@ from ._exceptions import (
     SequrityError,
     SequrityValidationError,
 )
-from .types.enums import EndpointType, LlmServiceProvider, RestApiType
-from .types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from .types.enums import LlmServiceProvider, RestApiType
 
-# Type re-exports for users who need request/response types
+# Universal provider request/response types
 from .types.chat_completion.request import ChatCompletionRequest
 from .types.chat_completion.response import ChatCompletionResponse
 from .types.messages.request import AnthropicMessageRequest
 from .types.messages.response import AnthropicMessageResponse
-from .types.policy_gen import PolicyGenRequest, PolicyGenResponse
 
 try:
     from ._version import __version__
@@ -35,21 +38,14 @@ __all__ = [
     "SequrityAPIError",
     "SequrityValidationError",
     "SequrityConnectionError",
-    # Enums
-    "EndpointType",
+    # Enums (universal)
     "RestApiType",
     "LlmServiceProvider",
-    # Headers
-    "FeaturesHeader",
-    "SecurityPolicyHeader",
-    "FineGrainedConfigHeader",
-    # Request/Response types
+    # Universal request/response types
     "ChatCompletionRequest",
     "ChatCompletionResponse",
     "AnthropicMessageRequest",
     "AnthropicMessageResponse",
-    "PolicyGenRequest",
-    "PolicyGenResponse",
     # Version
     "__version__",
 ]

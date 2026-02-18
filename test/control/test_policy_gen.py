@@ -8,8 +8,8 @@ which generates SQRT security policies from natural language descriptions.
 import pytest
 
 from sequrity import LlmServiceProvider, SequrityClient
-from sequrity._constants import build_policy_gen_url
-from sequrity.types.policy_gen import (
+from sequrity.control._constants import build_policy_gen_url
+from sequrity.control.types.policy_gen import (
     PolicyGenRequestAnthropicMessages,
     PolicyGenRequestOpenAiChatCompletion,
     PolicyGenRequestOpenRouterChatCompletion,
@@ -113,7 +113,7 @@ class TestPolicyGeneration:
             }
         )
 
-        response = self.sequrity_client.policy.generate(
+        response = self.sequrity_client.control.policy.generate(
             request=request,
             llm_api_key=self.test_config.get_llm_api_key(LlmServiceProvider.OPENAI),
         )
@@ -137,7 +137,7 @@ class TestPolicyGeneration:
             }
         )
 
-        response = self.sequrity_client.policy.generate(
+        response = self.sequrity_client.control.policy.generate(
             request=request,
             llm_api_key=self.test_config.get_llm_api_key(LlmServiceProvider.OPENROUTER),
         )
@@ -157,7 +157,7 @@ class TestPolicyGeneration:
             }
         )
 
-        response = self.sequrity_client.policy.generate(
+        response = self.sequrity_client.control.policy.generate(
             request=request,
             llm_api_key=self.test_config.get_llm_api_key(LlmServiceProvider.ANTHROPIC),
         )
@@ -177,7 +177,7 @@ class TestPolicyGeneration:
             }
         )
 
-        response = self.sequrity_client.policy.generate(
+        response = self.sequrity_client.control.policy.generate(
             request=request,
             llm_api_key=self.test_config.get_llm_api_key(LlmServiceProvider.SEQURITY_AZURE),
         )

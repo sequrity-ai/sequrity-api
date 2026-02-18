@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from pydantic import TypeAdapter
 
-from .._sentinel import NOT_GIVEN, _NotGiven
-from .._transport import AsyncTransport, SyncTransport
+from ..._sentinel import NOT_GIVEN, _NotGiven
+from .._transport import ControlAsyncTransport, ControlSyncTransport
 from ..types.policy_gen import PolicyGenRequest, PolicyGenResponse
 
 _PolicyGenRequestAdapter = TypeAdapter(PolicyGenRequest)
 
 
 class PolicyResource:
-    """Policy generation — ``client.policy``."""
+    """Policy generation — ``client.control.policy``."""
 
-    def __init__(self, transport: SyncTransport) -> None:
+    def __init__(self, transport: ControlSyncTransport) -> None:
         self._transport = transport
 
     def generate(
@@ -60,7 +60,7 @@ class PolicyResource:
 class AsyncPolicyResource:
     """Async variant of :class:`PolicyResource`."""
 
-    def __init__(self, transport: AsyncTransport) -> None:
+    def __init__(self, transport: ControlAsyncTransport) -> None:
         self._transport = transport
 
     async def generate(

@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 
-from sequrity._constants import SEQURITY_API_URL
+from sequrity.control._constants import SEQURITY_API_URL
 from sequrity.types.enums import LlmServiceProvider
 
 DEFAULT_TEST_MODEL: dict[LlmServiceProvider | None, str] = {

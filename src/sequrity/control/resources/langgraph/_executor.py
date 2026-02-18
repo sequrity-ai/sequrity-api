@@ -7,7 +7,7 @@ Python code and maps nodes to tool definitions.
 import json
 from typing import Callable
 
-from ...types.enums import RestApiType
+from ....types.enums import RestApiType
 
 try:
     from langgraph.graph import END, START, StateGraph

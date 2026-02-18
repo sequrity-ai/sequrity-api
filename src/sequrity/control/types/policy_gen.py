@@ -8,8 +8,8 @@ from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .chat_completion.request import Tool as ChatCompletionTool
-from .messages.request import ToolParam as AnthropicToolParam
+from ...types.chat_completion.request import Tool as ChatCompletionTool
+from ...types.messages.request import ToolParam as AnthropicToolParam
 
 # =============================================================================
 # Internal Tool Names

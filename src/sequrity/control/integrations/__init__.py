@@ -1,7 +1,7 @@
 """
-Sequrity integrations with third-party frameworks and libraries.
+Sequrity Control integrations with third-party frameworks and libraries.
 
-This package provides integration modules for using Sequrity with popular
+This package provides integration modules for using Sequrity Control with popular
 AI/ML frameworks and tools.
 
 Available Integrations:
@@ -10,9 +10,9 @@ Available Integrations:
 
 Example:
     ```python
-    from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
-    from sequrity.integrations.langgraph import create_sequrity_langgraph_client
-    from sequrity import FeaturesHeader
+    from sequrity.control.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
+    from sequrity.control.integrations.langgraph import create_sequrity_langgraph_client
+    from sequrity.control import FeaturesHeader
 
     # OpenAI Agents SDK
     client = create_sequrity_openai_agents_sdk_client(

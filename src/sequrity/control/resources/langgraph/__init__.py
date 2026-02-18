@@ -1,11 +1,11 @@
-"""LangGraph resource — ``client.langgraph``."""
+"""LangGraph resource — ``client.control.langgraph``."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Callable
 
-from ..._sentinel import NOT_GIVEN, _NotGiven
-from ..._transport import SyncTransport
+from ...._sentinel import NOT_GIVEN, _NotGiven
+from ..._transport import ControlSyncTransport
 from ...types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from ...types.dual_llm_response import MetaData
 
@@ -14,9 +14,9 @@ if TYPE_CHECKING:
 
 
 class LangGraphResource:
-    """LangGraph execution — ``client.langgraph``."""
+    """LangGraph execution — ``client.control.langgraph``."""
 
-    def __init__(self, transport: SyncTransport) -> None:
+    def __init__(self, transport: ControlSyncTransport) -> None:
         self._transport = transport
 
     def run(

@@ -2,9 +2,9 @@ from typing import Literal, TypedDict
 
 import pytest
 
-from sequrity import SequrityClient, FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from sequrity.resources.langgraph._executor import LangGraphExecutor
-from sequrity.types.headers import FsmOverrides
+from sequrity import SequrityClient
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, FsmOverrides, SecurityPolicyHeader
+from sequrity.control.resources.langgraph._executor import LangGraphExecutor
 from sequrity.types.enums import LlmServiceProvider
 from sequrity_unittest.config import get_test_config
 
@@ -134,7 +134,7 @@ class TestLangGraphCompilationAndExecution:
         policy = SecurityPolicyHeader.dual_llm()
         config = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=10, disable_rllm=True))
 
-        result = self.sequrity_client.langgraph.run(
+        result = self.sequrity_client.control.langgraph.run(
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             graph=graph,
@@ -211,7 +211,7 @@ class TestLangGraphCompilationAndExecution:
         policy = SecurityPolicyHeader.dual_llm()
         config = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=10, disable_rllm=True))
 
-        result = self.sequrity_client.langgraph.run(
+        result = self.sequrity_client.control.langgraph.run(
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             graph=graph,

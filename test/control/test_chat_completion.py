@@ -1,8 +1,8 @@
 import pytest
 
-from sequrity import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader, SequrityClient
+from sequrity import SequrityClient
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, FsmOverrides, SecurityPolicyHeader
 from sequrity.types.enums import LlmServiceProvider
-from sequrity.types.headers import FsmOverrides
 from sequrity_unittest.config import get_test_config
 
 
@@ -23,7 +23,7 @@ class TestChatCompletion:
         The server uses preset defaults from the bearer token / DB lookup.
         """
         messages = [{"role": "user", "content": "What is the largest prime number below 100?"}]
-        response = self.sequrity_client.chat.create(
+        response = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
@@ -67,7 +67,7 @@ class TestChatCompletion:
                 },
             }
         ]
-        response = self.sequrity_client.chat.create(
+        response = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
@@ -105,7 +105,7 @@ class TestChatCompletion:
                 "content": "Thanks! Can you also book a return flight (flight number BA289) on 20th June, 2026?",
             }
         )
-        response_2 = self.sequrity_client.chat.create(
+        response_2 = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
@@ -137,7 +137,7 @@ class TestChatCompletion:
         }
         messages.append(tool_result_msg_2)
         # send tool result message
-        response_3 = self.sequrity_client.chat.create(
+        response_3 = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
@@ -207,7 +207,7 @@ class TestChatCompletion:
         ]
 
         messages = [{"role": "user", "content": "Load 'applicant-829''s profile and send it to hr@gmail.com"}]
-        response = self.sequrity_client.chat.create(
+        response = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
@@ -238,7 +238,7 @@ class TestChatCompletion:
         }
         messages.append(tool_result_msg)
         # continue the conversation
-        response_2 = self.sequrity_client.chat.create(
+        response_2 = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),

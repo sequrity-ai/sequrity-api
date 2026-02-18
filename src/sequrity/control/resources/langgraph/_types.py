@@ -4,15 +4,15 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from ...types.chat_completion.request import ChatCompletionRequest
-from ...types.chat_completion.response import ChatCompletionResponse
+from ....types.chat_completion.request import ChatCompletionRequest
+from ....types.chat_completion.response import ChatCompletionResponse
 from ...types.dual_llm_response import (
     ErrorInfo,
     MetaData,
     ResponseContentJsonSchema,
     ValueWithMeta,
 )
-from ...types.messages.request import AnthropicMessageRequest
+from ....types.messages.request import AnthropicMessageRequest
 
 # Re-export for backwards compatibility
 __all__ = [

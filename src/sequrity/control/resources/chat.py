@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-from .._sentinel import NOT_GIVEN, _NotGiven
-from .._transport import AsyncTransport, SyncTransport
-from ..types.chat_completion.request import ChatCompletionRequest, Message, ReasoningEffort, ResponseFormat, Tool
-from ..types.chat_completion.response import ChatCompletionResponse
-from ..types.enums import RestApiType
+from ..._sentinel import NOT_GIVEN, _NotGiven
+from .._transport import ControlAsyncTransport, ControlSyncTransport
+from ...types.chat_completion.request import ChatCompletionRequest, Message, ReasoningEffort, ResponseFormat, Tool
+from ...types.chat_completion.response import ChatCompletionResponse
+from ...types.enums import RestApiType
 from ..types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
 
 class ChatResource:
-    """OpenAI-compatible chat completions — ``client.chat``."""
+    """OpenAI-compatible chat completions — ``client.control.chat``."""
 
-    def __init__(self, transport: SyncTransport) -> None:
+    def __init__(self, transport: ControlSyncTransport) -> None:
         self._transport = transport
 
     def create(
@@ -29,7 +29,7 @@ class ChatResource:
         seed: int | None = None,
         reasoning_effort: ReasoningEffort | None = None,
         response_format: ResponseFormat | None = None,
-        # Sequrity overrides (NOT_GIVEN → client defaults)
+        # Sequrity overrides (NOT_GIVEN -> client defaults)
         provider: str | None | _NotGiven = NOT_GIVEN,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
         features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
@@ -99,7 +99,7 @@ class ChatResource:
 class AsyncChatResource:
     """Async variant of :class:`ChatResource`."""
 
-    def __init__(self, transport: AsyncTransport) -> None:
+    def __init__(self, transport: ControlAsyncTransport) -> None:
         self._transport = transport
 
     async def create(

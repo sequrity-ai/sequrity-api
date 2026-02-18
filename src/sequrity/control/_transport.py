@@ -1,4 +1,4 @@
-"""Unified HTTP transport layer with config defaults, session tracking, and error handling."""
+"""HTTP transport layer for Sequrity Control with config defaults, session tracking, and error handling."""
 
 from __future__ import annotations
 
@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING, TypeVar
 
 import httpx
 
-from ._config import ClientConfig
+from .._exceptions import SequrityAPIError, SequrityConnectionError
+from .._sentinel import NOT_GIVEN, _NotGiven
+from ..types.enums import RestApiType
+from ._config import ControlConfig
 from ._constants import build_control_url, build_policy_gen_url, build_sequrity_headers
-from ._exceptions import SequrityAPIError, SequrityConnectionError
-from ._sentinel import NOT_GIVEN, _NotGiven
-from .types.enums import RestApiType
 
 if TYPE_CHECKING:
     from .types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
@@ -25,15 +25,17 @@ def _resolve(override: _T | _NotGiven, default: _T) -> _T:
     return override
 
 
-class SyncTransport:
-    """Synchronous HTTP transport for the Sequrity API.
+class ControlSyncTransport:
+    """Synchronous HTTP transport for the Sequrity Control API.
 
     Handles URL building, header construction, session tracking, and error
     handling so that resource classes remain thin.
     """
 
-    def __init__(self, http_client: httpx.Client, config: ClientConfig):
+    def __init__(self, http_client: httpx.Client, api_key: str, base_url: str, config: ControlConfig):
         self._http = http_client
+        self._api_key = api_key
+        self._base_url = base_url
         self._config = config
         self._session_id: str | None = None
 
@@ -49,11 +51,11 @@ class SyncTransport:
         """Build a standard ``/control/...`` URL, merging with config defaults."""
         p = _resolve(provider, self._config.provider)
         et = _resolve(endpoint_type, self._config.endpoint_type)
-        return build_control_url(self._config.base_url, et, rest_api_type, p)
+        return build_control_url(self._base_url, et, rest_api_type, p)
 
     def build_policy_gen_url(self, request_type: str) -> str:
         """Build the policy generation endpoint URL for the given request type."""
-        return build_policy_gen_url(self._config.base_url, request_type)
+        return build_policy_gen_url(self._base_url, request_type)
 
     # -- Request execution ---------------------------------------------------
 
@@ -74,8 +76,8 @@ class SyncTransport:
         Args:
             url: Fully-qualified endpoint URL.
             payload: JSON-serializable request body.
-            llm_api_key: LLM provider key override (``NOT_GIVEN`` → config default).
-            features: ``FeaturesHeader`` override (``NOT_GIVEN`` → config default).
+            llm_api_key: LLM provider key override (``NOT_GIVEN`` -> config default).
+            features: ``FeaturesHeader`` override (``NOT_GIVEN`` -> config default).
             security_policy: ``SecurityPolicyHeader`` override.
             fine_grained_config: ``FineGrainedConfigHeader`` override.
             session_id: Explicit session ID override. ``NOT_GIVEN`` uses the
@@ -101,7 +103,7 @@ class SyncTransport:
             eff_session = None
 
         headers = build_sequrity_headers(
-            api_key=self._config.api_key,
+            api_key=self._api_key,
             llm_api_key=eff_llm_key,
             features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
             policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,
@@ -126,14 +128,16 @@ class SyncTransport:
         return response
 
 
-class AsyncTransport:
-    """Asynchronous HTTP transport for the Sequrity API.
+class ControlAsyncTransport:
+    """Asynchronous HTTP transport for the Sequrity Control API.
 
-    Mirror of :class:`SyncTransport` using ``httpx.AsyncClient``.
+    Mirror of :class:`ControlSyncTransport` using ``httpx.AsyncClient``.
     """
 
-    def __init__(self, http_client: httpx.AsyncClient, config: ClientConfig):
+    def __init__(self, http_client: httpx.AsyncClient, api_key: str, base_url: str, config: ControlConfig):
         self._http = http_client
+        self._api_key = api_key
+        self._base_url = base_url
         self._config = config
         self._session_id: str | None = None
 
@@ -146,10 +150,10 @@ class AsyncTransport:
     ) -> str:
         p = _resolve(provider, self._config.provider)
         et = _resolve(endpoint_type, self._config.endpoint_type)
-        return build_control_url(self._config.base_url, et, rest_api_type, p)
+        return build_control_url(self._base_url, et, rest_api_type, p)
 
     def build_policy_gen_url(self, request_type: str) -> str:
-        return build_policy_gen_url(self._config.base_url, request_type)
+        return build_policy_gen_url(self._base_url, request_type)
 
     async def request(
         self,
@@ -163,7 +167,7 @@ class AsyncTransport:
         session_id: str | None | _NotGiven = NOT_GIVEN,
         include_session: bool = True,
     ) -> httpx.Response:
-        """Async variant of :meth:`SyncTransport.request`."""
+        """Async variant of :meth:`ControlSyncTransport.request`."""
         eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
         eff_features = _resolve(features, self._config.features)
         eff_policy = _resolve(security_policy, self._config.security_policy)
@@ -175,7 +179,7 @@ class AsyncTransport:
             eff_session = None
 
         headers = build_sequrity_headers(
-            api_key=self._config.api_key,
+            api_key=self._api_key,
             llm_api_key=eff_llm_key,
             features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
             policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,

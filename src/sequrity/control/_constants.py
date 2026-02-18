@@ -1,8 +1,8 @@
-"""URL builders and API constants."""
+"""URL builders and API constants for Sequrity Control."""
 
 from __future__ import annotations
 
-from .types.enums import RestApiType
+from ..types.enums import RestApiType
 
 SEQURITY_API_URL = "https://api.sequrity.ai"
 SEQURITY_API_VERSION = "v1"
@@ -14,7 +14,7 @@ _REST_API_SUFFIX: dict[RestApiType, str] = {
     RestApiType.RESPONSES: "responses",
 }
 
-# Policy generation: request type → provider slug (None = default route)
+# Policy generation: request type -> provider slug (None = default route)
 _POLICY_GEN_PROVIDER: dict[str, str | None] = {
     "oai_chat_completion": "openai",
     "openrouter_chat_completion": None,

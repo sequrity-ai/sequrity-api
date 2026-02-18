@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Literal
 
-from .._sentinel import NOT_GIVEN, _NotGiven
-from .._transport import AsyncTransport, SyncTransport
-from ..types.enums import RestApiType
+from ..._sentinel import NOT_GIVEN, _NotGiven
+from .._transport import ControlAsyncTransport, ControlSyncTransport
+from ...types.enums import RestApiType
 from ..types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from ..types.messages.request import (
+from ...types.messages.request import (
     AnthropicMessageRequest,
     MessageParam,
     MetadataParam,
@@ -18,13 +18,13 @@ from ..types.messages.request import (
     ToolChoiceParam,
     ToolParam,
 )
-from ..types.messages.response import AnthropicMessageResponse
+from ...types.messages.response import AnthropicMessageResponse
 
 
 class MessagesResource:
-    """Anthropic Messages API — ``client.messages``."""
+    """Anthropic Messages API — ``client.control.messages``."""
 
-    def __init__(self, transport: SyncTransport) -> None:
+    def __init__(self, transport: ControlSyncTransport) -> None:
         self._transport = transport
 
     def create(
@@ -47,7 +47,7 @@ class MessagesResource:
         metadata: MetadataParam | dict | None = None,
         service_tier: Literal["auto", "standard_only"] | None = None,
         timeout: float | None = None,
-        # Sequrity overrides (NOT_GIVEN → client defaults)
+        # Sequrity overrides (NOT_GIVEN -> client defaults)
         provider: str | None | _NotGiven = NOT_GIVEN,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
         features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
@@ -131,7 +131,7 @@ class MessagesResource:
 class AsyncMessagesResource:
     """Async variant of :class:`MessagesResource`."""
 
-    def __init__(self, transport: AsyncTransport) -> None:
+    def __init__(self, transport: ControlAsyncTransport) -> None:
         self._transport = transport
 
     async def create(

@@ -1,4 +1,4 @@
-"""Resource classes for the Sequrity API."""
+"""Resource classes for the Sequrity Control API."""
 
 from .chat import AsyncChatResource, ChatResource
 from .messages import AsyncMessagesResource, MessagesResource
