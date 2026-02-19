@@ -135,6 +135,7 @@ nav:
       - Control:
           - Sending your first message: control/getting_started/first_message.md
           - Secure Tool Use with Dual-LLM: control/getting_started/tool_use_dual_llm.md
+          - Custom Headers: control/getting_started/custom_headers.md
           - Compile and Execute LangGraph: control/getting_started/langgraph.md
   - Learn:
       - Control:
@@ -163,6 +164,7 @@ nav:
               - Chat Completions API: control/reference/rest_api/chat_completion.md
               - Messages API: control/reference/rest_api/messages.md
               - Custom Headers:
+                  - control/reference/rest_api/headers/index.md
                   - X-Api-Key and X-Session-ID: control/reference/rest_api/headers/api_key_session_id.md
                   - X-Features: control/reference/rest_api/headers/security_features.md
                   - X-Policy: control/reference/rest_api/headers/security_policy.md

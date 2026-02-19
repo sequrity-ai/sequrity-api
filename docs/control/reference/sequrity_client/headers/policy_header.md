@@ -7,6 +7,11 @@ Configure security policies using SQRT policy language.
       show_root_heading: true
       show_source: true
 
+::: sequrity.control.types.headers.PolicyCode
+    options:
+      show_root_heading: true
+      show_source: false
+
 ::: sequrity.control.types.headers.InternalPolicyPresets
     options:
       show_root_heading: true
