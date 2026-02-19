@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Callable
 
 from ...._sentinel import NOT_GIVEN, _NotGiven
-from ...._types.enums import LlmServiceProvider, LlmServiceProviderStr
+from ....types.enums import LlmServiceProvider, LlmServiceProviderStr
 from ..._transport import ControlSyncTransport
 from ...types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from ...types.dual_llm_response import MetaData
