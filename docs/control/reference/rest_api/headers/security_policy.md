@@ -61,7 +61,7 @@ An object containing the policy code and its language. Fields:
 |------|----------|---------|
 | `boolean` | No | `false` |
 
-When enabled, security policies are auto-generated based on the user query. The `codes` field can contain natural language instructions when this is enabled.
+Whether to auto-generate policies based on tool metadata and natural language descriptions.
 
 ### `fail_fast`
 
@@ -69,7 +69,7 @@ When enabled, security policies are auto-generated based on the user query. The 
 |------|----------|---------|
 | `boolean` or `null` | No | `null` |
 
-Stop execution on the first policy violation.
+Whether to fail fast on first hard denial during policy checks.
 
 ### `presets`
 
@@ -93,7 +93,7 @@ The default action when no policy rules match a tool call. When `true`, tool cal
 |------|----------|---------|
 | `string` | No | `"soft"` |
 
-The enforcement level for the default allow/deny policy. Valid values: `"hard"`, `"soft"`.
+Enforcement level for default allow policy. Valid values: `"hard"`, `"soft"`.
 
 #### `presets.enable_non_executable_memory`
 
@@ -101,7 +101,7 @@ The enforcement level for the default allow/deny policy. Valid values: `"hard"`,
 |------|----------|---------|
 | `boolean` | No | `true` |
 
-Inject non-executable tag to tool result tags by default.
+Whether to enable non-executable memory internal policy (attach non-executable tag to all tool results by default).
 
 #### `presets.enable_llm_blocked_tag`
 
@@ -109,7 +109,7 @@ Inject non-executable tag to tool result tags by default.
 |------|----------|---------|
 | `boolean` | No | `true` |
 
-Whether to enable hard deny when `__llm_blocked` tag is in args of parse_with_ai.
+Whether to enable LLM blocked tag internal policy (denies tool calls to parse_with_ai if any argument has LLM_BLOCKED_TAG).
 
 #### `presets.llm_blocked_tag_enforcement_level`
 
@@ -117,7 +117,7 @@ Whether to enable hard deny when `__llm_blocked` tag is in args of parse_with_ai
 |------|----------|---------|
 | `string` | No | `"hard"` |
 
-The enforcement level for the LLM blocked tag policy. Valid values: `"hard"`, `"soft"`.
+Enforcement level for LLM blocked tag internal policy. Valid values: `"hard"`, `"soft"`.
 
 #### `presets.branching_meta_policy`
 
@@ -125,7 +125,7 @@ The enforcement level for the LLM blocked tag policy. Valid values: `"hard"`, `"
 |------|----------|---------|
 | `object` | No | See below |
 
-Metadata that are allowed or forbidden in branching.
+Control flow meta policy for branching tools.
 
 ##### `branching_meta_policy.mode`
 
@@ -144,7 +144,7 @@ The mode for the branching meta policy:
 |------|----------|---------|
 | `array[string]` | No | `[]` |
 
-List of producer names to allow (in `allow` mode) or deny (in `deny` mode) for control flow relaxer.
+Set of prohibited producers for control flow relaxer in custom mode.
 
 ##### `branching_meta_policy.tags`
 
@@ -152,7 +152,7 @@ List of producer names to allow (in `allow` mode) or deny (in `deny` mode) for c
 |------|----------|---------|
 | `array[string]` | No | `[]` |
 
-List of tags to allow (in `allow` mode) or deny (in `deny` mode) for control flow relaxer.
+Set of prohibited tags for control flow relaxer in custom mode.
 
 ##### `branching_meta_policy.consumers`
 
@@ -160,4 +160,4 @@ List of tags to allow (in `allow` mode) or deny (in `deny` mode) for control flo
 |------|----------|---------|
 | `array[string]` | No | `[]` |
 
-List of consumer names to allow (in `allow` mode) or deny (in `deny` mode) for control flow relaxer.
+Set of prohibited consumers for control flow relaxer in custom mode.

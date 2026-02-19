@@ -12,6 +12,7 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
     "min_num_tools_for_filtering": 10,
     "clear_session_meta": "never",
     "max_n_turns": null,
+    "allow_history_mismatch": null,
     "clear_history_every_n_attempts": null,
     "disable_rllm": true,
     "enable_multistep_planning": null,
@@ -19,6 +20,7 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
     "prune_failed_steps": false,
     "force_to_cache": [],
     "max_pllm_steps": null,
+    "max_pllm_failed_steps": null,
     "max_tool_calls_per_step": null,
     "reduced_grammar_for_rllm_review": true,
     "retry_on_policy_violation": false,
@@ -30,6 +32,8 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
   },
   "prompt": {
     "pllm": {
+      "flavor": null,
+      "version": null,
       "debug_info_level": "normal",
       "clarify_ambiguous_queries": null,
       "context_var_visibility": null,
@@ -40,7 +44,15 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
       "query_include_tool_results": null
     },
     "rllm": {
+      "flavor": null,
+      "version": null,
       "debug_info_level": null
+    },
+    "tllm": {
+      "flavor": null,
+      "version": null,
+      "add_tool_description": null,
+      "add_tool_input_schema": null
     }
   },
   "response_format": {
@@ -58,7 +70,7 @@ The configuration is organized into three sections:
 
 - **`fsm`**: FSM (Finite State Machine) overrides for execution behavior
 - **`prompt`**: Per-LLM prompt configuration overrides
-- **`response_format`**: Response format and content settings
+- **`response_format`**: Response format configuration for dual-LLM sessions
 
 All fields are optional and have sensible defaults.
 
@@ -74,7 +86,7 @@ All fields are optional and have sensible defaults.
 |------|----------|---------|-------------|
 | `integer` or `null` | No | `10` | >= 2 |
 
-Minimum number of available tools to trigger tool filtering. If fewer tools are available, no filtering is performed.
+Minimum number of registered tools to enable tool-filtering LLM step. Set to `null` to disable.
 
 #### `fsm.clear_session_meta`
 
@@ -82,7 +94,7 @@ Minimum number of available tools to trigger tool filtering. If fewer tools are 
 |------|----------|---------|
 | `string` | No | `"never"` |
 
-When to clear session metadata:
+When to clear session meta information:
 
 - `"never"`: Never clear
 - `"every_attempt"`: Clear at the beginning of each PLLM attempt
@@ -94,25 +106,9 @@ When to clear session metadata:
 |------|----------|---------|-------------|
 | `integer` or `null` | No | endpoint-dependent | >= 1 |
 
-Maximum number of conversation turns allowed in the session. When not set, the server applies a default based on the endpoint type.
+Maximum number of turns allowed in the session. If `null`, unlimited turns are allowed. When not set, the server applies a default based on the endpoint type.
 
 ### Dual-LLM Only Fields
-
-#### `fsm.max_pllm_steps`
-
-| Type | Required | Default | Constraints |
-|------|----------|---------|-------------|
-| `integer` or `null` | No | `null` | >= 1 |
-
-Maximum number of PLLM steps before giving up and returning an error.
-
-#### `fsm.max_tool_calls_per_step`
-
-| Type | Required | Default | Constraints |
-|------|----------|---------|-------------|
-| `integer` or `null` | No | `null` | >= 1 |
-
-Maximum number of tool calls allowed per PLLM step.
 
 #### `fsm.allow_history_mismatch`
 
@@ -120,7 +116,7 @@ Maximum number of tool calls allowed per PLLM step.
 |------|----------|---------|
 | `boolean` or `null` | No | `null` |
 
-Allow mismatches between the stored session history and the incoming messages.
+Controls behaviour when incoming messages diverge from stored history in stateless mode. When `true`, the server silently truncates its stored history to the last consistent point and accepts the caller's version. When `false`, the server rejects the request with an error if a mismatch is detected.
 
 #### `fsm.clear_history_every_n_attempts`
 
@@ -128,23 +124,7 @@ Allow mismatches between the stored session history and the incoming messages.
 |------|----------|---------|-------------|
 | `integer` or `null` | No | `null` | >= 1 |
 
-If set, clears the tool call history every n PLLM attempts to save token usage.
-
-#### `fsm.max_pllm_failed_steps`
-
-| Type | Required | Default | Constraints |
-|------|----------|---------|-------------|
-| `integer` or `null` | No | `null` | >= 1 |
-
-Maximum number of failed PLLM steps allowed before giving up and returning an error.
-
-#### `fsm.retry_on_policy_violation`
-
-| Type | Required | Default |
-|------|----------|---------|
-| `boolean` | No | `false` |
-
-Retry PLLM attempts when a policy violation is detected.
+Single-step mode only. Clear all failed step history every N attempts to save tokens.
 
 #### `fsm.disable_rllm`
 
@@ -152,15 +132,7 @@ Retry PLLM attempts when a policy violation is detected.
 |------|----------|---------|
 | `boolean` | No | `true` |
 
-Disable the Response LLM (RLLM) for reviewing final responses.
-
-#### `fsm.reduced_grammar_for_rllm_review`
-
-| Type | Required | Default |
-|------|----------|---------|
-| `boolean` | No | `true` |
-
-Use reduced grammar for the RLLM review process.
+Whether to skip the response LLM (RLLM) review step.
 
 #### `fsm.enable_multistep_planning`
 
@@ -168,15 +140,7 @@ Use reduced grammar for the RLLM review process.
 |------|----------|---------|
 | `boolean` | No | `false` |
 
-Enable multi-step planning for complex user queries.
-
-#### `fsm.prune_failed_steps`
-
-| Type | Required | Default |
-|------|----------|---------|
-| `boolean` | No | `false` |
-
-Prune failed PLLM steps from session history to save tokens.
+When `false` (single-step), each attempt solves independently. When `true` (multi-step), each step builds on previous.
 
 #### `fsm.enabled_internal_tools`
 
@@ -184,7 +148,15 @@ Prune failed PLLM steps from session history to save tokens.
 |------|----------|---------|
 | `array[string]` | No | endpoint-dependent |
 
-Internal tools to enable. Valid values: `"parse_with_ai"`, `"verify_hypothesis"`. When not set, the server applies a default based on the endpoint type.
+List of internal tool IDs available to planning LLM. Valid values: `"parse_with_ai"`, `"verify_hypothesis"`, `"set_policy"`, `"complete_turn"`. When not set, the server applies a default based on the endpoint type.
+
+#### `fsm.prune_failed_steps`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `boolean` | No | `false` |
+
+Multi-step mode only. Remove failed steps from history after turn completes.
 
 #### `fsm.force_to_cache`
 
@@ -192,7 +164,47 @@ Internal tools to enable. Valid values: `"parse_with_ai"`, `"verify_hypothesis"`
 |------|----------|---------|
 | `array[string]` | No | `[]` |
 
-List of tool ID regex patterns to always cache.
+List of tool ID regex patterns to always cache their results regardless of the cache_tool_result setting.
+
+#### `fsm.max_pllm_steps`
+
+| Type | Required | Default | Constraints |
+|------|----------|---------|-------------|
+| `integer` or `null` | No | `null` | >= 1 |
+
+Maximum number of steps allowed per turn.
+
+#### `fsm.max_pllm_failed_steps`
+
+| Type | Required | Default | Constraints |
+|------|----------|---------|-------------|
+| `integer` or `null` | No | `null` | >= 1 |
+
+Maximum number of failed steps allowed per turn.
+
+#### `fsm.max_tool_calls_per_step`
+
+| Type | Required | Default | Constraints |
+|------|----------|---------|-------------|
+| `integer` or `null` | No | `null` | >= 1 |
+
+Maximum number of tool calls allowed per PLLM attempt. If `null`, no limit is enforced.
+
+#### `fsm.reduced_grammar_for_rllm_review`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `boolean` | No | `true` |
+
+Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM.
+
+#### `fsm.retry_on_policy_violation`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `boolean` | No | `false` |
+
+When `true`, allow planning LLM to retry after policy violation.
 
 #### `fsm.wrap_tool_result`
 
@@ -200,7 +212,7 @@ List of tool ID regex patterns to always cache.
 |------|----------|---------|
 | `boolean` or `null` | No | `null` |
 
-Whether to wrap tool results before passing to PLLM.
+Whether to wrap tool results in Ok/Err types.
 
 #### `fsm.detect_tool_errors`
 
@@ -208,7 +220,11 @@ Whether to wrap tool results before passing to PLLM.
 |------|----------|---------|
 | `string` or `null` | No | `null` |
 
-Tool error detection strategy: `"none"`, `"regex"`, or `"llm"`.
+Whether and how to detect errors in tool results:
+
+- `"none"`: Do not detect tool result errors
+- `"regex"`: Use regex patterns to detect common error messages in tool results
+- `"llm"`: Use an LLM to analyze tool results and detect potential errors
 
 #### `fsm.detect_tool_error_regex_pattern`
 
@@ -216,7 +232,7 @@ Tool error detection strategy: `"none"`, `"regex"`, or `"llm"`.
 |------|----------|---------|
 | `string` or `null` | No | `null` |
 
-Regex pattern to use when `detect_tool_errors` is set to `"regex"`.
+The regex pattern to use for detecting error messages in tool results when `detect_tool_errors` is set to `"regex"`.
 
 #### `fsm.detect_tool_error_max_result_length`
 
@@ -224,7 +240,7 @@ Regex pattern to use when `detect_tool_errors` is set to `"regex"`.
 |------|----------|---------|
 | `integer` or `null` | No | `null` |
 
-Maximum tool result length to consider for error detection.
+The maximum length of tool result to consider for error detection. Longer results will be truncated. If `null`, no limit is enforced.
 
 #### `fsm.strict_tool_result_parsing`
 
@@ -232,7 +248,7 @@ Maximum tool result length to consider for error detection.
 |------|----------|---------|
 | `boolean` or `null` | No | `null` |
 
-Enable strict parsing of tool results.
+If `true`, only parse external tool results as JSON when the tool declares an output_schema. When `false`, always attempt `json.loads` on tool results.
 
 ---
 
@@ -246,26 +262,26 @@ Planning LLM prompt overrides:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `flavor` | `string` | `null` | Prompt flavor |
-| `version` | `string` | `null` | Prompt version |
-| `debug_info_level` | `string` | `"normal"` | Debug info level: `"minimal"`, `"normal"`, `"extra"` |
-| `clarify_ambiguous_queries` | `boolean` | `null` | Allow PLLM to ask clarifying questions |
-| `context_var_visibility` | `string` | `null` | Context variable visibility: `"none"`, `"basic-notext"`, `"basic-executable"`, `"all-executable"`, `"all"` |
-| `query_inline_roles` | `array[string]` | `null` | Message roles to inline in query: `"assistant"`, `"tool"`, `"developer"`, `"system"` |
-| `query_role_name_overrides` | `object` | `null` | Map of message role name overrides |
-| `query_include_tool_calls` | `boolean` | `null` | Include tool calls in query |
-| `query_include_tool_args` | `boolean` | `null` | Include tool arguments in query |
-| `query_include_tool_results` | `boolean` | `null` | Include tool results in query |
+| `flavor` | `string` | `null` | Prompt template variant to use (e.g., `"universal"`). |
+| `version` | `string` | `null` | Prompt template version. Combined with flavor to load template. |
+| `debug_info_level` | `string` | `"normal"` | Level of detail for debug/execution information in planning LLM prompt: `"minimal"`, `"normal"`, `"extra"`. |
+| `clarify_ambiguous_queries` | `boolean` | `null` | Whether planning LLM is allowed to ask for clarification on ambiguous queries. |
+| `context_var_visibility` | `string` | `null` | The visibility level of context variables in the PLLM prompts: `"none"`, `"basic-notext"`, `"basic-executable"`, `"all-executable"`, `"all"`. |
+| `query_inline_roles` | `array[string]` | `null` | List of roles whose messages will be inlined into the user query: `"assistant"`, `"tool"`, `"developer"`, `"system"`. |
+| `query_role_name_overrides` | `object` | `null` | Overrides for message role names in the inlined user query. For example, `{"assistant": "developer"}` will change the role of assistant messages to developer. |
+| `query_include_tool_calls` | `boolean` | `null` | Whether to include upstream tool calls in inlined query. |
+| `query_include_tool_args` | `boolean` | `null` | Whether to include arguments of upstream tool calls. |
+| `query_include_tool_results` | `boolean` | `null` | Whether to include results of upstream tool calls. |
 
 ### `prompt.rllm`
 
-Response LLM prompt overrides:
+Review LLM prompt overrides:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `flavor` | `string` | `null` | Prompt flavor |
-| `version` | `string` | `null` | Prompt version |
-| `debug_info_level` | `string` | `null` | Debug info level |
+| `flavor` | `string` | `null` | Prompt template variant to use (e.g., `"universal"`). |
+| `version` | `string` | `null` | Prompt template version. Combined with flavor to load template. |
+| `debug_info_level` | `string` | `null` | Level of detail for debug/execution information in RLLM prompt: `"minimal"`, `"normal"`, `"extra"`. |
 
 ### `prompt.tllm`
 
@@ -273,10 +289,10 @@ Tool-formulating LLM prompt overrides:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `flavor` | `string` | `null` | Prompt flavor |
-| `version` | `string` | `null` | Prompt version |
-| `add_tool_description` | `boolean` | `null` | Add tool description to prompt |
-| `add_tool_input_schema` | `boolean` | `null` | Add tool input schema to prompt |
+| `flavor` | `string` | `null` | Prompt template variant to use (e.g., `"universal"`). |
+| `version` | `string` | `null` | Prompt template version. Combined with flavor to load template. |
+| `add_tool_description` | `boolean` | `null` | Whether to include tool descriptions in tool-filtering prompt. |
+| `add_tool_input_schema` | `boolean` | `null` | Whether to include tool input JSON schemas in tool-filtering prompt. |
 
 ### Other LLM Prompts
 
@@ -284,8 +300,8 @@ Tool-formulating LLM prompt overrides:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `flavor` | `string` | `null` | Prompt flavor |
-| `version` | `string` | `null` | Prompt version |
+| `flavor` | `string` | `null` | Prompt template variant to use (e.g., `"universal"`). |
+| `version` | `string` | `null` | Prompt template version. Combined with flavor to load template. |
 
 ---
 
@@ -297,7 +313,7 @@ Tool-formulating LLM prompt overrides:
 |------|----------|---------|
 | `boolean` | No | `false` |
 
-Strip the response content. This overrides other inclusion settings.
+When `true`, returns only essential result value as plain text, stripping all metadata.
 
 #### `response_format.include_program`
 
@@ -305,7 +321,7 @@ Strip the response content. This overrides other inclusion settings.
 |------|----------|---------|
 | `boolean` | No | `false` |
 
-Include the final program in the response.
+Whether to include the generated program in the response.
 
 #### `response_format.include_policy_check_history`
 
@@ -313,7 +329,7 @@ Include the final program in the response.
 |------|----------|---------|
 | `boolean` | No | `false` |
 
-Include the policy check history in the response.
+Whether to include policy check results even when there are no violations.
 
 #### `response_format.include_namespace_snapshot`
 
@@ -321,4 +337,4 @@ Include the policy check history in the response.
 |------|----------|---------|
 | `boolean` | No | `false` |
 
-Include the namespace snapshot in the response.
+Whether to include snapshot of all variables after program execution.

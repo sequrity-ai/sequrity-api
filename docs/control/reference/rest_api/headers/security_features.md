@@ -41,13 +41,13 @@ The agent architecture to use. Valid values:
 |------|----------|---------|
 | `array[object]` | No | `null` |
 
-An array of content classifier configurations. Each classifier has the following fields:
+LLM-based content classifiers that analyze tool call arguments (pre-execution) and results (post-execution) to detect sensitive content (e.g., PII, toxicity). Each classifier has the following fields:
 
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
 | `name` | `string` | Yes | - | Classifier identifier (see below) |
-| `threshold` | `float` | No | `0.5` | Detection sensitivity threshold (0.0 - 1.0) |
-| `mode` | `string` | No | `null` | Preset mode that overrides threshold: `"normal"` or `"strict"` |
+| `threshold` | `float` | No | `0.5` | Threshold for the tagger (0.0 - 1.0) |
+| `mode` | `string` | No | `null` | Optional mode that overrides threshold (e.g., `"high sensitivity"`, `"strict"`, `"low sensitivity"`, `"normal"`) |
 
 Available classifiers:
 
@@ -62,11 +62,11 @@ Available classifiers:
 |------|----------|---------|
 | `array[object]` | No | `null` |
 
-An array of content blocker configurations. Each blocker has the following fields:
+Content blockers that redact or mask sensitive content in tool call arguments (pre-execution) and results (post-execution). Each blocker has the following fields:
 
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `name` | `string` | Yes | - | Blocker identifier (see below) |
+| `name` | `string` | Yes | - | Blocker identifier: `"url_blocker"` or `"file_blocker"` (see below) |
 
 Available blockers:
 
