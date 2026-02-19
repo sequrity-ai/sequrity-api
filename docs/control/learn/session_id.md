@@ -124,7 +124,7 @@ to continue an existing multi-turn session.
 
 Here are {==**the only two scenarios where you have to manually set session IDs**==}:
 
-1. For Sequrity Client, if you want to start a new session, you show explicitly set the `session_id` parameter to `None` in [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc.
+1. For Sequrity Client, if you want to start a new session, you need to explicitly set the `session_id` parameter to `None` in [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc.
 2. For both REST API and Sequrity Client, if the request messages you send do not contain any tool result messages from previous interactions.
 
     For  example, the response of the first turn is only a policy violation message without any tool calls, and you want to continue the session for the second turn, then you need to manually set the session ID for the second turn.
