@@ -53,10 +53,16 @@ the session is removed after a cycle of `[user request] -> [assistant tool calls
 
 There are also other mechanisms to control session lifetime, such as the maximum number of tool calls issued in a step/attempt, the maximum number of steps in a turn, the maximum number of failed steps in a turn, etc. You can refer to [the documentation of `FineGrainedConfigHeader` for more details][sequrity.control.types.headers.FineGrainedConfigHeader].
 
-## When to Use Session ID
+## When to Set Session ID
 
-Sequrity Control (1) puts session ID in the response headers for every chat completion response,
-and (2) also encodes the session ID into tool call IDs of assistant messages.
+**Most of the time, you don't need to manually set session IDs in your request headers**,
+as Sequrity Control can parse the session ID from tool call IDs in assistant/tool result messages.
+
+Specifically, Sequrity Control
+
+- puts session ID in the response headers for every chat completion response,
+- also encodes the session ID into tool call IDs of assistant messages,
+- for Sequrity Client, automatically tracks session ID across turns if `session_id` is not manually set in [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc.
 
 !!! info "Session IDs in Response Headers and Tool Call IDs"
 
@@ -109,17 +115,16 @@ and (2) also encodes the session ID into tool call IDs of assistant messages.
     }
     ```
 
-
-**Most of the time, you don't need to manually set session IDs in your request headers**,
-as Sequrity Control automatically parses the session ID from tool call IDs in assistant messages.
-
 Of course, you can also manually set the session ID
 
 - in the [`X-Session-ID`](../reference/rest_api/headers/api_key_session_id.md#x-session-id-optional) header for REST API
-- via parameter `session_id` of [`chat.create` method][sequrity.control.resources.chat.ChatResource.create] for Sequrity client
+- via parameter `session_id` of [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc. for Sequrity Client
 
 to continue an existing multi-turn session.
 
-Here is **the only scenario where you may have to manually track session IDs**:
+Here are {==**the only two scenarios where you have to manually set session IDs**==}:
 
-{== The request messages you send do not contain any tool result messages from previous interactions. ==}
+1. For Sequrity Client, if you want to start a new session, you show explicitly set the `session_id` parameter to `None` in [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc.
+2. For both REST API and Sequrity Client, if the request messages you send do not contain any tool result messages from previous interactions.
+
+    For  example, the response of the first turn is only a policy violation message without any tool calls, and you want to continue the session for the second turn, then you need to manually set the session ID for the second turn.
