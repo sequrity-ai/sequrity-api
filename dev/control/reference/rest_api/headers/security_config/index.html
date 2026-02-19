@@ -27,7 +27,7 @@
     
     
       
-        <title>X-Security-Config - Sequrity</title>
+        <title>X-Config - Sequrity</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#x-security-config" class="md-skip">
+        <a href="#x-config" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              X-Security-Config
+              X-Config
             
           </span>
         </div>
@@ -550,6 +550,8 @@
       
         
       
+        
+      
     
     
     
@@ -640,6 +642,34 @@
     
   
     Secure Tool Use with Dual-LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../getting_started/custom_headers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Headers
   
 
     
@@ -1342,7 +1372,7 @@
   <span class="md-ellipsis">
     
   
-    Bearer-Token vs Headers
+    How Session Config Is Built
   
 
     
@@ -1484,6 +1514,8 @@
       
         
       
+        
+      
     
     
     
@@ -1580,7 +1612,35 @@
   <span class="md-ellipsis">
     
   
-    Chat Completion
+    Chat Completions API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages API
   
 
     
@@ -1606,6 +1666,10 @@
     
       
         
+          
+        
+      
+        
       
         
       
@@ -1626,11 +1690,12 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_4_2_5_4" id="__nav_4_2_5_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -1644,11 +1709,17 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_5_5" id="__nav_4_2_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_2_5_4">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2_5_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1657,6 +1728,8 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1672,7 +1745,7 @@
   <span class="md-ellipsis">
     
   
-    X-Api-Key and X-Session-Id
+    X-Api-Key and X-Session-ID
   
 
     
@@ -1700,7 +1773,7 @@
   <span class="md-ellipsis">
     
   
-    X-Security-Features
+    X-Features
   
 
     
@@ -1728,7 +1801,7 @@
   <span class="md-ellipsis">
     
   
-    X-Security-Policy
+    X-Policy
   
 
     
@@ -1765,7 +1838,7 @@
   <span class="md-ellipsis">
     
   
-    X-Security-Config
+    X-Config
   
 
     
@@ -1783,7 +1856,7 @@
   <span class="md-ellipsis">
     
   
-    X-Security-Config
+    X-Config
   
 
     
@@ -1820,34 +1893,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fields" class="md-nav__link">
+  <a href="#top-level-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fields
+        Top-Level Fields
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Fields">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsm-overrides-fsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FSM Overrides (fsm)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FSM Overrides (fsm)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#planning-execution" class="md-nav__link">
+  <a href="#shared-fields-single-llm-dual-llm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Planning &amp; Execution
+        Shared Fields (Single-LLM &amp; Dual-LLM)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Planning &amp; Execution">
+    <nav class="md-nav" aria-label="Shared Fields (Single-LLM &amp; Dual-LLM)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#max_pllm_attempts" class="md-nav__link">
+  <a href="#fsmmin_num_tools_for_filtering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        max_pllm_attempts
+        fsm.min_num_tools_for_filtering
       
     </span>
   </a>
@@ -1855,10 +1939,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#max_tool_calls_per_attempt" class="md-nav__link">
+  <a href="#fsmclear_session_meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        max_tool_calls_per_attempt
+        fsm.clear_session_meta
       
     </span>
   </a>
@@ -1866,87 +1950,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#clear_history_every_n_attempts" class="md-nav__link">
+  <a href="#fsmmax_n_turns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        clear_history_every_n_attempts
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retry_on_policy_violation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        retry_on_policy_violation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#max_n_turns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        max_n_turns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enable_multi_step_planning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enable_multi_step_planning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#prune_failed_steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        prune_failed_steps
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#show_pllm_secure_var_values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        show_pllm_secure_var_values
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pllm_debug_info_level" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pllm_debug_info_level
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pllm_can_ask_for_clarification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pllm_can_ask_for_clarification
+        fsm.max_n_turns
       
     </span>
   </a>
@@ -1959,22 +1966,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#message-processing" class="md-nav__link">
+  <a href="#dual-llm-only-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Message Processing
+        Dual-LLM Only Fields
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Message Processing">
+    <nav class="md-nav" aria-label="Dual-LLM Only Fields">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#merge_system_messages" class="md-nav__link">
+  <a href="#fsmmax_pllm_steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        merge_system_messages
+        fsm.max_pllm_steps
       
     </span>
   </a>
@@ -1982,10 +1989,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#convert_system_to_developer_messages" class="md-nav__link">
+  <a href="#fsmmax_tool_calls_per_step" class="md-nav__link">
     <span class="md-ellipsis">
       
-        convert_system_to_developer_messages
+        fsm.max_tool_calls_per_step
       
     </span>
   </a>
@@ -1993,10 +2000,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#include_other_roles_in_user_query" class="md-nav__link">
+  <a href="#fsmallow_history_mismatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        include_other_roles_in_user_query
+        fsm.allow_history_mismatch
       
     </span>
   </a>
@@ -2004,10 +2011,153 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#restate_user_query_before_planning" class="md-nav__link">
+  <a href="#fsmclear_history_every_n_attempts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        restate_user_query_before_planning
+        fsm.clear_history_every_n_attempts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmmax_pllm_failed_steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.max_pllm_failed_steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmretry_on_policy_violation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.retry_on_policy_violation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdisable_rllm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.disable_rllm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmreduced_grammar_for_rllm_review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.reduced_grammar_for_rllm_review
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmenable_multistep_planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.enable_multistep_planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmprune_failed_steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.prune_failed_steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmenabled_internal_tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.enabled_internal_tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmforce_to_cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.force_to_cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmwrap_tool_result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.wrap_tool_result
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdetect_tool_errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.detect_tool_errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdetect_tool_error_regex_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.detect_tool_error_regex_pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdetect_tool_error_max_result_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.detect_tool_error_max_result_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmstrict_tool_result_parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.strict_tool_result_parsing
       
     </span>
   </a>
@@ -2019,23 +2169,28 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#caching" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt-overrides-prompt" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Caching
+        Prompt Overrides (prompt)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Caching">
+    <nav class="md-nav" aria-label="Prompt Overrides (prompt)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cache_tool_result" class="md-nav__link">
+  <a href="#promptpllm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        cache_tool_result
+        prompt.pllm
       
     </span>
   </a>
@@ -2043,10 +2198,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#force_to_cache" class="md-nav__link">
+  <a href="#promptrllm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        force_to_cache
+        prompt.rllm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompttllm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prompt.tllm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-llm-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other LLM Prompts
       
     </span>
   </a>
@@ -2057,157 +2234,17 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#tool-management" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#response-format-overrides-response_format" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tool Management
+        Response Format Overrides (response_format)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Tool Management">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#min_num_tools_for_filtering" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        min_num_tools_for_filtering
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enabled_internal_tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enabled_internal_tools
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#review-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Review &amp; Validation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Review &amp; Validation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#disable_rllm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        disable_rllm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reduced_grammar_for_rllm_review" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        reduced_grammar_for_rllm_review
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rllm_confidence_score_threshold" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        rllm_confidence_score_threshold
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reduced_grammar_version" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        reduced_grammar_version
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#session-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Session Management
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Session Management">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#clear_session_meta" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        clear_session_meta
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#response-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Response Format
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Response Format">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#response_format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        response_format
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="response_format">
+    <nav class="md-nav" aria-label="Response Format Overrides (response_format)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2251,16 +2288,6 @@
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -2379,6 +2406,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2449,7 +2480,35 @@
   <span class="md-ellipsis">
     
   
-    Chat Completion
+    Chat Completions API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sequrity_client/message/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages API
   
 
     
@@ -2497,6 +2556,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../../sequrity_client/policy_gen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -2521,10 +2608,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_6" >
         
           
-          <label class="md-nav__link" for="__nav_4_2_6_1_4" id="__nav_4_2_6_1_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2_6_1_6" id="__nav_4_2_6_1_6_label" tabindex="0">
             
   
   
@@ -2542,8 +2629,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_6_1_4">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6_1_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2719,6 +2806,10 @@
     
       
         
+          
+        
+      
+        
       
         
       
@@ -2740,14 +2831,15 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_2" >
         
           
-          <label class="md-nav__link" for="__nav_4_2_6_2" id="__nav_4_2_6_2_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../sequrity_client/integrations/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
     
   
-    SequrityClient.integrations
+    Integrations
   
 
     
@@ -2755,19 +2847,27 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_6_2" id="__nav_4_2_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_6_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_2_6_2">
             <span class="md-nav__icon md-icon"></span>
             
   
-    SequrityClient.integrations
+    Integrations
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -3181,34 +3281,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fields" class="md-nav__link">
+  <a href="#top-level-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fields
+        Top-Level Fields
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Fields">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fsm-overrides-fsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FSM Overrides (fsm)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FSM Overrides (fsm)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#planning-execution" class="md-nav__link">
+  <a href="#shared-fields-single-llm-dual-llm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Planning &amp; Execution
+        Shared Fields (Single-LLM &amp; Dual-LLM)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Planning &amp; Execution">
+    <nav class="md-nav" aria-label="Shared Fields (Single-LLM &amp; Dual-LLM)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#max_pllm_attempts" class="md-nav__link">
+  <a href="#fsmmin_num_tools_for_filtering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        max_pllm_attempts
+        fsm.min_num_tools_for_filtering
       
     </span>
   </a>
@@ -3216,10 +3327,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#max_tool_calls_per_attempt" class="md-nav__link">
+  <a href="#fsmclear_session_meta" class="md-nav__link">
     <span class="md-ellipsis">
       
-        max_tool_calls_per_attempt
+        fsm.clear_session_meta
       
     </span>
   </a>
@@ -3227,87 +3338,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#clear_history_every_n_attempts" class="md-nav__link">
+  <a href="#fsmmax_n_turns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        clear_history_every_n_attempts
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retry_on_policy_violation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        retry_on_policy_violation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#max_n_turns" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        max_n_turns
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enable_multi_step_planning" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enable_multi_step_planning
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#prune_failed_steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        prune_failed_steps
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#show_pllm_secure_var_values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        show_pllm_secure_var_values
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pllm_debug_info_level" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pllm_debug_info_level
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pllm_can_ask_for_clarification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pllm_can_ask_for_clarification
+        fsm.max_n_turns
       
     </span>
   </a>
@@ -3320,22 +3354,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#message-processing" class="md-nav__link">
+  <a href="#dual-llm-only-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Message Processing
+        Dual-LLM Only Fields
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Message Processing">
+    <nav class="md-nav" aria-label="Dual-LLM Only Fields">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#merge_system_messages" class="md-nav__link">
+  <a href="#fsmmax_pllm_steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        merge_system_messages
+        fsm.max_pllm_steps
       
     </span>
   </a>
@@ -3343,10 +3377,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#convert_system_to_developer_messages" class="md-nav__link">
+  <a href="#fsmmax_tool_calls_per_step" class="md-nav__link">
     <span class="md-ellipsis">
       
-        convert_system_to_developer_messages
+        fsm.max_tool_calls_per_step
       
     </span>
   </a>
@@ -3354,10 +3388,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#include_other_roles_in_user_query" class="md-nav__link">
+  <a href="#fsmallow_history_mismatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        include_other_roles_in_user_query
+        fsm.allow_history_mismatch
       
     </span>
   </a>
@@ -3365,10 +3399,153 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#restate_user_query_before_planning" class="md-nav__link">
+  <a href="#fsmclear_history_every_n_attempts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        restate_user_query_before_planning
+        fsm.clear_history_every_n_attempts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmmax_pllm_failed_steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.max_pllm_failed_steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmretry_on_policy_violation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.retry_on_policy_violation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdisable_rllm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.disable_rllm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmreduced_grammar_for_rllm_review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.reduced_grammar_for_rllm_review
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmenable_multistep_planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.enable_multistep_planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmprune_failed_steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.prune_failed_steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmenabled_internal_tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.enabled_internal_tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmforce_to_cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.force_to_cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmwrap_tool_result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.wrap_tool_result
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdetect_tool_errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.detect_tool_errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdetect_tool_error_regex_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.detect_tool_error_regex_pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmdetect_tool_error_max_result_length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.detect_tool_error_max_result_length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fsmstrict_tool_result_parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fsm.strict_tool_result_parsing
       
     </span>
   </a>
@@ -3380,23 +3557,28 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#caching" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prompt-overrides-prompt" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Caching
+        Prompt Overrides (prompt)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Caching">
+    <nav class="md-nav" aria-label="Prompt Overrides (prompt)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cache_tool_result" class="md-nav__link">
+  <a href="#promptpllm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        cache_tool_result
+        prompt.pllm
       
     </span>
   </a>
@@ -3404,10 +3586,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#force_to_cache" class="md-nav__link">
+  <a href="#promptrllm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        force_to_cache
+        prompt.rllm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompttllm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prompt.tllm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-llm-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other LLM Prompts
       
     </span>
   </a>
@@ -3418,157 +3622,17 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#tool-management" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#response-format-overrides-response_format" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tool Management
+        Response Format Overrides (response_format)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Tool Management">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#min_num_tools_for_filtering" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        min_num_tools_for_filtering
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enabled_internal_tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        enabled_internal_tools
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#review-validation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Review &amp; Validation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Review &amp; Validation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#disable_rllm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        disable_rllm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reduced_grammar_for_rllm_review" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        reduced_grammar_for_rllm_review
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#rllm_confidence_score_threshold" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        rllm_confidence_score_threshold
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reduced_grammar_version" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        reduced_grammar_version
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#session-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Session Management
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Session Management">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#clear_session_meta" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        clear_session_meta
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#response-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Response Format
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Response Format">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#response_format" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        response_format
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="response_format">
+    <nav class="md-nav" aria-label="Response Format Overrides (response_format)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3612,16 +3676,6 @@
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -3727,7 +3781,7 @@
     
     
       <li class="md-path__item">
-        <a href="../api_key_session_id/" class="md-path__link">
+        <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
     Custom Headers
@@ -3752,361 +3806,66 @@
   
 
 
-<h1 id="x-security-config">X-Security-Config</h1>
-<p>The <code>X-Security-Config</code> header is a JSON object that provides additional product configuration settings.</p>
+<h1 id="x-config">X-Config</h1>
+<p>The <code>X-Config</code> header is a JSON object that provides additional product configuration settings.</p>
 <p>This header is <strong>optional</strong> and can be used in Headers-Only Mode to fine-tune session behavior.</p>
 <h2 id="data-structure">Data Structure</h2>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;max_pllm_attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;merge_system_messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;convert_system_to_developer_messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">&quot;include_other_roles_in_user_query&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;assistant&quot;</span><span class="p">],</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">&quot;max_tool_calls_per_attempt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">&quot;clear_history_every_n_attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">&quot;retry_on_policy_violation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="nt">&quot;cache_tool_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;deterministic-only&quot;</span><span class="p">,</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">&quot;force_to_cache&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">&quot;min_num_tools_for_filtering&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">&quot;clear_session_meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;never&quot;</span><span class="p">,</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">&quot;disable_rllm&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nt">&quot;reduced_grammar_for_rllm_review&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">&quot;rllm_confidence_score_threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="nt">&quot;pllm_debug_info_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="nt">&quot;max_n_turns&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="nt">&quot;enable_multi_step_planning&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="nt">&quot;prune_failed_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">&quot;enabled_internal_tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;parse_with_ai&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;verify_hypothesis&quot;</span><span class="p">],</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="nt">&quot;restate_user_query_before_planning&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="nt">&quot;pllm_can_ask_for_clarification&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="nt">&quot;reduced_grammar_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;v2&quot;</span><span class="p">,</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="nt">&quot;show_pllm_secure_var_values&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="nt">&quot;response_format&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">    </span><span class="nt">&quot;strip_response_content&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="nt">&quot;include_program&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="nt">&quot;include_policy_check_history&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="nt">&quot;include_namespace_snapshot&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="p">}</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;fsm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;min_num_tools_for_filtering&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;clear_session_meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;never&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">&quot;max_n_turns&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">&quot;clear_history_every_n_attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">&quot;disable_rllm&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">&quot;enable_multistep_planning&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">&quot;enabled_internal_tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">&quot;prune_failed_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">&quot;force_to_cache&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">&quot;max_pllm_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">&quot;max_tool_calls_per_step&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nt">&quot;reduced_grammar_for_rllm_review&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="nt">&quot;retry_on_policy_violation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="nt">&quot;wrap_tool_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="nt">&quot;detect_tool_errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="nt">&quot;detect_tool_error_regex_pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="nt">&quot;detect_tool_error_max_result_length&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="nt">&quot;strict_tool_result_parsing&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="nt">&quot;pllm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">      </span><span class="nt">&quot;debug_info_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">      </span><span class="nt">&quot;clarify_ambiguous_queries&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">      </span><span class="nt">&quot;context_var_visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">      </span><span class="nt">&quot;query_inline_roles&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">      </span><span class="nt">&quot;query_role_name_overrides&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">      </span><span class="nt">&quot;query_include_tool_calls&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">      </span><span class="nt">&quot;query_include_tool_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">      </span><span class="nt">&quot;query_include_tool_results&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="nt">&quot;rllm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">      </span><span class="nt">&quot;debug_info_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">  </span><span class="nt">&quot;response_format&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">    </span><span class="nt">&quot;strip_response_content&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">    </span><span class="nt">&quot;include_program&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">    </span><span class="nt">&quot;include_policy_check_history&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">    </span><span class="nt">&quot;include_namespace_snapshot&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="p">}</span>
 </span></code></pre></div>
-<h2 id="fields">Fields</h2>
+<h2 id="top-level-fields">Top-Level Fields</h2>
+<p>The configuration is organized into three sections:</p>
+<ul>
+<li><strong><code>fsm</code></strong>: FSM (Finite State Machine) overrides for execution behavior</li>
+<li><strong><code>prompt</code></strong>: Per-LLM prompt configuration overrides</li>
+<li><strong><code>response_format</code></strong>: Response format and content settings</li>
+</ul>
 <p>All fields are optional and have sensible defaults.</p>
 <hr />
-<h3 id="planning-execution">Planning &amp; Execution</h3>
-<h4 id="max_pllm_attempts"><code>max_pllm_attempts</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-<th>Constraints</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>integer</code></td>
-<td>No</td>
-<td><code>1</code></td>
-<td>&gt;= 1</td>
-</tr>
-</tbody>
-</table>
-<p>Maximum number of PLLM attempts before giving up and returning an error.</p>
-<h4 id="max_tool_calls_per_attempt"><code>max_tool_calls_per_attempt</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-<th>Constraints</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>integer</code> or <code>null</code></td>
-<td>No</td>
-<td><code>200</code></td>
-<td>&gt;= 1</td>
-</tr>
-</tbody>
-</table>
-<p>Maximum number of tool calls allowed per PLLM attempt. Set to <code>null</code> for no limit.</p>
-<h4 id="clear_history_every_n_attempts"><code>clear_history_every_n_attempts</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-<th>Constraints</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>integer</code> or <code>null</code></td>
-<td>No</td>
-<td><code>null</code></td>
-<td>&gt;= 1</td>
-</tr>
-</tbody>
-</table>
-<p>If set, clears the tool call history every n PLLM attempts to save token usage.</p>
-<h4 id="retry_on_policy_violation"><code>retry_on_policy_violation</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>false</code></td>
-</tr>
-</tbody>
-</table>
-<p>Retry PLLM attempts when a policy violation is detected.</p>
-<h4 id="max_n_turns"><code>max_n_turns</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-<th>Constraints</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>integer</code> or <code>null</code></td>
-<td>No</td>
-<td><code>5</code></td>
-<td>&gt;= 1</td>
-</tr>
-</tbody>
-</table>
-<p>Maximum number of conversation turns allowed in the session. Set to <code>null</code> for unlimited turns.</p>
-<h4 id="enable_multi_step_planning"><code>enable_multi_step_planning</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>false</code></td>
-</tr>
-</tbody>
-</table>
-<p>Enable multi-step planning for complex user queries.</p>
-<h4 id="prune_failed_steps"><code>prune_failed_steps</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>false</code></td>
-</tr>
-</tbody>
-</table>
-<p>Prune failed PLLM steps from session history to save tokens.</p>
-<h4 id="show_pllm_secure_var_values"><code>show_pllm_secure_var_values</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>string</code></td>
-<td>No</td>
-<td><code>"none"</code></td>
-</tr>
-</tbody>
-</table>
-<p>Control which secure variable values are shown to PLLM in prompts:</p>
-<ul>
-<li><code>"none"</code>: Do not show any secure variable values</li>
-<li><code>"basic-notext"</code>: Show values of basic types (bool, int, float, list, tuple) but not strings</li>
-<li><code>"basic-executable"</code>: Show values of basic types (including strings) marked as executable memory</li>
-<li><code>"all-executable"</code>: Show all variables marked as executable memory</li>
-</ul>
-<p><strong>Note:</strong> <code>"basic-executable"</code> and <code>"all-executable"</code> require <code>enable_non_executable_memory</code> to be <code>true</code> in the internal policy preset.</p>
-<h4 id="pllm_debug_info_level"><code>pllm_debug_info_level</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>string</code></td>
-<td>No</td>
-<td><code>"normal"</code></td>
-</tr>
-</tbody>
-</table>
-<p>Debug info level provided to PLLM: <code>"minimal"</code>, <code>"normal"</code>, or <code>"extra"</code>.</p>
-<h4 id="pllm_can_ask_for_clarification"><code>pllm_can_ask_for_clarification</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>false</code></td>
-</tr>
-</tbody>
-</table>
-<p>Allow PLLM to ask clarifying questions when the user query is ambiguous.</p>
-<hr />
-<h3 id="message-processing">Message Processing</h3>
-<h4 id="merge_system_messages"><code>merge_system_messages</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>true</code></td>
-</tr>
-</tbody>
-</table>
-<p>Merge multiple system messages into one before sending to PLLM.</p>
-<h4 id="convert_system_to_developer_messages"><code>convert_system_to_developer_messages</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>false</code></td>
-</tr>
-</tbody>
-</table>
-<p>Convert system messages to developer messages in the user query.</p>
-<h4 id="include_other_roles_in_user_query"><code>include_other_roles_in_user_query</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>array[string]</code></td>
-<td>No</td>
-<td><code>["assistant"]</code></td>
-</tr>
-</tbody>
-</table>
-<p>Roles to include in the user query besides <code>"user"</code>. Valid values: <code>"assistant"</code>, <code>"tool"</code>.</p>
-<h4 id="restate_user_query_before_planning"><code>restate_user_query_before_planning</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>false</code></td>
-</tr>
-</tbody>
-</table>
-<p>Restate the user query before planning to provide clearer context.</p>
-<hr />
-<h3 id="caching">Caching</h3>
-<h4 id="cache_tool_result"><code>cache_tool_result</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>string</code></td>
-<td>No</td>
-<td><code>"deterministic-only"</code></td>
-</tr>
-</tbody>
-</table>
-<p>Tool result caching strategy:</p>
-<ul>
-<li><code>"none"</code>: No caching</li>
-<li><code>"all"</code>: Cache all tool results</li>
-<li><code>"deterministic-only"</code>: Cache only deterministic tool results</li>
-</ul>
-<h4 id="force_to_cache"><code>force_to_cache</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>array[string]</code></td>
-<td>No</td>
-<td><code>[]</code></td>
-</tr>
-</tbody>
-</table>
-<p>List of tool ID regex patterns to always cache regardless of the <code>cache_tool_result</code> setting.</p>
-<hr />
-<h3 id="tool-management">Tool Management</h3>
-<h4 id="min_num_tools_for_filtering"><code>min_num_tools_for_filtering</code></h4>
+<h2 id="fsm-overrides-fsm">FSM Overrides (<code>fsm</code>)</h2>
+<h3 id="shared-fields-single-llm-dual-llm">Shared Fields (Single-LLM &amp; Dual-LLM)</h3>
+<h4 id="fsmmin_num_tools_for_filtering"><code>fsm.min_num_tools_for_filtering</code></h4>
 <table>
 <thead>
 <tr>
@@ -4126,103 +3885,7 @@
 </tbody>
 </table>
 <p>Minimum number of available tools to trigger tool filtering. If fewer tools are available, no filtering is performed.</p>
-<h4 id="enabled_internal_tools"><code>enabled_internal_tools</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>array[string]</code></td>
-<td>No</td>
-<td><code>["parse_with_ai", "verify_hypothesis"]</code></td>
-</tr>
-</tbody>
-</table>
-<p>Internal tools to enable. Valid values: <code>"parse_with_ai"</code>, <code>"verify_hypothesis"</code>.</p>
-<hr />
-<h3 id="review-validation">Review &amp; Validation</h3>
-<h4 id="disable_rllm"><code>disable_rllm</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>true</code></td>
-</tr>
-</tbody>
-</table>
-<p>Disable the Response LLM (RLLM) for reviewing final responses.</p>
-<h4 id="reduced_grammar_for_rllm_review"><code>reduced_grammar_for_rllm_review</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>boolean</code></td>
-<td>No</td>
-<td><code>true</code></td>
-</tr>
-</tbody>
-</table>
-<p>Use reduced grammar for the RLLM review process.</p>
-<h4 id="rllm_confidence_score_threshold"><code>rllm_confidence_score_threshold</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-<th>Constraints</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>float</code> or <code>null</code></td>
-<td>No</td>
-<td><code>null</code></td>
-<td>0.0 - 1.0</td>
-</tr>
-</tbody>
-</table>
-<p>Threshold for accepting RLLM review confidence scores.</p>
-<h4 id="reduced_grammar_version"><code>reduced_grammar_version</code></h4>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Required</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>string</code></td>
-<td>No</td>
-<td><code>"v2"</code></td>
-</tr>
-</tbody>
-</table>
-<p>Version of reduced grammar to use for RLLM review: <code>"v1"</code> or <code>"v2"</code>.</p>
-<hr />
-<h3 id="session-management">Session Management</h3>
-<h4 id="clear_session_meta"><code>clear_session_meta</code></h4>
+<h4 id="fsmclear_session_meta"><code>fsm.clear_session_meta</code></h4>
 <table>
 <thead>
 <tr>
@@ -4245,9 +3908,68 @@
 <li><code>"every_attempt"</code>: Clear at the beginning of each PLLM attempt</li>
 <li><code>"every_turn"</code>: Clear at the beginning of each turn</li>
 </ul>
-<hr />
-<h3 id="response-format">Response Format</h3>
-<h4 id="response_format"><code>response_format</code></h4>
+<h4 id="fsmmax_n_turns"><code>fsm.max_n_turns</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integer</code> or <code>null</code></td>
+<td>No</td>
+<td>endpoint-dependent</td>
+<td>&gt;= 1</td>
+</tr>
+</tbody>
+</table>
+<p>Maximum number of conversation turns allowed in the session. When not set, the server applies a default based on the endpoint type.</p>
+<h3 id="dual-llm-only-fields">Dual-LLM Only Fields</h3>
+<h4 id="fsmmax_pllm_steps"><code>fsm.max_pllm_steps</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integer</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+<td>&gt;= 1</td>
+</tr>
+</tbody>
+</table>
+<p>Maximum number of PLLM steps before giving up and returning an error.</p>
+<h4 id="fsmmax_tool_calls_per_step"><code>fsm.max_tool_calls_per_step</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integer</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+<td>&gt;= 1</td>
+</tr>
+</tbody>
+</table>
+<p>Maximum number of tool calls allowed per PLLM step.</p>
+<h4 id="fsmallow_history_mismatch"><code>fsm.allow_history_mismatch</code></h4>
 <table>
 <thead>
 <tr>
@@ -4258,14 +3980,445 @@
 </thead>
 <tbody>
 <tr>
-<td><code>object</code></td>
+<td><code>boolean</code> or <code>null</code></td>
 <td>No</td>
-<td>See below</td>
+<td><code>null</code></td>
 </tr>
 </tbody>
 </table>
-<p>Configuration for the response format.</p>
-<h5 id="response_formatstrip_response_content"><code>response_format.strip_response_content</code></h5>
+<p>Allow mismatches between the stored session history and the incoming messages.</p>
+<h4 id="fsmclear_history_every_n_attempts"><code>fsm.clear_history_every_n_attempts</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integer</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+<td>&gt;= 1</td>
+</tr>
+</tbody>
+</table>
+<p>If set, clears the tool call history every n PLLM attempts to save token usage.</p>
+<h4 id="fsmmax_pllm_failed_steps"><code>fsm.max_pllm_failed_steps</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integer</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+<td>&gt;= 1</td>
+</tr>
+</tbody>
+</table>
+<p>Maximum number of failed PLLM steps allowed before giving up and returning an error.</p>
+<h4 id="fsmretry_on_policy_violation"><code>fsm.retry_on_policy_violation</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td>No</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<p>Retry PLLM attempts when a policy violation is detected.</p>
+<h4 id="fsmdisable_rllm"><code>fsm.disable_rllm</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td>No</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p>Disable the Response LLM (RLLM) for reviewing final responses.</p>
+<h4 id="fsmreduced_grammar_for_rllm_review"><code>fsm.reduced_grammar_for_rllm_review</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td>No</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p>Use reduced grammar for the RLLM review process.</p>
+<h4 id="fsmenable_multistep_planning"><code>fsm.enable_multistep_planning</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td>No</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<p>Enable multi-step planning for complex user queries.</p>
+<h4 id="fsmprune_failed_steps"><code>fsm.prune_failed_steps</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td>No</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<p>Prune failed PLLM steps from session history to save tokens.</p>
+<h4 id="fsmenabled_internal_tools"><code>fsm.enabled_internal_tools</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>array[string]</code></td>
+<td>No</td>
+<td>endpoint-dependent</td>
+</tr>
+</tbody>
+</table>
+<p>Internal tools to enable. Valid values: <code>"parse_with_ai"</code>, <code>"verify_hypothesis"</code>. When not set, the server applies a default based on the endpoint type.</p>
+<h4 id="fsmforce_to_cache"><code>fsm.force_to_cache</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>array[string]</code></td>
+<td>No</td>
+<td><code>[]</code></td>
+</tr>
+</tbody>
+</table>
+<p>List of tool ID regex patterns to always cache.</p>
+<h4 id="fsmwrap_tool_result"><code>fsm.wrap_tool_result</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table>
+<p>Whether to wrap tool results before passing to PLLM.</p>
+<h4 id="fsmdetect_tool_errors"><code>fsm.detect_tool_errors</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>string</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table>
+<p>Tool error detection strategy: <code>"none"</code>, <code>"regex"</code>, or <code>"llm"</code>.</p>
+<h4 id="fsmdetect_tool_error_regex_pattern"><code>fsm.detect_tool_error_regex_pattern</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>string</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table>
+<p>Regex pattern to use when <code>detect_tool_errors</code> is set to <code>"regex"</code>.</p>
+<h4 id="fsmdetect_tool_error_max_result_length"><code>fsm.detect_tool_error_max_result_length</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integer</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table>
+<p>Maximum tool result length to consider for error detection.</p>
+<h4 id="fsmstrict_tool_result_parsing"><code>fsm.strict_tool_result_parsing</code></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code> or <code>null</code></td>
+<td>No</td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table>
+<p>Enable strict parsing of tool results.</p>
+<hr />
+<h2 id="prompt-overrides-prompt">Prompt Overrides (<code>prompt</code>)</h2>
+<p>Per-LLM prompt configuration. Each sub-object corresponds to a different LLM in the pipeline.</p>
+<h3 id="promptpllm"><code>prompt.pllm</code></h3>
+<p>Planning LLM prompt overrides:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flavor</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt flavor</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt version</td>
+</tr>
+<tr>
+<td><code>debug_info_level</code></td>
+<td><code>string</code></td>
+<td><code>"normal"</code></td>
+<td>Debug info level: <code>"minimal"</code>, <code>"normal"</code>, <code>"extra"</code></td>
+</tr>
+<tr>
+<td><code>clarify_ambiguous_queries</code></td>
+<td><code>boolean</code></td>
+<td><code>null</code></td>
+<td>Allow PLLM to ask clarifying questions</td>
+</tr>
+<tr>
+<td><code>context_var_visibility</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Context variable visibility: <code>"none"</code>, <code>"basic-notext"</code>, <code>"basic-executable"</code>, <code>"all-executable"</code>, <code>"all"</code></td>
+</tr>
+<tr>
+<td><code>query_inline_roles</code></td>
+<td><code>array[string]</code></td>
+<td><code>null</code></td>
+<td>Message roles to inline in query: <code>"assistant"</code>, <code>"tool"</code>, <code>"developer"</code>, <code>"system"</code></td>
+</tr>
+<tr>
+<td><code>query_role_name_overrides</code></td>
+<td><code>object</code></td>
+<td><code>null</code></td>
+<td>Map of message role name overrides</td>
+</tr>
+<tr>
+<td><code>query_include_tool_calls</code></td>
+<td><code>boolean</code></td>
+<td><code>null</code></td>
+<td>Include tool calls in query</td>
+</tr>
+<tr>
+<td><code>query_include_tool_args</code></td>
+<td><code>boolean</code></td>
+<td><code>null</code></td>
+<td>Include tool arguments in query</td>
+</tr>
+<tr>
+<td><code>query_include_tool_results</code></td>
+<td><code>boolean</code></td>
+<td><code>null</code></td>
+<td>Include tool results in query</td>
+</tr>
+</tbody>
+</table>
+<h3 id="promptrllm"><code>prompt.rllm</code></h3>
+<p>Response LLM prompt overrides:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flavor</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt flavor</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt version</td>
+</tr>
+<tr>
+<td><code>debug_info_level</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Debug info level</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prompttllm"><code>prompt.tllm</code></h3>
+<p>Tool-formulating LLM prompt overrides:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flavor</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt flavor</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt version</td>
+</tr>
+<tr>
+<td><code>add_tool_description</code></td>
+<td><code>boolean</code></td>
+<td><code>null</code></td>
+<td>Add tool description to prompt</td>
+</tr>
+<tr>
+<td><code>add_tool_input_schema</code></td>
+<td><code>boolean</code></td>
+<td><code>null</code></td>
+<td>Add tool input schema to prompt</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-llm-prompts">Other LLM Prompts</h3>
+<p><code>prompt.grllm</code>, <code>prompt.qllm</code>, <code>prompt.tagllm</code>, <code>prompt.policy_llm</code>, <code>prompt.error_detector_llm</code> all support:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flavor</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt flavor</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Prompt version</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="response-format-overrides-response_format">Response Format Overrides (<code>response_format</code>)</h2>
+<h4 id="response_formatstrip_response_content"><code>response_format.strip_response_content</code></h4>
 <table>
 <thead>
 <tr>
@@ -4283,7 +4436,7 @@
 </tbody>
 </table>
 <p>Strip the response content. This overrides other inclusion settings.</p>
-<h5 id="response_formatinclude_program"><code>response_format.include_program</code></h5>
+<h4 id="response_formatinclude_program"><code>response_format.include_program</code></h4>
 <table>
 <thead>
 <tr>
@@ -4301,7 +4454,7 @@
 </tbody>
 </table>
 <p>Include the final program in the response.</p>
-<h5 id="response_formatinclude_policy_check_history"><code>response_format.include_policy_check_history</code></h5>
+<h4 id="response_formatinclude_policy_check_history"><code>response_format.include_policy_check_history</code></h4>
 <table>
 <thead>
 <tr>
@@ -4319,7 +4472,7 @@
 </tbody>
 </table>
 <p>Include the policy check history in the response.</p>
-<h5 id="response_formatinclude_namespace_snapshot"><code>response_format.include_namespace_snapshot</code></h5>
+<h4 id="response_formatinclude_namespace_snapshot"><code>response_format.include_namespace_snapshot</code></h4>
 <table>
 <thead>
 <tr>
@@ -4336,7 +4489,7 @@
 </tr>
 </tbody>
 </table>
-<p>Include the namespace screenshot in the response.</p>
+<p>Include the namespace snapshot in the response.</p>
 
 
 

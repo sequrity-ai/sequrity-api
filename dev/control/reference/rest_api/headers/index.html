@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://sequrity-ai.github.io/sequrity-api/dev/general/sequrity_client/sequrity_client/">
+        <link rel="canonical" href="https://sequrity-ai.github.io/sequrity-api/dev/control/reference/rest_api/headers/">
       
       
-        <link rel="prev" href="../../../control/learn/sqrt/04_tool_policies/">
+        <link rel="prev" href="../messages/">
       
       
-        <link rel="next" href="../../../control/reference/">
+        <link rel="next" href="api_key_session_id/">
       
       
         
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>SequrityClient - Sequrity</title>
+        <title>Custom Headers - Sequrity</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,11 +53,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/custom.css">
+      <link rel="stylesheet" href="../../../../stylesheets/custom.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sequrity-client" class="md-skip">
+        <a href="#custom-headers" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Sequrity" class="md-header__button md-logo" aria-label="Sequrity" data-md-component="logo">
+    <a href="../../../.." title="Sequrity" class="md-header__button md-logo" aria-label="Sequrity" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 1-2-2c0-1.11.89-2 2-2a2 2 0 0 1 2 2 2 2 0 0 1-2 2m6 3V10H6v10zm0-12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10c0-1.11.89-2 2-2h1V6a5 5 0 0 1 5-5 5 5 0 0 1 5 5v2zm-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3"/></svg>
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SequrityClient
+              Custom Headers
             
           </span>
         </div>
@@ -227,7 +227,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../.." class="md-tabs__link">
         
   
   
@@ -248,7 +248,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../installation/" class="md-tabs__link">
+        <a href="../../../../installation/" class="md-tabs__link">
           
   
   
@@ -277,7 +277,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../control/learn/" class="md-tabs__link">
+        <a href="../../../learn/" class="md-tabs__link">
           
   
   
@@ -304,7 +304,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+        <a href="../../../../general/sequrity_client/sequrity_client/" class="md-tabs__link">
           
   
   
@@ -333,7 +333,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../control/examples/" class="md-tabs__link">
+        <a href="../../../examples/" class="md-tabs__link">
           
   
   
@@ -356,7 +356,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../release_notes/" class="md-tabs__link">
+      <a href="../../../../release_notes/" class="md-tabs__link">
         
   
   
@@ -397,7 +397,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Sequrity" class="md-nav__button md-logo" aria-label="Sequrity" data-md-component="logo">
+    <a href="../../../.." title="Sequrity" class="md-nav__button md-logo" aria-label="Sequrity" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 1-2-2c0-1.11.89-2 2-2a2 2 0 0 1 2 2 2 2 0 0 1-2 2m6 3V10H6v10zm0-12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10c0-1.11.89-2 2-2h1V6a5 5 0 0 1 5-5 5 5 0 0 1 5 5v2zm-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3"/></svg>
@@ -427,7 +427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -514,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../installation/" class="md-nav__link">
+      <a href="../../../../installation/" class="md-nav__link">
         
   
   
@@ -606,7 +606,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/getting_started/first_message/" class="md-nav__link">
+      <a href="../../../getting_started/first_message/" class="md-nav__link">
         
   
   
@@ -634,7 +634,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/getting_started/tool_use_dual_llm/" class="md-nav__link">
+      <a href="../../../getting_started/tool_use_dual_llm/" class="md-nav__link">
         
   
   
@@ -662,7 +662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/getting_started/custom_headers/" class="md-nav__link">
+      <a href="../../../getting_started/custom_headers/" class="md-nav__link">
         
   
   
@@ -690,7 +690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/getting_started/langgraph/" class="md-nav__link">
+      <a href="../../../getting_started/langgraph/" class="md-nav__link">
         
   
   
@@ -822,7 +822,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/learn/" class="md-nav__link ">
+            <a href="../../../learn/" class="md-nav__link ">
               
   
   
@@ -866,7 +866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/learn/single-vs-dual-llm/" class="md-nav__link">
+      <a href="../../../learn/single-vs-dual-llm/" class="md-nav__link">
         
   
   
@@ -894,7 +894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/learn/session_id/" class="md-nav__link">
+      <a href="../../../learn/session_id/" class="md-nav__link">
         
   
   
@@ -957,7 +957,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/learn/sqrt/" class="md-nav__link ">
+            <a href="../../../learn/sqrt/" class="md-nav__link ">
               
   
   
@@ -1001,7 +1001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/learn/sqrt/00_metadata/" class="md-nav__link">
+      <a href="../../../learn/sqrt/00_metadata/" class="md-nav__link">
         
   
   
@@ -1029,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/learn/sqrt/01_basic_types/" class="md-nav__link">
+      <a href="../../../learn/sqrt/01_basic_types/" class="md-nav__link">
         
   
   
@@ -1057,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/learn/sqrt/02_set_operations/" class="md-nav__link">
+      <a href="../../../learn/sqrt/02_set_operations/" class="md-nav__link">
         
   
   
@@ -1085,7 +1085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/learn/sqrt/03_predicates/" class="md-nav__link">
+      <a href="../../../learn/sqrt/03_predicates/" class="md-nav__link">
         
   
   
@@ -1113,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/learn/sqrt/04_tool_policies/" class="md-nav__link">
+      <a href="../../../learn/sqrt/04_tool_policies/" class="md-nav__link">
         
   
   
@@ -1224,19 +1224,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../../general/sequrity_client/sequrity_client/" class="md-nav__link">
         
   
   
@@ -1252,7 +1243,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1262,8 +1252,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -1293,17 +1285,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/reference/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -1327,7 +1317,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1347,7 +1337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/single_llm_vs_dual_llm_features/" class="md-nav__link">
+      <a href="../../single_llm_vs_dual_llm_features/" class="md-nav__link">
         
   
   
@@ -1375,7 +1365,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/bearer-token-only-vs-headers-mode/" class="md-nav__link">
+      <a href="../../bearer-token-only-vs-headers-mode/" class="md-nav__link">
         
   
   
@@ -1430,7 +1420,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/reference/sqrt/" class="md-nav__link ">
+            <a href="../../sqrt/" class="md-nav__link ">
               
   
   
@@ -1474,7 +1464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sqrt/grammar/" class="md-nav__link">
+      <a href="../../sqrt/grammar/" class="md-nav__link">
         
   
   
@@ -1507,6 +1497,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1533,17 +1525,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/reference/rest_api/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -1567,7 +1557,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_2_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1587,7 +1577,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rest_api/service_provider/" class="md-nav__link">
+      <a href="../../../../general/rest_api/service_provider/" class="md-nav__link">
         
   
   
@@ -1615,7 +1605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/rest_api/chat_completion/" class="md-nav__link">
+      <a href="../chat_completion/" class="md-nav__link">
         
   
   
@@ -1643,7 +1633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/rest_api/messages/" class="md-nav__link">
+      <a href="../messages/" class="md-nav__link">
         
   
   
@@ -1668,6 +1658,8 @@
                 
   
   
+    
+  
   
   
     
@@ -1694,17 +1686,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_5_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/reference/rest_api/headers/" class="md-nav__link ">
+            <a href="./" class="md-nav__link md-nav__link--active">
               
   
   
@@ -1722,13 +1712,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_2_5_5" id="__nav_4_2_5_5_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_4_2_5_5" id="__nav_4_2_5_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_2_5_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1748,7 +1738,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/rest_api/headers/api_key_session_id/" class="md-nav__link">
+      <a href="api_key_session_id/" class="md-nav__link">
         
   
   
@@ -1776,7 +1766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/rest_api/headers/security_features/" class="md-nav__link">
+      <a href="security_features/" class="md-nav__link">
         
   
   
@@ -1804,7 +1794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/rest_api/headers/security_policy/" class="md-nav__link">
+      <a href="security_policy/" class="md-nav__link">
         
   
   
@@ -1832,7 +1822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/rest_api/headers/security_config/" class="md-nav__link">
+      <a href="security_config/" class="md-nav__link">
         
   
   
@@ -1977,7 +1967,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/reference/sequrity_client/" class="md-nav__link ">
+            <a href="../../sequrity_client/" class="md-nav__link ">
               
   
   
@@ -2021,7 +2011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/chat_completion/" class="md-nav__link">
+      <a href="../../sequrity_client/chat_completion/" class="md-nav__link">
         
   
   
@@ -2049,7 +2039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/message/" class="md-nav__link">
+      <a href="../../sequrity_client/message/" class="md-nav__link">
         
   
   
@@ -2077,7 +2067,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/langgraph/" class="md-nav__link">
+      <a href="../../sequrity_client/langgraph/" class="md-nav__link">
         
   
   
@@ -2105,7 +2095,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/policy_gen/" class="md-nav__link">
+      <a href="../../sequrity_client/policy_gen/" class="md-nav__link">
         
   
   
@@ -2195,7 +2185,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/headers/features_header/" class="md-nav__link">
+      <a href="../../sequrity_client/headers/features_header/" class="md-nav__link">
         
   
   
@@ -2223,7 +2213,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/headers/policy_header/" class="md-nav__link">
+      <a href="../../sequrity_client/headers/policy_header/" class="md-nav__link">
         
   
   
@@ -2251,7 +2241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/headers/config_header/" class="md-nav__link">
+      <a href="../../sequrity_client/headers/config_header/" class="md-nav__link">
         
   
   
@@ -2287,7 +2277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/value_with_meta/" class="md-nav__link">
+      <a href="../../sequrity_client/value_with_meta/" class="md-nav__link">
         
   
   
@@ -2315,7 +2305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/sqrt/" class="md-nav__link">
+      <a href="../../sequrity_client/sqrt/" class="md-nav__link">
         
   
   
@@ -2380,7 +2370,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/reference/sequrity_client/integrations/" class="md-nav__link ">
+            <a href="../../sequrity_client/integrations/" class="md-nav__link ">
               
   
   
@@ -2424,7 +2414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/integrations/integrations_oai_sdk/" class="md-nav__link">
+      <a href="../../sequrity_client/integrations/integrations_oai_sdk/" class="md-nav__link">
         
   
   
@@ -2452,7 +2442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/reference/sequrity_client/integrations/integrations_langgraph/" class="md-nav__link">
+      <a href="../../sequrity_client/integrations/integrations_langgraph/" class="md-nav__link">
         
   
   
@@ -2488,7 +2478,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../service_provider/" class="md-nav__link">
+      <a href="../../../../general/sequrity_client/service_provider/" class="md-nav__link">
         
   
   
@@ -2628,7 +2618,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control/examples/" class="md-nav__link ">
+            <a href="../../../examples/" class="md-nav__link ">
               
   
   
@@ -2672,7 +2662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/examples/advanced_sqrt_examples_2026-01-25/" class="md-nav__link">
+      <a href="../../../examples/advanced_sqrt_examples_2026-01-25/" class="md-nav__link">
         
   
   
@@ -2700,7 +2690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/examples/openai_sdk_integration/" class="md-nav__link">
+      <a href="../../../examples/openai_sdk_integration/" class="md-nav__link">
         
   
   
@@ -2728,7 +2718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control/examples/langgraph_integration/" class="md-nav__link">
+      <a href="../../../examples/langgraph_integration/" class="md-nav__link">
         
   
   
@@ -2771,7 +2761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../release_notes/" class="md-nav__link">
+      <a href="../../../../release_notes/" class="md-nav__link">
         
   
   
@@ -2811,6 +2801,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#headers-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headers Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -2834,7 +2843,7 @@
   
   
     <li class="md-path__item">
-      <a href="../../.." class="md-path__link">
+      <a href="../../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -2852,10 +2861,64 @@
     
     
       <li class="md-path__item">
-        <a href="./" class="md-path__link">
+        <a href="../../../../general/sequrity_client/sequrity_client/" class="md-path__link">
           
   <span class="md-ellipsis">
     Reference
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Control
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    REST API
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Custom Headers
   </span>
 
         </a>
@@ -2877,283 +2940,45 @@
   
 
 
-<h1 id="sequrity-client">Sequrity Client</h1>
-<p>The <code>SequrityClient</code> is the main synchronous client for interacting with Sequrity's API.</p>
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h1 id="sequrity._client.SequrityClient" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SequrityClient</span>
-
-
-</h1>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">SequrityClient</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n"><a class="autorefs autorefs-internal" title="api_key (sequrity._client.SequrityClient(api_key))" href="#sequrity._client.SequrityClient(api_key)">api_key</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">*</span><span class="p">,</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n"><a class="autorefs autorefs-internal" title="base_url (sequrity._client.SequrityClient(base_url))" href="#sequrity._client.SequrityClient(base_url)">base_url</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n"><a class="autorefs autorefs-internal" title="timeout (sequrity._client.SequrityClient(timeout))" href="#sequrity._client.SequrityClient(timeout)">timeout</a></span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n"><a class="autorefs autorefs-internal" title="control (sequrity._client.SequrityClient(control))" href="#sequrity._client.SequrityClient(control)">control</a></span><span class="p">:</span> <span class="n"><span title="sequrity.control._config.ControlConfig">ControlConfig</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
-</span></code></pre></div>
-
-    <div class="doc doc-contents first">
-
-
-
-        <p>Synchronous client for the Sequrity API.</p>
-<p>Thin orchestrator that owns the HTTP connection pool and delegates to
-product-specific namespaces.</p>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequrityClient</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity.control</span><span class="w"> </span><span class="kn">import</span> <span class="n">ControlConfig</span><span class="p">,</span> <span class="n">FeaturesHeader</span><span class="p">,</span> <span class="n">SecurityPolicyHeader</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">SequrityClient</span><span class="p">(</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;sq-xxx&quot;</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">control</span><span class="o">=</span><span class="n">ControlConfig</span><span class="p">(</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="n">llm_api_key</span><span class="o">=</span><span class="s2">&quot;sk-xxx&quot;</span><span class="p">,</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;openrouter&quot;</span><span class="p">,</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="n">features</span><span class="o">=</span><span class="n">FeaturesHeader</span><span class="o">.</span><span class="n">dual_llm</span><span class="p">(),</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="n">security_policy</span><span class="o">=</span><span class="n">SecurityPolicyHeader</span><span class="o">.</span><span class="n">dual_llm</span><span class="p">(),</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="p">),</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}],</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-5-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="p">)</span>
-</span></code></pre></div>
-</details>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-<h2 id="sequrity._client.SequrityClient(api_key)" class="doc doc-heading doc-heading-parameter">              <b><code>api_key</code></b>
-</h2>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Your Sequrity API key for authentication.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h2 id="sequrity._client.SequrityClient(base_url)" class="doc doc-heading doc-heading-parameter">              <b><code>base_url</code></b>
-</h2>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Sequrity API base URL. Defaults to the <code>SEQURITY_BASE_URL</code>
-environment variable, or <code>https://api.sequrity.ai</code>.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h2 id="sequrity._client.SequrityClient(timeout)" class="doc doc-heading doc-heading-parameter">              <b><code>timeout</code></b>
-</h2>              (<code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>, default:
-                  <code>300</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Default request timeout in seconds. Defaults to 300.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-<h2 id="sequrity._client.SequrityClient(control)" class="doc doc-heading doc-heading-parameter">              <b><code>control</code></b>
-</h2>              (<code><span title="sequrity.control._config.ControlConfig">ControlConfig</span> | None</code>, default:
-                  <code>None</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Configuration for the Sequrity Control product. When omitted,
-an empty <code>ControlConfig</code> is used (all defaults are None, configure
-per-request instead).</p>
-          </div>
-        </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-<p><span class="doc-section-title">Methods:</span></p>
-    <ul>
-          <li class="doc-section-item field-body">
-            <b><code><a class="autorefs autorefs-internal" title="            close (sequrity._client.SequrityClient.close)" href="#sequrity._client.SequrityClient.close">close</a></code></b>
-            –
-            <div class="doc-md-description">
-              <p>Close the underlying HTTP client.</p>
-            </div>
-          </li>
-    </ul>
-
-
-
-
-<p><span class="doc-section-title">Attributes:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          <b><code><a class="autorefs autorefs-internal" title="            control
-
-
-  
-      instance-attribute
-   (sequrity._client.SequrityClient.control)" href="#sequrity._client.SequrityClient.control">control</a></code></b>
-          –
-          <div class="doc-md-description">
-            <p>Sequrity Control product namespace.</p>
-          </div>
-        </li>
-    </ul>
-
-                  <details class="mkdocstrings-source">
-                    <summary>Source code in <code>src/sequrity/_client.py</code></summary>
-                    <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-42">42</a></span>
-<span class="normal"><a href="#__codelineno-0-43">43</a></span>
-<span class="normal"><a href="#__codelineno-0-44">44</a></span>
-<span class="normal"><a href="#__codelineno-0-45">45</a></span>
-<span class="normal"><a href="#__codelineno-0-46">46</a></span>
-<span class="normal"><a href="#__codelineno-0-47">47</a></span>
-<span class="normal"><a href="#__codelineno-0-48">48</a></span>
-<span class="normal"><a href="#__codelineno-0-49">49</a></span>
-<span class="normal"><a href="#__codelineno-0-50">50</a></span>
-<span class="normal"><a href="#__codelineno-0-51">51</a></span>
-<span class="normal"><a href="#__codelineno-0-52">52</a></span>
-<span class="normal"><a href="#__codelineno-0-53">53</a></span>
-<span class="normal"><a href="#__codelineno-0-54">54</a></span>
-<span class="normal"><a href="#__codelineno-0-55">55</a></span>
-<span class="normal"><a href="#__codelineno-0-56">56</a></span>
-<span class="normal"><a href="#__codelineno-0-57">57</a></span>
-<span class="normal"><a href="#__codelineno-0-58">58</a></span>
-<span class="normal"><a href="#__codelineno-0-59">59</a></span>
-<span class="normal"><a href="#__codelineno-0-60">60</a></span>
-<span class="normal"><a href="#__codelineno-0-61">61</a></span>
-<span class="normal"><a href="#__codelineno-0-62">62</a></span>
-<span class="normal"><a href="#__codelineno-0-63">63</a></span>
-<span class="normal"><a href="#__codelineno-0-64">64</a></span>
-<span class="normal"><a href="#__codelineno-0-65">65</a></span>
-<span class="normal"><a href="#__codelineno-0-66">66</a></span>
-<span class="normal"><a href="#__codelineno-0-67">67</a></span>
-<span class="normal"><a href="#__codelineno-0-68">68</a></span>
-<span class="normal"><a href="#__codelineno-0-69">69</a></span>
-<span class="normal"><a href="#__codelineno-0-70">70</a></span>
-<span class="normal"><a href="#__codelineno-0-71">71</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a>    <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a>    <span class="o">*</span><span class="p">,</span>
-</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a>    <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a>    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a>    <span class="n">control</span><span class="p">:</span> <span class="n">ControlConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="p">):</span>
-</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the Sequrity client.</span>
-</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a>
-</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">        api_key: Your Sequrity API key for authentication.</span>
-</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="sd">        base_url: Sequrity API base URL. Defaults to the ``SEQURITY_BASE_URL``</span>
-</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">            environment variable, or ``https://api.sequrity.ai``.</span>
-</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">        timeout: Default request timeout in seconds. Defaults to 300.</span>
-</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">        control: Configuration for the Sequrity Control product. When omitted,</span>
-</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">            an empty ``ControlConfig`` is used (all defaults are None, configure</span>
-</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">            per-request instead).</span>
-</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_api_key</span> <span class="o">=</span> <span class="n">api_key</span>
-</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_base_url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SEQURITY_BASE_URL&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">SEQURITY_BASE_URL</span>
-</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>
-</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">control</span> <span class="o">=</span> <span class="n">ControlClient</span><span class="p">(</span>
-</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span>
-</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_api_key</span><span class="p">,</span>
-</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_base_url</span><span class="p">,</span>
-</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>        <span class="n">config</span><span class="o">=</span><span class="n">control</span><span class="p">,</span>
-</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>    <span class="p">)</span>
-</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Sequrity Control product namespace.&quot;&quot;&quot;</span>
-</span></code></pre></div></td></tr></table></div>
-                  </details>
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="sequrity._client.SequrityClient.control" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">control</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-</h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">control</span> <span class="o">=</span> <span class="n"><span title="sequrity.control._client.ControlClient">ControlClient</span></span><span class="p">(</span><span class="n"><span title="sequrity._client.SequrityClient(self)._http_client">_http_client</span></span><span class="p">,</span> <span class="n"><span title="sequrity._client.SequrityClient(self)._api_key">_api_key</span></span><span class="p">,</span> <span class="n"><span title="sequrity._client.SequrityClient(self)._base_url">_base_url</span></span><span class="p">,</span> <span class="n"><span title="sequrity.control._client.ControlClient(config)">config</span></span><span class="o">=</span><span class="n"><a class="autorefs autorefs-internal" title="control (sequrity._client.SequrityClient(control))" href="#sequrity._client.SequrityClient(control)">control</a></span><span class="p">)</span>
-</span></code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Sequrity Control product namespace.</p>
-
-    </div>
-
-</div>
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="sequrity._client.SequrityClient.close" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">close</span>
-
-
-</h2>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
-</span></code></pre></div>
-
-    <div class="doc doc-contents ">
-
-        <p>Close the underlying HTTP client.</p>
-
-
-            <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/sequrity/_client.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-75">75</a></span>
-<span class="normal"><a href="#__codelineno-0-76">76</a></span>
-<span class="normal"><a href="#__codelineno-0-77">77</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a><span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Close the underlying HTTP client.&quot;&quot;&quot;</span>
-</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
-</div>
+<h1 id="custom-headers">Custom Headers</h1>
+<p>The Sequrity Control API supports a set of custom HTTP headers for authentication, session management, and configuring security behavior. These headers fall into two categories: standard headers used in all requests, and Headers-Only Mode headers that allow you to define features and policies inline without pre-configuring a project.</p>
+<h2 id="headers-summary">Headers Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="api_key_session_id/#x-api-key-optional"><code>X-Api-Key</code></a></td>
+<td>No</td>
+<td>LLM provider API key (BYOK). If omitted, Sequrity uses its server-managed key.</td>
+</tr>
+<tr>
+<td><a href="api_key_session_id/#x-session-id-optional"><code>X-Session-ID</code></a></td>
+<td>No</td>
+<td>Session identifier for continuing an existing conversation.</td>
+</tr>
+<tr>
+<td><a href="security_features/"><code>X-Features</code></a></td>
+<td>Required in Headers-Only Mode</td>
+<td>JSON object defining the agent architecture and enabled security features (classifiers, blockers). Must be paired with <code>X-Policy</code>.</td>
+</tr>
+<tr>
+<td><a href="security_policy/"><code>X-Policy</code></a></td>
+<td>Required in Headers-Only Mode</td>
+<td>JSON object defining security policies and enforcement behavior. Must be paired with <code>X-Features</code>.</td>
+</tr>
+<tr>
+<td><a href="security_config/"><code>X-Config</code></a></td>
+<td>No</td>
+<td>JSON object for fine-tuning session execution behavior, prompt overrides, and response format settings.</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -3205,10 +3030,10 @@ per-request instead).</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "search.highlight", "content.code.copy", "content.footnote.tooltips", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "search.highlight", "content.code.copy", "content.footnote.tooltips", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

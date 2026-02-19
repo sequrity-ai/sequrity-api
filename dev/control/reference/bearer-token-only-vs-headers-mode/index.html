@@ -27,7 +27,7 @@
     
     
       
-        <title>Bearer-Token vs Headers - Sequrity</title>
+        <title>How Session Config Is Built - Sequrity</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#bearer-token-only-vs-headers-mode" class="md-skip">
+        <a href="#how-session-config-is-built" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Bearer-Token vs Headers
+              How Session Config Is Built
             
           </span>
         </div>
@@ -550,6 +550,8 @@
       
         
       
+        
+      
     
     
     
@@ -640,6 +642,34 @@
     
   
     Secure Tool Use with Dual-LLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/custom_headers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Headers
   
 
     
@@ -1351,7 +1381,7 @@
   <span class="md-ellipsis">
     
   
-    Bearer-Token vs Headers
+    How Session Config Is Built
   
 
     
@@ -1369,7 +1399,7 @@
   <span class="md-ellipsis">
     
   
-    Bearer-Token vs Headers
+    How Session Config Is Built
   
 
     
@@ -1395,10 +1425,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bearer-token-only-mode" class="md-nav__link">
+  <a href="#config-headers-are-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bearer-Token-only mode
+        Config Headers Are Optional
       
     </span>
   </a>
@@ -1406,10 +1436,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#headers-mode" class="md-nav__link">
+  <a href="#resolver-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Headers-mode
+        Resolver Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimal-request-no-config-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal Request (No Config Headers)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overriding-with-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding With Headers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overriding With Headers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#override-only-agent-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Override only agent architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#override-architecture-and-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Override architecture and policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#byok-bring-your-own-key-vs-server-managed-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BYOK (Bring Your Own Key) vs Server-Managed Keys
       
     </span>
   </a>
@@ -1551,6 +1642,8 @@
       
         
       
+        
+      
     
     
     
@@ -1649,7 +1742,35 @@
   <span class="md-ellipsis">
     
   
-    Chat Completion
+    Chat Completions API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rest_api/messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages API
   
 
     
@@ -1671,6 +1792,10 @@
   
     
     
+      
+        
+          
+        
       
         
       
@@ -1695,11 +1820,12 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5_5" >
         
           
-          <label class="md-nav__link" for="__nav_4_2_5_4" id="__nav_4_2_5_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../rest_api/headers/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -1713,11 +1839,17 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_5_5" id="__nav_4_2_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_5_4">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_5_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1726,6 +1858,8 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -1741,7 +1875,7 @@
   <span class="md-ellipsis">
     
   
-    X-Api-Key and X-Session-Id
+    X-Api-Key and X-Session-ID
   
 
     
@@ -1769,7 +1903,7 @@
   <span class="md-ellipsis">
     
   
-    X-Security-Features
+    X-Features
   
 
     
@@ -1797,7 +1931,7 @@
   <span class="md-ellipsis">
     
   
-    X-Security-Policy
+    X-Policy
   
 
     
@@ -1825,7 +1959,7 @@
   <span class="md-ellipsis">
     
   
-    X-Security-Config
+    X-Config
   
 
     
@@ -1940,6 +2074,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -2010,7 +2148,35 @@
   <span class="md-ellipsis">
     
   
-    Chat Completion
+    Chat Completions API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequrity_client/message/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Messages API
   
 
     
@@ -2058,6 +2224,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../sequrity_client/policy_gen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -2082,10 +2276,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_6" >
         
           
-          <label class="md-nav__link" for="__nav_4_2_6_1_4" id="__nav_4_2_6_1_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2_6_1_6" id="__nav_4_2_6_1_6_label" tabindex="0">
             
   
   
@@ -2103,8 +2297,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_6_1_4">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6_1_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2280,6 +2474,10 @@
     
       
         
+          
+        
+      
+        
       
         
       
@@ -2301,14 +2499,15 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_2" >
         
           
-          <label class="md-nav__link" for="__nav_4_2_6_2" id="__nav_4_2_6_2_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../sequrity_client/integrations/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
     
   
-    SequrityClient.integrations
+    Integrations
   
 
     
@@ -2316,19 +2515,27 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2_6_2" id="__nav_4_2_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_6_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_2_6_2">
             <span class="md-nav__icon md-icon"></span>
             
   
-    SequrityClient.integrations
+    Integrations
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -2731,10 +2938,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bearer-token-only-mode" class="md-nav__link">
+  <a href="#config-headers-are-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Bearer-Token-only mode
+        Config Headers Are Optional
       
     </span>
   </a>
@@ -2742,10 +2949,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#headers-mode" class="md-nav__link">
+  <a href="#resolver-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Headers-mode
+        Resolver Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimal-request-no-config-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimal Request (No Config Headers)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overriding-with-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overriding With Headers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overriding With Headers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#override-only-agent-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Override only agent architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#override-architecture-and-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Override architecture and policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#byok-bring-your-own-key-vs-server-managed-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BYOK (Bring Your Own Key) vs Server-Managed Keys
       
     </span>
   </a>
@@ -2838,122 +3106,175 @@
   
 
 
-<h1 id="bearer-token-only-vs-headers-mode">Bearer-Token-only vs Headers-Mode</h1>
-<p>When making requests to the Sequrity Control API, you have two options for specifying security features, policies, and fine-grained configurations: Bearer-Token-only mode and Headers-mode.</p>
+<h1 id="how-session-config-is-built">How Session Config Is Built</h1>
+<p>Every request to Sequrity Control runs inside a <strong>session</strong>, governed by a <strong>session config</strong>. The config is not a single static object — it is <strong>built at request time</strong> through a layered pipeline that starts from a preset and progressively applies overrides from the database, HTTP headers, and the request body.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Endpoint path  ──► endpoint type   (chat / code / lang-graph)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>URL path       ──► provider        (openai / openrouter / anthropic / ...)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Request body   ──► model           (pllm name, or &quot;pllm,qllm&quot;)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>HTTP headers   ──► X-Features, X-Policy, X-Config, X-Api-Key
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Bearer token   ──► DB lookup
+</span></code></pre></div>
+<h2 id="config-headers-are-optional">Config Headers Are Optional</h2>
+<p>All three config headers — <code>X-Features</code>, <code>X-Policy</code>, and <code>X-Config</code> — are <strong>independently optional</strong>. You can pass any combination of them:</p>
 <table>
 <thead>
 <tr>
-<th>Mode</th>
-<th>Required Headers</th>
-<th>Optional Headers</th>
+<th>Header</th>
+<th>What it controls</th>
+<th>Required?</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Bearer-Token-only</td>
-<td><code>Authorization: Bearer &lt;sequrity-api-key&gt;</code></td>
-<td><code>X-Api-Key</code>, <code>X-Session-Id</code></td>
+<td><code>X-Features</code></td>
+<td>Agent arch switch, content classifiers/blockers</td>
+<td>No</td>
 </tr>
 <tr>
-<td>Headers</td>
-<td><code>Authorization: Bearer &lt;sequrity-api-key&gt;</code>, <code>X-Security-Features</code>, <code>X-Security-Policy</code></td>
-<td><code>X-Security-Config</code>, <code>X-Api-Key</code>, <code>X-Session-Id</code></td>
+<td><code>X-Policy</code></td>
+<td>Policy engine: mode, codes, auto_gen, fail_fast</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>X-Config</code></td>
+<td>FSM behavior, prompt settings, response format</td>
+<td>No</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition example">
-<p class="admonition-title">Experimental</p>
-<p>For now, only headers-mode supports fine-grained configurations, and some advanced settings like tool result caching are only available in headers-mode.</p>
+<p>When a header is omitted, the server uses the preset default for that part of the config (from your API key's DB entry, or the built-in preset).</p>
+<h2 id="resolver-pipeline">Resolver Pipeline</h2>
+<p>The session config resolver runs a <strong>four-step pipeline</strong>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1. Base config    ──► DB lookup by bearer token, or fallback to preset
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2. Deep copy      ──► Prevent mutation of shared references
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>3. Header overrides ──► X-Features → X-Policy → X-Config (in order)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>4. Request LLM config ──► model name + API key from request body / headers
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Order matters</p>
+<p><code>X-Features</code> can rebuild the entire config (e.g. switching from single-llm to dual-llm), so it runs first. <code>X-Policy</code> and <code>X-Config</code> apply on top.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Example of Bearer-Token-only and Headers-mode</p>
-<p>See <a href="../../getting_started/first_message/#specifying-singledual-llm">Sending your first message</a> for examples of specifying settings in both modes.</p>
-</div>
-<h2 id="bearer-token-only-mode">Bearer-Token-only mode</h2>
+<p><strong>Model names:</strong> Step 4 applies the model name and API key from the request:</p>
+<ul>
+<li>A single model name like <code>"gpt-5-mini"</code> sets both PLLM and QLLM.</li>
+<li>Two model names separated by a comma like <code>"gpt-5-mini,gpt-5-nano"</code> set PLLM and QLLM independently.</li>
+<li>If <code>X-Api-Key</code> is provided (BYOK), the user's key is set on all LLM services matching the provider. Any model name is accepted.</li>
+<li>If <code>X-Api-Key</code> is <strong>not</strong> provided, model names are validated against Sequrity's <strong>model allow list</strong>.</li>
+</ul>
+<h2 id="minimal-request-no-config-headers">Minimal Request (No Config Headers)</h2>
 <p>When you create a Sequrity API key in your dashboard, you already pick Single-LLM or Dual-LLM for that key, as well as other features and security policies.
-Thus, you can also just use your Sequrity API key to retrieve those settings, without specifying additional headers. This is called Bearer-Token-only mode.</p>
-<p>In this case, you only need to provide Authorization token, model name, messages. Other headers/parameters are optional.</p>
+Thus, you can use your Sequrity API key to retrieve those settings from the database (Step 1 of the pipeline), without specifying additional headers.</p>
+<p>In this case, you only need to provide the Authorization token, model name, and messages.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Sequrity Client</label><label for="__tabbed_1_2">REST API</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequrityClient</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity.control</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeaturesHeader</span><span class="p">,</span> <span class="n">SecurityPolicyHeader</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Initialize the client</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="hll"><span class="n">client</span> <span class="o">=</span> <span class="n">SequrityClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your-sequrity-api-key&quot;</span><span class="p">)</span>
-</span></span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># 💡 `features` and `security_policy` are not needed in Bearer-Token-only mode</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Send a chat completion request</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">create_chat_completion</span><span class="p">(</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the largest prime number below 100?&quot;</span><span class="p">}],</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-5-mini&quot;</span><span class="p">,</span> <span class="c1"># model name from your LLM provider</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="hll">    <span class="n">llm_api_key</span><span class="o">=</span><span class="s2">&quot;your-openrouter-key&quot;</span><span class="p">,</span>
-</span></span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">)</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1"># Print the response</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequrityClient</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Initialize the client</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">SequrityClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your-sequrity-api-key&quot;</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="hll">
+</span></span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># No features, policy, or config headers needed —</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># the server uses the settings saved for your API key.</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the largest prime number below 100?&quot;</span><span class="p">}],</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-5-mini&quot;</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">llm_api_key</span><span class="o">=</span><span class="s2">&quot;your-openrouter-key&quot;</span><span class="p">,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.sequrity.ai/control/v1/chat/completions<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="hll">-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer your-sequrity-api-key&quot;</span><span class="w"> </span><span class="se">\</span>
-</span></span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="hll">-H<span class="w"> </span><span class="s2">&quot;X-Api-Key: your-openrouter-key&quot;</span><span class="w"> </span><span class="se">\</span>
-</span></span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>-d<span class="w"> </span><span class="s1">&#39;{</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="s1">    &quot;model&quot;: &quot;openai/gpt-5-mini&quot;,</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the largest prime number below 100?&quot;}]</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="s1">}&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="hll">-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer your-sequrity-api-key&quot;</span><span class="w"> </span><span class="se">\</span>
+</span></span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>-H<span class="w"> </span><span class="s2">&quot;X-Api-Key: your-openrouter-key&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>-d<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s1">    &quot;model&quot;: &quot;openai/gpt-5-mini&quot;,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the largest prime number below 100?&quot;}]</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s1">}&#39;</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
-<h2 id="headers-mode">Headers-mode</h2>
-<p>You can also specify security features and policies in the request headers, as shown in the previous examples.
-Note that both security features and policies must be specified together in headers-mode.
-In this case, the settings in the request headers will override those attached to your Sequrity API key.</p>
+<h2 id="overriding-with-headers">Overriding With Headers</h2>
+<p>You can pass any subset of config headers to override specific parts of the session config. Headers are applied as overrides (Step 3 of the pipeline) on top of the base config from your API key.</p>
+<h3 id="override-only-agent-architecture">Override only agent architecture</h3>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Sequrity Client</label><label for="__tabbed_2_2">REST API</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequrityClient</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity.control</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeaturesHeader</span><span class="p">,</span> <span class="n">SecurityPolicyHeader</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Initialize the client</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="hll"><span class="n">client</span> <span class="o">=</span> <span class="n">SequrityClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your-sequrity-api-key&quot;</span><span class="p">)</span>
-</span></span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Create feature and policy headers</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">features</span> <span class="o">=</span> <span class="n">FeaturesHeader</span><span class="o">.</span><span class="n">single_llm</span><span class="p">()</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">policy</span> <span class="o">=</span> <span class="n">SecurityPolicyHeader</span><span class="o">.</span><span class="n">single_llm</span><span class="p">()</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c1"># Send a chat completion request</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">create_chat_completion</span><span class="p">(</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the largest prime number below 100?&quot;</span><span class="p">}],</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-5-mini&quot;</span><span class="p">,</span> <span class="c1"># model name from your LLM provider</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="hll">    <span class="n">llm_api_key</span><span class="o">=</span><span class="s2">&quot;your-openrouter-key&quot;</span><span class="p">,</span>
-</span></span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="hll">    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
-</span></span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="hll">    <span class="n">security_policy</span><span class="o">=</span><span class="n">policy</span><span class="p">,</span>
-</span></span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;openrouter&quot;</span><span class="p">,</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="p">)</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="c1"># Print the response</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequrityClient</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity.control</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeaturesHeader</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">SequrityClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your-sequrity-api-key&quot;</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="hll"><span class="c1"># Only X-Features is needed to switch the architecture.</span>
+</span></span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">features</span> <span class="o">=</span> <span class="n">FeaturesHeader</span><span class="o">.</span><span class="n">dual_llm</span><span class="p">()</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is the largest prime number below 100?&quot;</span><span class="p">}],</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-5-mini&quot;</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">llm_api_key</span><span class="o">=</span><span class="s2">&quot;your-openrouter-key&quot;</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">)</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.sequrity.ai/control/v1/chat/completions<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="hll"><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer your-sequrity-api-key&quot;</span><span class="w"> </span><span class="se">\</span>
-</span></span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;X-Api-Key: your-openrouter-key&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="hll"><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;X-Security-Policy: {&quot;language&quot;:&quot;sqrt-lite&quot;,&quot;codes&quot;:&quot;&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
-</span></span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="hll"><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;X-Security-Features: [{&quot;feature_name&quot;:&quot;Single LLM&quot;,&quot;config_json&quot;:&quot;{\&quot;mode\&quot;:\&quot;standard\&quot;}&quot;},{&quot;feature_name&quot;:&quot;Long Program Support&quot;,&quot;config_json&quot;:&quot;{\&quot;mode\&quot;:\&quot;base\&quot;}&quot;}]&#39;</span><span class="w"> </span><span class="se">\</span>
-</span></span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s1">    &quot;model&quot;: &quot;openai/gpt-5-mini&quot;,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the largest prime number below 100?&quot;}]</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="s1">  }&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer your-sequrity-api-key&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;X-Api-Key: your-openrouter-key&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="hll"><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;X-Features: {&quot;agent_arch&quot;:&quot;dual-llm&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+</span></span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s1">    &quot;model&quot;: &quot;openai/gpt-5-mini&quot;,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the largest prime number below 100?&quot;}]</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="s1">  }&#39;</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
+<h3 id="override-architecture-and-policy">Override architecture and policy</h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Sequrity Client</label><label for="__tabbed_3_2">REST API</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequrityClient</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sequrity.control</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeaturesHeader</span><span class="p">,</span> <span class="n">SecurityPolicyHeader</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">SequrityClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your-sequrity-api-key&quot;</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="hll"><span class="n">features</span> <span class="o">=</span> <span class="n">FeaturesHeader</span><span class="o">.</span><span class="n">dual_llm</span><span class="p">()</span>
+</span></span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="hll"><span class="n">policy</span> <span class="o">=</span> <span class="n">SecurityPolicyHeader</span><span class="o">.</span><span class="n">dual_llm</span><span class="p">(</span><span class="n">codes</span><span class="o">=</span><span class="s1">&#39;tool &quot;x&quot; { must allow always; }&#39;</span><span class="p">)</span>
+</span></span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}],</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;openai/gpt-5-mini&quot;</span><span class="p">,</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">llm_api_key</span><span class="o">=</span><span class="s2">&quot;your-openrouter-key&quot;</span><span class="p">,</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    <span class="n">security_policy</span><span class="o">=</span><span class="n">policy</span><span class="p">,</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer your-sequrity-api-key&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;X-Api-Key: your-openrouter-key&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="hll"><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;X-Features: {&quot;agent_arch&quot;:&quot;dual-llm&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+</span></span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="hll"><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;X-Policy: {&quot;mode&quot;:&quot;standard&quot;,&quot;codes&quot;:&quot;tool \&quot;x\&quot; { must allow always; }&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+</span></span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s1">    &quot;model&quot;: &quot;openai/gpt-5-mini&quot;,</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}]</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="s1">  }&#39;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="byok-bring-your-own-key-vs-server-managed-keys">BYOK (Bring Your Own Key) vs Server-Managed Keys</h2>
+<p>The <code>X-Api-Key</code> header controls whether you use your own LLM provider API key or Sequrity's managed keys:</p>
+<ul>
+<li><strong>With <code>X-Api-Key</code> (BYOK):</strong> Your key is used for all LLM calls to the matching provider. Any model name is accepted.</li>
+<li><strong>Without <code>X-Api-Key</code>:</strong> Sequrity uses its own server-managed API key for the provider. Model names are validated against the server's allow list, and <strong>extra charges may apply</strong>.</li>
+</ul>
 
 
 
