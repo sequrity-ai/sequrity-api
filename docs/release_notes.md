@@ -5,8 +5,16 @@ hide:
 
 # Release Notes
 
+## v0.4
 
-## v0.0.3
+`time: 2026-02-18`
+
+| Product  | Version |
+| ---------|---------|
+| Control API | `e8a5b7dd08b12560ff5a5d068e1b69aedafb710b` |
+
+
+## v0.3
 
 `time: 2026-02-04`
 
@@ -14,33 +22,35 @@ hide:
 | ---------|---------|
 | Control API | `17620f2abd4646171fc8a462bad3fafbd2b0126b` |
 
-### New Features
+??? info "v0.3 Release Notes"
 
-- **OpenAI Agents SDK Integration**: Added `SequrityAsyncOpenAI` client for seamless integration with OpenAI Agent ADK
-  - Drop-in AsyncOpenAI replacement with automatic session management
-  - Full support for Sequrity security features (dual-LLM, policies, fine-grained config)
-  - Comprehensive documentation and examples
-- **LangGraph Integration** 
-- **Type Checking**: Integrated `ty` type checker into CI/CD pipeline
-  - All source code now type-checked with `ty`
-  - Added to `just lint` command for local development
-- **CI Improvements**:
-  - Added GitHub Actions CI workflow with linting and type checking
-  - Configured test environment with required API keys
-  - Added `pytest-asyncio` for async test support
+    **New Features**
 
-### Dependencies
+    - **OpenAI Agents SDK Integration**: Added `SequrityAsyncOpenAI` client for seamless integration with OpenAI Agent ADK
+      - Drop-in AsyncOpenAI replacement with automatic session management
+      - Full support for Sequrity security features (dual-LLM, policies, fine-grained config)
+      - Comprehensive documentation and examples
+    - **LangGraph Integration**
+    - **Type Checking**: Integrated `ty` type checker into CI/CD pipeline
+      - All source code now type-checked with `ty`
+      - Added to `just lint` command for local development
+    - **CI Improvements**:
+      - Added GitHub Actions CI workflow with linting and type checking
+      - Configured test environment with required API keys
+      - Added `pytest-asyncio` for async test support
 
-- Added `openai>=1.0.0` to core dependencies for async client support
-- Added `ty` to dev dependencies for type checking
-- Added `pytest-asyncio>=0.24.0` to dev dependencies
-- Added optional `agents` dependency group for OpenAI Agent ADK support
+    **Dependencies**
 
-### Documentation
+    - Added `openai>=1.0.0` to core dependencies for async client support
+    - Added `ty` to dev dependencies for type checking
+    - Added `pytest-asyncio>=0.24.0` to dev dependencies
+    - Added optional `agents` dependency group for OpenAI Agent ADK support
 
-- Added integration documentation for OpenAI Agent ADK
-- Updated navigation to include Integrations reference
-- Improved code examples (removed doctest prompts, added proper code blocks)
+    **Documentation**
+
+    - Added integration documentation for OpenAI Agent ADK
+    - Updated navigation to include Integrations reference
+    - Improved code examples (removed doctest prompts, added proper code blocks)
 
 ## v0.0.2
 

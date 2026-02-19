@@ -9,8 +9,8 @@ import os
 
 import pytest
 
-from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
-from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
+from sequrity.control import FeaturesHeader, SecurityPolicyHeader
+from sequrity.control.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
 from sequrity_unittest.config import get_test_config
 
 

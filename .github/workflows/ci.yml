@@ -26,7 +26,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --group dev
+        run: uv sync --group dev --extra openai --extra langchain
 
       - name: Run ruff format check
         run: uv run ruff format --check
@@ -42,7 +42,8 @@ jobs:
       SEQURITY_API_KEY: ${{ secrets.SEQURITY_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      AZURE_CREDITS_API_KEY: ${{ secrets.AZURE_CREDITS_API_KEY }}
+      SEQURITY_AZURE_API_KEY: ${{ secrets.SEQURITY_AZURE_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - uses: actions/checkout@v5
 
@@ -54,7 +55,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --group dev --group langgraph --group agents
+        run: uv sync --group dev --group langgraph --group agents --extra openai --extra langchain
 
       - name: Run tests
         run: uv run pytest
@@ -67,7 +68,7 @@ jobs:
       SEQURITY_API_KEY: ${{ secrets.SEQURITY_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      AZURE_CREDITS_API_KEY: ${{ secrets.AZURE_CREDITS_API_KEY }}
+      SEQURITY_AZURE_API_KEY: ${{ secrets.SEQURITY_AZURE_API_KEY }}
     steps:
       - uses: actions/checkout@v5
 
@@ -79,37 +80,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --all-groups
+        run: uv sync --all-groups --all-extras
 
       - name: Run examples
-        run: |
-          set -euo pipefail
-          echo "🧪 Testing all examples..."
-          echo ""
-
-          echo "📚 Getting Started Examples"
-          uv run python examples/control/getting_started/first_message/sequrity_client.py
-          uv run python examples/control/getting_started/tool_use_dual_llm/rest_api.py
-          uv run python examples/control/getting_started/tool_use_dual_llm/sequrity_client.py
-          uv run python examples/control/getting_started/langgraph/sequrity_client.py
-
-          echo ""
-          echo "🔌 Integration Examples"
-          uv run python examples/control/integrations/langgraph_basic.py
-          uv run python examples/control/integrations/openai_agents_sdk_basic.py
-
-          echo ""
-          echo "🔒 Advanced SQRT Examples"
-          uv run python examples/control/advanced_sqrt_examples/rest_api.py
-          uv run python examples/control/advanced_sqrt_examples/sequrity_client.py
-
-          echo ""
-          echo "📖 SQRT Learning Examples"
-          uv run python examples/control/learn_sqrt/basic_types.py
-          uv run python examples/control/learn_sqrt/metadata.py
-          uv run python examples/control/learn_sqrt/predicates.py
-          uv run python examples/control/learn_sqrt/set_operations.py
-          uv run python examples/control/learn_sqrt/tool_policies.py
-
-          echo ""
-          echo "✅ All examples completed successfully!"
+        run: bash scripts/run_examples.sh

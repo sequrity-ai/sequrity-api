@@ -1,25 +1,28 @@
-# SequrityClient.control API Reference
+# SequrityClient API Reference
 
-This section provides the API reference for `SequrityClient.control`, the Python interface for Sequrity's Control API.
+This section provides the API reference for `SequrityClient`, the Python interface for Sequrity's Control API.
 
 ## Overview
 
 The Control API enables secure LLM interactions with policy enforcement. Key capabilities:
 
 - **Chat Completions**: OpenAI-compatible chat API with security features (toxicity filtering, PII redaction, topic guardrails)
+- **Anthropic Messages**: Anthropic Messages API with security features
 - **LangGraph Integration**: Execute LangGraph workflows with security policies via Sequrity's Dual-LLM runtime
+- **Policy Generation**: Generate SQRT policies from natural language descriptions
 
 ## API Modules
 
 | Module | Description |
 |--------|-------------|
 | [Chat Completion](chat_completion.md) | Chat completion API, request/response types, and result schemas |
+| [Anthropic Messages](message.md) | Anthropic Messages API, request/response types |
 | [LangGraph sequrity mode](langgraph.md) | LangGraph execution API and related types |
-| [LangGraph](integrations/integrations_langgraph.md) | LangGraph execution API and related types |
-| [Integrations - OAI Agents SDK](integrations/integrations_oai_sdk.md) | Framework integrations (OpenAI Agents SDK) |
-| [Integrations - LangGraph](integrations/integrations_oai_sdk.md) | Framework integrations (LangGraph) |
+| [Policy Generation](policy_gen.md) | Generate SQRT policies from natural language |
 | [ValueWithMeta](value_with_meta.md) | Value wrapper with metadata for policy enforcement |
 | [SQRT](sqrt.md) | SQRT policy parser and utilities |
+| [Integrations - LangGraph](integrations/integrations_langgraph.md) | LangChain/LangGraph framework integration |
+| [Integrations - OAI Agents SDK](integrations/integrations_oai_sdk.md) | OpenAI Agents SDK framework integration |
 
 ### Headers
 
@@ -31,8 +34,8 @@ Configuration headers for customizing security behavior:
 
 
 
-::: sequrity.control.wrapper.ControlApiWrapper
+::: sequrity._client.SequrityClient
     options:
       show_root_heading: true
       show_source: false
-      members: ["create_chat_completion", "compile_and_run_langgraph"]
+      members: ["control"]

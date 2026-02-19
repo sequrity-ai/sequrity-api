@@ -11,18 +11,18 @@ from langchain_core.tools import tool
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
-from sequrity.integrations.langgraph import create_sequrity_langgraph_client
+from sequrity.control import FeaturesHeader, SecurityPolicyHeader
+from sequrity.control.integrations.langgraph import create_sequrity_langgraph_client
 
 
 # --8<-- [start:basic-setup]
 # Create Sequrity LangGraph client
 llm = create_sequrity_langgraph_client(
-    sequrity_api_key=os.getenv("SEQURITY_API_KEY"),
+    sequrity_api_key=os.environ["SEQURITY_API_KEY"],
     features=FeaturesHeader.dual_llm(),
     security_policy=SecurityPolicyHeader.dual_llm(),
     service_provider="openrouter",
-    llm_api_key=os.getenv("OPENROUTER_API_KEY"),
+    llm_api_key=os.environ["OPENROUTER_API_KEY"],
     model="gpt-5-mini",
 )
 # --8<-- [end:basic-setup]
@@ -50,12 +50,12 @@ def calculator(expression: str) -> str:
 
 # --8<-- [start:build-graph]
 # Define state schema
-from typing import Annotated
+from typing import Annotated, TypedDict
 
 from langgraph.graph.message import add_messages
 
 
-class State(dict):
+class State(TypedDict):
     """State for the agent."""
 
     messages: Annotated[list, add_messages]
@@ -73,7 +73,7 @@ def chatbot(state: State):
 
 
 # Build the graph
-graph_builder = StateGraph(State)
+graph_builder = StateGraph(State)  # type: ignore[arg-type]  # TypedDict is valid for langgraph StateGraph
 graph_builder.add_node("chatbot", chatbot)
 graph_builder.add_node("tools", ToolNode(tools))
 graph_builder.add_conditional_edges("chatbot", tools_condition)

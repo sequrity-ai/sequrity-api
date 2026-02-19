@@ -2,13 +2,51 @@
 
 This package provides a Python client for interacting with the Sequrity API,
 enabling secure LLM interactions with policy enforcement.
+
+Product-specific types (headers, configs) are imported from their respective
+product packages::
+
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader, ControlConfig
 """
 
-from sequrity.client import SequrityClient
+from ._client import AsyncSequrityClient, SequrityClient
+from ._exceptions import (
+    SequrityAPIError,
+    SequrityConnectionError,
+    SequrityError,
+    SequrityValidationError,
+)
+from .types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
+
+# Universal provider request/response types
+from .types.chat_completion.request import ChatCompletionRequest
+from .types.chat_completion.response import ChatCompletionResponse
+from .types.messages.request import AnthropicMessageRequest
+from .types.messages.response import AnthropicMessageResponse
 
 try:
-    from sequrity._version import __version__
+    from ._version import __version__
 except ImportError:
     __version__ = "0.0.0.dev0"
 
-__all__ = ["SequrityClient", "__version__"]
+__all__ = [
+    # Clients
+    "SequrityClient",
+    "AsyncSequrityClient",
+    # Exceptions
+    "SequrityError",
+    "SequrityAPIError",
+    "SequrityValidationError",
+    "SequrityConnectionError",
+    # Enums (universal)
+    "RestApiType",
+    "LlmServiceProvider",
+    "LlmServiceProviderStr",
+    # Universal request/response types
+    "ChatCompletionRequest",
+    "ChatCompletionResponse",
+    "AnthropicMessageRequest",
+    "AnthropicMessageResponse",
+    # Version
+    "__version__",
+]

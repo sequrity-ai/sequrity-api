@@ -1,13 +1,13 @@
 """
-OpenAI Agent ADK integration for Sequrity.
+OpenAI Agent ADK integration for Sequrity Control.
 
 This module provides an AsyncOpenAI-compatible client that routes requests through
 Sequrity's secure orchestrator with automatic session management and security features.
 
 Example:
     ```python
-    from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
-    from sequrity.control.types.headers import FeaturesHeader, SecurityPolicyHeader
+    from sequrity.control.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
     from agents import Agent, Runner, RunConfig
 
     # Create client with Sequrity security features
@@ -24,11 +24,10 @@ Example:
     ```
 """
 
-from typing import TYPE_CHECKING, Any, AsyncIterator, Optional
+import os
+from typing import Any, AsyncIterator
 
 import httpx
-from openai import AsyncOpenAI
-from openai.types.responses.response_prompt_param import ResponsePromptParam
 
 # Import Agents SDK types for runtime
 from agents.agent_output import AgentOutputSchemaBase
@@ -38,8 +37,13 @@ from agents.model_settings import ModelSettings
 from agents.models.interface import Model, ModelProvider, ModelTracing
 from agents.models.openai_chatcompletions import OpenAIChatCompletionsModel
 from agents.tool import Tool
+from openai import AsyncOpenAI
+from openai.types.responses.response_prompt_param import ResponsePromptParam
 
-from ..control.types.headers import (
+from .._constants import SEQURITY_BASE_URL, build_control_base_url, build_sequrity_headers
+from ..types.enums import EndpointType
+from ...types.enums import LlmServiceProvider, LlmServiceProviderStr
+from ..types.headers import (
     FeaturesHeader,
     FineGrainedConfigHeader,
     SecurityPolicyHeader,
@@ -63,21 +67,20 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
         features: Security features configuration (LLM mode, taggers, constraints)
         security_policy: Security policy configuration (SQRT/Cedar policies)
         fine_grained_config: Fine-grained session configuration
-        service_provider: LLM service provider (openai, openrouter, azurecredits)
+        service_provider: LLM service provider (``LlmServiceProvider`` enum or string literal)
         llm_api_key: Optional API key for the LLM provider
         base_url: Sequrity base URL (default: https://api.sequrity.ai)
+        endpoint_type: Endpoint type (chat, code, lang-graph). Defaults to chat.
         timeout: Request timeout in seconds (default: 60.0)
         **kwargs: Additional arguments passed to AsyncOpenAI
 
     Example:
         ```python
         features = FeaturesHeader.dual_llm()
-        policy = SecurityPolicyHeader.dual_llm()
 
         client = SequrityAsyncOpenAI(
             sequrity_api_key="your-key",
             features=features,
-            security_policy=policy
         )
 
         # Session ID is automatically tracked
@@ -92,48 +95,38 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
         features: FeaturesHeader | None = None,
         security_policy: SecurityPolicyHeader | None = None,
         fine_grained_config: FineGrainedConfigHeader | None = None,
-        service_provider: str = "openrouter",
+        service_provider: LlmServiceProvider | LlmServiceProviderStr = LlmServiceProvider.OPENROUTER,
         llm_api_key: str | None = None,
-        base_url: str = "https://api.sequrity.ai",
+        base_url: str | None = None,
+        endpoint_type: EndpointType | str = EndpointType.CHAT,
         timeout: float = 60.0,
         **kwargs: Any,
     ):
         """Initialize Sequrity-enabled AsyncOpenAI client."""
+        if base_url is None:
+            base_url = os.getenv("SEQURITY_BASE_URL", SEQURITY_BASE_URL)
+
         # Store Sequrity-specific configuration
         self._sequrity_features = features
         self._sequrity_policy = security_policy
         self._sequrity_config = fine_grained_config
         self._session_id: str | None = None
 
-        # Build headers for Sequrity
-        default_headers: dict[str, str] = {}
-
-        # Add LLM provider API key if provided
-        if llm_api_key:
-            default_headers["X-Api-Key"] = llm_api_key
-
-        # Add security headers if configured
-        if features:
-            features_header = features.dump_for_headers(mode="json_str")
-            if isinstance(features_header, str):
-                default_headers["X-Security-Features"] = features_header
-
-        if security_policy:
-            policy_header = security_policy.dump_for_headers(mode="json_str")
-            if isinstance(policy_header, str):
-                default_headers["X-Security-Policy"] = policy_header
-
-        if fine_grained_config:
-            config_header = fine_grained_config.dump_for_headers(mode="json_str")
-            if isinstance(config_header, str):
-                default_headers["X-Security-Config"] = config_header
+        # Build headers using shared builder
+        default_headers = build_sequrity_headers(
+            api_key=sequrity_api_key,
+            llm_api_key=llm_api_key,
+            features=features.dump_for_headers(mode="json_str") if features else None,
+            policy=security_policy.dump_for_headers(mode="json_str") if security_policy else None,
+            config=fine_grained_config.dump_for_headers(mode="json_str") if fine_grained_config else None,
+        )
 
         # Merge with any user-provided headers
         if "default_headers" in kwargs:
             default_headers.update(kwargs.pop("default_headers"))
 
         # Construct Sequrity API endpoint URL
-        sequrity_base_url = f"{base_url}/control/{service_provider}/v1"
+        sequrity_base_url = build_control_base_url(base_url, endpoint_type, service_provider)
 
         # Initialize parent AsyncOpenAI with Sequrity configuration
         super().__init__(
@@ -152,14 +145,14 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
 
         async def capture_session_id(response: httpx.Response) -> None:
             """Extract session ID from response headers."""
-            session_id = response.headers.get("x-session-id") or response.headers.get("X-Session-Id")
+            session_id = response.headers.get("x-session-id") or response.headers.get("X-Session-ID")
             if session_id and not self._session_id:
                 self._session_id = session_id
 
         async def inject_session_id(request: httpx.Request) -> None:
             """Inject session ID into request headers if available."""
             if self._session_id:
-                request.headers["X-Session-Id"] = self._session_id
+                request.headers["X-Session-ID"] = self._session_id
 
         # Access the underlying httpx client
         if hasattr(self, "_client") and isinstance(self._client, httpx.AsyncClient):
@@ -222,7 +215,7 @@ class SequrityModel(Model):
     """
     A Model wrapper that tracks session IDs across requests for Sequrity.
 
-    Sequrity requires maintaining the same X-Session-Id header across all turns
+    Sequrity requires maintaining the same X-Session-ID header across all turns
     of a conversation to properly track state in the dual-LLM architecture.
     """
 
@@ -381,9 +374,10 @@ def create_sequrity_openai_agents_sdk_client(
     features: FeaturesHeader | None = None,
     security_policy: SecurityPolicyHeader | None = None,
     fine_grained_config: FineGrainedConfigHeader | None = None,
-    service_provider: str = "openrouter",
+    service_provider: LlmServiceProvider | LlmServiceProviderStr = LlmServiceProvider.OPENROUTER,
     llm_api_key: str | None = None,
-    base_url: str = "https://api.sequrity.ai",
+    base_url: str | None = None,
+    endpoint_type: EndpointType | str = EndpointType.CHAT,
     timeout: float = 60.0,
     **kwargs: Any,
 ) -> SequrityModelProvider:
@@ -399,9 +393,10 @@ def create_sequrity_openai_agents_sdk_client(
         features: Security features configuration (LLM mode, taggers, etc.)
         security_policy: Security policy configuration (SQRT/Cedar policies)
         fine_grained_config: Fine-grained session configuration
-        service_provider: LLM service provider (openai, openrouter, azurecredits)
+        service_provider: LLM service provider (``LlmServiceProvider`` enum or string literal)
         llm_api_key: Optional API key for the LLM provider
         base_url: Sequrity base URL (default: https://api.sequrity.ai)
+        endpoint_type: Endpoint type (chat, code, lang-graph). Defaults to chat.
         timeout: Request timeout in seconds (default: 60.0)
         **kwargs: Additional arguments passed to AsyncOpenAI
 
@@ -410,8 +405,8 @@ def create_sequrity_openai_agents_sdk_client(
 
     Example:
         ```python
-        from sequrity.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
-        from sequrity.control.types.headers import FeaturesHeader
+        from sequrity.control.integrations.openai_agents_sdk import create_sequrity_openai_agents_sdk_client
+        from sequrity.control import FeaturesHeader
         from agents import Agent, Runner, RunConfig
 
         # Create provider with dual-LLM
@@ -435,6 +430,7 @@ def create_sequrity_openai_agents_sdk_client(
         service_provider=service_provider,
         llm_api_key=llm_api_key,
         base_url=base_url,
+        endpoint_type=endpoint_type,
         timeout=timeout,
         **kwargs,
     )

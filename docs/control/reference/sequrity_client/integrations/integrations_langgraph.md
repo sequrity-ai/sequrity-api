@@ -18,7 +18,7 @@ This installs the required `langgraph` package along with Sequrity.
 
 ## API Reference
 
-::: sequrity.integrations.langgraph
+::: sequrity.control.integrations.langgraph
     options:
       show_root_heading: false
       show_source: false

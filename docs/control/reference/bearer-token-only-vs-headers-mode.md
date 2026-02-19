@@ -1,53 +1,80 @@
-# Bearer-Token-only vs Headers-Mode
+# How Session Config Is Built
 
-When making requests to the Sequrity Control API, you have two options for specifying security features, policies, and fine-grained configurations: Bearer-Token-only mode and Headers-mode.
+Every request to Sequrity Control runs inside a **session**, governed by a **session config**. The config is not a single static object — it is **built at request time** through a layered pipeline that starts from a preset and progressively applies overrides from the database, HTTP headers, and the request body.
 
-| Mode | Required Headers | Optional Headers |
-| ---- | ---------------- | ---------------- |
-| Bearer-Token-only | `Authorization: Bearer <sequrity-api-key>` | `X-Api-Key`, `X-Session-Id` |
-| Headers | `Authorization: Bearer <sequrity-api-key>`, `X-Security-Features`, `X-Security-Policy` | `X-Security-Config`, `X-Api-Key`, `X-Session-Id` |
+```
+Endpoint path  ──► endpoint type   (chat / code / lang-graph)
+URL path       ──► provider        (openai / openrouter / anthropic / ...)
+Request body   ──► model           (pllm name, or "pllm,qllm")
+HTTP headers   ──► X-Features, X-Policy, X-Config, X-Api-Key
+Bearer token   ──► DB lookup
+```
 
-!!! example "Experimental"
+## Config Headers Are Optional
 
-    For now, only headers-mode supports fine-grained configurations, and some advanced settings like tool result caching are only available in headers-mode.
+All three config headers — `X-Features`, `X-Policy`, and `X-Config` — are **independently optional**. You can pass any combination of them:
 
-!!! note "Example of Bearer-Token-only and Headers-mode"
+| Header | What it controls | Required? |
+|--------|-----------------|-----------|
+| `X-Features` | Agent arch switch, content classifiers/blockers | No |
+| `X-Policy` | Policy engine: mode, codes, auto_gen, fail_fast | No |
+| `X-Config` | FSM behavior, prompt settings, response format | No |
 
-    See [Sending your first message](../getting_started/first_message.md#specifying-singledual-llm) for examples of specifying settings in both modes.
+When a header is omitted, the server uses the preset default for that part of the config (from your API key's DB entry, or the built-in preset).
 
-## Bearer-Token-only mode
+
+## Resolver Pipeline
+
+The session config resolver runs a **four-step pipeline**:
+
+```
+1. Base config    ──► DB lookup by bearer token, or fallback to preset
+2. Deep copy      ──► Prevent mutation of shared references
+3. Header overrides ──► X-Features → X-Policy → X-Config (in order)
+4. Request LLM config ──► model name + API key from request body / headers
+```
+
+!!! info "Order matters"
+
+    `X-Features` can rebuild the entire config (e.g. switching from single-llm to dual-llm), so it runs first. `X-Policy` and `X-Config` apply on top.
+
+**Model names:** Step 4 applies the model name and API key from the request:
+
+- A single model name like `"gpt-5-mini"` sets both PLLM and QLLM.
+- Two model names separated by a comma like `"gpt-5-mini,gpt-5-nano"` set PLLM and QLLM independently.
+- If `X-Api-Key` is provided (BYOK), the user's key is set on all LLM services matching the provider. Any model name is accepted.
+- If `X-Api-Key` is **not** provided, model names are validated against Sequrity's **model allow list**.
+
+## Minimal Request (No Config Headers)
 
 When you create a Sequrity API key in your dashboard, you already pick Single-LLM or Dual-LLM for that key, as well as other features and security policies.
-Thus, you can also just use your Sequrity API key to retrieve those settings, without specifying additional headers. This is called Bearer-Token-only mode.
+Thus, you can use your Sequrity API key to retrieve those settings from the database (Step 1 of the pipeline), without specifying additional headers.
 
-In this case, you only need to provide Authorization token, model name, messages. Other headers/parameters are optional.
+In this case, you only need to provide the Authorization token, model name, and messages.
 
 === "Sequrity Client"
 
-    ```python hl_lines="5 13"
+    ```python hl_lines="5"
     from sequrity import SequrityClient
-    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 
     # Initialize the client
     client = SequrityClient(api_key="your-sequrity-api-key")
 
-    # 💡 `features` and `security_policy` are not needed in Bearer-Token-only mode
-
-    # Send a chat completion request
-    response = client.control.create_chat_completion(
+    # No features, policy, or config headers needed —
+    # the server uses the settings saved for your API key.
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-        model="openai/gpt-5-mini", # model name from your LLM provider
+        model="openai/gpt-5-mini",
         llm_api_key="your-openrouter-key",
     )
 
-    # Print the response
     print(response.choices[0].message.content)
     ```
 
 === "REST API"
 
-    ```bash hl_lines="2 4"
-    curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
+    ```bash hl_lines="2"
+    curl -X POST https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions \
     -H "Authorization: Bearer your-sequrity-api-key" \
     -H "Content-Type: application/json" \
     -H "X-Api-Key: your-openrouter-key" \
@@ -57,53 +84,85 @@ In this case, you only need to provide Authorization token, model name, messages
     }'
     ```
 
-## Headers-mode
+## Overriding With Headers
 
-You can also specify security features and policies in the request headers, as shown in the previous examples.
-Note that both security features and policies must be specified together in headers-mode.
-In this case, the settings in the request headers will override those attached to your Sequrity API key.
+You can pass any subset of config headers to override specific parts of the session config. Headers are applied as overrides (Step 3 of the pipeline) on top of the base config from your API key.
 
+### Override only agent architecture
 
 === "Sequrity Client"
 
-    ```python hl_lines="5 15-17"
+    ```python hl_lines="6"
     from sequrity import SequrityClient
-    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
+    from sequrity.control import FeaturesHeader
 
-    # Initialize the client
     client = SequrityClient(api_key="your-sequrity-api-key")
 
-    # Create feature and policy headers
-    features = FeaturesHeader.single_llm()
-    policy = SecurityPolicyHeader.single_llm()
+    # Only X-Features is needed to switch the architecture.
+    features = FeaturesHeader.dual_llm()
 
-    # Send a chat completion request
-    response = client.control.create_chat_completion(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
-        model="openai/gpt-5-mini", # model name from your LLM provider
+        model="openai/gpt-5-mini",
         llm_api_key="your-openrouter-key",
         features=features,
-        security_policy=policy,
-        provider="openrouter",
     )
-
-    # Print the response
-    print(response.choices[0].message.content)
     ```
 
 === "REST API"
 
-    ```bash hl_lines="2 5-6"
-    curl -X POST https://api.sequrity.ai/control/v1/chat/completions \
+    ```bash hl_lines="5"
+    curl -X POST https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions \
       -H "Authorization: Bearer your-sequrity-api-key" \
       -H "Content-Type: application/json" \
       -H "X-Api-Key: your-openrouter-key" \
-      -H 'X-Security-Policy: {"language":"sqrt-lite","codes":""}' \
-      -H 'X-Security-Features: [{"feature_name":"Single LLM","config_json":"{\"mode\":\"standard\"}"},{"feature_name":"Long Program Support","config_json":"{\"mode\":\"base\"}"}]' \
+      -H 'X-Features: {"agent_arch":"dual-llm"}' \
       -d '{
         "model": "openai/gpt-5-mini",
         "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
       }'
     ```
 
+### Override architecture and policy
 
+=== "Sequrity Client"
+
+    ```python hl_lines="6-7"
+    from sequrity import SequrityClient
+    from sequrity.control import FeaturesHeader, SecurityPolicyHeader
+
+    client = SequrityClient(api_key="your-sequrity-api-key")
+
+    features = FeaturesHeader.dual_llm()
+    policy = SecurityPolicyHeader.dual_llm(codes='tool "x" { must allow always; }')
+
+    response = client.control.chat.create(
+        messages=[{"role": "user", "content": "Hello!"}],
+        model="openai/gpt-5-mini",
+        llm_api_key="your-openrouter-key",
+        features=features,
+        security_policy=policy,
+    )
+    ```
+
+=== "REST API"
+
+    ```bash hl_lines="5-6"
+    curl -X POST https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions \
+      -H "Authorization: Bearer your-sequrity-api-key" \
+      -H "Content-Type: application/json" \
+      -H "X-Api-Key: your-openrouter-key" \
+      -H 'X-Features: {"agent_arch":"dual-llm"}' \
+      -H 'X-Policy: {"mode":"standard","codes":"tool \"x\" { must allow always; }"}' \
+      -d '{
+        "model": "openai/gpt-5-mini",
+        "messages": [{"role": "user", "content": "Hello!"}]
+      }'
+    ```
+
+## BYOK (Bring Your Own Key) vs Server-Managed Keys
+
+The `X-Api-Key` header controls whether you use your own LLM provider API key or Sequrity's managed keys:
+
+- **With `X-Api-Key` (BYOK):** Your key is used for all LLM calls to the matching provider. Any model name is accepted.
+- **Without `X-Api-Key`:** Sequrity uses its own server-managed API key for the provider. Model names are validated against the server's allow list, and **extra charges may apply**.

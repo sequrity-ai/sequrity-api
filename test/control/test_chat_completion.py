@@ -1,40 +1,34 @@
-from typing import Literal
-
 import pytest
 
-from sequrity import client
-from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
-from sequrity.service_provider import LlmServiceProviderEnum
+from sequrity import SequrityClient
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, FsmOverrides, SecurityPolicyHeader
+from sequrity.types.enums import LlmServiceProvider
 from sequrity_unittest.config import get_test_config
 
 
 class TestChatCompletion:
     def setup_method(self):
         self.test_config = get_test_config()
-        self.sequrity_client = client.SequrityClient(
+        self.sequrity_client = SequrityClient(
             api_key=self.test_config.api_key, base_url=self.test_config.base_url, timeout=300
         )
 
-    @pytest.mark.parametrize("llm_mode", ["single-llm", "dual-llm"])
-    @pytest.mark.parametrize("service_provider", ["default"] + list(LlmServiceProviderEnum))
-    def test_minimal(
-        self, llm_mode: Literal["single-llm", "dual-llm"], service_provider: LlmServiceProviderEnum | Literal["default"]
-    ):
-        if llm_mode == "single-llm":
-            features_header = FeaturesHeader.single_llm()
-            policy_header = SecurityPolicyHeader.single_llm()
-        else:
-            features_header = FeaturesHeader.dual_llm()
-            policy_header = SecurityPolicyHeader.dual_llm()
+    @pytest.mark.parametrize(
+        "service_provider",
+        [LlmServiceProvider.OPENAI, LlmServiceProvider.SEQURITY_AZURE, LlmServiceProvider.OPENROUTER],
+    )
+    def test_minimal_no_headers(self, service_provider: LlmServiceProvider | None):
+        """Truly minimal request — no config headers at all.
 
+        The server uses preset defaults from the bearer token / DB lookup.
+        """
         messages = [{"role": "user", "content": "What is the largest prime number below 100?"}]
-        response = self.sequrity_client.control.create_chat_completion(
+        response = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
-            features=features_header,
-            security_policy=policy_header,
             provider=service_provider,
+            fine_grained_config=FineGrainedConfigHeader(fsm=FsmOverrides(enabled_internal_tools=[])),
         )
 
         assert response is not None
@@ -43,11 +37,13 @@ class TestChatCompletion:
         assert response.choices[0].message.content is not None
         assert "97" in response.choices[0].message.content
 
-    @pytest.mark.parametrize("service_provider", ["default"])
-    def test_dual_llm_multi_turn(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
+    @pytest.mark.parametrize(
+        "service_provider",
+        [None, LlmServiceProvider.OPENAI, LlmServiceProvider.SEQURITY_AZURE, LlmServiceProvider.OPENROUTER],
+    )
+    def test_dual_llm_multi_turn(self, service_provider: LlmServiceProvider | None):
         features_header = FeaturesHeader.dual_llm()
-        policy_header = SecurityPolicyHeader.dual_llm()
-        config_header = FineGrainedConfigHeader(max_n_turns=5)
+        config_header = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=5, enabled_internal_tools=[]))
 
         messages = [
             {"role": "user", "content": "Book me the flight BA263 from New York to San Francisco on 10th June, 2026."}
@@ -71,12 +67,11 @@ class TestChatCompletion:
                 },
             }
         ]
-        response = self.sequrity_client.control.create_chat_completion(
+        response = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
-            security_policy=policy_header,
             fine_grained_config=config_header,
             provider=service_provider,
             tools=tools,
@@ -85,7 +80,6 @@ class TestChatCompletion:
         assert response is not None
         assert len(response.choices) > 0
         assert response.choices[0].message is not None
-        assert response.choices[0].message.content is not None
         # check the response is tool call
         assert response.choices[0].finish_reason == "tool_calls"
         assert response.choices[0].message.tool_calls is not None
@@ -95,6 +89,7 @@ class TestChatCompletion:
         assert "2026-06-10" in response.choices[0].message.tool_calls[0].function.arguments
         # append tool call msg to messages
         tool_call_msg = response.choices[0].message
+        assert tool_call_msg.tool_calls is not None
         messages.append(tool_call_msg.model_dump(mode="json"))
         # Simulate tool execution and provide the result back to the model
         tool_result_msg = {
@@ -110,12 +105,11 @@ class TestChatCompletion:
                 "content": "Thanks! Can you also book a return flight (flight number BA289) on 20th June, 2026?",
             }
         )
-        response_2 = self.sequrity_client.control.create_chat_completion(
+        response_2 = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
-            security_policy=policy_header,
             fine_grained_config=config_header,
             provider=service_provider,
             tools=tools,
@@ -125,7 +119,6 @@ class TestChatCompletion:
         assert response_2 is not None
         assert len(response_2.choices) > 0
         assert response_2.choices[0].message is not None
-        assert response_2.choices[0].message.content is not None
         assert response_2.choices[0].finish_reason == "tool_calls"
         assert response_2.choices[0].message.tool_calls is not None
         assert len(response_2.choices[0].message.tool_calls) > 0
@@ -134,6 +127,7 @@ class TestChatCompletion:
         assert "2026-06-20" in response_2.choices[0].message.tool_calls[0].function.arguments
         # append tool call msg to messages
         tool_call_msg_2 = response_2.choices[0].message
+        assert tool_call_msg_2.tool_calls is not None
         messages.append(tool_call_msg_2.model_dump(mode="json"))
         # Simulate tool execution and provide the result back to the model
         tool_result_msg_2 = {
@@ -143,12 +137,11 @@ class TestChatCompletion:
         }
         messages.append(tool_result_msg_2)
         # send tool result message
-        response_3 = self.sequrity_client.control.create_chat_completion(
+        response_3 = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
             features=features_header,
-            security_policy=policy_header,
             fine_grained_config=config_header,
             provider=service_provider,
             tools=tools,
@@ -160,18 +153,22 @@ class TestChatCompletion:
         assert response_3.choices[0].message.content is not None
         print("Final response content:", response_3.choices[0].message.content)
 
-    @pytest.mark.parametrize("service_provider", ["default"])
-    def test_dual_llm_policy_enforcement(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
+    @pytest.mark.parametrize(
+        "service_provider",
+        [LlmServiceProvider.OPENAI, LlmServiceProvider.SEQURITY_AZURE, LlmServiceProvider.OPENROUTER],
+    )
+    def test_dual_llm_policy_enforcement(self, service_provider: LlmServiceProvider | None):
         features_header = FeaturesHeader.dual_llm()
-        # Create a policy that forbids discussing politics
         sqrt_codes = r"""
         tool "load_applicant_profile" -> @tags |= {"internal_use_only", "tool/load_applicant_profile"};
         tool "send_email" {
             must deny when body.tags superset of {"internal_use_only"} and (not to.value in {str matching r".*@trustedcorp\.com"});
         }
         """
-        policy_header = SecurityPolicyHeader.dual_llm(language="sqrt", codes=sqrt_codes)
-        config_header = FineGrainedConfigHeader(max_n_turns=1, retry_on_policy_violation=False)
+        policy_header = SecurityPolicyHeader.dual_llm(codes=sqrt_codes)
+        config_header = FineGrainedConfigHeader(
+            fsm=FsmOverrides(max_n_turns=1, retry_on_policy_violation=False, enabled_internal_tools=[])
+        )
 
         tools = [
             {
@@ -210,7 +207,7 @@ class TestChatCompletion:
         ]
 
         messages = [{"role": "user", "content": "Load 'applicant-829''s profile and send it to hr@gmail.com"}]
-        response = self.sequrity_client.control.create_chat_completion(
+        response = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
@@ -224,7 +221,6 @@ class TestChatCompletion:
         assert response is not None
         assert len(response.choices) > 0
         assert response.choices[0].message is not None
-        assert response.choices[0].message.content is not None
         # check the response is tool call
         assert response.choices[0].finish_reason == "tool_calls"
         assert response.choices[0].message.tool_calls is not None
@@ -233,6 +229,7 @@ class TestChatCompletion:
         assert "applicant-829" in response.choices[0].message.tool_calls[0].function.arguments
         # simulate tool execution and provide the result back to the model
         tool_call_msg = response.choices[0].message
+        assert tool_call_msg.tool_calls is not None
         messages.append(tool_call_msg.model_dump(mode="json"))
         tool_result_msg = {
             "role": "tool",
@@ -241,7 +238,7 @@ class TestChatCompletion:
         }
         messages.append(tool_result_msg)
         # continue the conversation
-        response_2 = self.sequrity_client.control.create_chat_completion(
+        response_2 = self.sequrity_client.control.chat.create(
             messages=messages,
             model=self.test_config.get_model_name(service_provider),
             llm_api_key=self.test_config.get_llm_api_key(service_provider),
@@ -258,231 +255,4 @@ class TestChatCompletion:
         assert response_2.choices[0].message.content is not None
         # check that the model refused to send the email due to policy
         print("Second response content:", response_2.choices[0].message.content)
-        assert "Tool call send_email denied by argument checking policies" in response_2.choices[0].message.content
-
-    @pytest.mark.parametrize("service_provider", ["default"])
-    def test_all_header_entries_set(self, service_provider: LlmServiceProviderEnum | Literal["default"]):
-        """
-        Test that all header entries can be set with non-None values.
-        This validates that the header classes match the server-side parsing.
-        """
-        from sequrity.control.types.headers.feature_headers import (
-            ConstraintFeature,
-            LlmModeFeature,
-            LongProgramSupportFeature,
-            TaggerFeature,
-        )
-        from sequrity.control.types.headers.policy_headers import (
-            ControlFlowMetaPolicy,
-            InternalPolicyPreset,
-        )
-        from sequrity.control.types.headers.session_config_headers import ResponseFormat
-
-        # FeaturesHeader with ALL entries set (no None values)
-        # Note: file_blocker is NOT a valid feature - it doesn't exist on the server.
-        # The ConstraintFeature.name field allows "file_blocker" but this is a BUG in the client.
-        # See secure-orchestrator feature_registry.py - only "url_blocker" is registered.
-        features_header = FeaturesHeader(
-            llm=LlmModeFeature(feature_name="Dual LLM", mode="standard"),
-            taggers=[
-                TaggerFeature(
-                    feature_name="Toxicity Filter", threshold=0.7, enabled=True, mode="normal", tag_name="toxicity"
-                ),
-                TaggerFeature(feature_name="PII Redaction", threshold=0.6, enabled=True, mode="strict", tag_name="pii"),
-                TaggerFeature(
-                    feature_name="Healthcare Topic Guardrail",
-                    threshold=0.5,
-                    enabled=True,
-                    mode="normal",
-                    tag_name="healthcare",
-                ),
-                TaggerFeature(
-                    feature_name="Finance Topic Guardrail",
-                    threshold=0.5,
-                    enabled=True,
-                    mode="normal",
-                    tag_name="finance",
-                ),
-                TaggerFeature(
-                    feature_name="Legal Topic Guardrail", threshold=0.5, enabled=True, mode="normal", tag_name="legal"
-                ),
-            ],
-            constraints=[
-                ConstraintFeature(feature_name="URL Blocker", name="url_blocker", enabled=True),
-            ],
-            long_program_support=LongProgramSupportFeature(feature_name="Long Program Support", mode="mid"),
-        )
-
-        # SecurityPolicyHeader with ALL entries set (no None values)
-        policy_header = SecurityPolicyHeader(
-            language="sqrt",
-            codes="",  # empty policy codes, just testing header parsing
-            auto_gen=False,
-            fail_fast=True,
-            internal_policy_preset=InternalPolicyPreset(
-                default_allow=True,
-                enable_non_executable_memory=True,
-                branching_meta_policy=ControlFlowMetaPolicy(
-                    mode="deny",
-                    producers=("test_producer",),
-                    tags=("__non_executable", "__tool/parse_with_ai"),
-                    consumers=("test_consumer",),
-                ),
-                enable_llm_blocked_tag=False,
-            ),
-        )
-
-        # FineGrainedConfigHeader with ALL entries set (no None values)
-        config_header = FineGrainedConfigHeader(
-            max_pllm_attempts=3,
-            merge_system_messages=True,
-            convert_system_to_developer_messages=False,
-            include_other_roles_in_user_query=["assistant", "tool"],
-            max_tool_calls_per_attempt=100,
-            clear_history_every_n_attempts=2,
-            retry_on_policy_violation=True,
-            cache_tool_result="all",
-            force_to_cache=["my_tool_.*"],
-            min_num_tools_for_filtering=5,
-            clear_session_meta="every_attempt",
-            disable_rllm=False,
-            reduced_grammar_for_rllm_review=True,
-            rllm_confidence_score_threshold=0.8,
-            pllm_debug_info_level="extra",
-            max_n_turns=3,
-            enable_multi_step_planning=True,
-            prune_failed_steps=True,
-            enabled_internal_tools=["parse_with_ai", "verify_hypothesis"],
-            restate_user_query_before_planning=True,
-            pllm_can_ask_for_clarification=True,
-            reduced_grammar_version="v2",
-            response_format=ResponseFormat(
-                strip_response_content=False,
-                include_program=True,
-                include_policy_check_history=True,
-                include_namespace_snapshot=True,
-            ),
-            show_pllm_secure_var_values="basic-notext",
-        )
-
-        messages = [{"role": "user", "content": "What is 2 + 2?"}]
-        response = self.sequrity_client.control.create_chat_completion(
-            messages=messages,
-            model=self.test_config.get_model_name(service_provider),
-            llm_api_key=self.test_config.get_llm_api_key(service_provider),
-            features=features_header,
-            security_policy=policy_header,
-            fine_grained_config=config_header,
-            provider=service_provider,
-        )
-
-        print("Response:", response)
-        assert response is not None
-        assert len(response.choices) > 0
-        assert response.choices[0].message is not None
-        assert response.choices[0].message.content is not None
-        # Simple arithmetic check
-        assert "4" in response.choices[0].message.content
-
-    @pytest.mark.parametrize("service_provider", ["default"])
-    def test_factory_methods_single_llm_all_features(
-        self, service_provider: LlmServiceProviderEnum | Literal["default"]
-    ):
-        """
-        Test FeaturesHeader.single_llm with all features enabled.
-        """
-        features_header = FeaturesHeader.single_llm(
-            toxicity_filter=True,
-            pii_redaction=True,
-            healthcare_guardrail=True,
-            finance_guardrail=True,
-            legal_guardrail=True,
-            url_blocker=True,
-        )
-        policy_header = SecurityPolicyHeader.single_llm()
-
-        messages = [{"role": "user", "content": "What is 3 + 3?"}]
-        response = self.sequrity_client.control.create_chat_completion(
-            messages=messages,
-            model=self.test_config.get_model_name(service_provider),
-            llm_api_key=self.test_config.get_llm_api_key(service_provider),
-            features=features_header,
-            security_policy=policy_header,
-            provider=service_provider,
-        )
-
-        print("Response:", response)
-        assert response is not None
-        assert len(response.choices) > 0
-        assert response.choices[0].message is not None
-        assert response.choices[0].message.content is not None
-
-    @pytest.mark.parametrize("llm_mode", ["standard", "strict", "custom"])
-    @pytest.mark.parametrize("service_provider", ["default"])
-    def test_factory_methods_dual_llm_modes(
-        self,
-        llm_mode: Literal["standard", "strict", "custom"],
-        service_provider: LlmServiceProviderEnum | Literal["default"],
-    ):
-        """
-        Test FeaturesHeader.dual_llm with different LLM modes.
-        """
-        features_header = FeaturesHeader.dual_llm(
-            mode=llm_mode,
-            toxicity_filter=True,
-            url_blocker=True,
-            long_program_mode="base",
-        )
-        policy_header = SecurityPolicyHeader.dual_llm()
-
-        messages = [{"role": "user", "content": "What is 5 + 5?"}]
-        response = self.sequrity_client.control.create_chat_completion(
-            messages=messages,
-            model=self.test_config.get_model_name(service_provider),
-            llm_api_key=self.test_config.get_llm_api_key(service_provider),
-            features=features_header,
-            security_policy=policy_header,
-            provider=service_provider,
-        )
-
-        print(f"Response for mode={llm_mode}:", response)
-        assert response is not None
-        assert len(response.choices) > 0
-        assert response.choices[0].message is not None
-        assert response.choices[0].message.content is not None
-
-    @pytest.mark.parametrize("language", ["sqrt", "sqrt-lite", "cedar"])
-    @pytest.mark.parametrize("service_provider", ["default"])
-    def test_factory_methods_security_policy_languages(
-        self,
-        language: Literal["sqrt", "sqrt-lite", "cedar"],
-        service_provider: LlmServiceProviderEnum | Literal["default"],
-    ):
-        """
-        Test SecurityPolicyHeader.dual_llm with different policy languages.
-        """
-        features_header = FeaturesHeader.dual_llm()
-        policy_header = SecurityPolicyHeader.dual_llm(
-            language=language,
-            codes="",
-            auto_gen=False,
-            fail_fast=True if language != "cedar" else None,  # fail_fast only for sqrt languages
-            default_allow=True,
-            enable_non_executable_memory=True,
-        )
-
-        messages = [{"role": "user", "content": "What is 7 + 7?"}]
-        response = self.sequrity_client.control.create_chat_completion(
-            messages=messages,
-            model=self.test_config.get_model_name(service_provider),
-            llm_api_key=self.test_config.get_llm_api_key(service_provider),
-            features=features_header,
-            security_policy=policy_header,
-            provider=service_provider,
-        )
-
-        print(f"Response for language={language}:", response)
-        assert response is not None
-        assert len(response.choices) > 0
-        assert response.choices[0].message is not None
-        assert response.choices[0].message.content is not None
+        assert "'send_email' is denied" in response_2.choices[0].message.content

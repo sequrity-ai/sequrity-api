@@ -34,7 +34,7 @@
 import json
 import os
 import re
-from typing import Callable, Literal
+from typing import Any, Callable, Literal
 
 from rich.console import Console
 from rich.syntax import Syntax
@@ -44,10 +44,12 @@ from sequrity.control import (
     ControlFlowMetaPolicy,
     FeaturesHeader,
     FineGrainedConfigHeader,
-    InternalPolicyPreset,
-    ResponseFormat,
+    FsmOverrides,
+    InternalPolicyPresets,
     SecurityPolicyHeader,
 )
+from sequrity.control.types.headers import PolicyCode
+from sequrity.control.types.headers import ResponseFormatOverrides
 
 # Client configuration
 open_router_key = "your OpenRouter/OAI key"  # @param {type: "string"}
@@ -63,7 +65,9 @@ assert CONFIG["open_router_api_key"] != "your OpenRouter/OAI key"
 assert CONFIG["sequrity_key"] != "your SequrityAI key"
 
 # Initialize the Sequrity client
-client = SequrityClient(api_key=CONFIG["sequrity_key"], timeout=120, base_url=CONFIG["sequrity_base_url"])
+api_key = CONFIG["sequrity_key"]
+assert isinstance(api_key, str), "SEQURITY_API_KEY must be set"
+client = SequrityClient(api_key=api_key, timeout=120, base_url=CONFIG["sequrity_base_url"])
 
 # %% [markdown]
 # ### Mock client using SequrityClient
@@ -91,7 +95,7 @@ def run_workflow(
     features: FeaturesHeader | None,
     security_policy: SecurityPolicyHeader | None,
     fine_grained_config: FineGrainedConfigHeader | None,
-    reasoning_effort: str = "minimal",
+    reasoning_effort: Literal["minimal", "low", "medium", "high"] = "minimal",
 ) -> tuple[Literal["success", "denied by policies", "unexpected error"], list[dict]]:
     interaction_id = 1
     console = Console()
@@ -116,7 +120,7 @@ def run_workflow(
         messages.append(response.choices[0].message.model_dump(exclude_none=True))
 
         finish_reason = response.choices[0].finish_reason
-        if finish_reason == "stop":
+        if finish_reason == "stop" or finish_reason == "error":
             content = response.choices[0].message.content
             details = json.loads(content)
             if "program" in details:
@@ -125,10 +129,7 @@ def run_workflow(
                 console.print(syntax)
 
             if details["status"] == "failure":
-                if (
-                    "denied by argument checking policies" in content
-                    or "program violated control flow policies" in content
-                ):
+                if "denied by argument checking policies" in content or "Control flow violation" in content:
                     t_print(f"\t🚨 Request denied by policies:\n\t{details['error']['message']}")
                     return "denied by policies", messages
                 elif '"denied": [{' in content:
@@ -162,7 +163,7 @@ def run_workflow(
                     print(f"\t⛔ Tool '{tool_name}' not found in tool map.")
                     return "unexpected error", messages
         else:
-            print(f"\t⛔ Unknown finish reason: {finish_reason}, terminating workflow.")
+            print(f"\t⛔ Unknown finish reason: {finish_reason}, terminating workflow. Messages: {messages[-1]}")
             return "unexpected error", messages
         interaction_id += 1
 
@@ -178,11 +179,11 @@ def send_request_to_endpoint(
     features: FeaturesHeader | None,
     security_policy: SecurityPolicyHeader | None,
     fine_grained_config: FineGrainedConfigHeader | None,
-    reasoning_effort: str = "minimal",
+    reasoning_effort: Literal["minimal", "low", "medium", "high"] = "minimal",
     session_id: str | None = None,
 ):
     try:
-        response = client.control.create_chat_completion(
+        response = client.control.chat.create(
             messages=messages,
             model=model,
             llm_api_key=CONFIG["open_router_api_key"],
@@ -198,7 +199,6 @@ def send_request_to_endpoint(
     except Exception as e:
         print(f"API Request failed: {e}")
         return None
-
 
 # --8<-- [end:send_request_to_endpoint]
 
@@ -304,21 +304,23 @@ tool_map = {
 
 # --8<-- [start:ex1_session_config]
 # Create features header using FeaturesHeader class
-features = FeaturesHeader.dual_llm(mode="standard")
+features = FeaturesHeader.dual_llm()
 
 # Create security policy using SecurityPolicyHeader class
 security_policy = SecurityPolicyHeader(
-    language="sqrt",
-    codes=r"""
+    mode="standard",
+    codes=PolicyCode(
+        code=r"""
     let sensitive_docs = {"internal_use", "confidential"};
     tool "get_internal_document" -> @tags |= sensitive_docs;
     tool "send_email" {
         hard deny when (body.tags overlaps sensitive_docs) and (not to.value in {str matching r".*@trustedcorp\.com"});
     }
-    """,
+    """
+    ),
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -326,8 +328,7 @@ security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config using FineGrainedConfigHeader class
 fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -386,7 +387,6 @@ result, _ = run_workflow(
 )
 assert result == "success"
 # --8<-- [end:ex1_case2]
-
 
 # %% [markdown]
 # ## Example 2: Enforcing Complex Business Logic
@@ -461,32 +461,35 @@ refund_tool_map = {
 
 # --8<-- [start:ex2_security_config]
 # Create features header for refund example
-refund_features = FeaturesHeader.dual_llm(mode="standard")
+refund_features = FeaturesHeader.dual_llm()
 
 # Create security policy for refund example
 refund_security_policy = SecurityPolicyHeader(
-    language="sqrt",
-    codes=r"""
-    tool "issue_refund" {
-        session before {
-            when "attempt3" in @tags { @tags |= {"final_attempt"}; }
-        }
-        session before {
-            when "attempt2" in @tags { @tags |= {"attempt3"}; }
-        }
-        session before {
-            when "attempt1" in @tags { @tags |= {"attempt2"}; }
-        }
-        session before {
-            @tags |= {"attempt1"};
-        }
+    mode="standard",
+    codes={
+        "language": "sqrt",
+        "code": r"""
+            tool "issue_refund" {
+                session before {
+                    when "attempt3" in @tags { @tags |= {"final_attempt"}; }
+                }
+                session before {
+                    when "attempt2" in @tags { @tags |= {"attempt3"}; }
+                }
+                session before {
+                    when "attempt1" in @tags { @tags |= {"attempt2"}; }
+                }
+                session before {
+                    @tags |= {"attempt1"};
+                }
 
-        hard allow when "final_attempt" in @session.tags;
-    }
-    """,
+                hard allow when "final_attempt" in @session.tags;
+            }
+        """,
+    },
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -494,13 +497,13 @@ refund_security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config for refund example
 refund_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="none",
-    clear_session_meta="never",
-    retry_on_policy_violation=False,
-    pllm_debug_info_level="minimal",
-    max_pllm_attempts=1,  # disable auto-retry as we want to count attempts accurately
-    max_n_turns=5,  # we need multiple turns to reach the refund approval
-    response_format=ResponseFormat(
+    fsm=FsmOverrides(
+        clear_session_meta="never",
+        retry_on_policy_violation=False,
+        max_pllm_steps=1,  # disable auto-retry as we want to count attempts accurately
+        max_n_turns=5,  # we need multiple turns to reach the refund approval
+    ),
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -584,13 +587,15 @@ for i in range(1, 5):
         reasoning_effort="minimal",
     )
     if i < 4:
-        assert "Tool call issue_refund denied" in messages[-1]["content"]
+        assert "'issue_refund' is denied by argument" in messages[-1]["content"]
         print(f"🚨 Attempt {i} denied by policies")
         messages.append({"role": "user", "content": user_query})
     else:
         # this should be a tool call to issue_refund because this tool call is approved now
         assert messages[-1]["role"] == "assistant"
-        assert messages[-1]["tool_calls"][0]["function"]["name"] == "issue_refund"
+        assert messages[-1]["tool_calls"][0]["function"]["name"] == "issue_refund", (
+            f"Expected a tool call to 'issue_refund' but got: {messages[-1]}"
+        )
         print(f"🛠️ Attempt {i} receives a tool call to 'issue_refund'")
         # Execute the tool call using the dict from messages
         tool_result_message = run_refund_tool(messages[-1]["tool_calls"][0], refund_tool_map)
@@ -728,22 +733,25 @@ provenance_tool_map = {
 
 # --8<-- [start:ex3_security_config]
 # Create features header for provenance example
-provenance_features = FeaturesHeader.dual_llm(mode="standard")
+provenance_features = FeaturesHeader.dual_llm()
 
 # Create security policy for provenance example
 provenance_security_policy = SecurityPolicyHeader(
-    language="sqrt",
-    codes=r"""
-    tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
-    tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
-    // Allow generating business summary only if data comes from verified financial and marketing sources
-    tool "generate_business_summary" {
-        hard allow when @args.producers superset of {"verified_financial_data", "verified_marketing_data"};
-    }
-    """,
+    mode="standard",
+    codes={
+        "language": "sqrt",
+        "code": r"""
+            tool "get_quarterly_earning_report" -> @producers |= {"verified_financial_data"};
+            tool "get_marketing_analysis" -> @producers |= {"verified_marketing_data"};
+            // Allow generating business summary only if data comes from verified financial and marketing sources
+            tool "generate_business_summary" {
+                hard allow when @args.producers superset of {"verified_financial_data", "verified_marketing_data"};
+            }
+        """,
+    },
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -751,8 +759,7 @@ provenance_security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config for provenance example
 provenance_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -920,21 +927,24 @@ compliance_tool_map = {
 
 # --8<-- [start:ex4_security_config]
 # Create features header for compliance example
-compliance_features = FeaturesHeader.dual_llm(mode="standard")
+compliance_features = FeaturesHeader.dual_llm()
 
 # Create security policy for compliance example
 compliance_security_policy = SecurityPolicyHeader(
-    language="sqrt",
-    codes=r"""
+    mode="standard",
+    codes={
+        "language": "sqrt",
+        "code": r"""
     tool "load_patient_record" -> @tags |= {"pii"};
     tool "de_identify_data" -> @tags -= {"pii"};
     tool r"send_to_.*" {
         hard deny when "pii" in data.tags;
     }
     """,
+    },
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_non_executable_memory=True,
     ),
@@ -942,8 +952,7 @@ compliance_security_policy = SecurityPolicyHeader(
 
 # Create fine-grained config for compliance example
 compliance_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -1004,7 +1013,7 @@ result, _ = run_workflow(
     fine_grained_config=compliance_fine_grained_config,
     reasoning_effort="minimal",
 )
-assert result == "denied by policies"
+assert result == "denied by policies", f"Expected the action to be denied due to PII, but got: {result}"
 # --8<-- [end:ex4_case2]
 
 # %% [markdown]
@@ -1032,8 +1041,9 @@ assert result == "denied by policies"
 # configuring the policy to deny branching on this tag, you can prevent discriminatory decision-making at the architectural level.
 #
 # ```json
-# "enabled_features": [{"feature_name": "Dual LLM", "config_json": "{\"mode\": \"custom\"}"}]
-# "internal_policy_preset": {
+# "agent_arch": "dual-llm"
+# "mode": "custom"
+# "presets": {
 #     "branching_meta_policy": {
 #         "mode": "deny",
 #         "tags": ["RACE"]
@@ -1043,7 +1053,6 @@ assert result == "denied by policies"
 #
 # This policy ensures that any data tagged with "RACE" cannot be used in conditional branching logic,
 # forcing the AI to make fair decisions that don't depend on protected attributes.
-
 
 # %%
 # Mock functions for fairness example
@@ -1124,19 +1133,21 @@ fairness_tool_map = {
 
 # --8<-- [start:ex5_fairness_enabled_features]
 # Create features header for fairness example (custom mode)
-fairness_features = FeaturesHeader.dual_llm(mode="custom")
+fairness_features = FeaturesHeader.dual_llm()
 # --8<-- [end:ex5_fairness_enabled_features]
 
 # --8<-- [start:ex5_fairness_base_config]
 # Base security policy for fairness example
-fairness_security_policy_base_codes = r"""
+fairness_security_policy_base_codes = {
+    "language": "sqrt",
+    "code": r"""
 tool "retrive_applicant_profile" -> @tags |= {"RACE"};
-"""
+""",
+}
 
 # Create fine-grained config for fairness example
 fairness_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -1159,16 +1170,16 @@ print("=== Preventing Discriminatory Control Flow (denied) ===")
 # Add branching_meta_policy to deny control flow based on RACE tag
 # --8<-- [start:ex5_fairness_policies_deny]
 fairness_security_policy_deny = SecurityPolicyHeader(
-    language="sqrt",
+    mode="custom",
     codes=fairness_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         # --8<-- [start:ex5_branching_meta_policy]
         branching_meta_policy=ControlFlowMetaPolicy(
             mode="deny",
-            tags=("RACE",),
+            tags={"RACE"},
         ),
         # --8<-- [end:ex5_branching_meta_policy]
     ),
@@ -1192,7 +1203,7 @@ result, _ = run_workflow(
     fine_grained_config=fairness_fine_grained_config,
     reasoning_effort="minimal",
 )
-assert result == "denied by policies"
+assert result == "denied by policies", f"Expected the action to be denied due to discriminatory control flow, but got: {result}"
 # --8<-- [end:ex5_case1_discriminatory]
 
 
@@ -1209,11 +1220,11 @@ print("=== Non-Discriminatory Flow (allowed) ===")
 
 # Without branching_meta_policy restriction
 fairness_security_policy_allow = SecurityPolicyHeader(
-    language="sqrt",
+    mode="custom",
     codes=fairness_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
     ),
 )
@@ -1249,8 +1260,8 @@ assert result == "success"
 # policy to enable this flag, you prevent the AI from ever "seeing" the sensitive data.
 #
 # ```json
-# "enabled_features": [{"feature_name": "Dual LLM"}]
-# "internal_policy_preset": {"enable_llm_blocked_tag": true}
+# "agent_arch": "dual-llm"
+# "presets": {"enable_llm_blocked_tag": true}
 # ```
 #
 # This ensures that even if the raw data contains protected attributes, the AI parsing model will not process it,
@@ -1322,17 +1333,19 @@ qllm_policy_tool_map = {
 
 # --8<-- [start:ex5_qllm_base_config]
 # Create features header for QLLM policy example
-qllm_policy_features = FeaturesHeader.dual_llm(mode="standard")
+qllm_policy_features = FeaturesHeader.dual_llm()
 
 # Base security policy for QLLM policy example
-qllm_policy_security_policy_base_codes = r"""
+qllm_policy_security_policy_base_codes = {
+    "language": "sqrt",
+    "code": r"""
 tool "retrive_applicant_profile_text" -> @tags |= {"__llm_blocked"};
-"""
+""",
+}
 
 # Create fine-grained config for QLLM policy example
 qllm_policy_fine_grained_config = FineGrainedConfigHeader(
-    cache_tool_result="all",
-    response_format=ResponseFormat(
+    response_format=ResponseFormatOverrides(
         strip_response_content=False,
         include_program=True,
     ),
@@ -1355,11 +1368,11 @@ print("=== Preventing AI Parsing of Sensitive Data (denied) ===")
 # Add enable_llm_blocked_tag to deny QLLM inputs with __llm_blocked tag
 # --8<-- [start:ex5_qllm_policies_deny]
 qllm_policy_security_policy_deny = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=qllm_policy_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_llm_blocked_tag=True,
     ),
@@ -1400,11 +1413,11 @@ print("=== Direct Data Processing (allowed) ===")
 # Without enable_llm_blocked_tag restriction
 # --8<-- [start:ex5_qllm_policies_allow]
 qllm_policy_security_policy_allow = SecurityPolicyHeader(
-    language="sqrt",
+    mode="standard",
     codes=qllm_policy_security_policy_base_codes,
     fail_fast=True,
     auto_gen=False,
-    internal_policy_preset=InternalPolicyPreset(
+    presets=InternalPolicyPresets(
         default_allow=True,
         enable_llm_blocked_tag=False,
     ),

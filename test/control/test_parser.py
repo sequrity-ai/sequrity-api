@@ -7,7 +7,7 @@ or policy runtime, allowing it to be open-sourced separately.
 
 import pytest
 
-from sequrity.control.sqrt.parser import (
+from sequrity.sqrt.parser import (
     ParseResult,
     SqrtParseError,
     check,
@@ -92,6 +92,7 @@ let y = broken
 let z = {"bar"};"""
         result = parse(code)
         assert result.valid is False
+        assert result.error is not None
         assert result.error.line is not None
 
     def test_parse_result_is_named_tuple(self):

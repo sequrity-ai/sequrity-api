@@ -1,16 +1,16 @@
-# X-Api-Key and X-Session-Id Headers
+# X-Api-Key and X-Session-ID Headers
 
 ## X-Api-Key (Optional)
 
 ```http
-X-Api-Key: your-sequrity-api-key
+X-Api-Key: your-provider-api-key
 ```
 
-This header is the LLM service API key associated with the service provider you picked.
+This header is the LLM API key associated with the service provider you picked, e.g., OpenRouter, Anthropic, etc.
 
 - For example, you need to provide your OpenRouter API key in the `X-Api-Key` header
-if you post to `https://api.sequrity.ai/control/openrouter/v1/chat/completions`.
-- If not provided, Sequrity will use its own API key for the service provider with *extra charges*.
+if you post to `https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions`.
+- If not provided (non-BYOK), Sequrity uses its own server-managed API key for the provider. Model names are validated against the server's model allow list, and extra charges may apply.
 
 
 !!! info "Example: Using X-Api-Key with OpenRouter"
@@ -22,7 +22,7 @@ if you post to `https://api.sequrity.ai/control/openrouter/v1/chat/completions`.
     OPENROUTER_API_KEY="your-openrouter-api-key"
 
     # 💡 SERVICE_PROVIDER in the URL path
-    curl -X POST https://api.sequrity.ai/control/${SERVICE_PROVIDER}/v1/chat/completions \
+    curl -X POST https://api.sequrity.ai/control/chat/${SERVICE_PROVIDER}/v1/chat/completions \
     -H "Authorization: Bearer $SEQURITY_API_KEY" \
     -H "Content-Type: application/json" \
     -H "X-Api-Key: $OPENROUTER_API_KEY" \

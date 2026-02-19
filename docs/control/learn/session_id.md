@@ -32,28 +32,37 @@ kanban
     "Your flight number is BA251."]
 ```
 
-**Single-turn**: By default, Sequrity Control's session has a maximum lifetime of one turn, thus the session id becomes invalid after one turn. In single-turn sessions,
-the session context is not retained for subsequent requests after a cycle of `[user request] -> [assistant tool calls] -> [tool result] -> [assistant tool calls] -> ... -> [final response]`.
+**Single-turn**: By default, Sequrity Control's session has a maximum lifetime, thus the session id becomes invalid when the session exceeds the maximum lifetime. For example, in single-turn sessions (`max_n_turns=1`),
+the session is removed after a cycle of `[user request] -> [assistant tool calls] -> [tool result] -> [assistant tool calls] -> ... -> [final response]`.
 
-**Multi-turn**: To enable multi-turn sessions, you need to explicitly configure the maximum number of turns allowed in a session.
+**Multi-turn**: To enable multi-turn sessions, you need to configure the maximum number of turns allowed in a session.
 
-- For Sequrity client, you can set [`max_n_turns` in `FineGrainedConfigHeader`][sequrity.control.types.headers.FineGrainedConfigHeader.max_n_turns] to a value greater than `1`.
+- For Sequrity client, you can set `max_n_turns` in `FineGrainedConfigHeader` to a value greater than `1`.
 
     ```python
     from sequrity.control import FineGrainedConfigHeader
+    from sequrity.control.types.headers import FsmOverrides
 
-    fine_grained_config = FineGrainedConfigHeader(max_n_turns=5)
+    fine_grained_config = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=5))
     ```
-- For REST API, you need to set [`max_n_turns` in your security config](../reference/rest_api/headers/security_config.md#max_n_turns) to a value greater than `1`.
+- For REST API, you need to set `max_n_turns` in the `fsm` section of your `X-Config` header to a value greater than `1`.
 
     ```http
-    X-Security-Config: {"max_n_turns": 5}
+    X-Config: {"fsm": {"max_n_turns": 5}}
     ```
 
-## When to Use Session ID
+There are also other mechanisms to control session lifetime, such as the maximum number of tool calls issued in a step/attempt, the maximum number of steps in a turn, the maximum number of failed steps in a turn, etc. You can refer to [the documentation of `FineGrainedConfigHeader` for more details][sequrity.control.types.headers.FineGrainedConfigHeader].
 
-Sequrity Control (1) puts session ID in the response headers for every chat completion response,
-and (2) also encodes the session ID into tool call IDs of assistant messages.
+## When to Set Session ID
+
+**Most of the time, you don't need to manually set session IDs in your request headers**,
+as Sequrity Control can parse the session ID from tool call IDs in assistant/tool result messages.
+
+Specifically, Sequrity Control
+
+- puts session ID in the response headers for every chat completion response,
+- also encodes the session ID into tool call IDs of assistant messages,
+- for Sequrity Client, automatically tracks session ID across turns if `session_id` is not manually set in [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc.
 
 !!! info "Session IDs in Response Headers and Tool Call IDs"
 
@@ -64,7 +73,7 @@ and (2) also encodes the session ID into tool call IDs of assistant messages.
         Session ID in the response headers can be accessed via the `session_id` attribute of the [`ChatCompletionResponse` object][sequrity.types.chat_completion.response.ChatCompletionResponse.session_id]:
 
         ```python
-        response = client.control.create_chat_completion(
+        response = client.control.chat.create(
             messages=messages,
             model=model,
             llm_api_key="your-llm-api-key",
@@ -77,7 +86,7 @@ and (2) also encodes the session ID into tool call IDs of assistant messages.
 
         ```python
         response = requests.post(
-            url="https://api.sequrity.ai/control/openrouter/v1/chat/completions",
+            url="https://api.sequrity.ai/control/chat/openrouter/v1/chat/completions",
             headers={
                 "Authorization": "Bearer <your-sequrity-api-key>",
                 "Content-Type": "application/json",
@@ -106,17 +115,16 @@ and (2) also encodes the session ID into tool call IDs of assistant messages.
     }
     ```
 
-
-**Most of the time, you don't need to manually set session IDs in your request headers**,
-as Sequrity Control automatically parses the session ID from tool call IDs in assistant messages.
-
 Of course, you can also manually set the session ID
 
 - in the [`X-Session-ID`](../reference/rest_api/headers/api_key_session_id.md#x-session-id-optional) header for REST API
-- via parameter `session_id` of [`create_chat_completion` method][sequrity.control.wrapper.ControlApiWrapper.create_chat_completion] for Sequrity client
+- via parameter `session_id` of [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc. for Sequrity Client
 
 to continue an existing multi-turn session.
 
-Here is **the only scenario where you may have to manually track session IDs**:
+Here are {==**the only two scenarios where you have to manually set session IDs**==}:
 
-{== The request messages you send do not contain any tool result messages from previous interactions. ==}
+1. For Sequrity Client, if you want to start a new session, you show explicitly set the `session_id` parameter to `None` in [`chat.create` method][sequrity.control.resources.chat.ChatResource.create], [`messages.create` method][sequrity.control.resources.messages.MessagesResource.create], etc.
+2. For both REST API and Sequrity Client, if the request messages you send do not contain any tool result messages from previous interactions.
+
+    For  example, the response of the first turn is only a policy violation message without any tool calls, and you want to continue the session for the second turn, then you need to manually set the session ID for the second turn.

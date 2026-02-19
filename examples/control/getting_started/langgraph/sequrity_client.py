@@ -6,16 +6,16 @@ to create a secure SQL agent with conditional routing.
 """
 
 import os
-from typing import Literal, TypedDict
+from typing import Any, Literal, TypedDict
 
 from sequrity import SequrityClient
-from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
+from sequrity.control import FeaturesHeader, FineGrainedConfigHeader, FsmOverrides, SecurityPolicyHeader
 
 # Try to import rich for better output formatting
 try:
     from rich import print as rprint
 except ImportError:
-    rprint = print
+    rprint: Any = print
 
 # Check for LangGraph availability
 try:
@@ -176,7 +176,7 @@ def route_validation(state: SQLAgentState) -> Literal["validate_query", "execute
 # Build the LangGraph workflow
 def build_sql_agent_graph():
     """Construct the SQL agent workflow graph"""
-    graph = StateGraph(SQLAgentState)
+    graph = StateGraph(SQLAgentState)  # ty: ignore[invalid-argument-type]
 
     # Add all workflow nodes
     graph.add_node("list_tables", list_tables)
@@ -215,7 +215,7 @@ if __name__ == "__main__":
 
     # --8<-- [start:initial_state_and_functions]
     # Define initial state
-    initial_state: SQLAgentState = {
+    initial_state: dict = {
         "query": "Find all users with recent orders",
         "tables": "",
         "schema": "",
@@ -237,10 +237,10 @@ if __name__ == "__main__":
     # --8<-- [end:initial_state_and_functions]
 
     # --8<-- [start:security_settings]
-    # Configure security features
+    # Configure security features — only features is needed to select dual-llm arch.
+    # security_policy is optional (server uses defaults).
     features = FeaturesHeader.dual_llm()
-    security_policy = SecurityPolicyHeader.dual_llm()
-    fine_grained_config = FineGrainedConfigHeader(max_n_turns=10, disable_rllm=True)
+    fine_grained_config = FineGrainedConfigHeader(fsm=FsmOverrides(max_n_turns=10, disable_rllm=True))
     # --8<-- [end:security_settings]
 
     rprint(f"📝 User query: {initial_state['query']}\n")
@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
     # --8<-- [start:execute_graph]
     # Execute the graph with Sequrity
-    result = client.control.compile_and_run_langgraph(
+    result = client.control.langgraph.run(
         model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,
         graph=graph,
@@ -257,7 +257,6 @@ if __name__ == "__main__":
         node_functions=node_functions,
         max_exec_steps=30,
         features=features,
-        security_policy=security_policy,
         fine_grained_config=fine_grained_config,
     )
     # --8<-- [end:execute_graph]

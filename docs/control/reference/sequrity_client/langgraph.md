@@ -4,13 +4,13 @@ Execute LangGraph StateGraphs securely through Sequrity's Dual-LLM runtime with 
 
 !!! note "Requirements"
     - LangGraph must be installed: `pip install langgraph`
-    - Requires **Dual LLM** mode (`features.llm.feature_name == "Dual LLM"`)
+    - Requires **Dual LLM** mode (`features.agent_arch == "dual-llm"`)
     - `strip_response_content` must be `False` in fine-grained config
 
 ---
 
 
-::: sequrity.control.langgraph.run_graph_sync
+::: sequrity.control.resources.langgraph
     options:
       show_root_heading: true
       show_source: true
@@ -18,19 +18,19 @@ Execute LangGraph StateGraphs securely through Sequrity's Dual-LLM runtime with 
 ---
 
 
-::: sequrity.control.types.langgraph.LangGraphChatCompletionRequest
+::: sequrity.control.resources.langgraph._types.LangGraphChatCompletionRequest
     options:
       show_root_heading: true
       show_source: true
 
-::: sequrity.control.types.langgraph.LangGraphChatCompletionResponse
+::: sequrity.control.resources.langgraph._types.LangGraphChatCompletionResponse
     options:
       show_root_heading: true
       show_source: true
 
 ---
 
-::: sequrity.control.langgraph.graph_executor.LangGraphExecutor
+::: sequrity.control.resources.langgraph._executor.LangGraphExecutor
     options:
       show_root_heading: true
       show_source: false

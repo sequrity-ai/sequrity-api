@@ -10,15 +10,13 @@ Installation:
 
 # ---8<-- [start:imports_os]
 import os
-
 # ---8<-- [end:imports_os]
 # --8<-- [start:imports_sequrity_client]
 from sequrity import SequrityClient
 
 # --8<-- [end:imports_sequrity_client]
 # --8<-- [start:imports_headers]
-from sequrity.control import FeaturesHeader, SecurityPolicyHeader
-
+from sequrity.control import FeaturesHeader
 # --8<-- [end:imports_headers]
 
 # --8<-- [start:api_keys]
@@ -37,10 +35,11 @@ def first_message_example():
     client = SequrityClient(api_key=sequrity_key)
 
     # Send a chat completion request
-    response = client.control.create_chat_completion(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",  # model name from your LLM provider
         llm_api_key=openrouter_api_key,  # your LLM provider API key
+        provider="openrouter", # specify the LLM provider
     )
 
     print(response)
@@ -59,17 +58,16 @@ def single_llm_example():
     # Initialize the client
     client = SequrityClient(api_key=sequrity_key)
 
-    # Create feature and policy headers
+    # Only FeaturesHeader is needed to select the architecture.
+    # X-Policy and X-Config are optional — the server uses preset defaults.
     features = FeaturesHeader.single_llm()
-    policy = SecurityPolicyHeader.single_llm()
 
     # Send a chat completion request
-    response = client.control.create_chat_completion(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,
-        features=features,  # security features
-        security_policy=policy,  # security policy
+        features=features,
         provider="openrouter",
     )
 
@@ -89,17 +87,16 @@ def dual_llm_example():
     # Initialize the client
     client = SequrityClient(api_key=sequrity_key)
 
-    # Create dual LLM feature headers
+    # Only FeaturesHeader is needed to select the architecture.
+    # X-Policy and X-Config are optional — the server uses preset defaults.
     features = FeaturesHeader.dual_llm()
-    policy = SecurityPolicyHeader.dual_llm()
 
     # Send a chat completion request
-    response = client.control.create_chat_completion(
+    response = client.control.chat.create(
         messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
         model="openai/gpt-5-mini",
         llm_api_key=openrouter_api_key,
         features=features,
-        security_policy=policy,
     )
 
     print(response)
