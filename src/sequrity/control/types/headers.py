@@ -25,14 +25,17 @@ class TaggerConfig(BaseModel):
     Attributes:
         name: Classifier identifier.
         threshold: Detection sensitivity threshold (0.0-1.0).
-        mode: Optional mode that overrides threshold ("normal"/"strict").
+        mode: Optional mode that overrides threshold (e.g., "high sensitivity", "strict", "low sensitivity", "normal").
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    name: ContentClassifierName
-    threshold: float = Field(default=0.5, ge=0.0, le=1.0)
-    mode: str | None = Field(default=None)
+    name: ContentClassifierName = Field(description="Classifier identifier.")
+    threshold: float = Field(default=0.5, ge=0.0, le=1.0, description="Threshold for the tagger.")
+    mode: str | None = Field(
+        default=None,
+        description="Optional mode that overrides threshold (e.g., 'high sensitivity', 'strict', 'low sensitivity', 'normal').",
+    )
 
 
 class ConstraintConfig(BaseModel):
@@ -44,7 +47,7 @@ class ConstraintConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    name: ContentBlockerName
+    name: ContentBlockerName = Field(description="Blocker identifier ('url_blocker' or 'file_blocker').")
 
 
 class FeaturesHeader(BaseModel):
@@ -63,8 +66,14 @@ class FeaturesHeader(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     agent_arch: AgentArch | None = Field(None, description="Agent architecture: single-llm or dual-llm.")
-    content_classifiers: list[TaggerConfig] | None = Field(None, description="Content classifiers to enable.")
-    content_blockers: list[ConstraintConfig] | None = Field(None, description="Content blockers to enable.")
+    content_classifiers: list[TaggerConfig] | None = Field(
+        None,
+        description="LLM-based content classifiers that analyze tool call arguments (pre-execution) and results (post-execution) to detect sensitive content (e.g., PII, toxicity).",
+    )
+    content_blockers: list[ConstraintConfig] | None = Field(
+        None,
+        description="Content blockers that redact or mask sensitive content in tool call arguments (pre-execution) and results (post-execution).",
+    )
 
     @overload
     def dump_for_headers(self, mode: Literal["json_str"] = ...) -> str: ...
@@ -165,9 +174,15 @@ class ControlFlowMetaPolicy(BaseModel):
     """Control flow meta policy for branching tools."""
 
     mode: Literal["allow", "deny"] = Field(default="deny", description="'allow' for whitelist, 'deny' for blacklist.")
-    producers: set[str] = Field(default_factory=set, description="Producer identifiers for control flow policy.")
-    tags: set[str] = Field(default_factory=set, description="Tag identifiers for control flow policy.")
-    consumers: set[str] = Field(default_factory=set, description="Consumer identifiers for control flow policy.")
+    producers: set[str] = Field(
+        default_factory=set, description="Set of prohibited producers for control flow relaxer in custom mode."
+    )
+    tags: set[str] = Field(
+        default_factory=set, description="Set of prohibited tags for control flow relaxer in custom mode."
+    )
+    consumers: set[str] = Field(
+        default_factory=set, description="Set of prohibited consumers for control flow relaxer in custom mode."
+    )
 
 
 class InternalPolicyPresets(BaseModel):
@@ -177,10 +192,11 @@ class InternalPolicyPresets(BaseModel):
 
     default_allow: bool = Field(default=True, description="Whether to allow tool calls by default.")
     default_allow_enforcement_level: Literal["hard", "soft"] = Field(
-        default="soft", description="Enforcement level for default allow/deny policies."
+        default="soft", description="Enforcement level for default allow policy."
     )
     enable_non_executable_memory: bool = Field(
-        default=True, description="Attach non-executable tag to all tool results by default."
+        default=True,
+        description="Whether to enable non-executable memory internal policy (attach non-executable tag to all tool results by default).",
     )
     branching_meta_policy: ControlFlowMetaPolicy = Field(
         default_factory=ControlFlowMetaPolicy,
@@ -188,10 +204,10 @@ class InternalPolicyPresets(BaseModel):
     )
     enable_llm_blocked_tag: bool = Field(
         default=True,
-        description="Deny tool calls to parse_with_ai if any argument has LLM_BLOCKED_TAG.",
+        description="Whether to enable LLM blocked tag internal policy (denies tool calls to parse_with_ai if any argument has LLM_BLOCKED_TAG).",
     )
     llm_blocked_tag_enforcement_level: Literal["hard", "soft"] = Field(
-        default="hard", description="Enforcement level for LLM blocked tag policy."
+        default="hard", description="Enforcement level for LLM blocked tag internal policy."
     )
 
 
@@ -226,11 +242,14 @@ class SecurityPolicyHeader(BaseModel):
     mode: Literal["standard", "strict", "custom"] | None = Field(
         default=None, description="The security mode: standard, strict, or custom."
     )
-    codes: PolicyCode | None = Field(default=None, description="The security policy codes.")
+    codes: PolicyCode | None = Field(default=None, description="User security policy code.")
     auto_gen: bool | None = Field(
-        default=None, description="If True, enable auto-generation mode which relaxes certain policy constraints."
+        default=None,
+        description="Whether to auto-generate policies based on tool metadata and natural language descriptions.",
     )
-    fail_fast: bool | None = Field(default=None, description="Whether to fail fast on policy violations.")
+    fail_fast: bool | None = Field(
+        default=None, description="Whether to fail fast on first hard denial during policy checks."
+    )
     presets: InternalPolicyPresets | None = Field(default=None, description="Internal policy presets configuration.")
 
     @overload
@@ -320,7 +339,7 @@ class SecurityPolicyHeader(BaseModel):
 # X-Config header  (FineGrainedConfigHeader)
 # ---------------------------------------------------------------------------
 
-InternalSqrtToolIdType: TypeAlias = Literal["parse_with_ai", "verify_hypothesis"]
+InternalSqrtToolIdType: TypeAlias = Literal["parse_with_ai", "verify_hypothesis", "set_policy", "complete_turn"]
 DebugInfoLevel: TypeAlias = Literal["minimal", "normal", "extra"]
 PromptFlavor: TypeAlias = str
 PromptVersion: TypeAlias = str
@@ -336,28 +355,79 @@ class FsmOverrides(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     # Shared (single-llm & dual-llm)
-    min_num_tools_for_filtering: int | None = None
-    clear_session_meta: Literal["never", "every_attempt", "every_turn"] | None = None
-    max_n_turns: int | None = None
+    min_num_tools_for_filtering: int | None = Field(
+        default=None,
+        description="Minimum number of registered tools to enable tool-filtering LLM step. Set to None to disable.",
+    )
+    clear_session_meta: Literal["never", "every_attempt", "every_turn"] | None = Field(
+        default=None,
+        description="When to clear session meta information. 'never': never clear; 'every_attempt': clear at the beginning of each PLLM attempt; 'every_turn': clear at the beginning of each turn.",
+    )
+    max_n_turns: int | None = Field(
+        default=None,
+        description="Maximum number of turns allowed in the session. If None, unlimited turns are allowed.",
+    )
 
     # Dual-LLM only
-    allow_history_mismatch: bool | None = None
-    clear_history_every_n_attempts: int | None = None
-    disable_rllm: bool | None = None
-    enable_multistep_planning: bool | None = None
-    enabled_internal_tools: list[InternalSqrtToolIdType] | None = None
-    prune_failed_steps: bool | None = None
-    force_to_cache: list[str] | None = None
-    max_pllm_steps: int | None = None
-    max_pllm_failed_steps: int | None = None
-    max_tool_calls_per_step: int | None = None
-    reduced_grammar_for_rllm_review: bool | None = None
-    retry_on_policy_violation: bool | None = None
-    wrap_tool_result: bool | None = None
-    detect_tool_errors: Literal["none", "regex", "llm"] | None = None
-    detect_tool_error_regex_pattern: str | None = None
-    detect_tool_error_max_result_length: int | None = None
-    strict_tool_result_parsing: bool | None = None
+    allow_history_mismatch: bool | None = Field(
+        default=None,
+        description="Controls behaviour when incoming messages diverge from stored history in stateless mode. When True, the server silently truncates its stored history to the last consistent point. When False, the server rejects the request with an error if a mismatch is detected.",
+    )
+    clear_history_every_n_attempts: int | None = Field(
+        default=None,
+        description="Single-step mode only. Clear all failed step history every N attempts to save tokens.",
+    )
+    disable_rllm: bool | None = Field(default=None, description="Whether to skip the response LLM (RLLM) review step.")
+    enable_multistep_planning: bool | None = Field(
+        default=None,
+        description="When False (single-step), each attempt solves independently. When True (multi-step), each step builds on previous.",
+    )
+    enabled_internal_tools: list[InternalSqrtToolIdType] | None = Field(
+        default=None, description="List of internal tool IDs available to planning LLM."
+    )
+    prune_failed_steps: bool | None = Field(
+        default=None, description="Multi-step mode only. Remove failed steps from history after turn completes."
+    )
+    force_to_cache: list[str] | None = Field(
+        default=None,
+        description="List of tool ID regex patterns to always cache their results regardless of the cache_tool_result setting.",
+    )
+    max_pllm_steps: int | None = Field(default=None, description="Maximum number of steps allowed per turn.")
+    max_pllm_failed_steps: int | None = Field(
+        default=None, description="Maximum number of failed steps allowed per turn."
+    )
+    max_tool_calls_per_step: int | None = Field(
+        default=None,
+        description="Maximum number of tool calls allowed per PLLM attempt. If None, no limit is enforced.",
+    )
+    reduced_grammar_for_rllm_review: bool | None = Field(
+        default=None,
+        description="Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM.",
+    )
+    retry_on_policy_violation: bool | None = Field(
+        default=None,
+        description="When True, allow planning LLM to retry after policy violation.",
+    )
+    wrap_tool_result: bool | None = Field(
+        default=None,
+        description="Whether to wrap tool results in Ok/Err types.",
+    )
+    detect_tool_errors: Literal["none", "regex", "llm"] | None = Field(
+        default=None,
+        description="Whether and how to detect errors in tool results. 'none': do not detect; 'regex': use regex patterns; 'llm': use an LLM to analyze tool results.",
+    )
+    detect_tool_error_regex_pattern: str | None = Field(
+        default=None,
+        description="The regex pattern to use for detecting error messages in tool results when detect_tool_errors is set to 'regex'.",
+    )
+    detect_tool_error_max_result_length: int | None = Field(
+        default=None,
+        description="The maximum length of tool result to consider for error detection. Longer results will be truncated. If None, no limit is enforced.",
+    )
+    strict_tool_result_parsing: bool | None = Field(
+        default=None,
+        description="If True, only parse external tool results as JSON when the tool declares an output_schema. When False, always attempt json.loads on tool results.",
+    )
 
 
 class PllmPromptOverrides(BaseModel):
@@ -365,16 +435,42 @@ class PllmPromptOverrides(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    flavor: PromptFlavor | None = None
-    version: PromptVersion | None = None
-    clarify_ambiguous_queries: bool | None = None
-    context_var_visibility: Literal["none", "basic-notext", "basic-executable", "all-executable", "all"] | None = None
-    query_inline_roles: list[Literal["assistant", "tool", "developer", "system"]] | None = None
-    query_role_name_overrides: dict[MessageRoleType, MessageRoleType] | None = None
-    query_include_tool_calls: bool | None = None
-    query_include_tool_args: bool | None = None
-    query_include_tool_results: bool | None = None
-    debug_info_level: DebugInfoLevel | None = None
+    flavor: PromptFlavor | str | None = Field(
+        default=None, description="Prompt template variant to use (e.g., 'universal')."
+    )
+    version: PromptVersion | str | None = Field(
+        default=None,
+        description="Prompt template version. Combined with flavor to load template.",
+    )
+    clarify_ambiguous_queries: bool | None = Field(
+        default=None, description="Whether planning LLM is allowed to ask for clarification on ambiguous queries."
+    )
+    context_var_visibility: Literal["none", "basic-notext", "basic-executable", "all-executable", "all"] | None = Field(
+        default=None,
+        description="The visibility level of context variables in the PLLM prompts. 'none': do not show any; 'basic-notext': show basic types but not text; 'basic-executable': show basic types and executable memory variables; 'all-executable': show all executable memory variables; 'all': show all.",
+    )
+    query_inline_roles: list[Literal["assistant", "tool", "developer", "system"]] | None = Field(
+        default=None, description="List of roles whose messages will be inlined into the user query."
+    )
+    query_role_name_overrides: dict[MessageRoleType, MessageRoleType] | None = Field(
+        default=None,
+        description="Overrides for message role names in the inlined user query. For example, {'assistant': 'developer'} will change the role of assistant messages to developer.",
+    )
+    query_include_tool_calls: bool | None = Field(
+        default=None,
+        description="Whether to include upstream tool calls in inlined query.",
+    )
+    query_include_tool_args: bool | None = Field(
+        default=None,
+        description="Whether to include arguments of upstream tool calls.",
+    )
+    query_include_tool_results: bool | None = Field(
+        default=None,
+        description="Whether to include results of upstream tool calls.",
+    )
+    debug_info_level: DebugInfoLevel | None = Field(
+        default=None, description="Level of detail for debug/execution information in planning LLM prompt."
+    )
 
 
 class RllmPromptOverrides(BaseModel):
@@ -382,9 +478,16 @@ class RllmPromptOverrides(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    flavor: PromptFlavor | None = None
-    version: PromptVersion | None = None
-    debug_info_level: DebugInfoLevel | None = None
+    flavor: PromptFlavor | str | None = Field(
+        default=None, description="Prompt template variant to use (e.g., 'universal')."
+    )
+    version: PromptVersion | str | None = Field(
+        default=None,
+        description="Prompt template version. Combined with flavor to load template.",
+    )
+    debug_info_level: DebugInfoLevel | None = Field(
+        default=None, description="Level of detail for debug/execution information in RLLM prompt."
+    )
 
 
 class TllmPromptOverrides(BaseModel):
@@ -392,10 +495,19 @@ class TllmPromptOverrides(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    flavor: PromptFlavor | None = None
-    version: PromptVersion | None = None
-    add_tool_description: bool | None = None
-    add_tool_input_schema: bool | None = None
+    flavor: PromptFlavor | str | None = Field(
+        default=None, description="Prompt template variant to use (e.g., 'universal')."
+    )
+    version: PromptVersion | str | None = Field(
+        default=None,
+        description="Prompt template version. Combined with flavor to load template.",
+    )
+    add_tool_description: bool | None = Field(
+        default=None, description="Whether to include tool descriptions in tool-filtering prompt."
+    )
+    add_tool_input_schema: bool | None = Field(
+        default=None, description="Whether to include tool input JSON schemas in tool-filtering prompt."
+    )
 
 
 class LlmPromptOverrides(BaseModel):
@@ -403,8 +515,13 @@ class LlmPromptOverrides(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    flavor: PromptFlavor | None = None
-    version: PromptVersion | None = None
+    flavor: PromptFlavor | str | None = Field(
+        default=None, description="Prompt template variant to use (e.g., 'universal')."
+    )
+    version: PromptVersion | str | None = Field(
+        default=None,
+        description="Prompt template version. Combined with flavor to load template.",
+    )
 
 
 class PromptOverrides(BaseModel):
@@ -412,14 +529,18 @@ class PromptOverrides(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    pllm: PllmPromptOverrides | None = None
-    rllm: RllmPromptOverrides | None = None
-    grllm: LlmPromptOverrides | None = None
-    qllm: LlmPromptOverrides | None = None
-    tllm: TllmPromptOverrides | None = None
-    tagllm: LlmPromptOverrides | None = None
-    policy_llm: LlmPromptOverrides | None = None
-    error_detector_llm: LlmPromptOverrides | None = None
+    pllm: PllmPromptOverrides | None = Field(default=None, description="Configuration for the planning LLM prompt.")
+    rllm: RllmPromptOverrides | None = Field(default=None, description="Configuration for the review LLM prompt.")
+    grllm: LlmPromptOverrides | None = Field(default=None, description="Configuration for the GRLLM prompt.")
+    qllm: LlmPromptOverrides | None = Field(default=None, description="Configuration for the QLLM prompt.")
+    tllm: TllmPromptOverrides | None = Field(
+        default=None, description="Configuration for the tool-formulating LLM prompt."
+    )
+    tagllm: LlmPromptOverrides | None = Field(default=None, description="Configuration for the tag LLM prompt.")
+    policy_llm: LlmPromptOverrides | None = Field(default=None, description="Configuration for the policy LLM prompt.")
+    error_detector_llm: LlmPromptOverrides | None = Field(
+        default=None, description="Configuration for the error detector LLM prompt."
+    )
 
 
 class ResponseFormatOverrides(BaseModel):
@@ -427,10 +548,19 @@ class ResponseFormatOverrides(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    strip_response_content: bool | None = None
-    include_program: bool | None = None
-    include_policy_check_history: bool | None = None
-    include_namespace_snapshot: bool | None = None
+    strip_response_content: bool | None = Field(
+        default=None,
+        description="When True, returns only essential result value as plain text, stripping all metadata.",
+    )
+    include_program: bool | None = Field(
+        default=None, description="Whether to include the generated program in the response."
+    )
+    include_policy_check_history: bool | None = Field(
+        default=None, description="Whether to include policy check results even when there are no violations."
+    )
+    include_namespace_snapshot: bool | None = Field(
+        default=None, description="Whether to include snapshot of all variables after program execution."
+    )
 
 
 class FineGrainedConfigHeader(BaseModel):
@@ -451,9 +581,11 @@ class FineGrainedConfigHeader(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    fsm: FsmOverrides | None = None
-    prompt: PromptOverrides | None = None
-    response_format: ResponseFormatOverrides | None = None
+    fsm: FsmOverrides | None = Field(default=None, description="FSM configuration overrides.")
+    prompt: PromptOverrides | None = Field(default=None, description="Prompt configuration overrides for all LLMs.")
+    response_format: ResponseFormatOverrides | None = Field(
+        default=None, description="Response format configuration for dual-LLM sessions."
+    )
 
     @overload
     def dump_for_headers(self, mode: Literal["json_str"] = ...) -> str: ...
