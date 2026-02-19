@@ -3493,7 +3493,7 @@
 </tr>
 </tbody>
 </table>
-<p>When enabled, security policies are auto-generated based on the user query. The <code>codes</code> field can contain natural language instructions when this is enabled.</p>
+<p>Whether to auto-generate policies based on tool metadata and natural language descriptions.</p>
 <h3 id="fail_fast"><code>fail_fast</code></h3>
 <table>
 <thead>
@@ -3511,7 +3511,7 @@
 </tr>
 </tbody>
 </table>
-<p>Stop execution on the first policy violation.</p>
+<p>Whether to fail fast on first hard denial during policy checks.</p>
 <h3 id="presets"><code>presets</code></h3>
 <table>
 <thead>
@@ -3565,7 +3565,7 @@
 </tr>
 </tbody>
 </table>
-<p>The enforcement level for the default allow/deny policy. Valid values: <code>"hard"</code>, <code>"soft"</code>.</p>
+<p>Enforcement level for default allow policy. Valid values: <code>"hard"</code>, <code>"soft"</code>.</p>
 <h4 id="presetsenable_non_executable_memory"><code>presets.enable_non_executable_memory</code></h4>
 <table>
 <thead>
@@ -3583,7 +3583,7 @@
 </tr>
 </tbody>
 </table>
-<p>Inject non-executable tag to tool result tags by default.</p>
+<p>Whether to enable non-executable memory internal policy (attach non-executable tag to all tool results by default).</p>
 <h4 id="presetsenable_llm_blocked_tag"><code>presets.enable_llm_blocked_tag</code></h4>
 <table>
 <thead>
@@ -3601,7 +3601,7 @@
 </tr>
 </tbody>
 </table>
-<p>Whether to enable hard deny when <code>__llm_blocked</code> tag is in args of parse_with_ai.</p>
+<p>Whether to enable LLM blocked tag internal policy (denies tool calls to parse_with_ai if any argument has LLM_BLOCKED_TAG).</p>
 <h4 id="presetsllm_blocked_tag_enforcement_level"><code>presets.llm_blocked_tag_enforcement_level</code></h4>
 <table>
 <thead>
@@ -3619,7 +3619,7 @@
 </tr>
 </tbody>
 </table>
-<p>The enforcement level for the LLM blocked tag policy. Valid values: <code>"hard"</code>, <code>"soft"</code>.</p>
+<p>Enforcement level for LLM blocked tag internal policy. Valid values: <code>"hard"</code>, <code>"soft"</code>.</p>
 <h4 id="presetsbranching_meta_policy"><code>presets.branching_meta_policy</code></h4>
 <table>
 <thead>
@@ -3637,7 +3637,7 @@
 </tr>
 </tbody>
 </table>
-<p>Metadata that are allowed or forbidden in branching.</p>
+<p>Control flow meta policy for branching tools.</p>
 <h5 id="branching_meta_policymode"><code>branching_meta_policy.mode</code></h5>
 <table>
 <thead>
@@ -3677,7 +3677,7 @@
 </tr>
 </tbody>
 </table>
-<p>List of producer names to allow (in <code>allow</code> mode) or deny (in <code>deny</code> mode) for control flow relaxer.</p>
+<p>Set of prohibited producers for control flow relaxer in custom mode.</p>
 <h5 id="branching_meta_policytags"><code>branching_meta_policy.tags</code></h5>
 <table>
 <thead>
@@ -3695,7 +3695,7 @@
 </tr>
 </tbody>
 </table>
-<p>List of tags to allow (in <code>allow</code> mode) or deny (in <code>deny</code> mode) for control flow relaxer.</p>
+<p>Set of prohibited tags for control flow relaxer in custom mode.</p>
 <h5 id="branching_meta_policyconsumers"><code>branching_meta_policy.consumers</code></h5>
 <table>
 <thead>
@@ -3713,7 +3713,7 @@
 </tr>
 </tbody>
 </table>
-<p>List of consumer names to allow (in <code>allow</code> mode) or deny (in <code>deny</code> mode) for control flow relaxer.</p>
+<p>Set of prohibited consumers for control flow relaxer in custom mode.</p>
 
 
 

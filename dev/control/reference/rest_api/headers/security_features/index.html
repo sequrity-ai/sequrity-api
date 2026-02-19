@@ -3156,7 +3156,7 @@
 </tr>
 </tbody>
 </table>
-<p>An array of content classifier configurations. Each classifier has the following fields:</p>
+<p>LLM-based content classifiers that analyze tool call arguments (pre-execution) and results (post-execution) to detect sensitive content (e.g., PII, toxicity). Each classifier has the following fields:</p>
 <table>
 <thead>
 <tr>
@@ -3180,14 +3180,14 @@
 <td><code>float</code></td>
 <td>No</td>
 <td><code>0.5</code></td>
-<td>Detection sensitivity threshold (0.0 - 1.0)</td>
+<td>Threshold for the tagger (0.0 - 1.0)</td>
 </tr>
 <tr>
 <td><code>mode</code></td>
 <td><code>string</code></td>
 <td>No</td>
 <td><code>null</code></td>
-<td>Preset mode that overrides threshold: <code>"normal"</code> or <code>"strict"</code></td>
+<td>Optional mode that overrides threshold (e.g., <code>"high sensitivity"</code>, <code>"strict"</code>, <code>"low sensitivity"</code>, <code>"normal"</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -3215,7 +3215,7 @@
 </tr>
 </tbody>
 </table>
-<p>An array of content blocker configurations. Each blocker has the following fields:</p>
+<p>Content blockers that redact or mask sensitive content in tool call arguments (pre-execution) and results (post-execution). Each blocker has the following fields:</p>
 <table>
 <thead>
 <tr>
@@ -3232,7 +3232,7 @@
 <td><code>string</code></td>
 <td>Yes</td>
 <td>-</td>
-<td>Blocker identifier (see below)</td>
+<td>Blocker identifier: <code>"url_blocker"</code> or <code>"file_blocker"</code> (see below)</td>
 </tr>
 </tbody>
 </table>
