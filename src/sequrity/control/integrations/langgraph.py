@@ -65,7 +65,7 @@ class LangGraphChatSequrityAI(ChatOpenAI):
         features: Security features configuration (LLM mode, taggers, constraints)
         security_policy: Security policy configuration (SQRT/Cedar policies)
         fine_grained_config: Fine-grained session configuration
-        service_provider: LLM service provider (openai, openrouter, anthropic)
+        service_provider: LLM service provider (``LlmServiceProvider`` enum or string literal)
         llm_api_key: Optional API key for the LLM provider
         base_url: Sequrity base URL (default: https://api.sequrity.ai)
         endpoint_type: Endpoint type (chat, code, lang-graph). Defaults to chat.
@@ -359,7 +359,7 @@ def create_sequrity_langgraph_client(
         features: Security features configuration (LLM mode, taggers, etc.)
         security_policy: Security policy configuration (SQRT/Cedar policies)
         fine_grained_config: Fine-grained session configuration
-        service_provider: LLM service provider (openai, openrouter, anthropic)
+        service_provider: LLM service provider (``LlmServiceProvider`` enum or string literal)
         llm_api_key: Optional API key for the LLM provider
         base_url: Sequrity base URL (default: https://api.sequrity.ai)
         endpoint_type: Endpoint type (chat, code, lang-graph). Defaults to chat.
