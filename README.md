@@ -21,7 +21,7 @@ openrouter_key = "<your-openrouter-key>"
 
 client = SequrityClient(api_key=sequrity_key)
 
-response = client.chat.create(
+response = client.control.chat.create(
     messages=[{"role": "user", "content": "What is the largest prime number below 100?"}],
     model="openai/gpt-5-mini", # model name on OpenRouter
     llm_api_key=openrouter_key,
@@ -29,7 +29,7 @@ response = client.chat.create(
 )
 
 # Print the response
-print(response.choices[0].message.content)
+print(response)
 ```
 
 ## Requirements
