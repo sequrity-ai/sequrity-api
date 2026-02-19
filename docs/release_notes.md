@@ -11,7 +11,7 @@ hide:
 
 | Product  | Version |
 | ---------|---------|
-| Control API | `101ef0da9a26bf9005bb2d06071560250f0449da` |
+| Control API | `e8a5b7dd08b12560ff5a5d068e1b69aedafb710b` |
 
 
 ## v0.3
