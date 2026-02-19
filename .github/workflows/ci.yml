@@ -26,7 +26,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --group dev
+        run: uv sync --group dev --extra openai --extra langchain
 
       - name: Run ruff format check
         run: uv run ruff format --check
@@ -54,7 +54,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --group dev --group langgraph --group agents
+        run: uv sync --group dev --group langgraph --group agents --extra openai --extra langchain
 
       - name: Run tests
         run: uv run pytest
@@ -79,7 +79,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --all-groups
+        run: uv sync --all-groups --all-extras
 
       - name: Run examples
         run: bash scripts/run_examples.sh
