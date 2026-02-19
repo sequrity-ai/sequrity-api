@@ -23,7 +23,7 @@ class TextBlockParam(BaseModel):
     )
     citations: list[dict[str, Any]] | None = Field(default=None, description="Citations supporting the text block.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class Base64ImageSourceParam(BaseModel):
@@ -35,7 +35,7 @@ class Base64ImageSourceParam(BaseModel):
     )
     data: str = Field(..., description="The base64-encoded image data.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class URLImageSourceParam(BaseModel):
@@ -44,7 +44,7 @@ class URLImageSourceParam(BaseModel):
     type: Literal["url"] = Field(default="url", description="The type of image source.")
     url: str = Field(..., description="The URL of the image.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 ImageSource = Annotated[
@@ -62,7 +62,7 @@ class ImageBlockParam(BaseModel):
         default=None, description="Create a cache control breakpoint at this content block."
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class Base64DocumentSourceParam(BaseModel):
@@ -72,7 +72,7 @@ class Base64DocumentSourceParam(BaseModel):
     media_type: Literal["application/pdf"] = Field(..., description="The media type of the document.")
     data: str = Field(..., description="The base64-encoded document data.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class DocumentBlockParam(BaseModel):
@@ -84,7 +84,7 @@ class DocumentBlockParam(BaseModel):
         default=None, description="Create a cache control breakpoint at this content block."
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ToolUseBlockParam(BaseModel):
@@ -98,7 +98,7 @@ class ToolUseBlockParam(BaseModel):
         default=None, description="Create a cache control breakpoint at this content block."
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ToolResultBlockParam(BaseModel):
@@ -117,7 +117,7 @@ class ToolResultBlockParam(BaseModel):
         default=None, description="Create a cache control breakpoint at this content block."
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ThinkingBlockParam(BaseModel):
@@ -129,7 +129,7 @@ class ThinkingBlockParam(BaseModel):
         default=None, description="Create a cache control breakpoint at this content block."
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 MessageContentBlockParam = Annotated[
@@ -159,7 +159,7 @@ class MessageParam(BaseModel):
         description="The contents of the message. Can be a string or an array of content blocks.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 # =============================================================================
@@ -199,7 +199,7 @@ class ToolParam(BaseModel):
     )
     type: Literal["custom"] | None = Field(default=None, description="The type of the tool.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 ToolUnionParam = ToolParam | dict[str, Any]
@@ -221,7 +221,7 @@ class ToolChoiceAutoParam(BaseModel):
         description="Whether to disable parallel tool use. If true, the model will output at most one tool use.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ToolChoiceAnyParam(BaseModel):
@@ -233,7 +233,7 @@ class ToolChoiceAnyParam(BaseModel):
         description="Whether to disable parallel tool use. If true, the model will output exactly one tool use.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ToolChoiceToolParam(BaseModel):
@@ -246,7 +246,7 @@ class ToolChoiceToolParam(BaseModel):
         description="Whether to disable parallel tool use. If true, the model will output exactly one tool use.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ToolChoiceNoneParam(BaseModel):
@@ -254,7 +254,7 @@ class ToolChoiceNoneParam(BaseModel):
 
     type: Literal["none"] = Field(default="none", description="The model will not use any tools.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 ToolChoiceParam = Annotated[
@@ -276,7 +276,7 @@ class MetadataParam(BaseModel):
         description="An external identifier for the user associated with the request. Should be a uuid, hash, or other opaque identifier.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 # =============================================================================
@@ -300,7 +300,7 @@ class OutputConfigParam(BaseModel):
         default=None, description="A schema to specify Claude's output format in responses."
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 # =============================================================================
@@ -314,7 +314,7 @@ class ThinkingConfigEnabledParam(BaseModel):
     type: Literal["enabled"] = Field(default="enabled", description="Thinking is enabled.")
     budget_tokens: int = Field(..., description="The maximum number of tokens to use for thinking. Minimum is 1024.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ThinkingConfigDisabledParam(BaseModel):
@@ -322,7 +322,7 @@ class ThinkingConfigDisabledParam(BaseModel):
 
     type: Literal["disabled"] = Field(default="disabled", description="Thinking is disabled.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 ThinkingConfigParam = Annotated[

@@ -31,7 +31,7 @@ class TextBlock(BaseModel):
         description="Citations supporting the text block.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ThinkingBlock(BaseModel):
@@ -40,7 +40,7 @@ class ThinkingBlock(BaseModel):
     type: Literal["thinking"] = Field(..., description="The type of the content block.")
     text: str = Field(..., description="The thinking content.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class RedactedThinkingBlock(BaseModel):
@@ -59,7 +59,7 @@ class ToolUseBlock(BaseModel):
     name: str = Field(..., description="The name of the tool being used.")
     input: dict[str, Any] = Field(..., description="An object containing the input being passed to the tool.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ServerToolUseBlock(BaseModel):
@@ -120,7 +120,7 @@ class Usage(BaseModel):
         default=None, description="If the request used the priority, standard, or batch tier."
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 # =============================================================================

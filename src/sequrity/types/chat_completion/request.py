@@ -13,7 +13,7 @@ class ContentPartText(BaseModel):
     type: Literal["text"] = Field(description="The type of the content part.")
     text: str = Field(description="The text content.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ImageUrl(BaseModel):
@@ -25,7 +25,7 @@ class ImageUrl(BaseModel):
         description="Specifies the detail level of the image. 'low', 'high', or 'auto' for automatic selection.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ContentPartImage(BaseModel):
@@ -34,7 +34,7 @@ class ContentPartImage(BaseModel):
     type: Literal["image_url"] = Field(description="The type of the content part.")
     image_url: ImageUrl = Field(description="The image URL details.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class InputAudioData(BaseModel):
@@ -43,7 +43,7 @@ class InputAudioData(BaseModel):
     data: str = Field(description="Base64 encoded audio data.")
     format: Literal["wav", "mp3"] = Field(description="The format of the audio data.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ContentPartInputAudio(BaseModel):
@@ -52,7 +52,7 @@ class ContentPartInputAudio(BaseModel):
     type: Literal["input_audio"] = Field(description="The type of the content part.")
     input_audio: InputAudioData = Field(description="The input audio data.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class FileData(BaseModel):
@@ -68,7 +68,7 @@ class FileData(BaseModel):
         description="The name of the file, used when passing the file to the model as a string.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ContentPartFile(BaseModel):
@@ -77,7 +77,7 @@ class ContentPartFile(BaseModel):
     type: Literal["file"] = Field(description="The type of the content part. Always 'file'.")
     file: FileData = Field(description="The file data.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 ContentPart = ContentPartText | ContentPartImage | ContentPartInputAudio | ContentPartFile
@@ -98,7 +98,7 @@ class DeveloperMessage(BaseModel):
         description="An optional name for the participant. Provides the model information to differentiate between participants of the same role.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class SystemMessage(BaseModel):
@@ -111,7 +111,7 @@ class SystemMessage(BaseModel):
         description="An optional name for the participant. Provides the model information to differentiate between participants of the same role.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class UserMessage(BaseModel):
@@ -124,7 +124,7 @@ class UserMessage(BaseModel):
         description="An optional name for the participant. Provides the model information to differentiate between participants of the same role.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class FunctionCallResult(BaseModel):
@@ -135,7 +135,7 @@ class FunctionCallResult(BaseModel):
     )
     name: str = Field(description="The name of the function to call.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ToolCallFunction(BaseModel):
@@ -146,7 +146,7 @@ class ToolCallFunction(BaseModel):
     )
     name: str = Field(description="The name of the function to call.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ToolCall(BaseModel):
@@ -156,7 +156,7 @@ class ToolCall(BaseModel):
     type: Literal["function"] = Field(description="The type of the tool. Currently, only 'function' is supported.")
     function: ToolCallFunction = Field(description="The function that the model called.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class AssistantMessageAudio(BaseModel):
@@ -164,7 +164,7 @@ class AssistantMessageAudio(BaseModel):
 
     id: str = Field(description="Unique identifier for a previous audio response from the model.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ContentPartRefusal(BaseModel):
@@ -173,7 +173,7 @@ class ContentPartRefusal(BaseModel):
     type: Literal["refusal"] = Field(description="The type of the content part.")
     refusal: str = Field(description="The refusal message.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class AssistantMessage(BaseModel):
@@ -212,7 +212,7 @@ class ToolMessage(BaseModel):
     content: str | list[ContentPartText] = Field(description="The contents of the tool message.")
     tool_call_id: str = Field(description="Tool call that this message is responding to.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class FunctionMessage(BaseModel):
@@ -222,7 +222,7 @@ class FunctionMessage(BaseModel):
     content: str | None = Field(description="The contents of the function message.")
     name: str = Field(description="The name of the function.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 Message = Annotated[
@@ -255,7 +255,7 @@ class FunctionDefinition(BaseModel):
         description="Whether to enable strict schema adherence when generating the function call.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class FunctionTool(BaseModel):
@@ -264,7 +264,7 @@ class FunctionTool(BaseModel):
     type: Literal["function"] = Field(description="The type of the tool. Currently, only 'function' is supported.")
     function: FunctionDefinition = Field(description="The function definition.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 Tool = FunctionTool
@@ -280,7 +280,7 @@ class ResponseFormatText(BaseModel):
 
     type: Literal["text"] = Field(description="The type of response format being defined. Always 'text'.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class ResponseFormatJsonObject(BaseModel):
@@ -288,7 +288,7 @@ class ResponseFormatJsonObject(BaseModel):
 
     type: Literal["json_object"] = Field(description="The type of response format being defined. Always 'json_object'.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 class JsonSchema(BaseModel):
@@ -320,7 +320,7 @@ class ResponseFormatJsonSchema(BaseModel):
     type: Literal["json_schema"] = Field(description="The type of response format being defined. Always 'json_schema'.")
     json_schema: JsonSchema = Field(description="Structured Outputs configuration options, including a JSON Schema.")
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
 
 ResponseFormat = ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema
@@ -374,4 +374,4 @@ class ChatCompletionRequest(BaseModel):
         description="An alternative to sampling with temperature, called nucleus sampling. Use 0.1 for top 10% probability mass.",
     )
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
