@@ -16,7 +16,7 @@ from ._exceptions import (
     SequrityError,
     SequrityValidationError,
 )
-from .types.enums import LlmServiceProvider, RestApiType
+from .types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
 
 # Universal provider request/response types
 from .types.chat_completion.request import ChatCompletionRequest
@@ -41,6 +41,7 @@ __all__ = [
     # Enums (universal)
     "RestApiType",
     "LlmServiceProvider",
+    "LlmServiceProviderStr",
     # Universal request/response types
     "ChatCompletionRequest",
     "ChatCompletionResponse",

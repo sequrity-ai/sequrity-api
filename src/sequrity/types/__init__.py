@@ -8,9 +8,10 @@ For Control-specific types (headers, dual-LLM response, etc.), import from
     from sequrity.control import FeaturesHeader, SecurityPolicyHeader
 """
 
-from .enums import LlmServiceProvider, RestApiType
+from .enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
 
 __all__ = [
     "RestApiType",
     "LlmServiceProvider",
+    "LlmServiceProviderStr",
 ]

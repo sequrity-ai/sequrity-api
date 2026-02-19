@@ -8,7 +8,7 @@ import httpx
 
 from .._exceptions import SequrityAPIError, SequrityConnectionError
 from .._sentinel import NOT_GIVEN, _NotGiven
-from ..types.enums import RestApiType
+from ..types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
 from ._config import ControlConfig
 from ._constants import build_control_url, build_policy_gen_url, build_sequrity_headers
 
@@ -45,7 +45,7 @@ class ControlSyncTransport:
         self,
         rest_api_type: RestApiType,
         *,
-        provider: str | None | _NotGiven = NOT_GIVEN,
+        provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
     ) -> str:
         """Build a standard ``/control/...`` URL, merging with config defaults."""
@@ -136,7 +136,7 @@ class ControlAsyncTransport:
         self,
         rest_api_type: RestApiType,
         *,
-        provider: str | None | _NotGiven = NOT_GIVEN,
+        provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
     ) -> str:
         p = _resolve(provider, self._config.provider)

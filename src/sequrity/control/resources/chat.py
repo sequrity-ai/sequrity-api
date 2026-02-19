@@ -5,7 +5,7 @@ from __future__ import annotations
 from ..._sentinel import NOT_GIVEN, _NotGiven
 from ...types.chat_completion.request import ChatCompletionRequest, Message, ReasoningEffort, ResponseFormat, Tool
 from ...types.chat_completion.response import ChatCompletionResponse
-from ...types.enums import RestApiType
+from ...types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
 from .._transport import ControlAsyncTransport, ControlSyncTransport
 from ..types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 
@@ -30,7 +30,7 @@ class ChatResource:
         reasoning_effort: ReasoningEffort | None = None,
         response_format: ResponseFormat | None = None,
         # Sequrity overrides (NOT_GIVEN -> client defaults)
-        provider: str | None | _NotGiven = NOT_GIVEN,
+        provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
         features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
@@ -114,7 +114,7 @@ class AsyncChatResource:
         seed: int | None = None,
         reasoning_effort: ReasoningEffort | None = None,
         response_format: ResponseFormat | None = None,
-        provider: str | None | _NotGiven = NOT_GIVEN,
+        provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
         features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,

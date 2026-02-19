@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Literal
 
 from ..._sentinel import NOT_GIVEN, _NotGiven
-from ...types.enums import RestApiType
+from ...types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
 from ...types.messages.request import (
     AnthropicMessageRequest,
     MessageParam,
@@ -48,7 +48,7 @@ class MessagesResource:
         service_tier: Literal["auto", "standard_only"] | None = None,
         timeout: float | None = None,
         # Sequrity overrides (NOT_GIVEN -> client defaults)
-        provider: str | None | _NotGiven = NOT_GIVEN,
+        provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
         features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
@@ -153,7 +153,7 @@ class AsyncMessagesResource:
         metadata: MetadataParam | dict | None = None,
         service_tier: Literal["auto", "standard_only"] | None = None,
         timeout: float | None = None,
-        provider: str | None | _NotGiven = NOT_GIVEN,
+        provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
         features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,

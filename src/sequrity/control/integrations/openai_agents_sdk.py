@@ -42,6 +42,7 @@ from openai.types.responses.response_prompt_param import ResponsePromptParam
 
 from .._constants import SEQURITY_BASE_URL, build_control_base_url, build_sequrity_headers
 from ..types.enums import EndpointType
+from ...types.enums import LlmServiceProvider, LlmServiceProviderStr
 from ..types.headers import (
     FeaturesHeader,
     FineGrainedConfigHeader,
@@ -94,7 +95,7 @@ class SequrityAsyncOpenAI(AsyncOpenAI):
         features: FeaturesHeader | None = None,
         security_policy: SecurityPolicyHeader | None = None,
         fine_grained_config: FineGrainedConfigHeader | None = None,
-        service_provider: str = "openrouter",
+        service_provider: LlmServiceProvider | LlmServiceProviderStr = LlmServiceProvider.OPENROUTER,
         llm_api_key: str | None = None,
         base_url: str | None = None,
         endpoint_type: EndpointType | str = EndpointType.CHAT,
@@ -373,7 +374,7 @@ def create_sequrity_openai_agents_sdk_client(
     features: FeaturesHeader | None = None,
     security_policy: SecurityPolicyHeader | None = None,
     fine_grained_config: FineGrainedConfigHeader | None = None,
-    service_provider: str = "openrouter",
+    service_provider: LlmServiceProvider | LlmServiceProviderStr = LlmServiceProvider.OPENROUTER,
     llm_api_key: str | None = None,
     base_url: str | None = None,
     endpoint_type: EndpointType | str = EndpointType.CHAT,

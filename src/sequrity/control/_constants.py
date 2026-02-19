@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ..types.enums import RestApiType
+from ..types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
 
 SEQURITY_BASE_URL = "https://api.sequrity.ai"
 SEQURITY_API_VERSION = "v1"
@@ -44,7 +44,7 @@ def build_policy_gen_url(
 def build_control_base_url(
     base_url: str,
     endpoint_type: str,
-    provider: str | None = None,
+    provider: LlmServiceProvider | LlmServiceProviderStr | None = None,
     version: str = SEQURITY_API_VERSION,
 ) -> str:
     """Build URL up to version segment.
@@ -64,7 +64,7 @@ def build_control_url(
     base_url: str,
     endpoint_type: str,
     rest_api_type: RestApiType,
-    provider: str | None = None,
+    provider: LlmServiceProvider | LlmServiceProviderStr | None = None,
     version: str = SEQURITY_API_VERSION,
 ) -> str:
     """Build complete endpoint URL.

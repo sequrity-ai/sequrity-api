@@ -32,6 +32,7 @@ curl -X POST $REST_API_URL \
     "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
   }'
 # --8<-- [end:first_message]
+echo
 
 # =============================================================================
 # Single-LLM
@@ -52,6 +53,7 @@ curl -X POST $REST_API_URL \
     "messages": [{"role": "user", "content": "What is the largest prime number below 100?"}]
   }'
 # --8<-- [end:single_llm]
+echo
 
 # =============================================================================
 # Dual-LLM

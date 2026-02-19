@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Callable
 
 from ...._sentinel import NOT_GIVEN, _NotGiven
+from ...._types.enums import LlmServiceProvider, LlmServiceProviderStr
 from ..._transport import ControlSyncTransport
 from ...types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
 from ...types.dual_llm_response import MetaData
@@ -35,7 +36,7 @@ class LangGraphResource:
         features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
-        provider: str | None | _NotGiven = NOT_GIVEN,
+        provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
     ) -> dict:
         """Compile and execute a LangGraph StateGraph with Sequrity security.
 

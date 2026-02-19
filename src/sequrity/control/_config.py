@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 from .types.enums import EndpointType
+from ..types.enums import LlmServiceProvider, LlmServiceProviderStr
 
 if TYPE_CHECKING:
     from .types.headers import FeaturesHeader, FineGrainedConfigHeader, SecurityPolicyHeader
@@ -23,7 +24,7 @@ class ControlConfig:
     """
 
     llm_api_key: str | None = None
-    provider: str | None = None
+    provider: LlmServiceProvider | LlmServiceProviderStr | None = None
     endpoint_type: str = field(default=EndpointType.CHAT)
     features: FeaturesHeader | None = None
     security_policy: SecurityPolicyHeader | None = None

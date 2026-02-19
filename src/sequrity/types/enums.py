@@ -1,6 +1,7 @@
 """Enumerations for Sequrity API types."""
 
 from enum import StrEnum
+from typing import Literal
 
 
 class RestApiType(StrEnum):
@@ -24,3 +25,6 @@ class LlmServiceProvider(StrEnum):
     OPENROUTER = "openrouter"
     ANTHROPIC = "anthropic"
     SEQURITY_AZURE = "sequrity_azure"
+
+
+LlmServiceProviderStr = Literal["openai", "openrouter", "anthropic", "sequrity_azure"]
