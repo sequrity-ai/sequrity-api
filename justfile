@@ -5,37 +5,7 @@ local-test target=test_target:
 
 # Run all example scripts to test if they work
 test-examples:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo "🧪 Testing all examples..."
-    echo ""
-
-    echo "📚 Getting Started Examples"
-    uv run --group examples --env-file .env.local python examples/control/getting_started/first_message/sequrity_client.py
-    uv run --group examples --env-file .env.local python examples/control/getting_started/tool_use_dual_llm/rest_api.py
-    uv run --group examples --env-file .env.local python examples/control/getting_started/tool_use_dual_llm/sequrity_client.py
-    uv run --group examples --group langgraph --env-file .env.local python examples/control/getting_started/langgraph/sequrity_client.py
-
-    echo ""
-    echo "🔌 Integration Examples"
-    uv run --group examples --group langgraph --env-file .env.local python examples/control/integrations/langgraph_basic.py
-    uv run --group examples --group agents --env-file .env.local python examples/control/integrations/openai_agents_sdk_basic.py
-
-    echo ""
-    echo "🔒 Advanced SQRT Examples"
-    uv run --group examples --env-file .env.local python examples/control/advanced_sqrt_examples/rest_api.py
-    uv run --group examples --env-file .env.local python examples/control/advanced_sqrt_examples/sequrity_client.py
-
-    echo ""
-    echo "📖 SQRT Learning Examples"
-    uv run --env-file .env.local python examples/control/learn_sqrt/basic_types.py
-    uv run --env-file .env.local python examples/control/learn_sqrt/metadata.py
-    uv run --env-file .env.local python examples/control/learn_sqrt/predicates.py
-    uv run --env-file .env.local python examples/control/learn_sqrt/set_operations.py
-    uv run --env-file .env.local python examples/control/learn_sqrt/tool_policies.py
-
-    echo ""
-    echo "✅ All examples completed successfully!"
+    bash scripts/run_examples.sh --env-file .env.local
 
 serve-docs: sync-docs
     uv run mike serve --dev-addr=localhost:8001
