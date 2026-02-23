@@ -4,6 +4,8 @@ This module converts LangGraph StateGraph definitions into executable
 Python code and maps nodes to tool definitions.
 """
 
+from __future__ import annotations
+
 import json
 from typing import Callable
 
@@ -29,7 +31,7 @@ class LangGraphExecutor:
 
     def __init__(
         self,
-        graph: "StateGraph",
+        graph: StateGraph,
         node_functions: dict[str, Callable] | None = None,
         internal_node_mapping: dict[str, str] | None = None,
     ):
@@ -65,7 +67,7 @@ class LangGraphExecutor:
         # Generate code once at initialization
         self.generated_code = self._graph_to_code(graph, self.node_functions)
 
-    def _extract_function_map(self, graph: "StateGraph") -> dict[str, Callable]:
+    def _extract_function_map(self, graph: StateGraph) -> dict[str, Callable]:
         """Extract node functions from LangGraph StateGraph."""
         function_map = {}
 
@@ -160,7 +162,7 @@ class LangGraphExecutor:
 
         return result
 
-    def _graph_to_code(self, graph: "StateGraph", function_map: dict[str, Callable]) -> str:
+    def _graph_to_code(self, graph: StateGraph, function_map: dict[str, Callable]) -> str:
         """Convert a LangGraph StateGraph into executable Python code."""
         nodes = graph.nodes
         edges = list(graph.edges)

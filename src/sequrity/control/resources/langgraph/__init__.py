@@ -22,7 +22,7 @@ class LangGraphResource:
 
     def run(
         self,
-        graph: "StateGraph",
+        graph: StateGraph,
         initial_state: dict,
         model: str,
         *,
