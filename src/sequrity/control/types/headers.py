@@ -428,6 +428,12 @@ class FsmOverrides(BaseModel):
         default=None,
         description="If True, only parse external tool results as JSON when the tool declares an output_schema. When False, always attempt json.loads on tool results.",
     )
+    tool_result_transform: Literal["none", "codex"] | None = Field(
+        default=None,
+        description="Transform applied to tool result values before error detection. "
+        "'none': no transform; 'codex': strip Codex CLI metadata prefix and "
+        "extract exit code + output.",
+    )
 
 
 class PllmPromptOverrides(BaseModel):
