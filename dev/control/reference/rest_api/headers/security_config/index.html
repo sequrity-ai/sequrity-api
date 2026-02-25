@@ -1978,10 +1978,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fsmallow_history_mismatch" class="md-nav__link">
+  <a href="#fsmhistory_mismatch_policy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fsm.allow_history_mismatch
+        fsm.history_mismatch_policy
       
     </span>
   </a>
@@ -3366,10 +3366,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fsmallow_history_mismatch" class="md-nav__link">
+  <a href="#fsmhistory_mismatch_policy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        fsm.allow_history_mismatch
+        fsm.history_mismatch_policy
       
     </span>
   </a>
@@ -3815,7 +3815,7 @@
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;min_num_tools_for_filtering&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;clear_session_meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;never&quot;</span><span class="p">,</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">&quot;max_n_turns&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">&quot;allow_history_mismatch&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">&quot;history_mismatch_policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">&quot;clear_history_every_n_attempts&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">&quot;disable_rllm&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">&quot;enable_multistep_planning&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
@@ -3941,7 +3941,7 @@
 </table>
 <p>Maximum number of turns allowed in the session. If <code>null</code>, unlimited turns are allowed. When not set, the server applies a default based on the endpoint type.</p>
 <h3 id="dual-llm-only-fields">Dual-LLM Only Fields</h3>
-<h4 id="fsmallow_history_mismatch"><code>fsm.allow_history_mismatch</code></h4>
+<h4 id="fsmhistory_mismatch_policy"><code>fsm.history_mismatch_policy</code></h4>
 <table>
 <thead>
 <tr>
@@ -3952,13 +3952,18 @@
 </thead>
 <tbody>
 <tr>
-<td><code>boolean</code> or <code>null</code></td>
+<td><code>string</code> or <code>null</code></td>
 <td>No</td>
 <td><code>null</code></td>
 </tr>
 </tbody>
 </table>
-<p>Controls behaviour when incoming messages diverge from stored history in stateless mode. When <code>true</code>, the server silently truncates its stored history to the last consistent point and accepts the caller's version. When <code>false</code>, the server rejects the request with an error if a mismatch is detected.</p>
+<p>Controls behaviour when incoming messages diverge from stored history in stateless mode:</p>
+<ul>
+<li><code>"reject"</code>: Reject the request with an error if a mismatch is detected</li>
+<li><code>"restart_turn"</code>: Truncate stored history to the last consistent point and restart the turn</li>
+<li><code>"continue"</code>: Silently accept the caller's version and continue</li>
+</ul>
 <h4 id="fsmclear_history_every_n_attempts"><code>fsm.clear_history_every_n_attempts</code></h4>
 <table>
 <thead>
