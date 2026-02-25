@@ -479,6 +479,10 @@ class PllmPromptOverrides(BaseModel):
     debug_info_level: DebugInfoLevel | None = Field(
         default=None, description="Level of detail for debug/execution information in planning LLM prompt."
     )
+    custom_instructions: str | None = Field(
+        default=None,
+        description="Custom instructions appended to the PLLM mission prompt. Used by prompt optimization.",
+    )
 
 
 class RllmPromptOverrides(BaseModel):
@@ -646,6 +650,7 @@ class FineGrainedConfigHeader(BaseModel):
         retry_on_policy_violation: bool | None = None,
         # Prompt
         pllm_debug_info_level: DebugInfoLevel | None = None,
+        pllm_custom_instructions: str | None = None,
         # Response format
         strip_response_content: bool | None = None,
         include_program: bool | None = None,
@@ -671,9 +676,12 @@ class FineGrainedConfigHeader(BaseModel):
         )
 
         prompt = None
-        if pllm_debug_info_level is not None:
+        if pllm_debug_info_level is not None or pllm_custom_instructions is not None:
             prompt = PromptOverrides(
-                pllm=PllmPromptOverrides(debug_info_level=pllm_debug_info_level),
+                pllm=PllmPromptOverrides(
+                    debug_info_level=pllm_debug_info_level,
+                    custom_instructions=pllm_custom_instructions,
+                ),
             )
 
         response_fmt = None

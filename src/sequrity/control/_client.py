@@ -8,6 +8,7 @@ import httpx
 
 from ._config import ControlConfig
 from ._transport import ControlAsyncTransport, ControlSyncTransport
+from .resources.annotations import AnnotationsResource, AsyncAnnotationsResource
 from .resources.chat import AsyncChatResource, ChatResource
 from .resources.langgraph import LangGraphResource
 from .resources.messages import AsyncMessagesResource, MessagesResource
@@ -59,6 +60,9 @@ class ControlClient:
 
         self.langgraph = LangGraphResource(self._transport)
         """LangGraph execution."""
+
+        self.annotations = AnnotationsResource(self._transport)
+        """Session-log annotations."""
 
     # -- Session management --------------------------------------------------
 
@@ -157,6 +161,7 @@ class AsyncControlClient:
         self.chat = AsyncChatResource(self._transport)
         self.messages = AsyncMessagesResource(self._transport)
         self.policy = AsyncPolicyResource(self._transport)
+        self.annotations = AsyncAnnotationsResource(self._transport)
 
     # -- Session management --------------------------------------------------
 
