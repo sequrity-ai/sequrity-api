@@ -4,6 +4,8 @@ This module defines the configuration classes for the three Sequrity
 HTTP headers: ``X-Features``, ``X-Policy``, and ``X-Config``.
 """
 
+from __future__ import annotations
+
 from typing import Literal, TypeAlias, overload
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -99,7 +101,7 @@ class FeaturesHeader(BaseModel):
         finance_guardrail: bool,
         url_blocker: bool,
         file_blocker: bool,
-    ) -> "FeaturesHeader":
+    ) -> FeaturesHeader:
         classifiers: list[TaggerConfig] = []
         if toxicity_filter:
             classifiers.append(TaggerConfig(name="toxicity_filter"))
@@ -131,7 +133,7 @@ class FeaturesHeader(BaseModel):
         finance_guardrail: bool = False,
         url_blocker: bool = False,
         file_blocker: bool = False,
-    ) -> "FeaturesHeader":
+    ) -> FeaturesHeader:
         """Create a Single LLM features configuration."""
         return cls._build(
             "single-llm",
@@ -152,7 +154,7 @@ class FeaturesHeader(BaseModel):
         finance_guardrail: bool = False,
         url_blocker: bool = False,
         file_blocker: bool = False,
-    ) -> "FeaturesHeader":
+    ) -> FeaturesHeader:
         """Create a Dual LLM features configuration."""
         return cls._build(
             "dual-llm",
@@ -283,7 +285,7 @@ class SecurityPolicyHeader(BaseModel):
         branching_meta_policy_producers: set[str] | None = None,
         branching_meta_policy_tags: set[str] | None = None,
         branching_meta_policy_consumers: set[str] | None = None,
-    ) -> "SecurityPolicyHeader":
+    ) -> SecurityPolicyHeader:
         """Create a Dual LLM security policy configuration."""
         return cls.model_validate(
             {
@@ -317,7 +319,7 @@ class SecurityPolicyHeader(BaseModel):
         default_allow: bool = True,
         enable_llm_blocked_tag: bool = True,
         llm_blocked_tag_enforcement_level: Literal["hard", "soft"] = "hard",
-    ) -> "SecurityPolicyHeader":
+    ) -> SecurityPolicyHeader:
         """Create a Single LLM security policy configuration."""
         return cls.model_validate(
             {
@@ -613,7 +615,7 @@ class FineGrainedConfigHeader(BaseModel):
         min_num_tools_for_filtering: int | None = 10,
         clear_session_meta: Literal["never", "every_attempt", "every_turn"] = "never",
         max_n_turns: int | None = 50,
-    ) -> "FineGrainedConfigHeader":
+    ) -> FineGrainedConfigHeader:
         """Create a Single LLM fine-grained configuration."""
         return cls(
             fsm=FsmOverrides(
@@ -649,7 +651,7 @@ class FineGrainedConfigHeader(BaseModel):
         include_program: bool | None = None,
         include_policy_check_history: bool | None = None,
         include_namespace_snapshot: bool | None = None,
-    ) -> "FineGrainedConfigHeader":
+    ) -> FineGrainedConfigHeader:
         """Create a Dual LLM fine-grained configuration."""
         fsm = FsmOverrides(
             min_num_tools_for_filtering=min_num_tools_for_filtering,

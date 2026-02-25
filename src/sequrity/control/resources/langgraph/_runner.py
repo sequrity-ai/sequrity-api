@@ -220,7 +220,7 @@ def _run_messages_loop(
 def run_graph_sync(
     transport: ControlSyncTransport,
     model: str,
-    graph: "StateGraph",
+    graph: StateGraph,
     initial_state: dict,
     *,
     initial_state_meta: MetaData | None = None,
