@@ -12,7 +12,7 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
     "min_num_tools_for_filtering": 10,
     "clear_session_meta": "never",
     "max_n_turns": null,
-    "allow_history_mismatch": null,
+    "history_mismatch_policy": null,
     "clear_history_every_n_attempts": null,
     "disable_rllm": true,
     "enable_multistep_planning": null,
@@ -110,13 +110,17 @@ Maximum number of turns allowed in the session. If `null`, unlimited turns are a
 
 ### Dual-LLM Only Fields
 
-#### `fsm.allow_history_mismatch`
+#### `fsm.history_mismatch_policy`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` or `null` | No | `null` |
+| `string` or `null` | No | `null` |
 
-Controls behaviour when incoming messages diverge from stored history in stateless mode. When `true`, the server silently truncates its stored history to the last consistent point and accepts the caller's version. When `false`, the server rejects the request with an error if a mismatch is detected.
+Controls behaviour when incoming messages diverge from stored history in stateless mode:
+
+- `"reject"`: Reject the request with an error if a mismatch is detected
+- `"restart_turn"`: Truncate stored history to the last consistent point and restart the turn
+- `"continue"`: Silently accept the caller's version and continue
 
 #### `fsm.clear_history_every_n_attempts`
 
