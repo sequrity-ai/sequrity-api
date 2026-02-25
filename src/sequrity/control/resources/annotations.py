@@ -10,7 +10,7 @@ auth — no LLM-specific headers (features, policy, etc.).
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum, auto
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -23,11 +23,11 @@ from .._transport import ControlAsyncTransport, ControlSyncTransport
 # ---------------------------------------------------------------------------
 
 
-class AnnotationSource(str, Enum):
-    TAU2_BENCH = "tau2-bench"
-    SWE_BENCH = "swe-bench"
-    MANUAL = "manual"
-    AUTO_PROMPT_CODEX = "auto_prompt_codex"
+class AnnotationSource(StrEnum):
+    TAU2_BENCH = auto()
+    SWE_BENCH = auto()
+    MANUAL = auto()
+    AUTO_PROMPT_CODEX = auto()
 
 
 class AnnotationLabels(BaseModel):
@@ -103,7 +103,7 @@ class AnnotationsResource:
 
         annotation = client.control.annotations.create(
             session_id="004d88f0-...",
-            source="tau2-bench",
+            source="tau2_bench",
             labels={"task_success": True, "reward": 1.0},
         )
     """
