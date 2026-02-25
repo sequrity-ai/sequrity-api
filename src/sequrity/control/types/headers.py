@@ -371,9 +371,9 @@ class FsmOverrides(BaseModel):
     )
 
     # Dual-LLM only
-    allow_history_mismatch: bool | None = Field(
+    history_mismatch_policy: Literal["reject", "restart_turn", "continue"] | None = Field(
         default=None,
-        description="Controls behaviour when incoming messages diverge from stored history in stateless mode. When True, the server silently truncates its stored history to the last consistent point. When False, the server rejects the request with an error if a mismatch is detected.",
+        description="Controls behaviour when incoming messages diverge from stored history in stateless mode. 'reject' rejects the request with an error, 'restart_turn' truncates stored history to the last consistent point and restarts the turn, 'continue' silently accepts the caller's version and continues.",
     )
     clear_history_every_n_attempts: int | None = Field(
         default=None,
