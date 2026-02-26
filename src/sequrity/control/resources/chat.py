@@ -40,6 +40,7 @@ class ChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> SyncStream[ChatCompletionChunk]: ...
 
     @overload
@@ -62,6 +63,7 @@ class ChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> ChatCompletionResponse: ...
 
     def create(
@@ -85,6 +87,7 @@ class ChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> ChatCompletionResponse | SyncStream[ChatCompletionChunk]:
         """Send a chat completion request through Sequrity's secure orchestrator.
 
@@ -140,6 +143,7 @@ class ChatResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                custom_headers=custom_headers,
             )
             return SyncStream(response, ChatCompletionChunk, session_id=response.headers.get("X-Session-ID"))
 
@@ -151,6 +155,7 @@ class ChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
         result = ChatCompletionResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")
@@ -226,6 +231,7 @@ class AsyncChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> ChatCompletionResponse | AsyncStream[ChatCompletionChunk]:
         """Async variant of :meth:`ChatResource.create`."""
         payload = ChatCompletionRequest.model_validate(
@@ -257,6 +263,7 @@ class AsyncChatResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                custom_headers=custom_headers,
             )
             return AsyncStream(response, ChatCompletionChunk, session_id=response.headers.get("X-Session-ID"))
 
@@ -268,6 +275,7 @@ class AsyncChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
         result = ChatCompletionResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")

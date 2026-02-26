@@ -67,6 +67,7 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> dict[str, str]:
         eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
         eff_features = _resolve(features, self._config.features)
@@ -74,7 +75,7 @@ class ControlSyncTransport:
         eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
         eff_session = _resolve(session_id, None)
 
-        return build_sequrity_headers(
+        headers = build_sequrity_headers(
             api_key=self._api_key,
             llm_api_key=eff_llm_key,
             features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
@@ -82,6 +83,9 @@ class ControlSyncTransport:
             config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
             session_id=eff_session,
         )
+        if custom_headers:
+            headers.update(custom_headers)
+        return headers
 
     def _track_session(self, response: httpx.Response) -> None:
         new_session = response.headers.get("X-Session-ID")
@@ -100,6 +104,7 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """POST *payload* as JSON to *url* with merged Sequrity headers.
 
@@ -116,6 +121,7 @@ class ControlSyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
 
         try:
@@ -139,6 +145,7 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """Open a streaming POST request.
 
@@ -156,6 +163,7 @@ class ControlSyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
 
         request = self._http.build_request("POST", url, json=payload, headers=headers)
@@ -211,6 +219,7 @@ class ControlAsyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> dict[str, str]:
         eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
         eff_features = _resolve(features, self._config.features)
@@ -218,7 +227,7 @@ class ControlAsyncTransport:
         eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
         eff_session = _resolve(session_id, self._session_id)
 
-        return build_sequrity_headers(
+        headers = build_sequrity_headers(
             api_key=self._api_key,
             llm_api_key=eff_llm_key,
             features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
@@ -226,6 +235,9 @@ class ControlAsyncTransport:
             config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
             session_id=eff_session,
         )
+        if custom_headers:
+            headers.update(custom_headers)
+        return headers
 
     def _track_session(self, response: httpx.Response) -> None:
         new_session = response.headers.get("X-Session-ID")
@@ -242,6 +254,7 @@ class ControlAsyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """Async variant of :meth:`ControlSyncTransport.request`."""
         headers = self._build_headers(
@@ -250,6 +263,7 @@ class ControlAsyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
 
         try:
@@ -273,6 +287,7 @@ class ControlAsyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """Open an async streaming POST request.
 
@@ -290,6 +305,7 @@ class ControlAsyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
 
         request = self._http.build_request("POST", url, json=payload, headers=headers)

@@ -65,6 +65,7 @@ class ResponsesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> SyncStream[OpenAiResponseStreamEvent]: ...
 
     @overload
@@ -103,6 +104,7 @@ class ResponsesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> ResponsesResponse: ...
 
     def create(
@@ -142,6 +144,7 @@ class ResponsesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> ResponsesResponse | SyncStream[OpenAiResponseStreamEvent]:
         """Send a Responses API request through Sequrity's secure orchestrator.
 
@@ -229,6 +232,7 @@ class ResponsesResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                custom_headers=custom_headers,
             )
             return SyncStream(response, OpenAiResponseStreamEvent, session_id=response.headers.get("X-Session-ID"))
 
@@ -240,6 +244,7 @@ class ResponsesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
         result = ResponsesResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")
@@ -288,6 +293,7 @@ class AsyncResponsesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> AsyncStream[OpenAiResponseStreamEvent]: ...
 
     @overload
@@ -326,6 +332,7 @@ class AsyncResponsesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> ResponsesResponse: ...
 
     async def create(
@@ -363,6 +370,7 @@ class AsyncResponsesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> ResponsesResponse | AsyncStream[OpenAiResponseStreamEvent]:
         """Async variant of :meth:`ResponsesResource.create`."""
         payload = ResponsesRequest.model_validate(
@@ -410,6 +418,7 @@ class AsyncResponsesResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                custom_headers=custom_headers,
             )
             return AsyncStream(response, OpenAiResponseStreamEvent, session_id=response.headers.get("X-Session-ID"))
 
@@ -421,6 +430,7 @@ class AsyncResponsesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
         result = ResponsesResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")

@@ -22,6 +22,7 @@ class PolicyResource:
         request: PolicyGenRequest | dict,
         *,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> PolicyGenResponse:
         """Generate a SQRT security policy from a natural language description.
 
@@ -30,6 +31,7 @@ class PolicyResource:
                 or a raw dict. The request must include a ``type`` discriminator
                 field to select the tool format variant.
             llm_api_key: Optional LLM provider API key override.
+            custom_headers: Optional extra HTTP headers to include in the request.
 
         Returns:
             Parsed ``PolicyGenResponse`` with generated policies and usage info.
@@ -52,6 +54,7 @@ class PolicyResource:
             security_policy=None,
             fine_grained_config=None,
             session_id=None,
+            custom_headers=custom_headers,
         )
 
         return PolicyGenResponse.model_validate(response.json())
@@ -68,6 +71,7 @@ class AsyncPolicyResource:
         request: PolicyGenRequest | dict,
         *,
         llm_api_key: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> PolicyGenResponse:
         """Async variant of :meth:`PolicyResource.generate`."""
         if isinstance(request, dict):
@@ -85,6 +89,7 @@ class AsyncPolicyResource:
             features=None,
             security_policy=None,
             fine_grained_config=None,
+            custom_headers=custom_headers,
         )
 
         return PolicyGenResponse.model_validate(response.json())

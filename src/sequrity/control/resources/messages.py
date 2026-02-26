@@ -56,6 +56,7 @@ class MessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> SyncStream[AnthropicStreamEvent]: ...
 
     @overload
@@ -85,6 +86,7 @@ class MessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse: ...
 
     def create(
@@ -115,6 +117,7 @@ class MessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse | SyncStream[AnthropicStreamEvent]:
         """Send an Anthropic Messages API request through Sequrity.
 
@@ -184,6 +187,7 @@ class MessagesResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                custom_headers=custom_headers,
             )
             return SyncStream(response, AnthropicStreamEvent, session_id=response.headers.get("X-Session-ID"))
 
@@ -195,6 +199,7 @@ class MessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
         result = AnthropicMessageResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")
@@ -234,6 +239,7 @@ class AsyncMessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> AsyncStream[AnthropicStreamEvent]: ...
 
     @overload
@@ -263,6 +269,7 @@ class AsyncMessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse: ...
 
     async def create(
@@ -291,6 +298,7 @@ class AsyncMessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse | AsyncStream[AnthropicStreamEvent]:
         """Async variant of :meth:`MessagesResource.create`."""
         payload = AnthropicMessageRequest.model_validate(
@@ -329,6 +337,7 @@ class AsyncMessagesResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                custom_headers=custom_headers,
             )
             return AsyncStream(response, AnthropicStreamEvent, session_id=response.headers.get("X-Session-ID"))
 
@@ -340,6 +349,7 @@ class AsyncMessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            custom_headers=custom_headers,
         )
         result = AnthropicMessageResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")
