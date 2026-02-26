@@ -69,7 +69,7 @@ Whether to auto-generate policies based on tool metadata and natural language de
 |------|----------|---------|
 | `boolean` or `null` | No | `null` |
 
-Whether to fail fast on first hard denial during policy checks.
+Whether to fail fast on first hard denial during policy checks. When not set (i.e. `null`), the server default is `true`.
 
 ### `presets`
 

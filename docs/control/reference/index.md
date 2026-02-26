@@ -4,7 +4,7 @@ Complete reference documentation for Sequrity Control, including API interfaces,
 
 ## Quick Links
 
-- **[REST API](rest_api/index.md)** - HTTP endpoints for chat completions and LangGraph execution
+- **[REST API](rest_api/index.md)** - HTTP endpoints for chat completions, responses, messages, and LangGraph execution
 - **[SequrityClient.control](sequrity_client/index.md)** - Python client API reference
 - **[SQRT Policy Language](sqrt/index.md)** - Policy language specification and grammar
 
