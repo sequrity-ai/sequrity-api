@@ -30,7 +30,6 @@ hide:
 
     - Added `tool_result_transform` FSM override (`"none"` or `"codex"`) for stripping Codex CLI metadata
     - Added `history_mismatch_policy` FSM override (`"reject"`, `"restart_turn"`, `"continue"`) for handling message history divergence in stateless mode (dual-LLM only)
-    - Added `custom_instructions` prompt override for appending custom text to the planning LLM prompt
     - Added `stream_thoughts` response format override for streaming model thinking process
 
     **Improvements**

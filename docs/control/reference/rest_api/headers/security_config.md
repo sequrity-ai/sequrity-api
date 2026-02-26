@@ -43,7 +43,6 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
       "query_include_tool_calls": null,
       "query_include_tool_args": null,
       "query_include_tool_results": null,
-      "custom_instructions": null
     },
     "rllm": {
       "flavor": null,
@@ -290,7 +289,6 @@ Planning LLM prompt overrides:
 | `query_include_tool_calls` | `boolean` | `null` | Whether to include upstream tool calls in inlined query. |
 | `query_include_tool_args` | `boolean` | `null` | Whether to include arguments of upstream tool calls. |
 | `query_include_tool_results` | `boolean` | `null` | Whether to include results of upstream tool calls. |
-| `custom_instructions` | `string` | `null` | Custom instructions text appended to the planning LLM prompt. |
 
 ### `prompt.rllm`
 
