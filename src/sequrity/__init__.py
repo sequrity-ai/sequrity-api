@@ -23,6 +23,8 @@ from .types.chat_completion.request import ChatCompletionRequest
 from .types.chat_completion.response import ChatCompletionResponse
 from .types.messages.request import AnthropicMessageRequest
 from .types.messages.response import AnthropicMessageResponse
+from .types.responses.request import ResponsesRequest
+from .types.responses.response import ResponsesResponse
 
 try:
     from ._version import __version__
@@ -47,6 +49,8 @@ __all__ = [
     "ChatCompletionResponse",
     "AnthropicMessageRequest",
     "AnthropicMessageResponse",
+    "ResponsesRequest",
+    "ResponsesResponse",
     # Version
     "__version__",
 ]

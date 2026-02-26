@@ -12,6 +12,7 @@ from .resources.chat import AsyncChatResource, ChatResource
 from .resources.langgraph import LangGraphResource
 from .resources.messages import AsyncMessagesResource, MessagesResource
 from .resources.policy import AsyncPolicyResource, PolicyResource
+from .resources.responses import AsyncResponsesResource, ResponsesResource
 
 
 class ControlClient:
@@ -56,6 +57,9 @@ class ControlClient:
 
         self.policy = PolicyResource(self._transport)
         """Policy generation."""
+
+        self.responses = ResponsesResource(self._transport)
+        """OpenAI Responses API."""
 
         self.langgraph = LangGraphResource(self._transport)
         """LangGraph execution."""
@@ -156,6 +160,7 @@ class AsyncControlClient:
 
         self.chat = AsyncChatResource(self._transport)
         self.messages = AsyncMessagesResource(self._transport)
+        self.responses = AsyncResponsesResource(self._transport)
         self.policy = AsyncPolicyResource(self._transport)
 
     # -- Session management --------------------------------------------------
