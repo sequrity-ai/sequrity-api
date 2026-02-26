@@ -10,7 +10,9 @@ Events are grouped into:
 - Reasoning: reasoning_summary_text delta/done, reasoning_summary_part added/done
 """
 
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, Union
+
+from typing import TypeAlias
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -249,23 +251,25 @@ class ResponseReasoningSummaryTextDoneEvent(BaseModel):
 # Union Type
 # =============================================================================
 
-type OpenAiResponseStreamEvent = Annotated[
-    ResponseCreatedEvent
-    | ResponseInProgressEvent
-    | ResponseCompletedEvent
-    | ResponseFailedEvent
-    | ResponseIncompleteEvent
-    | ResponseOutputItemAddedEvent
-    | ResponseOutputItemDoneEvent
-    | ResponseContentPartAddedEvent
-    | ResponseContentPartDoneEvent
-    | ResponseTextDeltaEvent
-    | ResponseTextDoneEvent
-    | ResponseFunctionCallArgumentsDeltaEvent
-    | ResponseFunctionCallArgumentsDoneEvent
-    | ResponseReasoningSummaryPartAddedEvent
-    | ResponseReasoningSummaryPartDoneEvent
-    | ResponseReasoningSummaryTextDeltaEvent
-    | ResponseReasoningSummaryTextDoneEvent,
+OpenAiResponseStreamEvent: TypeAlias = Annotated[
+    Union[
+        ResponseCreatedEvent,
+        ResponseInProgressEvent,
+        ResponseCompletedEvent,
+        ResponseFailedEvent,
+        ResponseIncompleteEvent,
+        ResponseOutputItemAddedEvent,
+        ResponseOutputItemDoneEvent,
+        ResponseContentPartAddedEvent,
+        ResponseContentPartDoneEvent,
+        ResponseTextDeltaEvent,
+        ResponseTextDoneEvent,
+        ResponseFunctionCallArgumentsDeltaEvent,
+        ResponseFunctionCallArgumentsDoneEvent,
+        ResponseReasoningSummaryPartAddedEvent,
+        ResponseReasoningSummaryPartDoneEvent,
+        ResponseReasoningSummaryTextDeltaEvent,
+        ResponseReasoningSummaryTextDoneEvent,
+    ],
     Field(discriminator="type"),
 ]

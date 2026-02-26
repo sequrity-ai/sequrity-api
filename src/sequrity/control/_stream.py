@@ -3,12 +3,18 @@
 from __future__ import annotations
 
 import json
-from typing import AsyncIterator, Generic, Iterator, TypeVar
+from typing import Any, AsyncIterator, Generic, Iterator, TypeVar
 
 import httpx
 from pydantic import TypeAdapter
 
 _T = TypeVar("_T")
+
+# TypeAdapter accepts type[T], Annotated types, and other special forms.
+# We use Any here so callers can pass discriminated-union TypeAlias values
+# (e.g. Annotated[Union[...], Field(discriminator="type")]) which are not
+# strictly type[T] but are valid TypeAdapter inputs.
+_ChunkSpec = Any
 
 
 class SyncStream(Generic[_T]):
@@ -31,12 +37,12 @@ class SyncStream(Generic[_T]):
     def __init__(
         self,
         response: httpx.Response,
-        chunk_type: type[_T],
+        chunk_type: _ChunkSpec,
         *,
         session_id: str | None = None,
     ) -> None:
         self._response = response
-        self._adapter = TypeAdapter(chunk_type)
+        self._adapter: TypeAdapter[_T] = TypeAdapter(chunk_type)
         self.session_id = session_id
 
     def __iter__(self) -> Iterator[_T]:
@@ -69,12 +75,12 @@ class AsyncStream(Generic[_T]):
     def __init__(
         self,
         response: httpx.Response,
-        chunk_type: type[_T],
+        chunk_type: _ChunkSpec,
         *,
         session_id: str | None = None,
     ) -> None:
         self._response = response
-        self._adapter = TypeAdapter(chunk_type)
+        self._adapter: TypeAdapter[_T] = TypeAdapter(chunk_type)
         self.session_id = session_id
 
     async def __aiter__(self) -> AsyncIterator[_T]:

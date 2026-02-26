@@ -220,19 +220,27 @@ class ResponsesResource:
             endpoint_type=endpoint_type,
         )
 
-        sequrity_kwargs = dict(
+        if stream:
+            response = self._transport.stream_request(
+                url=url,
+                payload=payload,
+                llm_api_key=llm_api_key,
+                features=features,
+                security_policy=security_policy,
+                fine_grained_config=fine_grained_config,
+                session_id=session_id,
+            )
+            return SyncStream(response, OpenAiResponseStreamEvent, session_id=response.headers.get("X-Session-ID"))
+
+        response = self._transport.request(
+            url=url,
+            payload=payload,
             llm_api_key=llm_api_key,
             features=features,
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
         )
-
-        if stream:
-            response = self._transport.stream_request(url=url, payload=payload, **sequrity_kwargs)
-            return SyncStream(response, OpenAiResponseStreamEvent, session_id=response.headers.get("X-Session-ID"))
-
-        response = self._transport.request(url=url, payload=payload, **sequrity_kwargs)
         result = ResponsesResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")
         return result
@@ -393,19 +401,27 @@ class AsyncResponsesResource:
             endpoint_type=endpoint_type,
         )
 
-        sequrity_kwargs = dict(
+        if stream:
+            response = await self._transport.stream_request(
+                url=url,
+                payload=payload,
+                llm_api_key=llm_api_key,
+                features=features,
+                security_policy=security_policy,
+                fine_grained_config=fine_grained_config,
+                session_id=session_id,
+            )
+            return AsyncStream(response, OpenAiResponseStreamEvent, session_id=response.headers.get("X-Session-ID"))
+
+        response = await self._transport.request(
+            url=url,
+            payload=payload,
             llm_api_key=llm_api_key,
             features=features,
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
         )
-
-        if stream:
-            response = await self._transport.stream_request(url=url, payload=payload, **sequrity_kwargs)
-            return AsyncStream(response, OpenAiResponseStreamEvent, session_id=response.headers.get("X-Session-ID"))
-
-        response = await self._transport.request(url=url, payload=payload, **sequrity_kwargs)
         result = ResponsesResponse.model_validate(response.json())
         result.session_id = response.headers.get("X-Session-ID")
         return result

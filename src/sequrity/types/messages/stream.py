@@ -7,7 +7,9 @@ Anthropic uses a discriminated union of 6 event types for streaming,
 each carrying different data.
 """
 
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, Union
+
+from typing import TypeAlias
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -43,8 +45,8 @@ class CitationsDelta(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
-type AnthropicContentDelta = Annotated[
-    TextDelta | InputJSONDelta | ThinkingDelta | SignatureDelta | CitationsDelta,
+AnthropicContentDelta: TypeAlias = Annotated[
+    Union[TextDelta, InputJSONDelta, ThinkingDelta, SignatureDelta, CitationsDelta],
     Field(discriminator="type"),
 ]
 
@@ -95,8 +97,8 @@ class ServerToolUseBlockStart(BaseModel):
     model_config = ConfigDict(extra="allow")
 
 
-type AnthropicContentBlockStart = Annotated[
-    TextBlockStart | ThinkingBlockStart | RedactedThinkingBlockStart | ToolUseBlockStart | ServerToolUseBlockStart,
+AnthropicContentBlockStart: TypeAlias = Annotated[
+    Union[TextBlockStart, ThinkingBlockStart, RedactedThinkingBlockStart, ToolUseBlockStart, ServerToolUseBlockStart],
     Field(discriminator="type"),
 ]
 
@@ -185,12 +187,14 @@ class RawMessageStopEvent(BaseModel):
 # Union Type
 # =============================================================================
 
-type AnthropicStreamEvent = Annotated[
-    RawMessageStartEvent
-    | RawContentBlockStartEvent
-    | RawContentBlockDeltaEvent
-    | RawContentBlockStopEvent
-    | RawMessageDeltaEvent
-    | RawMessageStopEvent,
+AnthropicStreamEvent: TypeAlias = Annotated[
+    Union[
+        RawMessageStartEvent,
+        RawContentBlockStartEvent,
+        RawContentBlockDeltaEvent,
+        RawContentBlockStopEvent,
+        RawMessageDeltaEvent,
+        RawMessageStopEvent,
+    ],
     Field(discriminator="type"),
 ]
