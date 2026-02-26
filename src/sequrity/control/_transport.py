@@ -57,6 +57,37 @@ class ControlSyncTransport:
         """Build the policy generation endpoint URL for the given request type."""
         return build_policy_gen_url(self._base_url, request_type)
 
+    # -- Header building (shared) --------------------------------------------
+
+    def _build_headers(
+        self,
+        *,
+        llm_api_key: str | None | _NotGiven = NOT_GIVEN,
+        features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
+        security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
+        fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
+        session_id: str | None | _NotGiven = NOT_GIVEN,
+    ) -> dict[str, str]:
+        eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
+        eff_features = _resolve(features, self._config.features)
+        eff_policy = _resolve(security_policy, self._config.security_policy)
+        eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
+        eff_session = _resolve(session_id, None)
+
+        return build_sequrity_headers(
+            api_key=self._api_key,
+            llm_api_key=eff_llm_key,
+            features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
+            policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,
+            config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
+            session_id=eff_session,
+        )
+
+    def _track_session(self, response: httpx.Response) -> None:
+        new_session = response.headers.get("X-Session-ID")
+        if new_session:
+            self._session_id = new_session
+
     # -- Request execution ---------------------------------------------------
 
     def request(
@@ -72,15 +103,6 @@ class ControlSyncTransport:
     ) -> httpx.Response:
         """POST *payload* as JSON to *url* with merged Sequrity headers.
 
-        Args:
-            url: Fully-qualified endpoint URL.
-            payload: JSON-serializable request body.
-            llm_api_key: LLM provider key override (``NOT_GIVEN`` -> config default).
-            features: ``FeaturesHeader`` override (``NOT_GIVEN`` -> config default).
-            security_policy: ``SecurityPolicyHeader`` override.
-            fine_grained_config: ``FineGrainedConfigHeader`` override.
-            session_id: Explicit session ID override. ``NOT_GIVEN`` uses self._session_id, which is auto-updated from responses.
-
         Returns:
             The raw ``httpx.Response`` (status already validated).
 
@@ -88,19 +110,12 @@ class ControlSyncTransport:
             SequrityAPIError: On HTTP 4xx/5xx responses.
             SequrityConnectionError: On network failures.
         """
-        eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
-        eff_features = _resolve(features, self._config.features)
-        eff_policy = _resolve(security_policy, self._config.security_policy)
-        eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
-        eff_session = _resolve(session_id, self._session_id)
-
-        headers = build_sequrity_headers(
-            api_key=self._api_key,
-            llm_api_key=eff_llm_key,
-            features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
-            policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,
-            config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
-            session_id=eff_session,
+        headers = self._build_headers(
+            llm_api_key=llm_api_key,
+            features=features,
+            security_policy=security_policy,
+            fine_grained_config=fine_grained_config,
+            session_id=session_id,
         )
 
         try:
@@ -111,11 +126,51 @@ class ControlSyncTransport:
         if response.status_code >= 400:
             raise SequrityAPIError.from_response(response)
 
-        # Auto-track session ID from response
-        new_session = response.headers.get("X-Session-ID")
-        if new_session:
-            self._session_id = new_session
+        self._track_session(response)
+        return response
 
+    def stream_request(
+        self,
+        *,
+        url: str,
+        payload: dict,
+        llm_api_key: str | None | _NotGiven = NOT_GIVEN,
+        features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
+        security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
+        fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
+        session_id: str | None | _NotGiven = NOT_GIVEN,
+    ) -> httpx.Response:
+        """Open a streaming POST request.
+
+        Returns the raw ``httpx.Response`` in streaming mode. The caller
+        is responsible for closing the response (typically via a
+        :class:`SyncStream` wrapper).
+
+        Raises:
+            SequrityAPIError: On HTTP 4xx/5xx responses.
+            SequrityConnectionError: On network failures.
+        """
+        headers = self._build_headers(
+            llm_api_key=llm_api_key,
+            features=features,
+            security_policy=security_policy,
+            fine_grained_config=fine_grained_config,
+            session_id=session_id,
+        )
+
+        request = self._http.build_request("POST", url, json=payload, headers=headers)
+
+        try:
+            response = self._http.send(request, stream=True)
+        except httpx.ConnectError as exc:
+            raise SequrityConnectionError(str(exc)) from exc
+
+        if response.status_code >= 400:
+            response.read()  # consume body for error message
+            response.close()
+            raise SequrityAPIError.from_response(response)
+
+        self._track_session(response)
         return response
 
 
@@ -146,6 +201,37 @@ class ControlAsyncTransport:
     def build_policy_gen_url(self, request_type: str) -> str:
         return build_policy_gen_url(self._base_url, request_type)
 
+    # -- Header building (shared) --------------------------------------------
+
+    def _build_headers(
+        self,
+        *,
+        llm_api_key: str | None | _NotGiven = NOT_GIVEN,
+        features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
+        security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
+        fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
+        session_id: str | None | _NotGiven = NOT_GIVEN,
+    ) -> dict[str, str]:
+        eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
+        eff_features = _resolve(features, self._config.features)
+        eff_policy = _resolve(security_policy, self._config.security_policy)
+        eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
+        eff_session = _resolve(session_id, self._session_id)
+
+        return build_sequrity_headers(
+            api_key=self._api_key,
+            llm_api_key=eff_llm_key,
+            features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
+            policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,
+            config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
+            session_id=eff_session,
+        )
+
+    def _track_session(self, response: httpx.Response) -> None:
+        new_session = response.headers.get("X-Session-ID")
+        if new_session:
+            self._session_id = new_session
+
     async def request(
         self,
         *,
@@ -158,20 +244,12 @@ class ControlAsyncTransport:
         session_id: str | None | _NotGiven = NOT_GIVEN,
     ) -> httpx.Response:
         """Async variant of :meth:`ControlSyncTransport.request`."""
-        eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
-        eff_features = _resolve(features, self._config.features)
-        eff_policy = _resolve(security_policy, self._config.security_policy)
-        eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
-
-        eff_session = _resolve(session_id, self._session_id)
-
-        headers = build_sequrity_headers(
-            api_key=self._api_key,
-            llm_api_key=eff_llm_key,
-            features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
-            policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,
-            config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
-            session_id=eff_session,
+        headers = self._build_headers(
+            llm_api_key=llm_api_key,
+            features=features,
+            security_policy=security_policy,
+            fine_grained_config=fine_grained_config,
+            session_id=session_id,
         )
 
         try:
@@ -182,8 +260,49 @@ class ControlAsyncTransport:
         if response.status_code >= 400:
             raise SequrityAPIError.from_response(response)
 
-        new_session = response.headers.get("X-Session-ID")
-        if new_session:
-            self._session_id = new_session
+        self._track_session(response)
+        return response
 
+    async def stream_request(
+        self,
+        *,
+        url: str,
+        payload: dict,
+        llm_api_key: str | None | _NotGiven = NOT_GIVEN,
+        features: FeaturesHeader | None | _NotGiven = NOT_GIVEN,
+        security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
+        fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
+        session_id: str | None | _NotGiven = NOT_GIVEN,
+    ) -> httpx.Response:
+        """Open an async streaming POST request.
+
+        Returns the raw ``httpx.Response`` in streaming mode. The caller
+        is responsible for closing the response (typically via an
+        :class:`AsyncStream` wrapper).
+
+        Raises:
+            SequrityAPIError: On HTTP 4xx/5xx responses.
+            SequrityConnectionError: On network failures.
+        """
+        headers = self._build_headers(
+            llm_api_key=llm_api_key,
+            features=features,
+            security_policy=security_policy,
+            fine_grained_config=fine_grained_config,
+            session_id=session_id,
+        )
+
+        request = self._http.build_request("POST", url, json=payload, headers=headers)
+
+        try:
+            response = await self._http.send(request, stream=True)
+        except httpx.ConnectError as exc:
+            raise SequrityConnectionError(str(exc)) from exc
+
+        if response.status_code >= 400:
+            await response.aread()  # consume body for error message
+            await response.aclose()
+            raise SequrityAPIError.from_response(response)
+
+        self._track_session(response)
         return response
