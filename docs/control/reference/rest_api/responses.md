@@ -19,10 +19,10 @@ Where `{endpoint_type}` is `chat`, `code`, `agent`, or `lang-graph`. See [URL Pa
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `model` | `string` | Yes | Model ID, e.g. `gpt-4o`, `o3`. |
-| `input` | `string \| array[InputItem]` | No | Text, image, or file inputs to the model. See [Input Types](#input-types). |
+| `input` | `string | array[InputItem]` | No | Text, image, or file inputs to the model. See [Input Types](#input-types). |
 | `instructions` | `string` | No | A system (or developer) message inserted into the model's context. |
 | `tools` | `array[Tool]` | No | Tools the model may call. See [Tools](#tools). |
-| `tool_choice` | `string \| object` | No | How the model should select which tool to use: `"none"`, `"auto"`, `"required"`, or a function object. |
+| `tool_choice` | `string | object` | No | How the model should select which tool to use: `"none"`, `"auto"`, `"required"`, or a function object. |
 | `stream` | `boolean` | No | If `true`, the response is streamed as server-sent events. |
 | `temperature` | `float` | No | Sampling temperature (0–2). Higher values produce more random output. |
 | `top_p` | `float` | No | Nucleus sampling parameter. |
@@ -37,7 +37,7 @@ Where `{endpoint_type}` is `chat`, `code`, `agent`, or `lang-graph`. See [URL Pa
 | `parallel_tool_calls` | `boolean` | No | Whether to allow parallel tool execution. |
 | `max_tool_calls` | `integer` | No | Maximum number of calls to built-in tools. |
 | `background` | `boolean` | No | Whether to run the response in the background. |
-| `conversation` | `string \| object` | No | Conversation context. |
+| `conversation` | `string | object` | No | Conversation context. |
 | `prompt` | `object` | No | Prompt template reference with `id` and optional `variables`. |
 | `service_tier` | `string` | No | Processing tier: `"auto"`, `"default"`, `"flex"`, `"scale"`, `"priority"`. |
 | `stream_options` | `object` | No | Options for streaming responses (e.g., `include_usage`). |
@@ -52,8 +52,8 @@ The `input` field accepts either a plain string or an array of input items. Inpu
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `role` | `"user" \| "system" \| "developer"` | Yes | The role of the message. |
-| `content` | `string \| array[ContentItem]` | Yes | Message content (text, images, files, or audio). |
+| `role` | `"user" | "system" | "developer"` | Yes | The role of the message. |
+| `content` | `string | array[ContentItem]` | Yes | Message content (text, images, files, or audio). |
 
 #### Content Item Types
 
@@ -126,17 +126,17 @@ The Responses API supports multiple tool types:
 | `model` | `string` | The model used. |
 | `output` | `array[OutputItem]` | Generated content items. See [Output Items](#output-items). |
 | `status` | `string` | Response status: `"completed"`, `"failed"`, `"in_progress"`, `"cancelled"`, `"queued"`, `"incomplete"`. |
-| `error` | `object \| null` | Error information with `code` and `message` fields. |
+| `error` | `object | null` | Error information with `code` and `message` fields. |
 | `usage` | `ResponseUsage` | Token usage statistics. |
 | `parallel_tool_calls` | `boolean` | Whether parallel tool calls were enabled. |
-| `tool_choice` | `string \| object` | Tool choice used for this response. |
+| `tool_choice` | `string | object` | Tool choice used for this response. |
 | `tools` | `array[object]` | Tools available for this response. |
-| `incomplete_details` | `object \| null` | Details on why the response is incomplete. |
-| `temperature` | `float \| null` | Sampling temperature used. |
-| `top_p` | `float \| null` | Nucleus sampling used. |
-| `max_output_tokens` | `integer \| null` | Max output tokens setting. |
-| `truncation` | `string \| null` | Truncation strategy used. |
-| `service_tier` | `string \| null` | Service tier used. |
+| `incomplete_details` | `object | null` | Details on why the response is incomplete. |
+| `temperature` | `float | null` | Sampling temperature used. |
+| `top_p` | `float | null` | Nucleus sampling used. |
+| `max_output_tokens` | `integer | null` | Max output tokens setting. |
+| `truncation` | `string | null` | Truncation strategy used. |
+| `service_tier` | `string | null` | Service tier used. |
 
 ### Output Items
 
@@ -160,8 +160,8 @@ Output items are distinguished by the `type` field:
 | `call_id` | `string` | Unique ID for responding with tool output. |
 | `name` | `string` | The function name. |
 | `arguments` | `string` | JSON-encoded arguments. |
-| `id` | `string \| null` | Unique ID of the tool call. |
-| `status` | `string \| null` | `"in_progress"`, `"completed"`, `"incomplete"`. |
+| `id` | `string | null` | Unique ID of the tool call. |
+| `status` | `string | null` | `"in_progress"`, `"completed"`, `"incomplete"`. |
 
 #### Reasoning (`type: "reasoning"`)
 
@@ -170,7 +170,7 @@ Output items are distinguished by the `type` field:
 | `id` | `string` | Unique ID of the reasoning item. |
 | `type` | `"reasoning"` | |
 | `summary` | `array[object]` | Reasoning summary text items. |
-| `encrypted_content` | `string \| null` | Encrypted content for multi-turn continuity. |
+| `encrypted_content` | `string | null` | Encrypted content for multi-turn continuity. |
 
 #### Other Output Item Types
 
