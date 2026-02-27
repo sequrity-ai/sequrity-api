@@ -3504,7 +3504,7 @@
 </tr>
 <tr>
 <td><code>system</code></td>
-<td><code>string \| array[TextBlockParam]</code></td>
+<td><code>string | array[TextBlockParam]</code></td>
 <td>No</td>
 <td>System prompt providing context and instructions.</td>
 </tr>
@@ -3596,13 +3596,13 @@
 <tbody>
 <tr>
 <td><code>role</code></td>
-<td><code>"user" \| "assistant"</code></td>
+<td><code>"user" | "assistant"</code></td>
 <td>Yes</td>
 <td>The message author.</td>
 </tr>
 <tr>
 <td><code>content</code></td>
-<td><code>string \| array[ContentBlock]</code></td>
+<td><code>string | array[ContentBlock]</code></td>
 <td>Yes</td>
 <td>Message content. See <a href="#content-blocks">Content Blocks</a>.</td>
 </tr>
@@ -3789,7 +3789,7 @@
 </tr>
 <tr>
 <td><code>content</code></td>
-<td><code>string \| array[TextBlock \| ImageBlock \| DocumentBlock]</code></td>
+<td><code>string | array[TextBlock | ImageBlock | DocumentBlock]</code></td>
 <td>No</td>
 <td>The tool result.</td>
 </tr>
@@ -3997,12 +3997,12 @@
 </tr>
 <tr>
 <td><code>stop_reason</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td>Why generation stopped: <code>"end_turn"</code>, <code>"max_tokens"</code>, <code>"stop_sequence"</code>, <code>"tool_use"</code>, <code>"pause_turn"</code>, <code>"refusal"</code>.</td>
 </tr>
 <tr>
 <td><code>stop_sequence</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td>Which stop sequence was hit, if any.</td>
 </tr>
 <tr>
@@ -4076,27 +4076,27 @@
 </tr>
 <tr>
 <td><code>cache_creation_input_tokens</code></td>
-<td><code>integer \| null</code></td>
+<td><code>integer | null</code></td>
 <td>Tokens used to create cache.</td>
 </tr>
 <tr>
 <td><code>cache_read_input_tokens</code></td>
-<td><code>integer \| null</code></td>
+<td><code>integer | null</code></td>
 <td>Tokens read from cache.</td>
 </tr>
 <tr>
 <td><code>cache_creation</code></td>
-<td><code>object \| null</code></td>
+<td><code>object | null</code></td>
 <td>Breakdown of cached tokens by TTL.</td>
 </tr>
 <tr>
 <td><code>server_tool_use</code></td>
-<td><code>object \| null</code></td>
+<td><code>object | null</code></td>
 <td>Server tool usage stats.</td>
 </tr>
 <tr>
 <td><code>service_tier</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td><code>"standard"</code>, <code>"priority"</code>, or <code>"batch"</code>.</td>
 </tr>
 </tbody>

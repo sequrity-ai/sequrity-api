@@ -3019,17 +3019,17 @@
 </tr>
 <tr>
 <td><a href="api_key_session_id/#x-session-id-optional"><code>X-Session-ID</code></a></td>
-<td>No</td>
+<td>Not required most of the time (See <a href="api_key_session_id/#x-session-id-optional">Session ID Guide</a>)</td>
 <td>Session identifier for continuing an existing conversation.</td>
 </tr>
 <tr>
 <td><a href="security_features/"><code>X-Features</code></a></td>
-<td>Required in Headers-Only Mode</td>
+<td>Required in Headers Mode</td>
 <td>JSON object defining the agent architecture and enabled security features (classifiers, blockers). Must be paired with <code>X-Policy</code>.</td>
 </tr>
 <tr>
 <td><a href="security_policy/"><code>X-Policy</code></a></td>
-<td>Required in Headers-Only Mode</td>
+<td>No</td>
 <td>JSON object defining security policies and enforcement behavior. Must be paired with <code>X-Features</code>.</td>
 </tr>
 <tr>

@@ -3664,7 +3664,7 @@
 </tr>
 <tr>
 <td><code>input</code></td>
-<td><code>string \| array[InputItem]</code></td>
+<td><code>string | array[InputItem]</code></td>
 <td>No</td>
 <td>Text, image, or file inputs to the model. See <a href="#input-types">Input Types</a>.</td>
 </tr>
@@ -3682,7 +3682,7 @@
 </tr>
 <tr>
 <td><code>tool_choice</code></td>
-<td><code>string \| object</code></td>
+<td><code>string | object</code></td>
 <td>No</td>
 <td>How the model should select which tool to use: <code>"none"</code>, <code>"auto"</code>, <code>"required"</code>, or a function object.</td>
 </tr>
@@ -3772,7 +3772,7 @@
 </tr>
 <tr>
 <td><code>conversation</code></td>
-<td><code>string \| object</code></td>
+<td><code>string | object</code></td>
 <td>No</td>
 <td>Conversation context.</td>
 </tr>
@@ -3823,13 +3823,13 @@
 <tbody>
 <tr>
 <td><code>role</code></td>
-<td><code>"user" \| "system" \| "developer"</code></td>
+<td><code>"user" | "system" | "developer"</code></td>
 <td>Yes</td>
 <td>The role of the message.</td>
 </tr>
 <tr>
 <td><code>content</code></td>
-<td><code>string \| array[ContentItem]</code></td>
+<td><code>string | array[ContentItem]</code></td>
 <td>Yes</td>
 <td>Message content (text, images, files, or audio).</td>
 </tr>
@@ -4086,7 +4086,7 @@
 </tr>
 <tr>
 <td><code>error</code></td>
-<td><code>object \| null</code></td>
+<td><code>object | null</code></td>
 <td>Error information with <code>code</code> and <code>message</code> fields.</td>
 </tr>
 <tr>
@@ -4101,7 +4101,7 @@
 </tr>
 <tr>
 <td><code>tool_choice</code></td>
-<td><code>string \| object</code></td>
+<td><code>string | object</code></td>
 <td>Tool choice used for this response.</td>
 </tr>
 <tr>
@@ -4111,32 +4111,32 @@
 </tr>
 <tr>
 <td><code>incomplete_details</code></td>
-<td><code>object \| null</code></td>
+<td><code>object | null</code></td>
 <td>Details on why the response is incomplete.</td>
 </tr>
 <tr>
 <td><code>temperature</code></td>
-<td><code>float \| null</code></td>
+<td><code>float | null</code></td>
 <td>Sampling temperature used.</td>
 </tr>
 <tr>
 <td><code>top_p</code></td>
-<td><code>float \| null</code></td>
+<td><code>float | null</code></td>
 <td>Nucleus sampling used.</td>
 </tr>
 <tr>
 <td><code>max_output_tokens</code></td>
-<td><code>integer \| null</code></td>
+<td><code>integer | null</code></td>
 <td>Max output tokens setting.</td>
 </tr>
 <tr>
 <td><code>truncation</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td>Truncation strategy used.</td>
 </tr>
 <tr>
 <td><code>service_tier</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td>Service tier used.</td>
 </tr>
 </tbody>
@@ -4212,12 +4212,12 @@
 </tr>
 <tr>
 <td><code>id</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td>Unique ID of the tool call.</td>
 </tr>
 <tr>
 <td><code>status</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td><code>"in_progress"</code>, <code>"completed"</code>, <code>"incomplete"</code>.</td>
 </tr>
 </tbody>
@@ -4249,7 +4249,7 @@
 </tr>
 <tr>
 <td><code>encrypted_content</code></td>
-<td><code>string \| null</code></td>
+<td><code>string | null</code></td>
 <td>Encrypted content for multi-turn continuity.</td>
 </tr>
 </tbody>
