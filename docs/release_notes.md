@@ -5,7 +5,7 @@ hide:
 
 # Release Notes
 
-## v0.5
+## v0.4.1
 
 `time: 2026-02-25`
 
@@ -13,7 +13,7 @@ hide:
 | ---------|---------|
 | Control API | `094afd3174b700f104cab612d32e3f54ad1b152c` |
 
-??? info "v0.5 Release Notes"
+??? info "v0.4.1 Release Notes"
 
     **New Features**
 
