@@ -7,8 +7,8 @@ The Sequrity Control API supports a set of custom HTTP headers for authenticatio
 | Header | Required | Description |
 |--------|----------|-------------|
 | [`X-Api-Key`](api_key_session_id.md#x-api-key-optional) | No | LLM provider API key (BYOK). If omitted, Sequrity uses its server-managed key. |
-| [`X-Session-ID`](api_key_session_id.md#x-session-id-optional) | No | Session identifier for continuing an existing conversation. |
-| [`X-Features`](security_features.md) | Required in Headers-Only Mode | JSON object defining the agent architecture and enabled security features (classifiers, blockers). Must be paired with `X-Policy`. |
-| [`X-Policy`](security_policy.md) | Required in Headers-Only Mode | JSON object defining security policies and enforcement behavior. Must be paired with `X-Features`. |
+| [`X-Session-ID`](api_key_session_id.md#x-session-id-optional) | Not required most of the time (See [Session ID Guide](./api_key_session_id.md#x-session-id-optional)) | Session identifier for continuing an existing conversation. |
+| [`X-Features`](security_features.md) | Required in Headers Mode | JSON object defining the agent architecture and enabled security features (classifiers, blockers). Must be paired with `X-Policy`. |
+| [`X-Policy`](security_policy.md) | No | JSON object defining security policies and enforcement behavior. Must be paired with `X-Features`. |
 | [`X-Config`](security_config.md) | No | JSON object for fine-tuning session execution behavior, prompt overrides, and response format settings. |
 

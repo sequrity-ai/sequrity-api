@@ -20,7 +20,7 @@ Where `{endpoint_type}` is `chat`, `code`, `agent`, or `lang-graph`. See [URL Pa
 | `messages` | `array[MessageParam]` | Yes | Input messages with alternating `user` and `assistant` turns. See [Messages](#messages). |
 | `model` | `string` | Yes | Model ID, e.g. `claude-4-sonnet`. For Dual-LLM, specify two models separated by a comma (`pllm,qllm`). |
 | `max_tokens` | `integer` | Yes | Maximum number of tokens to generate before stopping. |
-| `system` | `string \| array[TextBlockParam]` | No | System prompt providing context and instructions. |
+| `system` | `string | array[TextBlockParam]` | No | System prompt providing context and instructions. |
 | `temperature` | `float` | No | Sampling randomness (0.0–1.0). |
 | `top_p` | `float` | No | Nucleus sampling probability threshold. |
 | `top_k` | `integer` | No | Only sample from the top K options for each token. |
@@ -40,8 +40,8 @@ Each message has a `role` (`"user"` or `"assistant"`) and `content` (a string or
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `role` | `"user" \| "assistant"` | Yes | The message author. |
-| `content` | `string \| array[ContentBlock]` | Yes | Message content. See [Content Blocks](#content-blocks). |
+| `role` | `"user" | "assistant"` | Yes | The message author. |
+| `content` | `string | array[ContentBlock]` | Yes | Message content. See [Content Blocks](#content-blocks). |
 
 ### Content Blocks
 
@@ -90,7 +90,7 @@ Content blocks are distinguished by the `type` field.
 |-------|------|----------|-------------|
 | `type` | `"tool_result"` | Yes | |
 | `tool_use_id` | `string` | Yes | ID of the tool use this responds to. |
-| `content` | `string \| array[TextBlock \| ImageBlock \| DocumentBlock]` | No | The tool result. |
+| `content` | `string | array[TextBlock | ImageBlock | DocumentBlock]` | No | The tool result. |
 | `is_error` | `boolean` | No | `true` if the tool execution errored. |
 | `cache_control` | `object` | No | Cache control breakpoint. |
 
@@ -149,8 +149,8 @@ Extended thinking configuration. Discriminated by `type`:
 | `role` | `"assistant"` | Always `"assistant"`. |
 | `content` | `array[ContentBlock]` | Generated content blocks. See [Response Content Blocks](#response-content-blocks). |
 | `model` | `string` | The model that handled the request. |
-| `stop_reason` | `string \| null` | Why generation stopped: `"end_turn"`, `"max_tokens"`, `"stop_sequence"`, `"tool_use"`, `"pause_turn"`, `"refusal"`. |
-| `stop_sequence` | `string \| null` | Which stop sequence was hit, if any. |
+| `stop_reason` | `string | null` | Why generation stopped: `"end_turn"`, `"max_tokens"`, `"stop_sequence"`, `"tool_use"`, `"pause_turn"`, `"refusal"`. |
+| `stop_sequence` | `string | null` | Which stop sequence was hit, if any. |
 | `usage` | `Usage` | Token usage statistics. |
 
 ### Response Content Blocks
@@ -170,11 +170,11 @@ Extended thinking configuration. Discriminated by `type`:
 |-------|------|-------------|
 | `input_tokens` | `integer` | Input tokens used. |
 | `output_tokens` | `integer` | Output tokens generated. |
-| `cache_creation_input_tokens` | `integer \| null` | Tokens used to create cache. |
-| `cache_read_input_tokens` | `integer \| null` | Tokens read from cache. |
-| `cache_creation` | `object \| null` | Breakdown of cached tokens by TTL. |
-| `server_tool_use` | `object \| null` | Server tool usage stats. |
-| `service_tier` | `string \| null` | `"standard"`, `"priority"`, or `"batch"`. |
+| `cache_creation_input_tokens` | `integer | null` | Tokens used to create cache. |
+| `cache_read_input_tokens` | `integer | null` | Tokens read from cache. |
+| `cache_creation` | `object | null` | Breakdown of cached tokens by TTL. |
+| `server_tool_use` | `object | null` | Server tool usage stats. |
+| `service_tier` | `string | null` | `"standard"`, `"priority"`, or `"batch"`. |
 
 ## Headers
 
