@@ -76,7 +76,7 @@ class ControlSyncTransport:
         eff_features = _resolve(features, self._config.features)
         eff_policy = _resolve(security_policy, self._config.security_policy)
         eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
-        eff_session = _resolve(session_id, None)
+        eff_session = _resolve(session_id, self._session_id)
 
         features_str = (
             eff_features.dump_for_headers(mode="json_str", overrides=feature_overrides) if eff_features else None
