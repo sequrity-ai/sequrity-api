@@ -6,9 +6,21 @@ HTTP headers: ``X-Features``, ``X-Policy``, and ``X-Config``.
 
 from __future__ import annotations
 
-from typing import Literal, TypeAlias, overload
+import json
+from typing import Any, Literal, TypeAlias, overload
 
 from pydantic import BaseModel, ConfigDict, Field
+
+
+def _deep_merge(base: dict[str, Any], overrides: dict[str, Any]) -> dict[str, Any]:
+    """Recursively merge *overrides* into *base* (mutates *base*). Override values win."""
+    for key, value in overrides.items():
+        if key in base and isinstance(base[key], dict) and isinstance(value, dict):
+            _deep_merge(base[key], value)
+        else:
+            base[key] = value
+    return base
+
 
 # ---------------------------------------------------------------------------
 # X-Features header  (FeaturesHeader)
@@ -78,16 +90,28 @@ class FeaturesHeader(BaseModel):
     )
 
     @overload
-    def dump_for_headers(self, mode: Literal["json_str"] = ...) -> str: ...
+    def dump_for_headers(self, mode: Literal["json_str"] = ..., *, overrides: dict[str, Any] | None = ...) -> str: ...
     @overload
-    def dump_for_headers(self, mode: Literal["json"]) -> dict: ...
+    def dump_for_headers(self, mode: Literal["json"], *, overrides: dict[str, Any] | None = ...) -> dict: ...
 
-    def dump_for_headers(self, mode: Literal["json", "json_str"] = "json_str") -> dict | str:
-        """Serialize for use as the ``X-Features`` HTTP header value."""
+    def dump_for_headers(
+        self, mode: Literal["json", "json_str"] = "json_str", *, overrides: dict[str, Any] | None = None
+    ) -> dict | str:
+        """Serialize for use as the ``X-Features`` HTTP header value.
+
+        Args:
+            mode: Output format — ``"json"`` for a dict, ``"json_str"`` for a JSON string.
+            overrides: Optional dict to deep-merge into the serialized output.
+                Allows adding or overriding fields not defined on the model
+                without loosening Pydantic validation.
+        """
+        data = self.model_dump(mode="json", exclude_none=True)
+        if overrides:
+            _deep_merge(data, overrides)
         if mode == "json":
-            return self.model_dump(mode="json", exclude_none=True)
+            return data
         elif mode == "json_str":
-            return self.model_dump_json(exclude_none=True)
+            return json.dumps(data)
         else:
             raise ValueError(f"Invalid mode: {mode}. Must be 'json' or 'json_str'.")
 
@@ -255,16 +279,26 @@ class SecurityPolicyHeader(BaseModel):
     presets: InternalPolicyPresets | None = Field(default=None, description="Internal policy presets configuration.")
 
     @overload
-    def dump_for_headers(self, mode: Literal["json_str"] = ...) -> str: ...
+    def dump_for_headers(self, mode: Literal["json_str"] = ..., *, overrides: dict[str, Any] | None = ...) -> str: ...
     @overload
-    def dump_for_headers(self, mode: Literal["json"]) -> dict: ...
+    def dump_for_headers(self, mode: Literal["json"], *, overrides: dict[str, Any] | None = ...) -> dict: ...
 
-    def dump_for_headers(self, mode: Literal["json", "json_str"] = "json_str") -> dict | str:
-        """Serialize for use as the ``X-Policy`` HTTP header value."""
+    def dump_for_headers(
+        self, mode: Literal["json", "json_str"] = "json_str", *, overrides: dict[str, Any] | None = None
+    ) -> dict | str:
+        """Serialize for use as the ``X-Policy`` HTTP header value.
+
+        Args:
+            mode: Output format — ``"json"`` for a dict, ``"json_str"`` for a JSON string.
+            overrides: Optional dict to deep-merge into the serialized output.
+        """
+        data = self.model_dump(mode="json", exclude_none=True)
+        if overrides:
+            _deep_merge(data, overrides)
         if mode == "json":
-            return self.model_dump(mode="json", exclude_none=True)
+            return data
         elif mode == "json_str":
-            return self.model_dump_json(exclude_none=True)
+            return json.dumps(data)
         else:
             raise ValueError(f"Unsupported mode for dump_for_headers: {mode}")
 
@@ -596,16 +630,26 @@ class FineGrainedConfigHeader(BaseModel):
     )
 
     @overload
-    def dump_for_headers(self, mode: Literal["json_str"] = ...) -> str: ...
+    def dump_for_headers(self, mode: Literal["json_str"] = ..., *, overrides: dict[str, Any] | None = ...) -> str: ...
     @overload
-    def dump_for_headers(self, mode: Literal["json"]) -> dict: ...
+    def dump_for_headers(self, mode: Literal["json"], *, overrides: dict[str, Any] | None = ...) -> dict: ...
 
-    def dump_for_headers(self, mode: Literal["json", "json_str"] = "json_str") -> dict | str:
-        """Serialize for use as the ``X-Config`` HTTP header value."""
+    def dump_for_headers(
+        self, mode: Literal["json", "json_str"] = "json_str", *, overrides: dict[str, Any] | None = None
+    ) -> dict | str:
+        """Serialize for use as the ``X-Config`` HTTP header value.
+
+        Args:
+            mode: Output format — ``"json"`` for a dict, ``"json_str"`` for a JSON string.
+            overrides: Optional dict to deep-merge into the serialized output.
+        """
+        data = self.model_dump(mode="json", exclude_none=True)
+        if overrides:
+            _deep_merge(data, overrides)
         if mode == "json":
-            return self.model_dump(mode="json", exclude_none=True)
+            return data
         elif mode == "json_str":
-            return self.model_dump_json(exclude_none=True)
+            return json.dumps(data)
         else:
             raise ValueError(f"Unsupported mode for dump_for_headers: {mode}")
 

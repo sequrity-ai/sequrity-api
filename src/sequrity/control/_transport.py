@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 import httpx
 
@@ -67,6 +67,9 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> dict[str, str]:
         eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
@@ -75,12 +78,18 @@ class ControlSyncTransport:
         eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
         eff_session = _resolve(session_id, None)
 
+        features_str = (
+            eff_features.dump_for_headers(mode="json_str", overrides=feature_overrides) if eff_features else None
+        )
+        policy_str = eff_policy.dump_for_headers(mode="json_str", overrides=policy_overrides) if eff_policy else None
+        config_str = eff_config.dump_for_headers(mode="json_str", overrides=config_overrides) if eff_config else None
+
         headers = build_sequrity_headers(
             api_key=self._api_key,
             llm_api_key=eff_llm_key,
-            features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
-            policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,
-            config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
+            features=features_str,
+            policy=policy_str,
+            config=config_str,
             session_id=eff_session,
         )
         if custom_headers:
@@ -104,6 +113,9 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """POST *payload* as JSON to *url* with merged Sequrity headers.
@@ -121,6 +133,9 @@ class ControlSyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
 
@@ -145,6 +160,9 @@ class ControlSyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """Open a streaming POST request.
@@ -163,6 +181,9 @@ class ControlSyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
 
@@ -219,6 +240,9 @@ class ControlAsyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> dict[str, str]:
         eff_llm_key = _resolve(llm_api_key, self._config.llm_api_key)
@@ -227,12 +251,18 @@ class ControlAsyncTransport:
         eff_config = _resolve(fine_grained_config, self._config.fine_grained_config)
         eff_session = _resolve(session_id, self._session_id)
 
+        features_str = (
+            eff_features.dump_for_headers(mode="json_str", overrides=feature_overrides) if eff_features else None
+        )
+        policy_str = eff_policy.dump_for_headers(mode="json_str", overrides=policy_overrides) if eff_policy else None
+        config_str = eff_config.dump_for_headers(mode="json_str", overrides=config_overrides) if eff_config else None
+
         headers = build_sequrity_headers(
             api_key=self._api_key,
             llm_api_key=eff_llm_key,
-            features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
-            policy=eff_policy.dump_for_headers(mode="json_str") if eff_policy else None,
-            config=eff_config.dump_for_headers(mode="json_str") if eff_config else None,
+            features=features_str,
+            policy=policy_str,
+            config=config_str,
             session_id=eff_session,
         )
         if custom_headers:
@@ -254,6 +284,9 @@ class ControlAsyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """Async variant of :meth:`ControlSyncTransport.request`."""
@@ -263,6 +296,9 @@ class ControlAsyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
 
@@ -287,6 +323,9 @@ class ControlAsyncTransport:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """Open an async streaming POST request.
@@ -305,6 +344,9 @@ class ControlAsyncTransport:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
 

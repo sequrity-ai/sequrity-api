@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal, overload
+from typing import Any, Literal, overload
 
 from ..._sentinel import NOT_GIVEN, _NotGiven
 from ...types.chat_completion.request import ChatCompletionRequest, Message, ReasoningEffort, ResponseFormat, Tool
@@ -40,6 +40,9 @@ class ChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> SyncStream[ChatCompletionChunk]: ...
 
@@ -63,6 +66,9 @@ class ChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> ChatCompletionResponse: ...
 
@@ -87,6 +93,9 @@ class ChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> ChatCompletionResponse | SyncStream[ChatCompletionChunk]:
         """Send a chat completion request through Sequrity's secure orchestrator.
@@ -109,6 +118,13 @@ class ChatResource:
             fine_grained_config: Fine-grained config override.
             endpoint_type: Endpoint type override.
             session_id: Explicit session ID override.
+            feature_overrides: Dict to deep-merge into the serialized ``X-Features``
+                header JSON. Allows adding or overriding fields without loosening
+                Pydantic validation on :class:`FeaturesHeader`.
+            policy_overrides: Dict to deep-merge into the serialized ``X-Policy``
+                header JSON.
+            config_overrides: Dict to deep-merge into the serialized ``X-Config``
+                header JSON.
 
         Returns:
             ``ChatCompletionResponse`` when ``stream`` is ``False``/``None``,
@@ -143,6 +159,9 @@ class ChatResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                feature_overrides=feature_overrides,
+                policy_overrides=policy_overrides,
+                config_overrides=config_overrides,
                 custom_headers=custom_headers,
             )
             return SyncStream(response, ChatCompletionChunk, session_id=response.headers.get("X-Session-ID"))
@@ -155,6 +174,9 @@ class ChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
         result = ChatCompletionResponse.model_validate(response.json())
@@ -188,6 +210,10 @@ class AsyncChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
+        custom_headers: dict[str, str] | None = None,
     ) -> AsyncStream[ChatCompletionChunk]: ...
 
     @overload
@@ -210,6 +236,10 @@ class AsyncChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
+        custom_headers: dict[str, str] | None = None,
     ) -> ChatCompletionResponse: ...
 
     async def create(
@@ -231,6 +261,9 @@ class AsyncChatResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> ChatCompletionResponse | AsyncStream[ChatCompletionChunk]:
         """Async variant of :meth:`ChatResource.create`."""
@@ -263,6 +296,9 @@ class AsyncChatResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                feature_overrides=feature_overrides,
+                policy_overrides=policy_overrides,
+                config_overrides=config_overrides,
                 custom_headers=custom_headers,
             )
             return AsyncStream(response, ChatCompletionChunk, session_id=response.headers.get("X-Session-ID"))
@@ -275,6 +311,9 @@ class AsyncChatResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
         result = ChatCompletionResponse.model_validate(response.json())

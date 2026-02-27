@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal, overload
+from typing import Any, Literal, overload
 
 from ..._sentinel import NOT_GIVEN, _NotGiven
 from ...types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
@@ -56,6 +56,9 @@ class MessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> SyncStream[AnthropicStreamEvent]: ...
 
@@ -86,6 +89,9 @@ class MessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse: ...
 
@@ -117,6 +123,9 @@ class MessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse | SyncStream[AnthropicStreamEvent]:
         """Send an Anthropic Messages API request through Sequrity.
@@ -146,6 +155,13 @@ class MessagesResource:
             fine_grained_config: Fine-grained config override.
             endpoint_type: Endpoint type override.
             session_id: Explicit session ID override.
+            feature_overrides: Dict to deep-merge into the serialized ``X-Features``
+                header JSON. Allows adding or overriding fields without loosening
+                Pydantic validation on :class:`FeaturesHeader`.
+            policy_overrides: Dict to deep-merge into the serialized ``X-Policy``
+                header JSON.
+            config_overrides: Dict to deep-merge into the serialized ``X-Config``
+                header JSON.
 
         Returns:
             ``AnthropicMessageResponse`` when ``stream`` is ``False``/``None``,
@@ -187,6 +203,9 @@ class MessagesResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                feature_overrides=feature_overrides,
+                policy_overrides=policy_overrides,
+                config_overrides=config_overrides,
                 custom_headers=custom_headers,
             )
             return SyncStream(response, AnthropicStreamEvent, session_id=response.headers.get("X-Session-ID"))
@@ -199,6 +218,9 @@ class MessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
         result = AnthropicMessageResponse.model_validate(response.json())
@@ -239,6 +261,9 @@ class AsyncMessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> AsyncStream[AnthropicStreamEvent]: ...
 
@@ -269,6 +294,9 @@ class AsyncMessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse: ...
 
@@ -298,6 +326,9 @@ class AsyncMessagesResource:
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         endpoint_type: str | _NotGiven = NOT_GIVEN,
         session_id: str | None | _NotGiven = NOT_GIVEN,
+        feature_overrides: dict[str, Any] | None = None,
+        policy_overrides: dict[str, Any] | None = None,
+        config_overrides: dict[str, Any] | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> AnthropicMessageResponse | AsyncStream[AnthropicStreamEvent]:
         """Async variant of :meth:`MessagesResource.create`."""
@@ -337,6 +368,9 @@ class AsyncMessagesResource:
                 security_policy=security_policy,
                 fine_grained_config=fine_grained_config,
                 session_id=session_id,
+                feature_overrides=feature_overrides,
+                policy_overrides=policy_overrides,
+                config_overrides=config_overrides,
                 custom_headers=custom_headers,
             )
             return AsyncStream(response, AnthropicStreamEvent, session_id=response.headers.get("X-Session-ID"))
@@ -349,6 +383,9 @@ class AsyncMessagesResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             session_id=session_id,
+            feature_overrides=feature_overrides,
+            policy_overrides=policy_overrides,
+            config_overrides=config_overrides,
             custom_headers=custom_headers,
         )
         result = AnthropicMessageResponse.model_validate(response.json())
