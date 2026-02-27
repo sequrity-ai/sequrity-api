@@ -37,6 +37,7 @@ class LangGraphResource:
         security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
         fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
         provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
+        custom_headers: dict[str, str] | None = None,
     ) -> dict:
         """Compile and execute a LangGraph StateGraph with Sequrity security.
 
@@ -75,4 +76,5 @@ class LangGraphResource:
             security_policy=security_policy,
             fine_grained_config=fine_grained_config,
             provider=provider,
+            custom_headers=custom_headers,
         )

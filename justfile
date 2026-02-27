@@ -8,12 +8,7 @@ test-examples:
     bash scripts/run_examples.sh --env-file .env.local
 
 serve-docs: sync-docs
-    uv run mike serve --dev-addr=localhost:8001
-
-# Deploy docs for the latest git tag (e.g., v0.1.0 → 0.1.0)
-deploy-docs: sync-docs
-    uv run mike deploy --update-aliases $(git describe --tags --abbrev=0 --match 'v*' | sed 's/^v//') latest
-    uv run mike set-default latest
+    uv run mkdocs serve --dev-addr=localhost:8001
 
 format:
     uv run ruff format src/ test/

@@ -21,8 +21,13 @@ from .types.enums import LlmServiceProvider, LlmServiceProviderStr, RestApiType
 # Universal provider request/response types
 from .types.chat_completion.request import ChatCompletionRequest
 from .types.chat_completion.response import ChatCompletionResponse
+from .types.chat_completion.stream import ChatCompletionChunk
 from .types.messages.request import AnthropicMessageRequest
 from .types.messages.response import AnthropicMessageResponse
+from .types.messages.stream import AnthropicStreamEvent
+from .types.responses.request import ResponsesRequest
+from .types.responses.response import ResponsesResponse
+from .types.responses.stream import OpenAiResponseStreamEvent
 
 try:
     from ._version import __version__
@@ -45,8 +50,13 @@ __all__ = [
     # Universal request/response types
     "ChatCompletionRequest",
     "ChatCompletionResponse",
+    "ChatCompletionChunk",
     "AnthropicMessageRequest",
     "AnthropicMessageResponse",
+    "AnthropicStreamEvent",
+    "ResponsesRequest",
+    "ResponsesResponse",
+    "OpenAiResponseStreamEvent",
     # Version
     "__version__",
 ]

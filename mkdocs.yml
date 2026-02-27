@@ -162,6 +162,7 @@ nav:
               - control/reference/rest_api/index.md
               - Service Providers: general/rest_api/service_provider.md
               - Chat Completions API: control/reference/rest_api/chat_completion.md
+              - Responses API: control/reference/rest_api/responses.md
               - Messages API: control/reference/rest_api/messages.md
               - Custom Headers:
                   - control/reference/rest_api/headers/index.md
@@ -173,6 +174,7 @@ nav:
               - SequrityClient.control:
                   - control/reference/sequrity_client/index.md
                   - Chat Completions API: control/reference/sequrity_client/chat_completion.md
+                  - Responses API: control/reference/sequrity_client/responses.md
                   - Messages API: control/reference/sequrity_client/message.md
                   - LangGraph: control/reference/sequrity_client/langgraph.md
                   - Policy Generation: control/reference/sequrity_client/policy_gen.md

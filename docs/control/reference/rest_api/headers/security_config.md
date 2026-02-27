@@ -9,39 +9,40 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
 ```json
 {
   "fsm": {
-    "min_num_tools_for_filtering": 10,
-    "clear_session_meta": "never",
+    "min_num_tools_for_filtering": null,
+    "clear_session_meta": null,
     "max_n_turns": null,
     "history_mismatch_policy": null,
     "clear_history_every_n_attempts": null,
-    "disable_rllm": true,
+    "disable_rllm": null,
     "enable_multistep_planning": null,
     "enabled_internal_tools": null,
-    "prune_failed_steps": false,
-    "force_to_cache": [],
+    "prune_failed_steps": null,
+    "force_to_cache": null,
     "max_pllm_steps": null,
     "max_pllm_failed_steps": null,
     "max_tool_calls_per_step": null,
-    "reduced_grammar_for_rllm_review": true,
-    "retry_on_policy_violation": false,
+    "reduced_grammar_for_rllm_review": null,
+    "retry_on_policy_violation": null,
     "wrap_tool_result": null,
     "detect_tool_errors": null,
     "detect_tool_error_regex_pattern": null,
     "detect_tool_error_max_result_length": null,
-    "strict_tool_result_parsing": null
+    "strict_tool_result_parsing": null,
+    "tool_result_transform": null
   },
   "prompt": {
     "pllm": {
       "flavor": null,
       "version": null,
-      "debug_info_level": "normal",
+      "debug_info_level": null,
       "clarify_ambiguous_queries": null,
       "context_var_visibility": null,
       "query_inline_roles": null,
       "query_role_name_overrides": null,
       "query_include_tool_calls": null,
       "query_include_tool_args": null,
-      "query_include_tool_results": null
+      "query_include_tool_results": null,
     },
     "rllm": {
       "flavor": null,
@@ -56,10 +57,11 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
     }
   },
   "response_format": {
-    "strip_response_content": false,
-    "include_program": false,
-    "include_policy_check_history": false,
-    "include_namespace_snapshot": false
+    "strip_response_content": null,
+    "stream_thoughts": null,
+    "include_program": null,
+    "include_policy_check_history": null,
+    "include_namespace_snapshot": null
   }
 }
 ```
@@ -84,17 +86,17 @@ All fields are optional and have sensible defaults.
 
 | Type | Required | Default | Constraints |
 |------|----------|---------|-------------|
-| `integer` or `null` | No | `10` | >= 2 |
+| `integer` or `null` | No | `null` | >= 2 |
 
-Minimum number of registered tools to enable tool-filtering LLM step. Set to `null` to disable.
+Minimum number of registered tools to enable tool-filtering LLM step. When not set, the server default is `10`.
 
 #### `fsm.clear_session_meta`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `string` | No | `"never"` |
+| `string` or `null` | No | `null` |
 
-When to clear session meta information:
+When to clear session meta information. When not set, the server default is `"never"`.
 
 - `"never"`: Never clear
 - `"every_attempt"`: Clear at the beginning of each PLLM attempt
@@ -134,17 +136,17 @@ Single-step mode only. Clear all failed step history every N attempts to save to
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `true` |
+| `boolean` or `null` | No | `null` |
 
-Whether to skip the response LLM (RLLM) review step.
+Whether to skip the response LLM (RLLM) review step. When not set, the server default is `true`.
 
 #### `fsm.enable_multistep_planning`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` or `null` | No | `null` |
 
-When `false` (single-step), each attempt solves independently. When `true` (multi-step), each step builds on previous.
+When `false` (single-step), each attempt solves independently. When `true` (multi-step), each step builds on previous. When not set, the server default is `false`.
 
 #### `fsm.enabled_internal_tools`
 
@@ -158,17 +160,17 @@ List of internal tool IDs available to planning LLM. Valid values: `"parse_with_
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` or `null` | No | `null` |
 
-Multi-step mode only. Remove failed steps from history after turn completes.
+Multi-step mode only. Remove failed steps from history after turn completes. When not set, the server default is `true`.
 
 #### `fsm.force_to_cache`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `array[string]` | No | `[]` |
+| `array[string]` or `null` | No | `null` |
 
-List of tool ID regex patterns to always cache their results regardless of the cache_tool_result setting.
+List of tool ID regex patterns to always cache their results regardless of the cache_tool_result setting. When not set, the server default is `[]`.
 
 #### `fsm.max_pllm_steps`
 
@@ -198,17 +200,17 @@ Maximum number of tool calls allowed per PLLM attempt. If `null`, no limit is en
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `true` |
+| `boolean` or `null` | No | `null` |
 
-Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM.
+Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM. When not set, the server default is `true`.
 
 #### `fsm.retry_on_policy_violation`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` or `null` | No | `null` |
 
-When `true`, allow planning LLM to retry after policy violation.
+When `true`, allow planning LLM to retry after policy violation. When not set, the server default is `false`.
 
 #### `fsm.wrap_tool_result`
 
@@ -254,6 +256,17 @@ The maximum length of tool result to consider for error detection. Longer result
 
 If `true`, only parse external tool results as JSON when the tool declares an output_schema. When `false`, always attempt `json.loads` on tool results.
 
+#### `fsm.tool_result_transform`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `string` or `null` | No | `null` |
+
+Transform applied to tool results before processing:
+
+- `"none"`: No transformation
+- `"codex"`: Apply codex-style transformation to tool results
+
 ---
 
 ## Prompt Overrides (`prompt`)
@@ -268,7 +281,7 @@ Planning LLM prompt overrides:
 |-------|------|---------|-------------|
 | `flavor` | `string` | `null` | Prompt template variant to use (e.g., `"universal"`). |
 | `version` | `string` | `null` | Prompt template version. Combined with flavor to load template. |
-| `debug_info_level` | `string` | `"normal"` | Level of detail for debug/execution information in planning LLM prompt: `"minimal"`, `"normal"`, `"extra"`. |
+| `debug_info_level` | `string` | `null` | Level of detail for debug/execution information in planning LLM prompt: `"minimal"`, `"normal"`, `"extra"`. When not set, the server default is `"normal"`. |
 | `clarify_ambiguous_queries` | `boolean` | `null` | Whether planning LLM is allowed to ask for clarification on ambiguous queries. |
 | `context_var_visibility` | `string` | `null` | The visibility level of context variables in the PLLM prompts: `"none"`, `"basic-notext"`, `"basic-executable"`, `"all-executable"`, `"all"`. |
 | `query_inline_roles` | `array[string]` | `null` | List of roles whose messages will be inlined into the user query: `"assistant"`, `"tool"`, `"developer"`, `"system"`. |
@@ -315,15 +328,23 @@ Tool-formulating LLM prompt overrides:
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` | No | `null` |
 
 When `true`, returns only essential result value as plain text, stripping all metadata.
+
+#### `response_format.stream_thoughts`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `boolean` or `null` | No | `null` |
+
+Whether to stream the model's thinking process in the response.
 
 #### `response_format.include_program`
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` | No | `null` |
 
 Whether to include the generated program in the response.
 
@@ -331,7 +352,7 @@ Whether to include the generated program in the response.
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` | No | `null` |
 
 Whether to include policy check results even when there are no violations.
 
@@ -339,6 +360,6 @@ Whether to include policy check results even when there are no violations.
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` | No | `false` |
+| `boolean` | No | `null` |
 
 Whether to include snapshot of all variables after program execution.

@@ -7,6 +7,7 @@ This section provides the API reference for `SequrityClient`, the Python interfa
 The Control API enables secure LLM interactions with policy enforcement. Key capabilities:
 
 - **Chat Completions**: OpenAI-compatible chat API with security features (toxicity filtering, PII redaction, topic guardrails)
+- **Responses API**: OpenAI Responses API with function calling, multi-turn, reasoning, and streaming support
 - **Anthropic Messages**: Anthropic Messages API with security features
 - **LangGraph Integration**: Execute LangGraph workflows with security policies via Sequrity's Dual-LLM runtime
 - **Policy Generation**: Generate SQRT policies from natural language descriptions
@@ -16,6 +17,7 @@ The Control API enables secure LLM interactions with policy enforcement. Key cap
 | Module | Description |
 |--------|-------------|
 | [Chat Completion](chat_completion.md) | Chat completion API, request/response types, and result schemas |
+| [Responses API](responses.md) | OpenAI Responses API, request/response types, and streaming events |
 | [Anthropic Messages](message.md) | Anthropic Messages API, request/response types |
 | [LangGraph sequrity mode](langgraph.md) | LangGraph execution API and related types |
 | [Policy Generation](policy_gen.md) | Generate SQRT policies from natural language |

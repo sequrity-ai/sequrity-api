@@ -28,7 +28,7 @@ This header is **required** when using Headers-Only Mode (must be provided toget
 
 | Type | Required | Default |
 |------|----------|---------|
-| `string` | Yes | - |
+| `string` | No | `null` |
 
 The agent architecture to use. Valid values:
 

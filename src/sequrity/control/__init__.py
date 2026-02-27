@@ -24,6 +24,7 @@ Example:
 """
 
 from ._config import ControlConfig
+from ._stream import AsyncStream, SyncStream
 from .types.dual_llm_response import (
     ErrorInfo,
     MetaData,
@@ -62,6 +63,9 @@ __all__ = [
     "ValueWithMeta",
     "ErrorInfo",
     "ResponseContentJsonSchema",
+    # Streaming
+    "SyncStream",
+    "AsyncStream",
     # Policy generation
     "PolicyGenRequest",
     "PolicyGenResponse",

@@ -234,6 +234,7 @@ def run_graph_sync(
     security_policy: SecurityPolicyHeader | None | _NotGiven = NOT_GIVEN,
     fine_grained_config: FineGrainedConfigHeader | None | _NotGiven = NOT_GIVEN,
     provider: LlmServiceProvider | LlmServiceProviderStr | None | _NotGiven = NOT_GIVEN,
+    custom_headers: dict[str, str] | None = None,
 ) -> dict:
     """Execute a LangGraph StateGraph through Sequrity's secure runtime.
 
@@ -307,7 +308,7 @@ def run_graph_sync(
     eff_policy = _resolve(security_policy, transport._config.security_policy)
 
     def _build_headers(session_id: str | None = None) -> dict[str, str]:
-        return build_sequrity_headers(
+        headers = build_sequrity_headers(
             api_key=transport._api_key,
             llm_api_key=eff_llm_key,
             features=eff_features.dump_for_headers(mode="json_str") if eff_features else None,
@@ -315,6 +316,9 @@ def run_graph_sync(
             config=eff_fine_grained.dump_for_headers(mode="json_str") if eff_fine_grained else None,
             session_id=session_id,
         )
+        if custom_headers:
+            headers.update(custom_headers)
+        return headers
 
     current_state = initial_state.copy()
     loop_fn = _run_messages_loop if rest_api_type == RestApiType.MESSAGES else _run_chat_completions_loop

@@ -152,7 +152,6 @@ Extended thinking configuration. Discriminated by `type`:
 | `stop_reason` | `string \| null` | Why generation stopped: `"end_turn"`, `"max_tokens"`, `"stop_sequence"`, `"tool_use"`, `"pause_turn"`, `"refusal"`. |
 | `stop_sequence` | `string \| null` | Which stop sequence was hit, if any. |
 | `usage` | `Usage` | Token usage statistics. |
-| `session_id` | `string \| null` | Sequrity session ID (also available via `X-Session-ID` response header). |
 
 ### Response Content Blocks
 

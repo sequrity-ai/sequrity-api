@@ -7,6 +7,10 @@ Sequrity Control supports two agent architectures for tool access control: **Sin
 
     Read the conceptual guide on [Single-LLM vs. Dual-LLM Agents](../learn/single-vs-dual-llm.md) to understand the differences between these architectures and their security implications.
 
+!!! note "LangGraph defaults to Dual-LLM"
+
+    The LangGraph endpoint (`/lang-graph/`) always uses dual-LLM configuration, even when `agent_arch` is set to `"single-llm"` in the `X-Features` header. This is because LangGraph integration requires the dual-LLM architecture for proper security enforcement.
+
 ## Supported Features of Single-LLM
 
 Single-LLM supports a limited subset of features compared to Dual-LLM mode. The following table summarizes the feature availability in Single-LLM mode:
@@ -56,6 +60,14 @@ Single-LLM supports a limited subset of features compared to Dual-LLM mode. The 
         - :no_entry: `prune_failed_steps`
         - :no_entry: `enabled_internal_tools`
         - :no_entry: `force_to_cache`
+        - :no_entry: `history_mismatch_policy`
+        - :no_entry: `max_pllm_failed_steps`
+        - :no_entry: `wrap_tool_result`
+        - :no_entry: `detect_tool_errors`
+        - :no_entry: `detect_tool_error_regex_pattern`
+        - :no_entry: `detect_tool_error_max_result_length`
+        - :no_entry: `strict_tool_result_parsing`
+        - :no_entry: `tool_result_transform`
     - `prompt`:
         - :no_entry: All prompt overrides (dual-llm only)
     - `response_format`:

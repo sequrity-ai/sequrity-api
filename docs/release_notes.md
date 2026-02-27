@@ -5,6 +5,39 @@ hide:
 
 # Release Notes
 
+## v0.4.1
+
+`time: 2026-02-25`
+
+| Product  | Version |
+| ---------|---------|
+| Control API | `094afd3174b700f104cab612d32e3f54ad1b152c` |
+
+??? info "v0.4.1 Release Notes"
+
+    **New Features**
+
+    - **Responses API**: Added OpenAI-compatible Responses API support (`/control/{endpoint_type}/v1/responses`)
+      - Full request/response support with function tools, file search, web search, code interpreter, computer use, MCP, and custom tools
+      - Streaming via server-sent events with lifecycle, structure, content, and reasoning events
+      - Available for `chat`, `code`, and `sequrity_azure` providers
+    - **Streaming Support**: Added streaming across all three main APIs (Chat Completions, Messages, Responses)
+      - New `SyncStream` and `AsyncStream` wrapper classes for SSE handling in the Python client
+      - Session ID tracking through streaming responses
+    - **Custom Headers Documentation**: New tutorial and reference documentation for typed Pydantic header classes (`FeaturesHeader`, `SecurityPolicyHeader`, `FineGrainedConfigHeader`)
+
+    **Configuration Enhancements**
+
+    - Added `tool_result_transform` FSM override (`"none"` or `"codex"`) for stripping Codex CLI metadata
+    - Added `history_mismatch_policy` FSM override (`"reject"`, `"restart_turn"`, `"continue"`) for handling message history divergence in stateless mode (dual-LLM only)
+    - Added `stream_thoughts` response format override for streaming model thinking process
+
+    **Improvements**
+
+    - Request/response classes now ignore extra fields for forward compatibility
+    - Enhanced type hints across LangGraph integration and headers
+
+
 ## v0.4
 
 `time: 2026-02-18`
@@ -60,7 +93,7 @@ hide:
 | ---------|---------|
 | Control API | `17620f2abd4646171fc8a462bad3fafbd2b0126b` |
 
-- Change default value of `pllm_can_ask_for_clarification` in `security_config` header to `true`.
+- Change default value of `clarify_ambiguous_queries` in `X-Config` header (`prompt.pllm.clarify_ambiguous_queries`) to `true`.
 - Update docs deployment workflow to set default to `dev` instead of `latest` until docs are stable.
 
 ## v0.0.1
