@@ -4,7 +4,7 @@
     options:
       show_root_heading: true
       show_source: true
-      members: ["single_llm", "dual_llm"]
+      members: ["single_llm", "dual_llm", "dump_for_headers"]
 
 ::: sequrity.control.types.headers.TaggerConfig
     options:

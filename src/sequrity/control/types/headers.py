@@ -642,6 +642,25 @@ class FineGrainedConfigHeader(BaseModel):
         Args:
             mode: Output format — ``"json"`` for a dict, ``"json_str"`` for a JSON string.
             overrides: Optional dict to deep-merge into the serialized output.
+                Nested dicts are merged recursively; non-dict values replace
+                existing ones. This lets you inject fields the Pydantic model
+                doesn't define while keeping ``extra="forbid"`` validation at
+                construction time.
+
+        Example:
+            ```python
+            config = FineGrainedConfigHeader.dual_llm(max_n_turns=5)
+            header_json = config.dump_for_headers(overrides={
+                "fsm": {
+                    "max_n_turns": 20,              # override existing
+                    "custom_beta_flag": True,       # add custom field that is not defined on the model
+                },
+                "prompt": {
+                    "pllm": {"debug_info_level": "extra"},  # nested override
+                },
+                "experimental_section": {"key": "value"},   # new top-level key
+            })
+            ```
         """
         data = self.model_dump(mode="json", exclude_none=True)
         if overrides:
