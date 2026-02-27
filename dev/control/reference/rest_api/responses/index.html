@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://sequrity-ai.github.io/sequrity-api/dev/control/reference/rest_api/chat_completion/">
+        <link rel="canonical" href="https://sequrity-ai.github.io/sequrity-api/dev/control/reference/rest_api/responses/">
       
       
-        <link rel="prev" href="../../../../general/rest_api/service_provider/">
+        <link rel="prev" href="../chat_completion/">
       
       
-        <link rel="next" href="../responses/">
+        <link rel="next" href="../messages/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Chat Completions API - Sequrity</title>
+        <title>Responses API - Sequrity</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chat-completion-api" class="md-skip">
+        <a href="#responses-api" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Chat Completions API
+              Responses API
             
           </span>
         </div>
@@ -1604,6 +1604,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../chat_completion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat Completions API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1623,7 +1651,7 @@
   <span class="md-ellipsis">
     
   
-    Chat Completions API
+    Responses API
   
 
     
@@ -1641,7 +1669,7 @@
   <span class="md-ellipsis">
     
   
-    Chat Completions API
+    Responses API
   
 
     
@@ -1690,22 +1718,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#message-types" class="md-nav__link">
+  <a href="#input-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Message Types
+        Input Types
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Message Types">
+    <nav class="md-nav" aria-label="Input Types">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#system-message" class="md-nav__link">
+  <a href="#input-message" class="md-nav__link">
     <span class="md-ellipsis">
       
-        System Message
+        Input Message
       
     </span>
   </a>
@@ -1713,10 +1741,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#developer-message" class="md-nav__link">
+  <a href="#content-item-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Developer Message
+        Content Item Types
       
     </span>
   </a>
@@ -1724,32 +1752,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-message" class="md-nav__link">
+  <a href="#function-call-output-for-multi-turn" class="md-nav__link">
     <span class="md-ellipsis">
       
-        User Message
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#assistant-message" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Assistant Message
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tool-message" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tool Message
+        Function Call Output (for multi-turn)
       
     </span>
   </a>
@@ -1762,17 +1768,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#content-parts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Content Parts
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#tools" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1781,13 +1776,52 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Tool
+      
+    </span>
+  </a>
+  
 </li>
         
           <li class="md-nav__item">
-  <a href="#response-format" class="md-nav__link">
+  <a href="#other-tool-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Response Format
+        Other Tool Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasoning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text Config
       
     </span>
   </a>
@@ -1812,10 +1846,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#choice" class="md-nav__link">
+  <a href="#output-items" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Choice
+        Output Items
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-type-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message (type: "message")
       
     </span>
   </a>
@@ -1823,10 +1869,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#response-message" class="md-nav__link">
+  <a href="#function-call-type-function_call" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Response Message
+        Function Call (type: "function_call")
       
     </span>
   </a>
@@ -1834,10 +1880,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#toolcall" class="md-nav__link">
+  <a href="#reasoning-type-reasoning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ToolCall
+        Reasoning (type: "reasoning")
       
     </span>
   </a>
@@ -1845,10 +1891,87 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#completionusage" class="md-nav__link">
+  <a href="#other-output-item-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CompletionUsage
+        Other Output Item Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responseusage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseUsage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#streaming-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streaming Events
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Streaming Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lifecycle-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasoning Events
       
     </span>
   </a>
@@ -1871,77 +1994,10 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Request
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#response" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Response
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../responses/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Responses API
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -3182,22 +3238,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#message-types" class="md-nav__link">
+  <a href="#input-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Message Types
+        Input Types
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Message Types">
+    <nav class="md-nav" aria-label="Input Types">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#system-message" class="md-nav__link">
+  <a href="#input-message" class="md-nav__link">
     <span class="md-ellipsis">
       
-        System Message
+        Input Message
       
     </span>
   </a>
@@ -3205,10 +3261,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#developer-message" class="md-nav__link">
+  <a href="#content-item-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Developer Message
+        Content Item Types
       
     </span>
   </a>
@@ -3216,32 +3272,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#user-message" class="md-nav__link">
+  <a href="#function-call-output-for-multi-turn" class="md-nav__link">
     <span class="md-ellipsis">
       
-        User Message
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#assistant-message" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Assistant Message
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tool-message" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tool Message
+        Function Call Output (for multi-turn)
       
     </span>
   </a>
@@ -3254,17 +3288,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#content-parts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Content Parts
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#tools" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3273,13 +3296,52 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Tool
+      
+    </span>
+  </a>
+  
 </li>
         
           <li class="md-nav__item">
-  <a href="#response-format" class="md-nav__link">
+  <a href="#other-tool-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Response Format
+        Other Tool Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasoning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text Config
       
     </span>
   </a>
@@ -3304,10 +3366,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#choice" class="md-nav__link">
+  <a href="#output-items" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Choice
+        Output Items
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Items">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-type-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message (type: "message")
       
     </span>
   </a>
@@ -3315,10 +3389,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#response-message" class="md-nav__link">
+  <a href="#function-call-type-function_call" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Response Message
+        Function Call (type: "function_call")
       
     </span>
   </a>
@@ -3326,10 +3400,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#toolcall" class="md-nav__link">
+  <a href="#reasoning-type-reasoning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ToolCall
+        Reasoning (type: "reasoning")
       
     </span>
   </a>
@@ -3337,10 +3411,87 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#completionusage" class="md-nav__link">
+  <a href="#other-output-item-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CompletionUsage
+        Other Output Item Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responseusage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ResponseUsage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#streaming-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streaming Events
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Streaming Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lifecycle-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasoning Events
       
     </span>
   </a>
@@ -3360,45 +3511,6 @@
       
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Request
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#response" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Response
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3506,9 +3618,9 @@
   
 
 
-<h1 id="chat-completion-api">Chat Completion API</h1>
-<p>The Sequrity Control Chat Completion API is compatible with the <a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions API</a>. This allows you to use Sequrity's security features while maintaining compatibility with existing OpenAI-based applications.</p>
-<p>For the Anthropic Messages format, see the <a href="../messages/">Messages API</a> reference.</p>
+<h1 id="responses-api">Responses API</h1>
+<p>The Sequrity Control Responses API is compatible with the <a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses API</a>. This allows you to use Sequrity's security features while maintaining compatibility with existing OpenAI Responses-based applications.</p>
+<p>For the Chat Completions format, see the <a href="../chat_completion/">Chat Completion API</a> reference. For the Anthropic Messages format, see the <a href="../messages/">Messages API</a> reference.</p>
 <h2 id="endpoints">Endpoints</h2>
 <table>
 <thead>
@@ -3519,19 +3631,15 @@
 </thead>
 <tbody>
 <tr>
-<td><code>POST /control/{endpoint_type}/v1/chat/completions</code></td>
+<td><code>POST /control/{endpoint_type}/v1/responses</code></td>
 <td>Default</td>
 </tr>
 <tr>
-<td><code>POST /control/{endpoint_type}/openai/v1/chat/completions</code></td>
+<td><code>POST /control/{endpoint_type}/openai/v1/responses</code></td>
 <td>OpenAI</td>
 </tr>
 <tr>
-<td><code>POST /control/{endpoint_type}/openrouter/v1/chat/completions</code></td>
-<td>OpenRouter</td>
-</tr>
-<tr>
-<td><code>POST /control/{endpoint_type}/sequrity_azure/v1/chat/completions</code></td>
+<td><code>POST /control/{endpoint_type}/sequrity_azure/v1/responses</code></td>
 <td>Sequrity Azure</td>
 </tr>
 </tbody>
@@ -3549,16 +3657,40 @@
 </thead>
 <tbody>
 <tr>
-<td><code>messages</code></td>
-<td><code>array[Message]</code></td>
-<td>Yes</td>
-<td>A list of messages comprising the conversation so far. See <a href="#message-types">Message Types</a>.</td>
-</tr>
-<tr>
 <td><code>model</code></td>
 <td><code>string</code></td>
 <td>Yes</td>
-<td>Model ID, e.g. <code>openai/gpt-5-mini</code>. For Dual-LLM, specify two models separated by a comma (<code>pllm,qllm</code>).</td>
+<td>Model ID, e.g. <code>gpt-4o</code>, <code>o3</code>.</td>
+</tr>
+<tr>
+<td><code>input</code></td>
+<td><code>string \| array[InputItem]</code></td>
+<td>No</td>
+<td>Text, image, or file inputs to the model. See <a href="#input-types">Input Types</a>.</td>
+</tr>
+<tr>
+<td><code>instructions</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>A system (or developer) message inserted into the model's context.</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td><code>array[Tool]</code></td>
+<td>No</td>
+<td>Tools the model may call. See <a href="#tools">Tools</a>.</td>
+</tr>
+<tr>
+<td><code>tool_choice</code></td>
+<td><code>string \| object</code></td>
+<td>No</td>
+<td>How the model should select which tool to use: <code>"none"</code>, <code>"auto"</code>, <code>"required"</code>, or a function object.</td>
+</tr>
+<tr>
+<td><code>stream</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>If <code>true</code>, the response is streamed as server-sent events.</td>
 </tr>
 <tr>
 <td><code>temperature</code></td>
@@ -3570,185 +3702,115 @@
 <td><code>top_p</code></td>
 <td><code>float</code></td>
 <td>No</td>
-<td>Nucleus sampling threshold. Use <code>0.1</code> for top 10% probability mass.</td>
+<td>Nucleus sampling parameter.</td>
 </tr>
 <tr>
-<td><code>tools</code></td>
-<td><code>array[Tool]</code></td>
-<td>No</td>
-<td>Tools the model may call. See <a href="#tools">Tools</a>.</td>
-</tr>
-<tr>
-<td><code>stream</code></td>
-<td><code>boolean</code></td>
-<td>No</td>
-<td>If <code>true</code>, partial deltas are sent as server-sent events.</td>
-</tr>
-<tr>
-<td><code>seed</code></td>
+<td><code>max_output_tokens</code></td>
 <td><code>integer</code></td>
 <td>No</td>
-<td>Seed for deterministic sampling (best-effort).</td>
+<td>Upper bound for generated tokens.</td>
 </tr>
 <tr>
-<td><code>reasoning_effort</code></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>Reasoning effort for reasoning models: <code>"none"</code>, <code>"minimal"</code>, <code>"low"</code>, <code>"medium"</code>, <code>"high"</code>, <code>"xhigh"</code>.</td>
-</tr>
-<tr>
-<td><code>response_format</code></td>
+<td><code>reasoning</code></td>
 <td><code>object</code></td>
 <td>No</td>
-<td>Output format constraint. See <a href="#response-format">Response Format</a>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="message-types">Message Types</h3>
-<p>Messages are distinguished by the <code>role</code> field.</p>
-<h4 id="system-message">System Message</h4>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>role</code></td>
-<td><code>"system"</code></td>
-<td>Yes</td>
-<td></td>
+<td>Configuration for reasoning models. See <a href="#reasoning">Reasoning</a>.</td>
 </tr>
 <tr>
-<td><code>content</code></td>
-<td><code>string \| array[ContentPartText]</code></td>
-<td>Yes</td>
-<td>The system prompt.</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>Optional participant name.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="developer-message">Developer Message</h4>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>role</code></td>
-<td><code>"developer"</code></td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td><code>content</code></td>
-<td><code>string \| array[ContentPartText]</code></td>
-<td>Yes</td>
-<td>The developer message.</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>Optional participant name.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="user-message">User Message</h4>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>role</code></td>
-<td><code>"user"</code></td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td><code>content</code></td>
-<td><code>string \| array[ContentPart]</code></td>
-<td>Yes</td>
-<td>Supports text, images, audio, and files. See <a href="#content-parts">Content Parts</a>.</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>Optional participant name.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="assistant-message">Assistant Message</h4>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>role</code></td>
-<td><code>"assistant"</code></td>
-<td>Yes</td>
-<td></td>
-</tr>
-<tr>
-<td><code>content</code></td>
-<td><code>string \| array[ContentPartText \| ContentPartRefusal] \| null</code></td>
-<td>No</td>
-<td>Required unless <code>tool_calls</code> is specified.</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>Optional participant name.</td>
-</tr>
-<tr>
-<td><code>refusal</code></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>Refusal message by the assistant.</td>
-</tr>
-<tr>
-<td><code>audio</code></td>
+<td><code>text</code></td>
 <td><code>object</code></td>
 <td>No</td>
-<td>Reference to a previous audio response.</td>
+<td>Text response format configuration. See <a href="#text-config">Text Config</a>.</td>
 </tr>
 <tr>
-<td><code>tool_calls</code></td>
-<td><code>array[ToolCall]</code></td>
+<td><code>metadata</code></td>
+<td><code>object</code></td>
 <td>No</td>
-<td>Tool calls generated by the model.</td>
+<td>Key-value pairs (up to 16) attached to the response.</td>
+</tr>
+<tr>
+<td><code>previous_response_id</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>ID of a previous response for multi-turn conversations.</td>
+</tr>
+<tr>
+<td><code>include</code></td>
+<td><code>array[string]</code></td>
+<td>No</td>
+<td>Additional output data to include in the response.</td>
+</tr>
+<tr>
+<td><code>store</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>Whether to store the response for later retrieval.</td>
+</tr>
+<tr>
+<td><code>truncation</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Truncation strategy: <code>"auto"</code> or <code>"disabled"</code>.</td>
+</tr>
+<tr>
+<td><code>parallel_tool_calls</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>Whether to allow parallel tool execution.</td>
+</tr>
+<tr>
+<td><code>max_tool_calls</code></td>
+<td><code>integer</code></td>
+<td>No</td>
+<td>Maximum number of calls to built-in tools.</td>
+</tr>
+<tr>
+<td><code>background</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>Whether to run the response in the background.</td>
+</tr>
+<tr>
+<td><code>conversation</code></td>
+<td><code>string \| object</code></td>
+<td>No</td>
+<td>Conversation context.</td>
+</tr>
+<tr>
+<td><code>prompt</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>Prompt template reference with <code>id</code> and optional <code>variables</code>.</td>
+</tr>
+<tr>
+<td><code>service_tier</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Processing tier: <code>"auto"</code>, <code>"default"</code>, <code>"flex"</code>, <code>"scale"</code>, <code>"priority"</code>.</td>
+</tr>
+<tr>
+<td><code>stream_options</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>Options for streaming responses (e.g., <code>include_usage</code>).</td>
+</tr>
+<tr>
+<td><code>top_logprobs</code></td>
+<td><code>integer</code></td>
+<td>No</td>
+<td>Number of most likely tokens to return at each position (0–20).</td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td><code>float</code></td>
+<td>No</td>
+<td>Client-side timeout in seconds.</td>
 </tr>
 </tbody>
 </table>
-<h4 id="tool-message">Tool Message</h4>
+<h3 id="input-types">Input Types</h3>
+<p>The <code>input</code> field accepts either a plain string or an array of input items. Input items are distinguished by <code>role</code> or <code>type</code>:</p>
+<h4 id="input-message">Input Message</h4>
 <table>
 <thead>
 <tr>
@@ -3761,26 +3823,19 @@
 <tbody>
 <tr>
 <td><code>role</code></td>
-<td><code>"tool"</code></td>
+<td><code>"user" \| "system" \| "developer"</code></td>
 <td>Yes</td>
-<td></td>
+<td>The role of the message.</td>
 </tr>
 <tr>
 <td><code>content</code></td>
-<td><code>string \| array[ContentPartText]</code></td>
+<td><code>string \| array[ContentItem]</code></td>
 <td>Yes</td>
-<td>The tool result.</td>
-</tr>
-<tr>
-<td><code>tool_call_id</code></td>
-<td><code>string</code></td>
-<td>Yes</td>
-<td>ID of the tool call this responds to.</td>
+<td>Message content (text, images, files, or audio).</td>
 </tr>
 </tbody>
 </table>
-<h3 id="content-parts">Content Parts</h3>
-<p>User messages support multimodal content:</p>
+<h4 id="content-item-types">Content Item Types</h4>
 <table>
 <thead>
 <tr>
@@ -3791,28 +3846,61 @@
 </thead>
 <tbody>
 <tr>
-<td><code>text</code></td>
+<td><code>input_text</code></td>
 <td><code>type</code>, <code>text</code></td>
-<td>Plain text.</td>
+<td>Plain text input.</td>
 </tr>
 <tr>
-<td><code>image_url</code></td>
-<td><code>type</code>, <code>image_url.url</code>, <code>image_url.detail</code></td>
-<td>Image via URL or base64. Detail: <code>"auto"</code>, <code>"low"</code>, <code>"high"</code>.</td>
+<td><code>input_image</code></td>
+<td><code>type</code>, <code>detail</code>, <code>file_id</code>, <code>image_url</code></td>
+<td>Image via URL, base64, or file ID. Detail: <code>"auto"</code>, <code>"low"</code>, <code>"high"</code>.</td>
+</tr>
+<tr>
+<td><code>input_file</code></td>
+<td><code>type</code>, <code>file_id</code></td>
+<td>File via file ID.</td>
 </tr>
 <tr>
 <td><code>input_audio</code></td>
-<td><code>type</code>, <code>input_audio.data</code>, <code>input_audio.format</code></td>
-<td>Audio as base64. Format: <code>"wav"</code>, <code>"mp3"</code>.</td>
+<td><code>type</code>, <code>audio</code></td>
+<td>Base64-encoded audio data.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="function-call-output-for-multi-turn">Function Call Output (for multi-turn)</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>"function_call_output"</code></td>
+<td>Yes</td>
+<td></td>
 </tr>
 <tr>
-<td><code>file</code></td>
-<td><code>type</code>, <code>file.file_data</code>, <code>file.file_id</code>, <code>file.filename</code></td>
-<td>File via base64 or file ID.</td>
+<td><code>call_id</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>The tool call ID from the model's function call.</td>
+</tr>
+<tr>
+<td><code>output</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>The text output from the tool execution.</td>
 </tr>
 </tbody>
 </table>
 <h3 id="tools">Tools</h3>
+<p>The Responses API supports multiple tool types:</p>
+<h4 id="function-tool">Function Tool</h4>
 <table>
 <thead>
 <tr>
@@ -3827,35 +3915,35 @@
 <td><code>type</code></td>
 <td><code>"function"</code></td>
 <td>Yes</td>
-<td>Currently only <code>"function"</code> is supported.</td>
+<td></td>
 </tr>
 <tr>
-<td><code>function.name</code></td>
+<td><code>name</code></td>
 <td><code>string</code></td>
 <td>Yes</td>
-<td>Function name (a-z, A-Z, 0-9, underscores, dashes; max 64 chars).</td>
+<td>The function name.</td>
 </tr>
 <tr>
-<td><code>function.description</code></td>
-<td><code>string</code></td>
-<td>No</td>
-<td>What the function does.</td>
-</tr>
-<tr>
-<td><code>function.parameters</code></td>
+<td><code>parameters</code></td>
 <td><code>object</code></td>
 <td>No</td>
 <td>JSON Schema describing the function parameters.</td>
 </tr>
 <tr>
-<td><code>function.strict</code></td>
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Description of the function.</td>
+</tr>
+<tr>
+<td><code>strict</code></td>
 <td><code>boolean</code></td>
 <td>No</td>
-<td>Enable strict schema adherence.</td>
+<td>Enforce strict parameter validation.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="response-format">Response Format</h3>
+<h4 id="other-tool-types">Other Tool Types</h4>
 <table>
 <thead>
 <tr>
@@ -3865,16 +3953,94 @@
 </thead>
 <tbody>
 <tr>
-<td><code>text</code></td>
-<td>Default text response.</td>
+<td><code>file_search</code></td>
+<td>Search uploaded files.</td>
 </tr>
 <tr>
-<td><code>json_object</code></td>
-<td>JSON mode — model outputs valid JSON.</td>
+<td><code>web_search_preview</code></td>
+<td>Web search with user location support.</td>
 </tr>
 <tr>
-<td><code>json_schema</code></td>
-<td>Structured Outputs with a JSON Schema. Fields: <code>name</code>, <code>description</code>, <code>schema</code>, <code>strict</code>.</td>
+<td><code>code_interpreter</code></td>
+<td>Execute code in a sandbox.</td>
+</tr>
+<tr>
+<td><code>computer_use_preview</code></td>
+<td>Computer use tool.</td>
+</tr>
+<tr>
+<td><code>image_generation</code></td>
+<td>Generate images.</td>
+</tr>
+<tr>
+<td><code>mcp</code></td>
+<td>Model Context Protocol server tools.</td>
+</tr>
+<tr>
+<td><code>web_search</code></td>
+<td>Web search tool.</td>
+</tr>
+<tr>
+<td><code>local_shell</code></td>
+<td>Local shell execution tool.</td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td>Custom tool type.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reasoning">Reasoning</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>effort</code></td>
+<td><code>string</code></td>
+<td>Reasoning effort level: <code>"none"</code>, <code>"low"</code>, <code>"medium"</code>, <code>"high"</code>, <code>"xhigh"</code>.</td>
+</tr>
+<tr>
+<td><code>generate_summary</code></td>
+<td><code>string</code></td>
+<td>Summary generation: <code>"auto"</code>, <code>"concise"</code>, <code>"detailed"</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="text-config">Text Config</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>format.type</code></td>
+<td><code>string</code></td>
+<td>Output format: <code>"text"</code>, <code>"json_object"</code>, or <code>"json_schema"</code>.</td>
+</tr>
+<tr>
+<td><code>format.name</code></td>
+<td><code>string</code></td>
+<td>Schema name (for <code>json_schema</code>).</td>
+</tr>
+<tr>
+<td><code>format.schema</code></td>
+<td><code>object</code></td>
+<td>JSON Schema (for <code>json_schema</code>).</td>
+</tr>
+<tr>
+<td><code>format.strict</code></td>
+<td><code>boolean</code></td>
+<td>Strict schema adherence (for <code>json_schema</code>).</td>
 </tr>
 </tbody>
 </table>
@@ -3891,16 +4057,16 @@
 <tr>
 <td><code>id</code></td>
 <td><code>string</code></td>
-<td>Unique identifier for the chat completion.</td>
+<td>Unique identifier for this response.</td>
 </tr>
 <tr>
 <td><code>object</code></td>
-<td><code>"chat.completion"</code></td>
-<td>Always <code>"chat.completion"</code>.</td>
+<td><code>"response"</code></td>
+<td>Always <code>"response"</code>.</td>
 </tr>
 <tr>
-<td><code>created</code></td>
-<td><code>integer</code></td>
+<td><code>created_at</code></td>
+<td><code>float</code></td>
 <td>Unix timestamp (seconds) when created.</td>
 </tr>
 <tr>
@@ -3909,102 +4075,75 @@
 <td>The model used.</td>
 </tr>
 <tr>
-<td><code>choices</code></td>
-<td><code>array[Choice]</code></td>
-<td>Completion choices.</td>
+<td><code>output</code></td>
+<td><code>array[OutputItem]</code></td>
+<td>Generated content items. See <a href="#output-items">Output Items</a>.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>string</code></td>
+<td>Response status: <code>"completed"</code>, <code>"failed"</code>, <code>"in_progress"</code>, <code>"cancelled"</code>, <code>"queued"</code>, <code>"incomplete"</code>.</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>object \| null</code></td>
+<td>Error information with <code>code</code> and <code>message</code> fields.</td>
 </tr>
 <tr>
 <td><code>usage</code></td>
-<td><code>CompletionUsage</code></td>
+<td><code>ResponseUsage</code></td>
 <td>Token usage statistics.</td>
+</tr>
+<tr>
+<td><code>parallel_tool_calls</code></td>
+<td><code>boolean</code></td>
+<td>Whether parallel tool calls were enabled.</td>
+</tr>
+<tr>
+<td><code>tool_choice</code></td>
+<td><code>string \| object</code></td>
+<td>Tool choice used for this response.</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td><code>array[object]</code></td>
+<td>Tools available for this response.</td>
+</tr>
+<tr>
+<td><code>incomplete_details</code></td>
+<td><code>object \| null</code></td>
+<td>Details on why the response is incomplete.</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td><code>float \| null</code></td>
+<td>Sampling temperature used.</td>
+</tr>
+<tr>
+<td><code>top_p</code></td>
+<td><code>float \| null</code></td>
+<td>Nucleus sampling used.</td>
+</tr>
+<tr>
+<td><code>max_output_tokens</code></td>
+<td><code>integer \| null</code></td>
+<td>Max output tokens setting.</td>
+</tr>
+<tr>
+<td><code>truncation</code></td>
+<td><code>string \| null</code></td>
+<td>Truncation strategy used.</td>
 </tr>
 <tr>
 <td><code>service_tier</code></td>
 <td><code>string \| null</code></td>
-<td>Service tier used (e.g., <code>"auto"</code>, <code>"default"</code>, <code>"flex"</code>, <code>"scale"</code>, <code>"priority"</code>).</td>
-</tr>
-<tr>
-<td><code>system_fingerprint</code></td>
-<td><code>string \| null</code></td>
-<td>Backend configuration fingerprint.</td>
+<td>Service tier used.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="choice">Choice</h3>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>index</code></td>
-<td><code>integer</code></td>
-<td>Index of this choice.</td>
-</tr>
-<tr>
-<td><code>message</code></td>
-<td><code>ResponseMessage</code></td>
-<td>The generated message.</td>
-</tr>
-<tr>
-<td><code>finish_reason</code></td>
-<td><code>string</code></td>
-<td>Why generation stopped: <code>"stop"</code>, <code>"length"</code>, <code>"tool_calls"</code>, <code>"content_filter"</code>, <code>"function_call"</code>. OpenRouter may also return <code>"error"</code>.</td>
-</tr>
-<tr>
-<td><code>logprobs</code></td>
-<td><code>object \| null</code></td>
-<td>Log probability information, if requested.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="response-message">Response Message</h3>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>role</code></td>
-<td><code>"assistant"</code></td>
-<td>Always <code>"assistant"</code>.</td>
-</tr>
-<tr>
-<td><code>content</code></td>
-<td><code>string \| null</code></td>
-<td>The message content.</td>
-</tr>
-<tr>
-<td><code>refusal</code></td>
-<td><code>string \| null</code></td>
-<td>Refusal message, if applicable.</td>
-</tr>
-<tr>
-<td><code>annotations</code></td>
-<td><code>array[Annotation] \| null</code></td>
-<td>URL citations (e.g. from web search).</td>
-</tr>
-<tr>
-<td><code>audio</code></td>
-<td><code>object \| null</code></td>
-<td>Audio response data.</td>
-</tr>
-<tr>
-<td><code>tool_calls</code></td>
-<td><code>array[ToolCall] \| null</code></td>
-<td>Tool calls generated by the model.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="toolcall">ToolCall</h3>
+<h3 id="output-items">Output Items</h3>
+<p>Output items are distinguished by the <code>type</code> field:</p>
+<h4 id="message-type-message">Message (<code>type: "message"</code>)</h4>
 <table>
 <thead>
 <tr>
@@ -4017,26 +4156,31 @@
 <tr>
 <td><code>id</code></td>
 <td><code>string</code></td>
-<td>The tool call ID.</td>
+<td>Unique ID of the output message.</td>
 </tr>
 <tr>
 <td><code>type</code></td>
-<td><code>"function"</code></td>
-<td>Always <code>"function"</code>.</td>
+<td><code>"message"</code></td>
+<td></td>
 </tr>
 <tr>
-<td><code>function.name</code></td>
-<td><code>string</code></td>
-<td>Name of the called function.</td>
+<td><code>role</code></td>
+<td><code>"assistant"</code></td>
+<td>Always <code>"assistant"</code>.</td>
 </tr>
 <tr>
-<td><code>function.arguments</code></td>
+<td><code>content</code></td>
+<td><code>array[ContentItem]</code></td>
+<td>Content items: <code>output_text</code> (with <code>text</code> and <code>annotations</code>) or <code>refusal</code>.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
 <td><code>string</code></td>
-<td>JSON-encoded arguments.</td>
+<td><code>"in_progress"</code>, <code>"completed"</code>, <code>"incomplete"</code>.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="completionusage">CompletionUsage</h3>
+<h4 id="function-call-type-function_call">Function Call (<code>type: "function_call"</code>)</h4>
 <table>
 <thead>
 <tr>
@@ -4047,19 +4191,273 @@
 </thead>
 <tbody>
 <tr>
-<td><code>prompt_tokens</code></td>
-<td><code>integer</code></td>
-<td>Tokens in the prompt.</td>
+<td><code>type</code></td>
+<td><code>"function_call"</code></td>
+<td></td>
 </tr>
 <tr>
-<td><code>completion_tokens</code></td>
+<td><code>call_id</code></td>
+<td><code>string</code></td>
+<td>Unique ID for responding with tool output.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The function name.</td>
+</tr>
+<tr>
+<td><code>arguments</code></td>
+<td><code>string</code></td>
+<td>JSON-encoded arguments.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>string \| null</code></td>
+<td>Unique ID of the tool call.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>string \| null</code></td>
+<td><code>"in_progress"</code>, <code>"completed"</code>, <code>"incomplete"</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="reasoning-type-reasoning">Reasoning (<code>type: "reasoning"</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td>Unique ID of the reasoning item.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>"reasoning"</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td><code>array[object]</code></td>
+<td>Reasoning summary text items.</td>
+</tr>
+<tr>
+<td><code>encrypted_content</code></td>
+<td><code>string \| null</code></td>
+<td>Encrypted content for multi-turn continuity.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="other-output-item-types">Other Output Item Types</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file_search_call</code></td>
+<td>File search tool call results.</td>
+</tr>
+<tr>
+<td><code>web_search_call</code></td>
+<td>Web search tool call results.</td>
+</tr>
+<tr>
+<td><code>code_interpreter_call</code></td>
+<td>Code interpreter execution results.</td>
+</tr>
+<tr>
+<td><code>computer_call</code></td>
+<td>Computer use tool call.</td>
+</tr>
+<tr>
+<td><code>image_generation_call</code></td>
+<td>Image generation results.</td>
+</tr>
+<tr>
+<td><code>local_shell_call</code></td>
+<td>Local shell execution results.</td>
+</tr>
+<tr>
+<td><code>mcp_call</code></td>
+<td>MCP server tool call results.</td>
+</tr>
+<tr>
+<td><code>mcp_list_tools</code></td>
+<td>MCP tool listing results.</td>
+</tr>
+<tr>
+<td><code>mcp_approval_request</code></td>
+<td>MCP approval request.</td>
+</tr>
+<tr>
+<td><code>custom_tool_call</code></td>
+<td>Custom tool call results.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="responseusage">ResponseUsage</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input_tokens</code></td>
 <td><code>integer</code></td>
-<td>Tokens in the completion.</td>
+<td>Input tokens used.</td>
+</tr>
+<tr>
+<td><code>input_tokens_details.cached_tokens</code></td>
+<td><code>integer</code></td>
+<td>Tokens retrieved from cache.</td>
+</tr>
+<tr>
+<td><code>output_tokens</code></td>
+<td><code>integer</code></td>
+<td>Output tokens generated.</td>
+</tr>
+<tr>
+<td><code>output_tokens_details.reasoning_tokens</code></td>
+<td><code>integer</code></td>
+<td>Reasoning tokens used.</td>
 </tr>
 <tr>
 <td><code>total_tokens</code></td>
 <td><code>integer</code></td>
 <td>Total tokens used.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="streaming-events">Streaming Events</h2>
+<p>When <code>stream</code> is <code>true</code>, the response is delivered as server-sent events. Each event has a <code>type</code> field:</p>
+<h3 id="lifecycle-events">Lifecycle Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>response.created</code></td>
+<td>Emitted once when the response is first created.</td>
+</tr>
+<tr>
+<td><code>response.in_progress</code></td>
+<td>Response transitions to in-progress state.</td>
+</tr>
+<tr>
+<td><code>response.completed</code></td>
+<td>Response completes successfully.</td>
+</tr>
+<tr>
+<td><code>response.failed</code></td>
+<td>Response fails.</td>
+</tr>
+<tr>
+<td><code>response.incomplete</code></td>
+<td>Response is incomplete (e.g. max tokens reached).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="structure-events">Structure Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>response.output_item.added</code></td>
+<td>A new output item (message, reasoning, function_call) starts.</td>
+</tr>
+<tr>
+<td><code>response.output_item.done</code></td>
+<td>An output item is fully completed.</td>
+</tr>
+<tr>
+<td><code>response.content_part.added</code></td>
+<td>A new content part starts within a message.</td>
+</tr>
+<tr>
+<td><code>response.content_part.done</code></td>
+<td>A content part is completed.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="content-events">Content Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Key Fields</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>response.output_text.delta</code></td>
+<td><code>delta</code></td>
+<td>Incremental text content.</td>
+</tr>
+<tr>
+<td><code>response.output_text.done</code></td>
+<td><code>text</code></td>
+<td>Text content finalized.</td>
+</tr>
+<tr>
+<td><code>response.function_call_arguments.delta</code></td>
+<td><code>delta</code></td>
+<td>Incremental function call arguments.</td>
+</tr>
+<tr>
+<td><code>response.function_call_arguments.done</code></td>
+<td><code>name</code>, <code>arguments</code></td>
+<td>Function call arguments finalized.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reasoning-events">Reasoning Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>response.reasoning_summary_part.added</code></td>
+<td>A new reasoning summary part starts.</td>
+</tr>
+<tr>
+<td><code>response.reasoning_summary_part.done</code></td>
+<td>A reasoning summary part completes.</td>
+</tr>
+<tr>
+<td><code>response.reasoning_summary_text.delta</code></td>
+<td>Incremental reasoning summary text.</td>
+</tr>
+<tr>
+<td><code>response.reasoning_summary_text.done</code></td>
+<td>Reasoning summary text finalized.</td>
 </tr>
 </tbody>
 </table>
@@ -4111,99 +4509,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="examples">Examples</h2>
-<h3 id="request">Request</h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Single LLM</label><label for="__tabbed_1_2">Dual LLM</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">SEQURITY_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SEQURITY_API_KEY</span><span class="k">:-</span><span class="nv">your</span><span class="p">-sequrity-api-key</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">OPENROUTER_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPENROUTER_API_KEY</span><span class="k">:-</span><span class="nv">your</span><span class="p">-openrouter-key</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">SERVICE_PROVIDER</span><span class="o">=</span><span class="s2">&quot;openrouter&quot;</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">REST_API_URL</span><span class="o">=</span><span class="s2">&quot;https://api.sequrity.ai/control/chat/</span><span class="si">${</span><span class="nv">SERVICE_PROVIDER</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="nv">$REST_API_URL</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$SEQURITY_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;X-Api-Key: </span><span class="nv">$OPENROUTER_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;X-Features: {&quot;agent_arch&quot;:&quot;single-llm&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s1">    &quot;model&quot;: &quot;openai/gpt-5-mini&quot;,</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the largest prime number below 100?&quot;}]</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s1">  }&#39;</span>
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">SEQURITY_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SEQURITY_API_KEY</span><span class="k">:-</span><span class="nv">your</span><span class="p">-sequrity-api-key</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">OPENROUTER_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OPENROUTER_API_KEY</span><span class="k">:-</span><span class="nv">your</span><span class="p">-openrouter-key</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">SERVICE_PROVIDER</span><span class="o">=</span><span class="s2">&quot;openrouter&quot;</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">REST_API_URL</span><span class="o">=</span><span class="s2">&quot;https://api.sequrity.ai/control/chat/</span><span class="si">${</span><span class="nv">SERVICE_PROVIDER</span><span class="si">}</span><span class="s2">/v1/chat/completions&quot;</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="nv">$REST_API_URL</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$SEQURITY_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;X-Api-Key: </span><span class="nv">$OPENROUTER_API_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;X-Features: {&quot;agent_arch&quot;:&quot;dual-llm&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="s1">    &quot;model&quot;: &quot;openai/gpt-5-mini&quot;,</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="s1">    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the largest prime number below 100?&quot;}]</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="s1">  }&#39;</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
-<h3 id="response">Response</h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Single LLM</label><label for="__tabbed_2_2">Dual LLM</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gen-1769519573-03eFDboLr45TxWIgz76t&quot;</span><span class="p">,</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">&quot;choices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="p">{</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">            </span><span class="nt">&quot;finish_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stop&quot;</span><span class="p">,</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">            </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">                </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;97\n\nExplanation: 99, 98, and 100 are composite ...&quot;</span><span class="p">,</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">                </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">            </span><span class="p">}</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="p">],</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1769519573</span><span class="p">,</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai/gpt-5-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chat.completion&quot;</span><span class="p">,</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="nt">&quot;usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="nt">&quot;completion_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">186</span><span class="p">,</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">        </span><span class="nt">&quot;prompt_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="nt">&quot;total_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">202</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="p">}</span>
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;e71f5e2f-fb81-11f0-a50b-b80bf871da67&quot;</span><span class="p">,</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">&quot;choices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="p">{</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">            </span><span class="nt">&quot;finish_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stop&quot;</span><span class="p">,</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">            </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">                </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\&quot;status\&quot;: \&quot;success\&quot;, \&quot;final_return_value\&quot;: {\&quot;value\&quot;: 97, \&quot;meta\&quot;: {\&quot;tags\&quot;: [], \&quot;consumers\&quot;: [\&quot;*\&quot;], \&quot;producers\&quot;: []}}}&quot;</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">                </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">            </span><span class="p">}</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="p">],</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1769519589</span><span class="p">,</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai/gpt-5-mini,openai/gpt-5-mini&quot;</span><span class="p">,</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chat.completion&quot;</span><span class="p">,</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="nt">&quot;usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">        </span><span class="nt">&quot;completion_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">354</span><span class="p">,</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="nt">&quot;prompt_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2885</span><span class="p">,</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">        </span><span class="nt">&quot;total_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3239</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="p">}</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

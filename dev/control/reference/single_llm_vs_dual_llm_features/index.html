@@ -1572,6 +1572,8 @@
       
         
       
+        
+      
     
     
     
@@ -1691,6 +1693,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../rest_api/responses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Responses API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../rest_api/messages/" class="md-nav__link">
         
   
@@ -1748,7 +1778,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1770,14 +1800,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_2_5_5" id="__nav_4_2_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_2_5_6" id="__nav_4_2_5_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_5_5">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_5_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2006,6 +2036,8 @@
       
         
       
+        
+      
     
     
     
@@ -2077,6 +2109,34 @@
     
   
     Chat Completions API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequrity_client/responses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Responses API
   
 
     
@@ -2204,10 +2264,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_6" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_7" >
         
           
-          <label class="md-nav__link" for="__nav_4_2_6_1_6" id="__nav_4_2_6_1_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2_6_1_7" id="__nav_4_2_6_1_7_label" tabindex="0">
             
   
   
@@ -2225,8 +2285,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_6_1_6">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6_1_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2968,6 +3028,10 @@
 <summary>What is Single-LLM vs. Dual-LLM?</summary>
 <p>Read the conceptual guide on <a href="../../learn/single-vs-dual-llm/">Single-LLM vs. Dual-LLM Agents</a> to understand the differences between these architectures and their security implications.</p>
 </details>
+<div class="admonition note">
+<p class="admonition-title">LangGraph defaults to Dual-LLM</p>
+<p>The LangGraph endpoint (<code>/lang-graph/</code>) always uses dual-LLM configuration, even when <code>agent_arch</code> is set to <code>"single-llm"</code> in the <code>X-Features</code> header. This is because LangGraph integration requires the dual-LLM architecture for proper security enforcement.</p>
+</div>
 <h2 id="supported-features-of-single-llm">Supported Features of Single-LLM</h2>
 <p>Single-LLM supports a limited subset of features compared to Dual-LLM mode. The following table summarizes the feature availability in Single-LLM mode:</p>
 <ul>
@@ -3029,6 +3093,14 @@
 <li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>prune_failed_steps</code></li>
 <li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>enabled_internal_tools</code></li>
 <li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>force_to_cache</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>history_mismatch_policy</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>max_pllm_failed_steps</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>wrap_tool_result</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>detect_tool_errors</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>detect_tool_error_regex_pattern</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>detect_tool_error_max_result_length</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>strict_tool_result_parsing</code></li>
+<li><img alt="⛔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26d4.svg" title=":no_entry:" /> <code>tool_result_transform</code></li>
 </ul>
 </li>
 <li><code>prompt</code>:<ul>

@@ -1508,6 +1508,8 @@
       
         
       
+        
+      
     
     
     
@@ -1627,6 +1629,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../control/reference/rest_api/responses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Responses API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../control/reference/rest_api/messages/" class="md-nav__link">
         
   
@@ -1684,7 +1714,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_5_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1706,14 +1736,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_2_5_5" id="__nav_4_2_5_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_2_5_6" id="__nav_4_2_5_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_5_5">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_4_2_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_5_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1942,6 +1972,8 @@
       
         
       
+        
+      
     
     
     
@@ -2013,6 +2045,34 @@
     
   
     Chat Completions API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control/reference/sequrity_client/responses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Responses API
   
 
     
@@ -2140,10 +2200,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_6" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2_6_1_7" >
         
           
-          <label class="md-nav__link" for="__nav_4_2_6_1_6" id="__nav_4_2_6_1_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2_6_1_7" id="__nav_4_2_6_1_7_label" tabindex="0">
             
   
   
@@ -2161,8 +2221,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2_6_1_6">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_4_2_6_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_6_1_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2815,6 +2875,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#v041" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.4.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v04" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2895,6 +2966,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#v041" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.4.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v04" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2971,6 +3053,47 @@
 
 
 <h1 id="release-notes">Release Notes</h1>
+<h2 id="v041">v0.4.1</h2>
+<p><code>time: 2026-02-25</code></p>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control API</td>
+<td><code>094afd3174b700f104cab612d32e3f54ad1b152c</code></td>
+</tr>
+</tbody>
+</table>
+<details class="info">
+<summary>v0.4.1 Release Notes</summary>
+<p><strong>New Features</strong></p>
+<ul>
+<li><strong>Responses API</strong>: Added OpenAI-compatible Responses API support (<code>/control/{endpoint_type}/v1/responses</code>)</li>
+<li>Full request/response support with function tools, file search, web search, code interpreter, computer use, MCP, and custom tools</li>
+<li>Streaming via server-sent events with lifecycle, structure, content, and reasoning events</li>
+<li>Available for <code>chat</code>, <code>code</code>, and <code>sequrity_azure</code> providers</li>
+<li><strong>Streaming Support</strong>: Added streaming across all three main APIs (Chat Completions, Messages, Responses)</li>
+<li>New <code>SyncStream</code> and <code>AsyncStream</code> wrapper classes for SSE handling in the Python client</li>
+<li>Session ID tracking through streaming responses</li>
+<li><strong>Custom Headers Documentation</strong>: New tutorial and reference documentation for typed Pydantic header classes (<code>FeaturesHeader</code>, <code>SecurityPolicyHeader</code>, <code>FineGrainedConfigHeader</code>)</li>
+</ul>
+<p><strong>Configuration Enhancements</strong></p>
+<ul>
+<li>Added <code>tool_result_transform</code> FSM override (<code>"none"</code> or <code>"codex"</code>) for stripping Codex CLI metadata</li>
+<li>Added <code>history_mismatch_policy</code> FSM override (<code>"reject"</code>, <code>"restart_turn"</code>, <code>"continue"</code>) for handling message history divergence in stateless mode (dual-LLM only)</li>
+<li>Added <code>stream_thoughts</code> response format override for streaming model thinking process</li>
+</ul>
+<p><strong>Improvements</strong></p>
+<ul>
+<li>Request/response classes now ignore extra fields for forward compatibility</li>
+<li>Enhanced type hints across LangGraph integration and headers</li>
+</ul>
+</details>
 <h2 id="v04">v0.4</h2>
 <p><code>time: 2026-02-18</code></p>
 <table>
@@ -3051,7 +3174,7 @@
 </tbody>
 </table>
 <ul>
-<li>Change default value of <code>pllm_can_ask_for_clarification</code> in <code>security_config</code> header to <code>true</code>.</li>
+<li>Change default value of <code>clarify_ambiguous_queries</code> in <code>X-Config</code> header (<code>prompt.pllm.clarify_ambiguous_queries</code>) to <code>true</code>.</li>
 <li>Update docs deployment workflow to set default to <code>dev</code> instead of <code>latest</code> until docs are stable.</li>
 </ul>
 <h2 id="v001">v0.0.1</h2>
