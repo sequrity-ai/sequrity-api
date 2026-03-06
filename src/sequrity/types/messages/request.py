@@ -325,8 +325,21 @@ class ThinkingConfigDisabledParam(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
+class ThinkingConfigAdaptiveParam(BaseModel):
+    """Adaptive thinking configuration.
+
+    Claude automatically decides whether to use extended thinking based on
+    the complexity of the request.
+    See https://docs.anthropic.com/en/api/messages
+    """
+
+    type: Literal["adaptive"] = Field(default="adaptive", description="Thinking is adaptive.")
+
+    model_config = ConfigDict(extra="ignore")
+
+
 ThinkingConfigParam = Annotated[
-    ThinkingConfigEnabledParam | ThinkingConfigDisabledParam,
+    ThinkingConfigEnabledParam | ThinkingConfigDisabledParam | ThinkingConfigAdaptiveParam,
     Field(discriminator="type"),
 ]
 
