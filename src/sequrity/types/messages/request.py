@@ -325,10 +325,25 @@ class ThinkingConfigDisabledParam(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
+class ThinkingConfigAdaptiveParam(BaseModel):
+    """Adaptive thinking configuration.
+
+    Claude automatically decides whether to use extended thinking based on the complexity of the request.
+    """
+
+    type: Literal["adaptive"] = Field(
+        default="adaptive", description="Claude automatically decides whether to use extended thinking."
+    )
+
+    model_config = ConfigDict(extra="ignore")
+
+
 ThinkingConfigParam = Annotated[
-    ThinkingConfigEnabledParam | ThinkingConfigDisabledParam,
+    ThinkingConfigEnabledParam | ThinkingConfigDisabledParam | ThinkingConfigAdaptiveParam,
     Field(discriminator="type"),
 ]
+
+ReasoningEffort = Literal["none", "minimal", "low", "medium", "high", "xhigh"]
 
 
 # =============================================================================
@@ -359,6 +374,10 @@ class AnthropicMessageRequest(BaseModel):
 
     # Optional fields
     metadata: MetadataParam | None = Field(default=None, description="An object describing metadata about the request.")
+    reasoning_effort: ReasoningEffort | None = Field(
+        default=None,
+        description="Constrains effort on reasoning for reasoning models. Supported values are 'none', 'minimal', 'low', 'medium', 'high', and 'xhigh'.",
+    )
     output_config: OutputConfigParam | None = Field(
         default=None, description="Configuration options for the model's output, such as the output format."
     )
