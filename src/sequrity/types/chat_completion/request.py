@@ -325,7 +325,7 @@ class ResponseFormatJsonSchema(BaseModel):
 
 ResponseFormat = ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema
 
-ReasoningEffort = Literal["minimal", "low", "medium", "high"]
+ReasoningEffort = Literal["none", "minimal", "low", "medium", "high", "xhigh"]
 
 # =============================================================================
 # Main Request Class
@@ -347,7 +347,7 @@ class ChatCompletionRequest(BaseModel):
     # Optional fields
     reasoning_effort: ReasoningEffort | None = Field(
         default=None,
-        description="Constrains effort on reasoning for reasoning models. Supported values are 'minimal', 'low', 'medium', and 'high'.",
+        description="Constrains effort on reasoning for reasoning models. Supported values are 'none', 'minimal', 'low', 'medium', 'high', and 'xhigh'.",
     )
     response_format: ResponseFormat | None = Field(
         default=None,

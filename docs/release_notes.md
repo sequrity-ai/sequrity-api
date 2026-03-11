@@ -5,6 +5,20 @@ hide:
 
 # Release Notes
 
+## v0.4.2
+
+`time: 2026-03-11`
+
+| Product  | Version |
+| ---------|---------|
+| Control API | `60c3b428492056c3a31711d314a6978040f43774` |
+
+??? info "v0.4.2 Release Notes"
+
+    **Updates**
+    - Updated reasoning efforts to match Anthropic's adaptive thinking
+    - Add Dual-LLM prompt flavor 'code'
+
 ## v0.4.1
 
 `time: 2026-02-25`

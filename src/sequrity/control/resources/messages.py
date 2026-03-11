@@ -11,6 +11,7 @@ from ...types.messages.request import (
     MessageParam,
     MetadataParam,
     OutputConfigParam,
+    ReasoningEffort,
     TextBlockParam,
     ThinkingConfigParam,
     ToolChoiceParam,
@@ -43,6 +44,7 @@ class MessagesResource:
         tools: list[ToolParam | dict] | None = None,
         tool_choice: ToolChoiceParam | dict | None = None,
         thinking: ThinkingConfigParam | dict | None = None,
+        reasoning_effort: ReasoningEffort | None = None,
         stop_sequences: list[str] | None = None,
         stream: Literal[True],
         output_config: OutputConfigParam | dict | None = None,
@@ -76,6 +78,7 @@ class MessagesResource:
         tools: list[ToolParam | dict] | None = None,
         tool_choice: ToolChoiceParam | dict | None = None,
         thinking: ThinkingConfigParam | dict | None = None,
+        reasoning_effort: ReasoningEffort | None = None,
         stop_sequences: list[str] | None = None,
         stream: Literal[False] | None = None,
         output_config: OutputConfigParam | dict | None = None,
@@ -109,6 +112,7 @@ class MessagesResource:
         tools: list[ToolParam | dict] | None = None,
         tool_choice: ToolChoiceParam | dict | None = None,
         thinking: ThinkingConfigParam | dict | None = None,
+        reasoning_effort: ReasoningEffort | None = None,
         stop_sequences: list[str] | None = None,
         stream: bool | None = None,
         output_config: OutputConfigParam | dict | None = None,
@@ -141,6 +145,7 @@ class MessagesResource:
             tools: List of tool definitions available to the model.
             tool_choice: How the model should use the provided tools.
             thinking: Configuration for extended thinking.
+            reasoning_effort: Reasoning effort level for supported models.
             stop_sequences: Custom text sequences that cause the model to stop.
             stream: Whether to stream the response. When ``True``, returns a
                 :class:`SyncStream` of :class:`AnthropicStreamEvent` objects.
@@ -179,6 +184,7 @@ class MessagesResource:
                 "tools": tools,
                 "tool_choice": tool_choice,
                 "thinking": thinking,
+                "reasoning_effort": reasoning_effort,
                 "top_k": top_k,
                 "top_p": top_p,
                 "output_config": output_config,
@@ -248,6 +254,7 @@ class AsyncMessagesResource:
         tools: list[ToolParam | dict] | None = None,
         tool_choice: ToolChoiceParam | dict | None = None,
         thinking: ThinkingConfigParam | dict | None = None,
+        reasoning_effort: ReasoningEffort | None = None,
         stop_sequences: list[str] | None = None,
         stream: Literal[True],
         output_config: OutputConfigParam | dict | None = None,
@@ -281,6 +288,7 @@ class AsyncMessagesResource:
         tools: list[ToolParam | dict] | None = None,
         tool_choice: ToolChoiceParam | dict | None = None,
         thinking: ThinkingConfigParam | dict | None = None,
+        reasoning_effort: ReasoningEffort | None = None,
         stop_sequences: list[str] | None = None,
         stream: Literal[False] | None = None,
         output_config: OutputConfigParam | dict | None = None,
@@ -313,6 +321,7 @@ class AsyncMessagesResource:
         tools: list[ToolParam | dict] | None = None,
         tool_choice: ToolChoiceParam | dict | None = None,
         thinking: ThinkingConfigParam | dict | None = None,
+        reasoning_effort: ReasoningEffort | None = None,
         stop_sequences: list[str] | None = None,
         stream: bool | None = None,
         output_config: OutputConfigParam | dict | None = None,
@@ -344,6 +353,7 @@ class AsyncMessagesResource:
                 "tools": tools,
                 "tool_choice": tool_choice,
                 "thinking": thinking,
+                "reasoning_effort": reasoning_effort,
                 "top_k": top_k,
                 "top_p": top_p,
                 "output_config": output_config,

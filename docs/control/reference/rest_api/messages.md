@@ -27,6 +27,7 @@ Where `{endpoint_type}` is `chat`, `code`, `agent`, or `lang-graph`. See [URL Pa
 | `tools` | `array[ToolParam]` | No | Tool definitions the model may use. See [Tools](#tools). |
 | `tool_choice` | `ToolChoice` | No | How the model should use tools. See [Tool Choice](#tool-choice). |
 | `thinking` | `ThinkingConfig` | No | Extended thinking configuration. See [Thinking](#thinking). |
+| `reasoning_effort` | `string` | No | Reasoning effort for reasoning models: `"none"`, `"minimal"`, `"low"`, `"medium"`, `"high"`, `"xhigh"`. |
 | `stop_sequences` | `array[string]` | No | Custom stop sequences. |
 | `stream` | `boolean` | No | If `true`, stream the response via server-sent events. |
 | `output_config` | `OutputConfig` | No | Output format configuration (e.g. JSON schema). |
@@ -132,6 +133,7 @@ Extended thinking configuration. Discriminated by `type`:
 |------|--------|-------------|
 | `enabled` | `budget_tokens` (int, min 1024) | Enable thinking with a token budget. |
 | `disabled` | — | Disable thinking. |
+| `adaptive` | — | Claude automatically decides whether to use extended thinking based on request complexity. |
 
 ### Output Config
 

@@ -343,6 +343,8 @@ ThinkingConfigParam = Annotated[
     Field(discriminator="type"),
 ]
 
+ReasoningEffort = Literal["none", "minimal", "low", "medium", "high", "xhigh"]
+
 
 # =============================================================================
 # Main Request Class
@@ -372,6 +374,10 @@ class AnthropicMessageRequest(BaseModel):
 
     # Optional fields
     metadata: MetadataParam | None = Field(default=None, description="An object describing metadata about the request.")
+    reasoning_effort: ReasoningEffort | None = Field(
+        default=None,
+        description="Constrains effort on reasoning for reasoning models. Supported values are 'none', 'minimal', 'low', 'medium', 'high', and 'xhigh'.",
+    )
     output_config: OutputConfigParam | None = Field(
         default=None, description="Configuration options for the model's output, such as the output format."
     )

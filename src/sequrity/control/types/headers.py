@@ -478,7 +478,7 @@ class PllmPromptOverrides(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     flavor: PromptFlavor | str | None = Field(
-        default=None, description="Prompt template variant to use (e.g., 'universal')."
+        default=None, description="Prompt template variant to use (e.g., 'universal', 'code')."
     )
     version: PromptVersion | str | None = Field(
         default=None,
