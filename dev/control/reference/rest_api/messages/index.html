@@ -3545,6 +3545,12 @@
 <td>Extended thinking configuration. See <a href="#thinking">Thinking</a>.</td>
 </tr>
 <tr>
+<td><code>reasoning_effort</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Reasoning effort for reasoning models: <code>"none"</code>, <code>"minimal"</code>, <code>"low"</code>, <code>"medium"</code>, <code>"high"</code>, <code>"xhigh"</code>.</td>
+</tr>
+<tr>
 <td><code>stop_sequences</code></td>
 <td><code>array[string]</code></td>
 <td>No</td>
@@ -3935,6 +3941,11 @@
 <td><code>disabled</code></td>
 <td>—</td>
 <td>Disable thinking.</td>
+</tr>
+<tr>
+<td><code>adaptive</code></td>
+<td>—</td>
+<td>Claude automatically decides whether to use extended thinking based on request complexity.</td>
 </tr>
 </tbody>
 </table>
