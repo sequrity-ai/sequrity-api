@@ -594,6 +594,10 @@ class ResponseFormatOverrides(BaseModel):
         default=None,
         description="When True, returns only essential result value as plain text, stripping all metadata.",
     )
+    stream_thoughts: bool | None = Field(
+        default=None,
+        description="Whether to stream the model's thinking process in the response.",
+    )
     include_program: bool | None = Field(
         default=None, description="Whether to include the generated program in the response."
     )
@@ -711,6 +715,7 @@ class FineGrainedConfigHeader(BaseModel):
         pllm_debug_info_level: DebugInfoLevel | None = None,
         # Response format
         strip_response_content: bool | None = None,
+        stream_thoughts: bool | None = None,
         include_program: bool | None = None,
         include_policy_check_history: bool | None = None,
         include_namespace_snapshot: bool | None = None,
@@ -742,10 +747,11 @@ class FineGrainedConfigHeader(BaseModel):
         response_fmt = None
         if any(
             v is not None
-            for v in [strip_response_content, include_program, include_policy_check_history, include_namespace_snapshot]
+            for v in [strip_response_content, stream_thoughts, include_program, include_policy_check_history, include_namespace_snapshot]
         ):
             response_fmt = ResponseFormatOverrides(
                 strip_response_content=strip_response_content,
+                stream_thoughts=stream_thoughts,
                 include_program=include_program,
                 include_policy_check_history=include_policy_check_history,
                 include_namespace_snapshot=include_namespace_snapshot,
