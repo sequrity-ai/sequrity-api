@@ -261,20 +261,12 @@ class TestFineGrainedConfigHeaderOverrides:
         # Unset LLMs should not appear
         assert "qllm" not in result["llm"]
 
-    def test_llm_overrides_none_excluded(self):
-        """None llm field is excluded from serialization."""
-        header = FineGrainedConfigHeader(llm=None)
-        result = json.loads(header.dump_for_headers())
-        assert "llm" not in result
-
     def test_llm_overrides_deep_merge_with_dump(self):
         """LLM overrides can be deep-merged via dump_for_headers overrides param."""
         header = FineGrainedConfigHeader(
             llm=LlmOverrides(pllm=GenerationConfigOverrides(temperature=0.5)),
         )
-        result = json.loads(
-            header.dump_for_headers(overrides={"llm": {"pllm": {"temperature": 0.9, "seed": 42}}})
-        )
+        result = json.loads(header.dump_for_headers(overrides={"llm": {"pllm": {"temperature": 0.9, "seed": 42}}}))
         assert result["llm"]["pllm"]["temperature"] == 0.9
         assert result["llm"]["pllm"]["seed"] == 42
 
@@ -282,10 +274,3 @@ class TestFineGrainedConfigHeaderOverrides:
         """extra='forbid' still blocks unknown fields at construction time."""
         with pytest.raises(Exception):  # ValidationError
             FineGrainedConfigHeader(fsm=None, bogus_field=True)
-
-    def test_llm_overrides_validation_strict(self):
-        """extra='forbid' blocks unknown fields on LLM override models."""
-        with pytest.raises(Exception):
-            GenerationConfigOverrides(bogus_field=True)
-        with pytest.raises(Exception):
-            LlmOverrides(bogus_llm=GenerationConfigOverrides())

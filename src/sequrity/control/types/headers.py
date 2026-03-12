@@ -685,7 +685,9 @@ class LlmOverrides(BaseModel):
 
     pllm: GenerationConfigOverrides | None = Field(default=None, description="Planning LLM generation config.")
     rllm: GenerationConfigOverrides | None = Field(default=None, description="Review LLM generation config.")
-    grllm: GenerationConfigOverrides | None = Field(default=None, description="Grammar-constrained LLM generation config.")
+    grllm: GenerationConfigOverrides | None = Field(
+        default=None, description="Grammar-constrained LLM generation config."
+    )
     qllm: GenerationConfigOverrides | None = Field(default=None, description="Query LLM generation config.")
     tllm: GenerationConfigOverrides | None = Field(default=None, description="Tool-formulating LLM generation config.")
     tagllm: GenerationConfigOverrides | None = Field(default=None, description="Tag LLM generation config.")
