@@ -15,6 +15,9 @@ import pytest
 from sequrity.control.types.headers import (
     FeaturesHeader,
     FineGrainedConfigHeader,
+    GenerationConfigOverrides,
+    LlmOverrides,
+    ReasoningConfigOverride,
     SecurityPolicyHeader,
     _deep_merge,
 )
@@ -216,6 +219,56 @@ class TestFineGrainedConfigHeaderOverrides:
         result = header.dump_for_headers(mode="json", overrides={"fsm": {"max_n_turns": 99}})
         assert isinstance(result, dict)
         assert result["fsm"]["max_n_turns"] == 99
+
+    def test_llm_overrides_serialized(self):
+        """LLM generation config overrides are included in the header."""
+        header = FineGrainedConfigHeader(
+            llm=LlmOverrides(
+                pllm=GenerationConfigOverrides(temperature=0.5),
+                rllm=GenerationConfigOverrides(max_completion_tokens=512),
+            ),
+        )
+        result = json.loads(header.dump_for_headers())
+        assert result["llm"]["pllm"]["temperature"] == 0.5
+        assert result["llm"]["rllm"]["max_completion_tokens"] == 512
+
+    def test_llm_overrides_with_reasoning(self):
+        """Reasoning config overrides serialize correctly."""
+        header = FineGrainedConfigHeader(
+            llm=LlmOverrides(
+                pllm=GenerationConfigOverrides(
+                    reasoning=ReasoningConfigOverride(enabled=True, effort="high"),
+                ),
+            ),
+        )
+        result = json.loads(header.dump_for_headers())
+        assert result["llm"]["pllm"]["reasoning"]["enabled"] is True
+        assert result["llm"]["pllm"]["reasoning"]["effort"] == "high"
+
+    def test_llm_overrides_multiple_llms(self):
+        """Multiple LLMs can be overridden independently."""
+        header = FineGrainedConfigHeader(
+            llm=LlmOverrides(
+                pllm=GenerationConfigOverrides(temperature=0.1),
+                rllm=GenerationConfigOverrides(reasoning=ReasoningConfigOverride(enabled=True, effort="low")),
+                grllm=GenerationConfigOverrides(max_completion_tokens=256),
+            ),
+        )
+        result = json.loads(header.dump_for_headers())
+        assert result["llm"]["pllm"]["temperature"] == 0.1
+        assert result["llm"]["rllm"]["reasoning"]["effort"] == "low"
+        assert result["llm"]["grllm"]["max_completion_tokens"] == 256
+        # Unset LLMs should not appear
+        assert "qllm" not in result["llm"]
+
+    def test_llm_overrides_deep_merge_with_dump(self):
+        """LLM overrides can be deep-merged via dump_for_headers overrides param."""
+        header = FineGrainedConfigHeader(
+            llm=LlmOverrides(pllm=GenerationConfigOverrides(temperature=0.5)),
+        )
+        result = json.loads(header.dump_for_headers(overrides={"llm": {"pllm": {"temperature": 0.9, "seed": 42}}}))
+        assert result["llm"]["pllm"]["temperature"] == 0.9
+        assert result["llm"]["pllm"]["seed"] == 42
 
     def test_pydantic_validation_still_strict(self):
         """extra='forbid' still blocks unknown fields at construction time."""

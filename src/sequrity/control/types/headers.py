@@ -609,10 +609,99 @@ class ResponseFormatOverrides(BaseModel):
     )
 
 
+class ReasoningConfigOverride(BaseModel):
+    """Reasoning configuration for generation config overrides.
+
+    Attributes:
+        enabled: Whether reasoning/extended thinking is enabled.
+        effort: Reasoning effort level (e.g., "low", "medium", "high").
+        budget: Maximum number of reasoning tokens allowed.
+        adaptive: When true, the model automatically decides whether to use extended thinking.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    enabled: bool = Field(default=True, description="Whether reasoning is enabled.")
+    effort: str | None = Field(default=None, description="Reasoning effort level (e.g., 'low', 'medium', 'high').")
+    budget: int | None = Field(default=None, description="Maximum number of reasoning tokens allowed.", ge=1)
+    adaptive: bool = Field(
+        default=False,
+        description="When true, the model automatically decides whether to use extended thinking.",
+    )
+
+
+class GenerationConfigOverrides(BaseModel):
+    """Overrideable generation-config fields (all optional).
+
+    Only fields explicitly set are merged into the target LLM's generation
+    config; unset fields keep their existing values.
+
+    Attributes:
+        frequency_penalty: Penalize tokens based on existing frequency (-2.0 to 2.0).
+        logit_bias: Modify likelihood of specified tokens.
+        logprobs: Whether to return log probabilities of output tokens.
+        max_completion_tokens: Upper bound for generated tokens.
+        presence_penalty: Penalize tokens based on presence in text so far (-2.0 to 2.0).
+        seed: Seed for deterministic sampling.
+        temperature: Sampling temperature (0.0 to 2.0).
+        top_p: Nucleus sampling threshold.
+        reasoning: Reasoning/extended thinking configuration.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    frequency_penalty: float | None = Field(default=None, description="Frequency penalty (-2.0 to 2.0).")
+    logit_bias: dict[str, int] | None = Field(default=None, description="Token likelihood modifications.")
+    logprobs: bool | None = Field(default=None, description="Whether to return log probabilities.")
+    max_completion_tokens: int | None = Field(default=None, description="Upper bound for generated tokens.")
+    presence_penalty: float | None = Field(default=None, description="Presence penalty (-2.0 to 2.0).")
+    seed: int | None = Field(default=None, description="Seed for deterministic sampling.")
+    temperature: float | None = Field(default=None, description="Sampling temperature (0.0 to 2.0).")
+    top_p: float | None = Field(default=None, description="Nucleus sampling threshold.")
+    reasoning: ReasoningConfigOverride | None = Field(default=None, description="Reasoning/thinking configuration.")
+
+
+class LlmOverrides(BaseModel):
+    """Per-LLM generation config overrides.
+
+    Each LLM slot can have its generation parameters overridden independently
+    via the ``llm`` section of the ``X-Config`` header. If an LLM's override
+    is ``None``, that LLM's generation config remains unchanged.
+
+    Example:
+        ```python
+        from sequrity.control import FineGrainedConfigHeader, LlmOverrides, GenerationConfigOverrides
+
+        config = FineGrainedConfigHeader(
+            llm=LlmOverrides(
+                pllm=GenerationConfigOverrides(temperature=0.5, reasoning=ReasoningConfigOverride(enabled=True, effort="high")),
+                rllm=GenerationConfigOverrides(max_completion_tokens=512),
+            ),
+        )
+        ```
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    pllm: GenerationConfigOverrides | None = Field(default=None, description="Planning LLM generation config.")
+    rllm: GenerationConfigOverrides | None = Field(default=None, description="Review LLM generation config.")
+    grllm: GenerationConfigOverrides | None = Field(
+        default=None, description="Grammar-constrained LLM generation config."
+    )
+    qllm: GenerationConfigOverrides | None = Field(default=None, description="Query LLM generation config.")
+    tllm: GenerationConfigOverrides | None = Field(default=None, description="Tool filtering LLM generation config.")
+    tagllm: GenerationConfigOverrides | None = Field(default=None, description="Tag LLM generation config.")
+    policy_llm: GenerationConfigOverrides | None = Field(default=None, description="Policy LLM generation config.")
+    tool_result_error_detector_llm: GenerationConfigOverrides | None = Field(
+        default=None, description="Tool result error detector LLM generation config."
+    )
+
+
 class FineGrainedConfigHeader(BaseModel):
     """Structured configuration header (``X-Config``).
 
-    Groups overrides into FSM, prompt, and response format sections.
+    Groups overrides into FSM, prompt, response format, and per-LLM
+    generation config sections.
 
     Example:
         ```python
@@ -631,6 +720,9 @@ class FineGrainedConfigHeader(BaseModel):
     prompt: PromptOverrides | None = Field(default=None, description="Prompt configuration overrides for all LLMs.")
     response_format: ResponseFormatOverrides | None = Field(
         default=None, description="Response format configuration for dual-LLM sessions."
+    )
+    llm: LlmOverrides | None = Field(
+        default=None, description="Per-LLM generation config overrides (temperature, reasoning, etc.)."
     )
 
     @overload
