@@ -689,7 +689,7 @@ class LlmOverrides(BaseModel):
         default=None, description="Grammar-constrained LLM generation config."
     )
     qllm: GenerationConfigOverrides | None = Field(default=None, description="Query LLM generation config.")
-    tllm: GenerationConfigOverrides | None = Field(default=None, description="Tool-formulating LLM generation config.")
+    tllm: GenerationConfigOverrides | None = Field(default=None, description="Tool filtering LLM generation config.")
     tagllm: GenerationConfigOverrides | None = Field(default=None, description="Tag LLM generation config.")
     policy_llm: GenerationConfigOverrides | None = Field(default=None, description="Policy LLM generation config.")
     tool_result_error_detector_llm: GenerationConfigOverrides | None = Field(
