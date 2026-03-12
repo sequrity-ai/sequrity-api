@@ -747,7 +747,13 @@ class FineGrainedConfigHeader(BaseModel):
         response_fmt = None
         if any(
             v is not None
-            for v in [strip_response_content, stream_thoughts, include_program, include_policy_check_history, include_namespace_snapshot]
+            for v in [
+                strip_response_content,
+                stream_thoughts,
+                include_program,
+                include_policy_check_history,
+                include_namespace_snapshot,
+            ]
         ):
             response_fmt = ResponseFormatOverrides(
                 strip_response_content=strip_response_content,
