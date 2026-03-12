@@ -314,6 +314,7 @@ class TestFineGrainedConfigHeader:
             ),
             response_format=ResponseFormatOverrides(
                 strip_response_content=False,
+                stream_thoughts=True,
                 include_program=True,
                 include_policy_check_history=True,
                 include_namespace_snapshot=True,
