@@ -375,7 +375,7 @@ class SecurityPolicyHeader(BaseModel):
 # X-Config header  (FineGrainedConfigHeader)
 # ---------------------------------------------------------------------------
 
-InternalSqrtToolIdType: TypeAlias = Literal["parse_with_ai", "verify_hypothesis", "set_policy", "complete_turn"]
+InternalSqrtToolIdType: TypeAlias = Literal["parse_with_ai", "verify_hypothesis", "set_policy", "complete_turn", "plan_and_execute"]
 DebugInfoLevel: TypeAlias = Literal["minimal", "normal", "extra"]
 PromptFlavor: TypeAlias = str
 PromptVersion: TypeAlias = str
@@ -758,7 +758,7 @@ class FineGrainedConfigHeader(BaseModel):
             })
             ```
         """
-        data = self.model_dump(mode="json", exclude_none=True)
+        data = self.model_dump(mode="json", exclude_unset=True)
         if overrides:
             _deep_merge(data, overrides)
         if mode == "json":
