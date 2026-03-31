@@ -436,9 +436,9 @@ class FsmOverrides(BaseModel):
         default=None,
         description="Maximum number of tool calls allowed per PLLM attempt. If None, no limit is enforced.",
     )
-    reduced_grammar_for_rllm_review: bool | None = Field(
+    reduced_grammar_for_rllm_review: Literal["none", "bool", "text"] | bool | None = Field(
         default=None,
-        description="Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM.",
+        description="Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM. 'none' denotes passing original review to PLLM; 'bool' denotes only keeping boolean flags (success/failure); 'text' denotes applying reduced grammar to reviews; True is an alias for 'text', False is an alias for 'none'.",
     )
     retry_on_policy_violation: bool | None = Field(
         default=None,

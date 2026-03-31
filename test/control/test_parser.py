@@ -11,7 +11,6 @@ from sequrity.sqrt.parser import (
     ParseResult,
     SqrtParseError,
     check,
-    check_file,
     parse,
     validate,
 )

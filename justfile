@@ -15,6 +15,7 @@ format:
 
 lint:
     uv run ruff format --check
+    uv run ruff check
     uv run ty check --exclude "examples/**" --exclude "test/**" src/
 
 sync-all:
