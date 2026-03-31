@@ -200,9 +200,9 @@ Maximum number of tool calls allowed per PLLM attempt. If `null`, no limit is en
 
 | Type | Required | Default |
 |------|----------|---------|
-| `boolean` or `null` | No | `null` |
+| `"none"`, `"bool"`, `"text"`, `boolean`, or `null` | No | `null` |
 
-Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM. When not set, the server default is `true`.
+Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM. `"none"` denotes passing original review to PLLM; `"bool"` denotes only keeping boolean flags (success/failure); `"text"` denotes applying reduced grammar to reviews. `true` is an alias for `"text"`, `false` is an alias for `"none"`. When not set, the server default is `"text"`.
 
 #### `fsm.retry_on_policy_violation`
 

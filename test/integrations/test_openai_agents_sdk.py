@@ -111,8 +111,6 @@ class TestOpenAIAgentsSDKIntegration:
 
         # Verify session ID was captured
         assert client.session_id is not None
-        first_session_id = client.session_id
-
         # Second request - should use the same session
         result2 = await Runner.run(
             agent,
