@@ -47,6 +47,9 @@
     docs=["griffe-pydantic>=1.2.0", "mike>=2.1", "mkdocs>=1.6", "mkdocs-material>=9.5", "mkdocstrings[python]>=0.28"]
     examples=["ipykernel<7.0.0", "rich>=14.2.0"]
 
+[tool.uv]
+    exclude-newer = "P7D" # exclude packages updated in the last 7 days to avoid supply chain attacks
+
 [tool.ruff]
     line-length=120
     exclude=[".venv", "examples"]
