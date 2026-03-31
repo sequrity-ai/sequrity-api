@@ -5,8 +5,6 @@ This module tests the client.policy.generate() method,
 which generates SQRT security policies from natural language descriptions.
 """
 
-import pytest
-
 from sequrity import LlmServiceProvider, SequrityClient
 from sequrity.control._constants import build_policy_gen_url
 from sequrity.control.types.policy_gen import (
@@ -14,7 +12,6 @@ from sequrity.control.types.policy_gen import (
     PolicyGenRequestOpenAiChatCompletion,
     PolicyGenRequestOpenRouterChatCompletion,
     PolicyGenRequestSequrityAzureChatCompletion,
-    PolicyGenRequestSequrityAzureResponses,
     PolicyGenResponse,
 )
 from sequrity_unittest.config import get_test_config

@@ -1,4 +1,4 @@
-from typing import Literal, TypedDict
+from typing import TypedDict
 
 import pytest
 
@@ -9,7 +9,7 @@ from sequrity.types.enums import LlmServiceProvider
 from sequrity_unittest.config import get_test_config
 
 try:
-    from langgraph.graph import StateGraph
+    from langgraph.graph import StateGraph  # noqa: F401
 
     LANGGRAPH_AVAILABLE = True
 except ImportError:

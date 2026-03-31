@@ -54,6 +54,9 @@ jobs:
       - name: Run ruff format check
         run: uv run ruff format --check
 
+      - name: Run ruff check
+        run: uv run ruff check --output-format github
+
       - name: Run ty type checker
         run: uv run ty check --exclude "examples/**" --exclude "test/**" src/
 

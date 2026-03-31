@@ -69,8 +69,6 @@ class TestLangGraphIntegration:
 
         # Verify session ID was captured
         assert llm.session_id is not None
-        first_session_id = llm.session_id
-
         # Second request - should use the same session
         response2 = await llm.ainvoke([HumanMessage(content="What did I just say?")])
 
