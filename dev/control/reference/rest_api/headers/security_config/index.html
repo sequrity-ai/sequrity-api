@@ -4251,13 +4251,13 @@
 </thead>
 <tbody>
 <tr>
-<td><code>boolean</code> or <code>null</code></td>
+<td><code>"none"</code>, <code>"bool"</code>, <code>"text"</code>, <code>boolean</code>, or <code>null</code></td>
 <td>No</td>
 <td><code>null</code></td>
 </tr>
 </tbody>
 </table>
-<p>Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM. When not set, the server default is <code>true</code>.</p>
+<p>Whether to paraphrase RLLM output via reduced grammar before feeding back to planning LLM. <code>"none"</code> denotes passing original review to PLLM; <code>"bool"</code> denotes only keeping boolean flags (success/failure); <code>"text"</code> denotes applying reduced grammar to reviews. <code>true</code> is an alias for <code>"text"</code>, <code>false</code> is an alias for <code>"none"</code>. When not set, the server default is <code>"text"</code>.</p>
 <h4 id="fsmretry_on_policy_violation"><code>fsm.retry_on_policy_violation</code></h4>
 <table>
 <thead>
