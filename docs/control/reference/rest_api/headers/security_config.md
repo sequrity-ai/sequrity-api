@@ -31,7 +31,8 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
     "strict_tool_result_parsing": null,
     "tool_result_transform": null,
     "n_pllm_plans": null,
-    "pllm_candidate_models": null
+    "pllm_candidate_models": null,
+    "pllm_context_pruning": null
   },
   "prompt": {
     "pllm": {
@@ -284,6 +285,14 @@ Number of PLLM plans to generate per step. When > 1, multiple plans are generate
 | `array[string]` or `null` | No | `null` |
 
 Distinct model names to round-robin across when generating multiple PLLM plans. When empty or `null`, the request model is used for all candidates.
+
+#### `fsm.pllm_context_pruning`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `boolean` or `null` | No | `null` |
+
+Whether to hide context variable values from all PLLM steps except the current one. Context vars are cumulative, so older steps contain redundant data. When not set, the server default is `true`.
 
 ---
 

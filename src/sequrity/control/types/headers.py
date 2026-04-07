@@ -483,6 +483,11 @@ class FsmOverrides(BaseModel):
         description="Distinct model names to round-robin across when generating multiple PLLM plans. "
         "When empty or null, the request model is used for all candidates.",
     )
+    pllm_context_pruning: bool | None = Field(
+        default=None,
+        description="Whether to hide context variable values from all PLLM steps except the current one. "
+        "Context vars are cumulative, so older steps contain redundant data.",
+    )
 
 
 class PllmPromptOverrides(BaseModel):
