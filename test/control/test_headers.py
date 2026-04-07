@@ -304,6 +304,9 @@ class TestFineGrainedConfigHeader:
                 prune_failed_steps=True,
                 enabled_internal_tools=["parse_with_ai", "verify_hypothesis"],
                 max_tool_calls_per_step=100,
+                n_pllm_plans=2,
+                pllm_candidate_models={"gpt-5-mini", "gpt-5-nano"},
+                pllm_context_pruning=True,
             ),
             prompt=PromptOverrides(
                 pllm=PllmPromptOverrides(
