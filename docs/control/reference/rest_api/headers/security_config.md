@@ -29,7 +29,10 @@ This header is **optional** and can be used in Headers-Only Mode to fine-tune se
     "detect_tool_error_regex_pattern": null,
     "detect_tool_error_max_result_length": null,
     "strict_tool_result_parsing": null,
-    "tool_result_transform": null
+    "tool_result_transform": null,
+    "n_pllm_plans": null,
+    "pllm_candidate_models": null,
+    "pllm_context_pruning": null
   },
   "prompt": {
     "pllm": {
@@ -266,6 +269,30 @@ Transform applied to tool results before processing:
 
 - `"none"`: No transformation
 - `"codex"`: Apply codex-style transformation to tool results
+
+#### `fsm.n_pllm_plans`
+
+| Type | Required | Default | Constraints |
+|------|----------|---------|-------------|
+| `integer` or `null` | No | `null` | >= 1 |
+
+Number of PLLM plans to generate per step. When > 1, multiple plans are generated concurrently and the best one is selected by a selection LLM. Models are assigned round-robin from `pllm_candidate_models`; when the model list is shorter than `n_pllm_plans`, extra candidates reuse the same models with different sampling seeds for diversity. When not set, the server default is `1`.
+
+#### `fsm.pllm_candidate_models`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `array[string]` or `null` | No | `null` |
+
+Distinct model names to round-robin across when generating multiple PLLM plans. When empty or `null`, the request model is used for all candidates.
+
+#### `fsm.pllm_context_pruning`
+
+| Type | Required | Default |
+|------|----------|---------|
+| `boolean` or `null` | No | `null` |
+
+Whether to hide context variable values from all PLLM steps except the current one. Context vars are cumulative, so older steps contain redundant data. When not set, the server default is `true`.
 
 ---
 

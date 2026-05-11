@@ -470,6 +470,24 @@ class FsmOverrides(BaseModel):
         "'none': no transform; 'codex': strip Codex CLI metadata prefix and "
         "extract exit code + output.",
     )
+    n_pllm_plans: int | None = Field(
+        default=None,
+        description="Number of PLLM plans to generate per step. When > 1, multiple plans are generated "
+        "concurrently and the best one is selected by a selection LLM. "
+        "Models are assigned round-robin from pllm_candidate_models; when the model list is shorter "
+        "than n_pllm_plans, extra candidates reuse the same models with different sampling seeds "
+        "for diversity.",
+    )
+    pllm_candidate_models: set[str] | None = Field(
+        default=None,
+        description="Distinct model names to round-robin across when generating multiple PLLM plans. "
+        "When empty or null, the request model is used for all candidates.",
+    )
+    pllm_context_pruning: bool | None = Field(
+        default=None,
+        description="Whether to hide context variable values from all PLLM steps except the current one. "
+        "Context vars are cumulative, so older steps contain redundant data.",
+    )
 
 
 class PllmPromptOverrides(BaseModel):
