@@ -25,6 +25,7 @@ class LlmServiceProvider(StrEnum):
     OPENROUTER = "openrouter"
     ANTHROPIC = "anthropic"
     SEQURITY_AZURE = "sequrity_azure"
+    LLAMA = "llama"
 
 
 LlmServiceProviderStr = Literal["openai", "openrouter", "anthropic", "sequrity_azure"]
